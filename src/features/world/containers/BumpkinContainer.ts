@@ -1132,4 +1132,25 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       }, 100);
     }
   }
+
+  public addLabel(quantity: number) {
+    this.stopSpeaking();
+
+    this.reaction.clear(true, true);
+
+    const label = this.scene.add.bitmapText(
+      -2,
+      -25,
+      "Teeny Tiny Pixls",
+      `${quantity > 0 ? "+" : "-"}${Math.abs(quantity)}`,
+      4,
+      1,
+    );
+
+    label.setTintFill(0xffffff);
+    this.add(label);
+    this.reaction.add(label);
+
+    this.destroyReaction();
+  }
 }
