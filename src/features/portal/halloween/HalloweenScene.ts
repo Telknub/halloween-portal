@@ -83,6 +83,8 @@ export class HalloweenScene extends BaseScene {
   private backgroundMusic!: Phaser.Sound.BaseSound;
   private zombieSound!: Phaser.Sound.BaseSound;
   private ghostSound!: Phaser.Sound.BaseSound;
+  private zombieDeathSound!: Phaser.Sound.BaseSound;
+  private ghostDeathSound!: Phaser.Sound.BaseSound;
 
   constructor() {
     super({
@@ -115,6 +117,8 @@ export class HalloweenScene extends BaseScene {
     this.load.audio("backgroundMusic", "/world/background-music.mp3");
     this.load.audio("ghostSound", "/world/ghost-sound.wav");
     this.load.audio("zombieSound", "/world/zombie-sound.wav");
+    this.load.audio("zombieDeathSound", "/world/zombie-death.mp3");
+    this.load.audio("ghostDeathSound", "/world/ghost-death.wav");
 
     this.load.spritesheet("lamp", "world/lamp.png", {
       frameWidth: 14,
@@ -375,6 +379,12 @@ export class HalloweenScene extends BaseScene {
     }
 
     poof_1.play("poof_1_anim", true);
+    this.ghostDeathSound = this.sound.add("ghostDeathSound", {
+      loop: false,
+      volume: 0.7,
+    });
+    this.ghostDeathSound.play();
+    this.ghostDeathSound.on("complete", () => this.ghostDeathSound.destroy());
 
     poof_1.on("animationcomplete", () => poof_1.destroy());
     ghost_enemy.destroy();
@@ -506,6 +516,12 @@ export class HalloweenScene extends BaseScene {
     }
 
     zombie_death.play("zombie_death_anim", true);
+    this.zombieDeathSound = this.sound.add("zombieDeathSound", {
+      loop: false,
+      volume: 0.7,
+    });
+    this.zombieDeathSound.play();
+    this.zombieDeathSound.on("complete", () => this.zombieDeathSound.destroy());
     zombie_death.on("animationcomplete", () => zombie_death.destroy());
     zombie_enemy.destroy();
     this.zombie_enemies = this.zombie_enemies.filter(
