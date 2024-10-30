@@ -7,6 +7,7 @@ import { Label } from "components/ui/Label";
 import { PortalMachineState } from "../../lib/halloweenMachine";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 import { DURATION_GAME_OVER_WITHOUT_LAMPS_SECONDS } from "../../HalloweenConstants";
+import { PIXEL_SCALE } from "features/game/lib/constants";
 
 const _lamps = (state: PortalMachineState) => state.context.lamps;
 const _isPlaying = (state: PortalMachineState) => state.matches("playing");
@@ -44,12 +45,18 @@ export const HalloweenTimeDead: React.FC = () => {
   }, [lamps]);
 
   return (
-    <>
+    <div
+      className="absolute flex flex-col items-center w-screen"
+      style={{
+        bottom: `${PIXEL_SCALE * 3}px`,
+      }}
+    >
       {lamps === 0 && isPlaying && (
         <Label
           className="space-x-2 text-xs"
           icon={SUNNYSIDE.decorations.skull}
           type={"dead"}
+          style={{ fontSize: "28px", paddingTop: "5px", paddingBottom: "5px" }}
         >
           {t("halloween.lose", {
             time: secondsToString(timeLeft, {
@@ -58,6 +65,6 @@ export const HalloweenTimeDead: React.FC = () => {
           })}
         </Label>
       )}
-    </>
+    </div>
   );
 };
