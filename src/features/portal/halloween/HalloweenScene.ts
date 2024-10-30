@@ -85,8 +85,8 @@ export class HalloweenScene extends BaseScene {
   private ghostSound!: Phaser.Sound.BaseSound;
   private zombieDeathSound!: Phaser.Sound.BaseSound;
   private ghostDeathSound!: Phaser.Sound.BaseSound;
-  private shadows!: Phaser.Sound.BaseSound;
-  private tension!: Phaser.Sound.BaseSound;
+  private shadows!: Phaser.Sound.BaseSound | null;
+  private tension!: Phaser.Sound.BaseSound | null;
 
   constructor() {
     super({
@@ -119,9 +119,9 @@ export class HalloweenScene extends BaseScene {
     this.load.audio("backgroundMusic", "/world/background-music.mp3");
     this.load.audio("ghostSound", "/world/ghost-sound.wav");
     this.load.audio("zombieSound", "/world/zombie-sound.wav");
+    this.load.audio("ghostDeathSound", "/world/ghost-death.wav");
     this.load.audio("shadows", "/world/shadows.mp3");
     this.load.audio("tension", "/world/tension.mp3");
-    this.load.audio("ghostDeathSound", "/world/ghost-death.wav");
 
     this.load.spritesheet("lamp", "world/lamp.png", {
       frameWidth: 14,
@@ -274,6 +274,15 @@ export class HalloweenScene extends BaseScene {
         this.enemy_2();
         this.checkZombiesInsideWalls();
         this.faceDirectionEnemy_2();
+
+        if (this.portalService?.state.context.lamps === 0) {
+          this.playWarningSound();
+        }
+        if (
+          (this.portalService as MachineInterpreter)?.state.context.lamps > 0
+        ) {
+          this.stopWarningSound();
+        }
       } else {
         this.velocity = 0;
       }
@@ -810,6 +819,44 @@ export class HalloweenScene extends BaseScene {
       this.currentPlayer?.addLabel(amount);
       this.amountLamps = this.portalService?.state.context.lamps;
     }
+  }
+
+  private playWarningSound() {
+    if (this.shadows) return;
+    if (this.tension) return;
+
+    this.shadows = this.sound.add("shadows", {
+      loop: false,
+      volume: 0.15,
+    });
+    this.shadows.play();
+    this.shadows.on("complete", () => {
+      this.shadows?.destroy();
+      this.shadows = null;
+    });
+
+    this.tension = this.sound.add("tension", {
+      loop: false,
+      volume: 0.5,
+    });
+    this.tension.play();
+    this.tension.on("complete", () => {
+      this.tension?.destroy();
+      this.tension = null;
+    });
+  }
+
+  private stopWarningSound() {
+    if (!this.shadows) return;
+    if (!this.tension) return;
+
+    this.shadows.stop();
+    this.shadows.destroy();
+    this.shadows = null;
+
+    this.tension.stop();
+    this.tension.destroy();
+    this.tension = null;
   }
 
   private getNormalizedCoords(x: number, y: number) {
