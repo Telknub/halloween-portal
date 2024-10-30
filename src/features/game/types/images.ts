@@ -705,6 +705,9 @@ import musicBox from "assets/animals/music_box.webp";
 import lampFront from "assets/halloween/lamp_front.gif";
 import lampSide from "assets/halloween/lamp_side.gif";
 import lampBack from "assets/halloween/lamp_back.gif";
+import ghost from "assets/halloween/ghost.gif";
+import zombie from "assets/halloween/zombie.gif";
+import wearSign from "assets/halloween/wearSign.webp";
 
 import { COUPONS, EASTER_EGG, FERTILISERS, InventoryItemName } from "./game";
 
@@ -4115,6 +4118,18 @@ export const ITEM_DETAILS: Items = {
   },
   "Lamp Back": {
     image: lampBack,
+    description: "",
+  },
+  Ghost: {
+    image: ghost,
+    description: "",
+  },
+  Zombie: {
+    image: zombie,
+    description: "",
+  },
+  "Wear Sign": {
+    image: wearSign,
     description: "",
   },
   Gem: {

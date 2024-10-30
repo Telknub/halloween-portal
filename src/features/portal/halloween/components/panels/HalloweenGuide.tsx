@@ -5,7 +5,11 @@ import { SUNNYSIDE } from "assets/sunnyside";
 import { SquareIcon } from "components/ui/SquareIcon";
 import { ITEM_DETAILS } from "features/game/types/images";
 import { Label } from "components/ui/Label";
-import { ENEMIES_TABLE, RESOURCES_TABLE } from "../../HalloweenConstants";
+import {
+  ENEMIES_TABLE,
+  RESOURCES_TABLE,
+  SIGNS_TABLE,
+} from "../../HalloweenConstants";
 import { PIXEL_SCALE } from "features/game/lib/constants";
 import { useSound } from "lib/utils/hooks/useSound";
 
@@ -74,14 +78,14 @@ export const HalloweenGuide: React.FC<Props> = ({ onBack }) => {
           </div>
 
           <div className="flex items-center mb-3 mx-2">
-            <SquareIcon icon={ITEM_DETAILS["Pirate Bounty"].image} width={7} />
+            <SquareIcon icon={ITEM_DETAILS["Zombie"].image} width={7} />
             <p className="text-xs ml-3 flex-1">
               {t("halloween.instructions3")}
             </p>
           </div>
 
           <div className="flex items-center mb-3 mx-2">
-            <SquareIcon icon={ITEM_DETAILS["Pirate Bounty"].image} width={7} />
+            <SquareIcon icon={SUNNYSIDE.icons.stopwatch} width={7} />
             <p className="text-xs ml-3 flex-1">
               {t("halloween.instructions4")}
             </p>
@@ -106,7 +110,7 @@ export const HalloweenGuide: React.FC<Props> = ({ onBack }) => {
                     className="p-1.5 w-1/6"
                   >
                     <div className="flex items-center justify-center">
-                      {<SquareIcon icon={item} width={7} />}
+                      {<SquareIcon icon={item} width={15} />}
                     </div>
                   </td>
                   <td
@@ -134,7 +138,7 @@ export const HalloweenGuide: React.FC<Props> = ({ onBack }) => {
                     className="p-1.5 w-1/6"
                   >
                     <div className="flex items-center justify-center">
-                      {<SquareIcon icon={item} width={7} />}
+                      {<SquareIcon icon={item} width={13} />}
                     </div>
                   </td>
                   <td
@@ -148,6 +152,32 @@ export const HalloweenGuide: React.FC<Props> = ({ onBack }) => {
                 </tr>
               ),
             )}
+          </tbody>
+        </table>
+        {/* signs */}
+        <Label type="default">{t("halloween.signs")}</Label>
+        <table className="w-full text-xs table-fixed border-collapse">
+          <tbody>
+            {Object.values(SIGNS_TABLE).map(({ item, description }, index) => (
+              <tr key={index}>
+                <td
+                  style={{ border: "1px solid #b96f50" }}
+                  className="p-1.5 w-1/6"
+                >
+                  <div className="flex items-center justify-center">
+                    {<SquareIcon icon={item} width={30} />}
+                  </div>
+                </td>
+                <td
+                  style={{ border: "1px solid #b96f50" }}
+                  className="p-1.5 w-5/6"
+                >
+                  {t("halloween.scoreDescription", {
+                    description: description,
+                  })}
+                </td>
+              </tr>
+            ))}
           </tbody>
         </table>
       </div>

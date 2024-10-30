@@ -362,7 +362,13 @@ export type WarItems =
 
 export type LoveAnimalItem = "Petting Hand" | "Brush" | "Music Box";
 
-export type HalloweenItems = "Lamp Front" | "Lamp Side" | "Lamp Back";
+export type HalloweenItems =
+  | "Lamp Front"
+  | "Lamp Side"
+  | "Lamp Back"
+  | "Ghost"
+  | "Zombie"
+  | "Wear Sign";
 
 export type InventoryItemName =
   | AnimalResource

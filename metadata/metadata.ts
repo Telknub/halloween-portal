@@ -9654,6 +9654,27 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
     image: "",
     attributes: [{ trait_type: "Tradable", value: "No" }],
   },
+  Ghost: {
+    description: "",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "",
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+  },
+  Zombie: {
+    description: "",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "",
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+  },
+  "Wear Sign": {
+    description: "",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "",
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+  },
 };
 
 export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
