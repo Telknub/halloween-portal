@@ -79,7 +79,7 @@ export const LABEL_STYLES: Record<
     textColour: "#ffffff",
   },
   dead: {
-    background: "#05080a",
+    background: "#546498",
     borderStyle: pixelFormulaBorderStyle,
     textColour: "#ffffff",
   },

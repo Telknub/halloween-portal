@@ -34,8 +34,8 @@ export const MAX_PLAYER_LAMPS = 10;
 export const STEP_PLAYER_LIGHT_RADIUS =
   (MAX_PLAYER_LIGHT_RADIUS - MIN_PLAYER_LIGHT_RADIUS) / MAX_PLAYER_LAMPS;
 
-export const DURATION_GAME_OVER_WITHOUT_LAMPS_SECONDS = 15; // 15 seconds
-export const DURATION_LAMP_SECONDS = 20; // 15 seconds
+export const DURATION_GAME_OVER_WITHOUT_LAMPS_SECONDS = 10; // 10 seconds
+export const DURATION_LAMP_SECONDS = 20; // 20 seconds
 export const LAMP_USAGE_MULTIPLIER_INTERVAL = 60 * 1000; // 1 minute each multiplier
 export const MAX_LAMP_USAGE_MULTIPLIER = 5;
 
@@ -107,12 +107,11 @@ export const SIGNS_TABLE: {
 };
 
 export const HALLOWEEN_NPC_WEARABLES: Equipped = {
-  body: "Pale Potion",
-  hair: "Goth Hair",
-  dress: "Gothic Twilight",
-  tool: "Dawn Lamp",
-  background: "Pumpkin Plaza Background",
+  body: "Light Brown Farmer Potion",
+  hair: "White Long Hair",
+  hat: "Luna's Hat",
+  dress: "Witching Wardrobe",
+  tool: "Witch's Broom",
+  background: "Cemetery Background",
   shoes: "Brown Boots",
-  wings: "Bat Wings",
-  hat: "Victorian Hat",
 };
