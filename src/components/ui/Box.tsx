@@ -6,7 +6,7 @@ import { Label, LabelType } from "./Label";
 import { useLongPress } from "lib/utils/hooks/useLongPress";
 import { setPrecision, shortenCount } from "lib/utils/formatNumber";
 import { isMobile } from "mobile-device-detect";
-import { pixelDarkBorderStyle } from "features/game/lib/style";
+import { pixelHalloweenInnerBorderStyle } from "features/game/lib/style";
 import { PIXEL_SCALE } from "features/game/lib/constants";
 import { SquareIcon } from "./SquareIcon";
 import { SUNNYSIDE } from "assets/sunnyside";
@@ -164,8 +164,8 @@ export const Box: React.FC<BoxProps> = ({
       onMouseLeave={() => setIsHover(false)}
     >
       <div
-        className={classNames("bg-brown-600 relative", {
-          "bg-brown-600 cursor-not-allowed opacity-75": disabled,
+        className={classNames("relative", {
+          "cursor-not-allowed opacity-75": disabled,
           "cursor-pointer": canClick,
         })}
         {...clickEvents}
@@ -176,7 +176,8 @@ export const Box: React.FC<BoxProps> = ({
           marginBottom: `${PIXEL_SCALE * 2}px`,
           marginLeft: `${PIXEL_SCALE * 2}px`,
           marginRight: `${PIXEL_SCALE * 3}px`,
-          ...pixelDarkBorderStyle,
+          backgroundColor: "#3A4466",
+          ...pixelHalloweenInnerBorderStyle,
         }}
       >
         <div
