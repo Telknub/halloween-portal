@@ -3,8 +3,6 @@ import { ITEM_DETAILS } from "features/game/types/images";
 import { translate } from "lib/i18n/translate";
 
 export const LAMPS_CONFIGURATION: { x: number; y: number }[] = [
-  // { x: 450, y: 300 },
-  // { x: 300, y: 330 },
   { x: 290, y: 120 },
   { x: 510, y: 120 },
   { x: 615, y: 200 },
@@ -12,13 +10,26 @@ export const LAMPS_CONFIGURATION: { x: number; y: number }[] = [
   { x: 480, y: 560 },
   { x: 110, y: 410 },
   { x: 385, y: 315 },
+  { x: 800, y: 110 },
+  { x: 856, y: 418 },
+  { x: 1270, y: 354 },
+  { x: 1468, y: 124 },
+  { x: 1116, y: 134 },
+  { x: 385, y: 315 },
+  { x: 1440, y: 600 },
+  { x: 200, y: 965 },
+  { x: 572, y: 1106 },
+  { x: 908, y: 908 },
+  { x: 1490, y: 900 },
+  { x: 900, y: 1340 },
+  { x: 1308, y: 1144 },
 ];
 
-export const MAX_LAMPS_IN_MAP = 40;
+export const MAX_LAMPS_IN_MAP = 50;
 
 export const INITIAL_LAMPS_LIGHT_RADIUS = 0.3;
 export const MIN_PLAYER_LIGHT_RADIUS = 0.1;
-export const MAX_PLAYER_LIGHT_RADIUS = 0.6;
+export const MAX_PLAYER_LIGHT_RADIUS = 0.7;
 export const MAX_PLAYER_LAMPS = 10;
 export const STEP_PLAYER_LIGHT_RADIUS =
   (MAX_PLAYER_LIGHT_RADIUS - MIN_PLAYER_LIGHT_RADIUS) / MAX_PLAYER_LAMPS;
@@ -28,8 +39,8 @@ export const DURATION_LAMP_SECONDS = 15; // 15 seconds
 export const LAMP_USAGE_MULTIPLIER_INTERVAL = 60 * 1000; // 1 minute each multiplier
 export const MAX_LAMP_USAGE_MULTIPLIER = 5;
 
-export const LAMP_SPAWN_BASE_INTERVAL = 1 * 1000; // 2 seconds
-export const LAMP_SPAWN_INCREASE_PERCENTAGE = 0.1;
+export const LAMP_SPAWN_BASE_INTERVAL = 1 * 1000; // 1 seconds
+export const LAMP_SPAWN_INCREASE_PERCENTAGE = 0.03;
 
 export const UNLIMITED_ATTEMPTS_SFL = 25;
 export const RESTOCK_ATTEMPTS_SFL = 10;
@@ -42,7 +53,7 @@ export const LAST_SPAWN_TIME_ZOMBIE = 0;
 export const DELAY_SPAWN_TIME = 10000; // 10 seconds dalay spawn time of the enemies in the beginning
 export const UPDATE_INTERVAL = 90000; // 90 seconds time reset spawn count
 export const MIN_GHOST_PER_MIN = 0; // Minimum number of ghost enemies spawned
-export const MAX_GHOST_PER_MIN = 20; // Maximum ghost enemies to spawn
+export const MAX_GHOST_PER_MIN = 40; // Maximum ghost enemies to spawn
 export const MIN_ZOMBIE_PER_MIN = 0; // Minimun number of zombie enemies spawned
 export const MAX_ZOMBIE_PER_MIN = 20; // Maximum zombie enemies to spawn
 export const SET_SLOW_DOWN = 0.5; // Reduce player's velocity to 50%
