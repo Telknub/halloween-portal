@@ -74,24 +74,34 @@ export const ENEMIES_TABLE: {
   };
 } = {
   0: {
-    item: ITEM_DETAILS["Pirate Bounty"].image,
-    description: translate("halloween.basicEnemyDescription"),
+    item: ITEM_DETAILS["Ghost"].image,
+    description: translate("halloween.ghostEnemyDescription"),
   },
   1: {
-    item: ITEM_DETAILS["Pirate Bounty"].image,
-    description: translate("halloween.stalkerEnemyDescription"),
+    item: ITEM_DETAILS["Zombie"].image,
+    description: translate("halloween.zombieEnemyDescription"),
+  },
+};
+
+export const SIGNS_TABLE: {
+  [key: number]: {
+    item: string;
+    description: string;
+  };
+} = {
+  0: {
+    item: ITEM_DETAILS["Wear Sign"].image,
+    description: translate("halloween.wearSignDescription"),
   },
 };
 
 export const HALLOWEEN_NPC_WEARABLES: Equipped = {
-  hair: "Basic Hair",
-  shirt: "Pumpkin Shirt",
-  pants: "Farmer Pants",
-  background: "Cemetery Background",
-  hat: "Luna's Hat",
   body: "Pale Potion",
-  shoes: "Mushroom Shoes",
+  hair: "Goth Hair",
+  dress: "Gothic Twilight",
   tool: "Dawn Lamp",
-  wings: "Crow Wings",
-  coat: "Pirate General Coat",
+  background: "Pumpkin Plaza Background",
+  shoes: "Brown Boots",
+  wings: "Bat Wings",
+  hat: "Victorian Hat",
 };

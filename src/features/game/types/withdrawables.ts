@@ -1129,6 +1129,9 @@ const halloween: Record<HalloweenItems, () => boolean> = {
   "Lamp Back": () => false,
   "Lamp Front": () => false,
   "Lamp Side": () => false,
+  Ghost: () => false,
+  Zombie: () => false,
+  "Wear Sign": () => false,
 };
 
 export const WITHDRAWABLES: Record<InventoryItemName, () => boolean> = {

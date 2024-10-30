@@ -845,6 +845,9 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   "Lamp Back": 100000,
   "Lamp Front": 100001,
   "Lamp Side": 100002,
+  Ghost: 100003,
+  Zombie: 100004,
+  "Wear Sign": 100004,
 };
 
 // The reverse of above

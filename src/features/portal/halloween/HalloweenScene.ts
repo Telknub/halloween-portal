@@ -582,7 +582,7 @@ export class HalloweenScene extends BaseScene {
     }
 
     (this.zombieSound as any).setVolume(volume);
-    console.log(zDis);
+    // console.log(zDis);
   }
 
   handleGhostSound() {
