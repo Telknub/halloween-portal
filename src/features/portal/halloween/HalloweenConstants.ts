@@ -44,7 +44,7 @@ export const LAMP_SPAWN_INCREASE_PERCENTAGE = 0.08;
 
 export const UNLIMITED_ATTEMPTS_SFL = 25;
 export const RESTOCK_ATTEMPTS_SFL = 10;
-export const DAILY_ATTEMPTS = 5;
+export const DAILY_ATTEMPTS = 1;
 export const RESTOCK_ATTEMPTS = 3;
 
 // Enemies
