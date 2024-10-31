@@ -7,7 +7,6 @@ import { PortalMachineState } from "../../lib/halloweenMachine";
 import { HalloweenTimeScore } from "./HalloweenTimeScore";
 import { HalloweenSettings } from "./HalloweenSettings";
 import { HalloweenTravel } from "./HalloweenTravel";
-import { HalloweenTarget } from "./HalloweenTarget";
 import { HalloweenInventory } from "./HalloweenInventory";
 import { useAchievementToast } from "../../providers/AchievementToastProvider";
 import { HalloweenTimeDead } from "./HalloweenTimeDead";
@@ -54,7 +53,6 @@ export const HalloweenHud: React.FC = () => {
             left: `${PIXEL_SCALE * 6}px`,
           }}
         >
-          <HalloweenTarget />
           {isPlaying && (
             <>
               <HalloweenTimeScore />

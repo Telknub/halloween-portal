@@ -5,7 +5,6 @@ import { useAppTranslation } from "lib/i18n/useAppTranslations";
 import { useSelector } from "@xstate/react";
 import { PortalContext } from "../../lib/PortalProvider";
 import { Label } from "components/ui/Label";
-import { HalloweenPrize } from "./HalloweenPrize";
 import { HalloweenAttempts } from "./HalloweenAttempts";
 import factions from "assets/icons/factions.webp";
 import { getAttemptsLeft } from "../../lib/HalloweenUtils";
@@ -61,21 +60,9 @@ export const HalloweenMission: React.FC<Props> = ({
         <>
           <div>
             <div className="w-full relative flex justify-between gap-1 items-center mb-1 py-1 pl-2">
-              {mode === "introduction" && (
-                <Label type="default" icon={factions}>
-                  {t("halloween.portal.title")}
-                </Label>
-              )}
-              {mode === "success" && (
-                <Label type="success" icon={SUNNYSIDE.icons.confirm}>
-                  {t("halloween.missionComplete")}
-                </Label>
-              )}
-              {mode === "failed" && (
-                <Label type="danger" icon={SUNNYSIDE.icons.death}>
-                  {t("halloween.missionFailed")}
-                </Label>
-              )}
+              <Label type="default" icon={factions}>
+                {t("halloween.portal.title")}
+              </Label>
               <HalloweenAttempts attemptsLeft={attemptsLeft} />
             </div>
 
@@ -146,7 +133,7 @@ export const HalloweenMission: React.FC<Props> = ({
               </div>
             </div>
 
-            <HalloweenPrize />
+            {/* <HalloweenPrize /> */}
           </div>
 
           <div className="flex mt-1 space-x-1">

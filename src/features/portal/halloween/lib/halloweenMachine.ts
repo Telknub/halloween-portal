@@ -292,13 +292,23 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
     playing: {
       on: {
         GAIN_POINTS: {
-          actions: assign<Context, any>({
-            score: (context: Context) => {
-              const secondsPassed = !context.startedAt
-                ? 0
-                : Math.max(Date.now() - context.startedAt, 0);
-              return secondsPassed;
-            },
+          actions: assign<Context, any>((context) => {
+            let secondsPassed = !context.startedAt
+              ? 0
+              : Math.max(Date.now() - context.startedAt, 0);
+
+            const diff = secondsPassed - context.score;
+            let newStartedAt = context.startedAt;
+
+            if (diff > 70) {
+              newStartedAt = Date.now() - context.score;
+              secondsPassed = Math.max(Date.now() - newStartedAt, 0);
+            }
+
+            return {
+              score: secondsPassed,
+              startedAt: newStartedAt,
+            };
           }),
         },
         COLLECT_LAMP: {
