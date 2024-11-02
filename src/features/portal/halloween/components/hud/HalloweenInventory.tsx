@@ -37,21 +37,20 @@ export const HalloweenInventory: React.FC = () => {
 
   useEffect(() => {
     if (lamps > 0) {
+      let time = DURATION_LAMP_SECONDS;
       const intervalId = setInterval(() => {
-        setTimeLeft((prevTimeLeft) => {
-          const newTimeLeft = prevTimeLeft - (1 + increaseFactor);
-          setProgress((newTimeLeft / DURATION_LAMP_SECONDS) * 100);
+        const newTimeLeft = time - (1 + increaseFactor);
+        setProgress((newTimeLeft / DURATION_LAMP_SECONDS) * 100);
 
-          if (newTimeLeft <= 0 && lamps > 0) {
-            portalService.send("DEAD_LAMP", { lamps: 1 });
-            setProgress(100);
-            return DURATION_LAMP_SECONDS;
-          } else if (newTimeLeft <= 0 && lamps === 0) {
-            clearInterval(intervalId);
-          }
+        if (newTimeLeft <= 0 && lamps > 0) {
+          portalService.send("DEAD_LAMP", { lamps: 1 });
+          setProgress(100);
+          time = DURATION_LAMP_SECONDS;
+        } else if (newTimeLeft <= 0 && lamps === 0) {
+          clearInterval(intervalId);
+        }
 
-          return newTimeLeft;
-        });
+        time = newTimeLeft;
       }, 1000);
 
       return () => clearInterval(intervalId);

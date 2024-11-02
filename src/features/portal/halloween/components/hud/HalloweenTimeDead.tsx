@@ -26,16 +26,17 @@ export const HalloweenTimeDead: React.FC = () => {
 
   useEffect(() => {
     if (lamps === 0) {
+      setTimeLeft(DURATION_GAME_OVER_WITHOUT_LAMPS_SECONDS);
+      let time = DURATION_GAME_OVER_WITHOUT_LAMPS_SECONDS;
       const intervalId = setInterval(() => {
-        setTimeLeft((prevTimeLeft) => {
-          const newTimeLeft = prevTimeLeft - 1;
-          if (newTimeLeft <= 0) {
-            portalService.send("DEAD_LAMP", { lamps: 1 });
-            clearInterval(intervalId);
-          }
+        const newTimeLeft = time - 1;
+        if (newTimeLeft <= 0) {
+          portalService.send("DEAD_LAMP", { lamps: 1 });
+          clearInterval(intervalId);
+        }
 
-          return newTimeLeft;
-        });
+        setTimeLeft(newTimeLeft);
+        time = newTimeLeft;
       }, 1000);
 
       return () => clearInterval(intervalId);

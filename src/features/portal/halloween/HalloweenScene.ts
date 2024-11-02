@@ -78,6 +78,8 @@ export class HalloweenScene extends BaseScene {
   private slowdownTimeout: any;
   private setVisionRange!: number; // Set the vision zombies
   private lastAttempt!: number;
+  private gameOverNoMove!: number;
+  private gameOverNoMoveTime!: number;
 
   sceneId: SceneId = "halloween";
   private backgroundMusic!: Phaser.Sound.BaseSound;
@@ -245,6 +247,17 @@ export class HalloweenScene extends BaseScene {
     document.addEventListener("gesturestart", function (e) {
       e.preventDefault();
     });
+
+    document.addEventListener("visibilitychange", () => {
+      if (document.hidden) {
+        this.gameOverNoMoveTime = Date.now();
+      } else {
+        const diff = Date.now() - this.gameOverNoMoveTime;
+        if (diff > 5000) {
+          this.portalService?.send("GAME_OVER");
+        }
+      }
+    });
   }
 
   update() {
@@ -274,6 +287,7 @@ export class HalloweenScene extends BaseScene {
         this.enemy_2();
         this.checkZombiesInsideWalls();
         this.faceDirectionEnemy_2();
+        this.portalService?.send("GAIN_POINTS");
 
         if (this.portalService?.state.context.lamps === 0) {
           this.playWarningSound();
@@ -287,12 +301,20 @@ export class HalloweenScene extends BaseScene {
         this.velocity = 0;
       }
 
+      if (!this.isMoving) {
+        this.gameOverNoMove += 1;
+        if (this.gameOverNoMove > 1000) {
+          this.portalService?.send("GAME_OVER");
+        }
+      } else {
+        this.gameOverNoMove = 0;
+      }
+
       this.loadBumpkinAnimations();
 
       this.setLampSpawnTime();
       this.handleZombieSound();
       this.handleGhostSound();
-      this.portalService?.send("GAIN_POINTS");
 
       if (this.isGameReady) {
         this.portalService?.send("START");
@@ -684,6 +706,7 @@ export class HalloweenScene extends BaseScene {
     this.deathDate = null;
     this.amountLamps = 3;
     this.lastAttempt = 0;
+    this.gameOverNoMove = 0;
 
     // Enemies
     this.ghost_enemies = [];
@@ -717,6 +740,7 @@ export class HalloweenScene extends BaseScene {
     this.deathDate = null;
     this.amountLamps = 3;
     this.lastAttempt = this.time.now;
+    this.gameOverNoMove = 0;
 
     // Enemies
     this.ghost_enemies = [];
