@@ -289,6 +289,17 @@ export class HalloweenScene extends BaseScene {
         this.faceDirectionEnemy_2();
         this.portalService?.send("GAIN_POINTS");
 
+        if (!this.isMoving) {
+          this.gameOverNoMove += 1;
+          if (this.gameOverNoMove > 1000) {
+            this.portalService?.send("GAME_OVER");
+          }
+          if (this.gameOverNoMove > 500) {
+            this.currentPlayer.addLabel("Move!");
+          }
+        } else {
+          this.gameOverNoMove = 0;
+        }
         if (this.portalService?.state.context.lamps === 0) {
           this.playWarningSound();
         }
@@ -299,15 +310,6 @@ export class HalloweenScene extends BaseScene {
         }
       } else {
         this.velocity = 0;
-      }
-
-      if (!this.isMoving) {
-        this.gameOverNoMove += 1;
-        if (this.gameOverNoMove > 1000) {
-          this.portalService?.send("GAME_OVER");
-        }
-      } else {
-        this.gameOverNoMove = 0;
       }
 
       this.loadBumpkinAnimations();

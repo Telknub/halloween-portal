@@ -1133,16 +1133,19 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     }
   }
 
-  public addLabel(quantity: number) {
+  public addLabel(value: number | string) {
     this.stopSpeaking();
-
     this.reaction.clear(true, true);
+
+    if (typeof value === "number") {
+      value = `${value > 0 ? "+" : "-"}${Math.abs(value)}`;
+    }
 
     const label = this.scene.add.bitmapText(
       -2,
       -25,
       "Teeny Tiny Pixls",
-      `${quantity > 0 ? "+" : "-"}${Math.abs(quantity)}`,
+      value,
       4,
       1,
     );
