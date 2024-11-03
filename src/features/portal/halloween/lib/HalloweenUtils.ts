@@ -17,6 +17,7 @@ export const getAttemptsLeft = (minigame?: Minigame) => {
 
   const history = minigame?.history ?? {};
   const purchases = minigame?.purchases ?? [];
+  const freeDay = "2024-11-04";
 
   const now = new Date();
   const startOfTodayUTC = getStartOfUTCDay(now);
@@ -29,26 +30,43 @@ export const getAttemptsLeft = (minigame?: Minigame) => {
   );
 
   // Free day for those who paid on Oct. 31
-  if (now.toISOString().substring(0, 10) === "2024-11-03") {
+  if (now.toISOString().substring(0, 10) === freeDay) {
     const halloweenDay = new Date(2024, 9, 31);
     const startOfHalloweenUTC = getStartOfUTCDay(halloweenDay);
     const endOfHalloweenUTC = startOfHalloweenUTC + 24 * 60 * 60 * 1000; // 24 hours later
-    hasUnlimitedAttempts = purchases.some(
-      (purchase) =>
-        purchase.sfl === UNLIMITED_ATTEMPTS_SFL &&
-        purchase.purchasedAt >= startOfHalloweenUTC &&
-        purchase.purchasedAt < endOfHalloweenUTC,
-    );
+    hasUnlimitedAttempts =
+      hasUnlimitedAttempts ||
+      purchases.some(
+        (purchase) =>
+          purchase.sfl === UNLIMITED_ATTEMPTS_SFL &&
+          purchase.purchasedAt >= startOfHalloweenUTC &&
+          purchase.purchasedAt < endOfHalloweenUTC,
+      );
   }
 
   if (hasUnlimitedAttempts) return Infinity;
 
-  const restockedCount = purchases.filter(
+  let restockedCount = purchases.filter(
     (purchase) =>
       purchase.sfl === RESTOCK_ATTEMPTS_SFL &&
       purchase.purchasedAt >= startOfTodayUTC &&
       purchase.purchasedAt < endOfTodayUTC,
   ).length;
+
+  // Free day for those who paid on Oct. 31
+  if (now.toISOString().substring(0, 10) === freeDay) {
+    const halloweenDay = new Date(2024, 9, 31);
+    const startOfHalloweenUTC = getStartOfUTCDay(halloweenDay);
+    const endOfHalloweenUTC = startOfHalloweenUTC + 24 * 60 * 60 * 1000; // 24 hours later
+    restockedCount =
+      restockedCount +
+      purchases.filter(
+        (purchase) =>
+          purchase.sfl === RESTOCK_ATTEMPTS_SFL &&
+          purchase.purchasedAt >= startOfHalloweenUTC &&
+          purchase.purchasedAt < endOfHalloweenUTC,
+      ).length;
+  }
 
   const attemptsToday = history[dateKey]?.attempts ?? 0;
   const attemptsLeft =
