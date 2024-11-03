@@ -31,7 +31,7 @@ export const getAttemptsLeft = (minigame?: Minigame) => {
 
   // Free day for those who paid on Oct. 31
   if (now.toISOString().substring(0, 10) === freeDay) {
-    const halloweenDay = new Date(2024, 9, 31);
+    const halloweenDay = new Date(Date.UTC(2024, 9, 31));
     const startOfHalloweenUTC = getStartOfUTCDay(halloweenDay);
     const endOfHalloweenUTC = startOfHalloweenUTC + 24 * 60 * 60 * 1000; // 24 hours later
     hasUnlimitedAttempts =
@@ -55,7 +55,7 @@ export const getAttemptsLeft = (minigame?: Minigame) => {
 
   // Free day for those who paid on Oct. 31
   if (now.toISOString().substring(0, 10) === freeDay) {
-    const halloweenDay = new Date(2024, 9, 31);
+    const halloweenDay = new Date(Date.UTC(2024, 9, 31));
     const startOfHalloweenUTC = getStartOfUTCDay(halloweenDay);
     const endOfHalloweenUTC = startOfHalloweenUTC + 24 * 60 * 60 * 1000; // 24 hours later
     restockedCount =
