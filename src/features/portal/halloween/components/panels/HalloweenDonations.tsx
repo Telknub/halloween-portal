@@ -10,7 +10,7 @@ import { NumberInput } from "components/ui/NumberInput";
 import Decimal from "decimal.js-light";
 import { donate } from "features/portal/lib/portalUtil";
 
-const CONTRIBUTORS = [""];
+const CONTRIBUTORS = ["Grith"];
 
 export const HalloweenDonations: React.FC = () => {
   const { t } = useAppTranslation();

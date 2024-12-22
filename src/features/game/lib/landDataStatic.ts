@@ -249,7 +249,55 @@ export const STATIC_OFFLINE_FARM: GameState = {
   },
   mysteryPrizes: {},
   minigames: {
-    games: {},
+    games: {
+      halloween: {
+        history: {
+          "2024-10-31": {
+            attempts: 7,
+            highscore: 255167,
+          },
+          "2024-11-01": {
+            attempts: 14,
+            highscore: 286349,
+          },
+          "2024-11-02": {
+            attempts: 2,
+            highscore: 306854,
+          },
+          "2024-11-03": {
+            attempts: 14,
+            highscore: 378155,
+          },
+          "2024-11-04": {
+            attempts: 1,
+            highscore: 76709,
+          },
+        },
+        highscore: 76709,
+        purchases: [
+          {
+            purchasedAt: 1730404371937,
+            sfl: 25,
+            items: {},
+          },
+          {
+            purchasedAt: 1730456882476,
+            sfl: 25,
+            items: {},
+          },
+          {
+            purchasedAt: 1730537352097,
+            sfl: 25,
+            items: {},
+          },
+          {
+            purchasedAt: 1730628549755,
+            sfl: 25,
+            items: {},
+          },
+        ],
+      },
+    },
     prizes: {
       "chicken-rescue": {
         coins: 0,
@@ -271,13 +319,13 @@ export const STATIC_OFFLINE_FARM: GameState = {
       },
       halloween: {
         coins: 0,
-        startAt: new Date().getTime() - 500,
-        endAt: new Date().getTime() + 5000000,
-        score: 300 * 1000,
-        items: {},
-        wearables: {
-          "Red Farmer Shirt": 1,
+        items: {
+          Mark: 45,
         },
+        wearables: {},
+        score: 165000,
+        startAt: 1734566400000,
+        endAt: 1734652800000,
       },
     },
   },

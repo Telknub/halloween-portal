@@ -10,6 +10,7 @@ import { HalloweenTravel } from "./HalloweenTravel";
 import { HalloweenInventory } from "./HalloweenInventory";
 import { useAchievementToast } from "../../providers/AchievementToastProvider";
 import { HalloweenTimeDead } from "./HalloweenTimeDead";
+import { HalloweenTarget } from "./HalloweenTarget";
 
 const _isJoystickActive = (state: PortalMachineState) =>
   state.context.isJoystickActive;
@@ -55,6 +56,7 @@ export const HalloweenHud: React.FC = () => {
         >
           {isPlaying && (
             <>
+              <HalloweenTarget />
               <HalloweenTimeScore />
             </>
           )}

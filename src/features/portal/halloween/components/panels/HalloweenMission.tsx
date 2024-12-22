@@ -16,6 +16,7 @@ import { SquareIcon } from "components/ui/SquareIcon";
 import { PIXEL_SCALE } from "features/game/lib/constants";
 import { hasFeatureAccess } from "lib/flags";
 import { millisecondsToString } from "lib/utils/time";
+import { HalloweenPrize } from "./HalloweenPrize";
 
 interface Props {
   mode: "introduction" | "success" | "failed";
@@ -60,9 +61,21 @@ export const HalloweenMission: React.FC<Props> = ({
         <>
           <div>
             <div className="w-full relative flex justify-between gap-1 items-center mb-1 py-1 pl-2">
-              <Label type="default" icon={factions}>
-                {t("halloween.portal.title")}
-              </Label>
+              {mode === "introduction" && (
+                <Label type="default" icon={factions}>
+                  {t("halloween.portal.title")}
+                </Label>
+              )}
+              {mode === "success" && (
+                <Label type="success" icon={SUNNYSIDE.icons.confirm}>
+                  {t("halloween.missionComplete")}
+                </Label>
+              )}
+              {mode === "failed" && (
+                <Label type="danger" icon={SUNNYSIDE.icons.death}>
+                  {t("halloween.missionFailed")}
+                </Label>
+              )}
               <HalloweenAttempts attemptsLeft={attemptsLeft} />
             </div>
 
@@ -133,7 +146,7 @@ export const HalloweenMission: React.FC<Props> = ({
               </div>
             </div>
 
-            {/* <HalloweenPrize /> */}
+            <HalloweenPrize />
           </div>
 
           <div className="flex mt-1 space-x-1">
