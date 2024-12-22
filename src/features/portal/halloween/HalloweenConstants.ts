@@ -42,9 +42,9 @@ export const MAX_LAMP_USAGE_MULTIPLIER = 5;
 export const LAMP_SPAWN_BASE_INTERVAL = 1 * 1000; // 1 seconds
 export const LAMP_SPAWN_INCREASE_PERCENTAGE = 0.08;
 
-export const UNLIMITED_ATTEMPTS_SFL = 25;
-export const RESTOCK_ATTEMPTS_SFL = 10;
-export const DAILY_ATTEMPTS = 1;
+export const UNLIMITED_ATTEMPTS_SFL = 5;
+export const RESTOCK_ATTEMPTS_SFL = 2;
+export const DAILY_ATTEMPTS = 3;
 export const RESTOCK_ATTEMPTS = 3;
 
 // Enemies
