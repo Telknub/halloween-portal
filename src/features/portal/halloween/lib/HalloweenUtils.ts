@@ -17,12 +17,12 @@ export const getAttemptsLeft = (minigame?: Minigame) => {
 
   const history = minigame?.history ?? {};
   const purchases = minigame?.purchases ?? [];
-  const freeDay = "2024-11-04";
+  // const freeDay = "2024-11-04";
 
   const now = new Date();
   const startOfTodayUTC = getStartOfUTCDay(now);
   const endOfTodayUTC = startOfTodayUTC + 24 * 60 * 60 * 1000; // 24 hours later
-  let hasUnlimitedAttempts = purchases.some(
+  const hasUnlimitedAttempts = purchases.some(
     (purchase) =>
       purchase.sfl === UNLIMITED_ATTEMPTS_SFL &&
       purchase.purchasedAt >= startOfTodayUTC &&
@@ -30,23 +30,23 @@ export const getAttemptsLeft = (minigame?: Minigame) => {
   );
 
   // Free day for those who paid on Oct. 31
-  if (now.toISOString().substring(0, 10) === freeDay) {
-    const halloweenDay = new Date(Date.UTC(2024, 9, 31));
-    const startOfHalloweenUTC = getStartOfUTCDay(halloweenDay);
-    const endOfHalloweenUTC = startOfHalloweenUTC + 24 * 60 * 60 * 1000; // 24 hours later
-    hasUnlimitedAttempts =
-      hasUnlimitedAttempts ||
-      purchases.some(
-        (purchase) =>
-          purchase.sfl === UNLIMITED_ATTEMPTS_SFL &&
-          purchase.purchasedAt >= startOfHalloweenUTC &&
-          purchase.purchasedAt < endOfHalloweenUTC,
-      );
-  }
+  // if (now.toISOString().substring(0, 10) === freeDay) {
+  //   const halloweenDay = new Date(Date.UTC(2024, 9, 31));
+  //   const startOfHalloweenUTC = getStartOfUTCDay(halloweenDay);
+  //   const endOfHalloweenUTC = startOfHalloweenUTC + 24 * 60 * 60 * 1000; // 24 hours later
+  //   hasUnlimitedAttempts =
+  //     hasUnlimitedAttempts ||
+  //     purchases.some(
+  //       (purchase) =>
+  //         purchase.sfl === UNLIMITED_ATTEMPTS_SFL &&
+  //         purchase.purchasedAt >= startOfHalloweenUTC &&
+  //         purchase.purchasedAt < endOfHalloweenUTC,
+  //     );
+  // }
 
   if (hasUnlimitedAttempts) return Infinity;
 
-  let restockedCount = purchases.filter(
+  const restockedCount = purchases.filter(
     (purchase) =>
       purchase.sfl === RESTOCK_ATTEMPTS_SFL &&
       purchase.purchasedAt >= startOfTodayUTC &&
@@ -54,19 +54,19 @@ export const getAttemptsLeft = (minigame?: Minigame) => {
   ).length;
 
   // Free day for those who paid on Oct. 31
-  if (now.toISOString().substring(0, 10) === freeDay) {
-    const halloweenDay = new Date(Date.UTC(2024, 9, 31));
-    const startOfHalloweenUTC = getStartOfUTCDay(halloweenDay);
-    const endOfHalloweenUTC = startOfHalloweenUTC + 24 * 60 * 60 * 1000; // 24 hours later
-    restockedCount =
-      restockedCount +
-      purchases.filter(
-        (purchase) =>
-          purchase.sfl === RESTOCK_ATTEMPTS_SFL &&
-          purchase.purchasedAt >= startOfHalloweenUTC &&
-          purchase.purchasedAt < endOfHalloweenUTC,
-      ).length;
-  }
+  // if (now.toISOString().substring(0, 10) === freeDay) {
+  //   const halloweenDay = new Date(Date.UTC(2024, 9, 31));
+  //   const startOfHalloweenUTC = getStartOfUTCDay(halloweenDay);
+  //   const endOfHalloweenUTC = startOfHalloweenUTC + 24 * 60 * 60 * 1000; // 24 hours later
+  //   restockedCount =
+  //     restockedCount +
+  //     purchases.filter(
+  //       (purchase) =>
+  //         purchase.sfl === RESTOCK_ATTEMPTS_SFL &&
+  //         purchase.purchasedAt >= startOfHalloweenUTC &&
+  //         purchase.purchasedAt < endOfHalloweenUTC,
+  //     ).length;
+  // }
 
   const attemptsToday = history[dateKey]?.attempts ?? 0;
   const attemptsLeft =
