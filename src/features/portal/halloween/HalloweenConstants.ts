@@ -36,7 +36,7 @@ export const STEP_PLAYER_LIGHT_RADIUS =
 
 export const DURATION_GAME_OVER_WITHOUT_LAMPS_SECONDS = 10; // 10 seconds
 export const DURATION_LAMP_SECONDS = 20; // 20 seconds
-export const LAMP_USAGE_MULTIPLIER_INTERVAL = 60 * 1000; // 1 minute each multiplier
+export const LAMP_USAGE_MULTIPLIER_INTERVAL = 45 * 1000; // 1 minute each multiplier
 export const MAX_LAMP_USAGE_MULTIPLIER = 5;
 
 export const LAMP_SPAWN_BASE_INTERVAL = 1 * 1000; // 1 seconds

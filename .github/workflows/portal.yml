@@ -38,7 +38,7 @@ jobs:
           VITE_PRIVATE_IMAGE_URL: "https://sunflower-land.com/game-assets"
           VITE_API_URL: "https://api-dev.sunflower-land.com"
           VITE_PORTAL_GAME_URL: "https://sunflower-land.com/testnet/"
-          VITE_ANIMATION_URL: https://animations-dev.sunflower-land.com
+          VITE_ANIMATION_URL: "https://animations-dev.sunflower-land.com"
           VITE_PORTAL_DONATION_ADDRESS: "0x45803db63eaF8E82F258f1F8997DBBA64ca99EaF"
 
       - name: Configure AWS Credentials
