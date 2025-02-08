@@ -15,16 +15,16 @@ export const TEST_BUMPKIN: Bumpkin = {
   experience: 1000,
   tokenUri: "bla",
   equipped: {
+    background: "Desert Background",
     body: "Beige Farmer Potion",
-    hair: "Basic Hair",
     shirt: "Blue Farmer Shirt",
     pants: "Brown Suspenders",
-
+    hair: "Basic Hair",
     shoes: "Black Farmer Boots",
     tool: "Farmer Pitchfork",
-    background: "Farm Background",
-    beard: "Santa Beard",
-    hat: "Deep Sea Helm",
+
+    // beard: "Santa Beard",
+    // hat: "Deep Sea Helm",
   },
   skills: {},
   achievements: {},
