@@ -361,7 +361,8 @@ export class HalloweenScene extends BaseScene {
 
       // Spawn enemies up to the maximum limit
       while (this.minGhostPerMin < this.maxGhostPerMin) {
-        const ghost_enemy = this.createEnemy_1();
+        const ghost_enemy =
+          this.createEnemy_1() as Phaser.Physics.Arcade.Sprite;
 
         if (this.currentPlayer) {
           this.physics.add.collider(ghost_enemy, this.currentPlayer, () =>
@@ -495,7 +496,8 @@ export class HalloweenScene extends BaseScene {
       }
 
       while (this.minZombiePerMin < this.maxZombiePerMin) {
-        const zombie_enemy = this.createEnemy_2();
+        const zombie_enemy =
+          this.createEnemy_2() as Phaser.Physics.Arcade.Sprite;
 
         if (this.currentPlayer) {
           this.physics.add.collider(zombie_enemy, this.currentPlayer, () =>
