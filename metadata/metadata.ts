@@ -9678,6 +9678,510 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
 };
 
 export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
+  "Maple Dumbo": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Radiant Dumbo": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Blossom Dumbo": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Ladybug Suit": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Acorn Hat": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Crab Hat": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Weather Hat": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Sakura Shirt": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Squirrel Onesie": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Locust Onesie": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Locust King Onesie": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Glacial Plume": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Solflare Aegis": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Blossom Ward": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Autumn's Embrace": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Frozen Heart": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Cowboy Shirt": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Merino Jumper": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Cowboy Hat": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Cowboy Trouser": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Cowboy Boots": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Infernal Bullwhip": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "White Sheep Onesie": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Black Sheep Onesie": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Chicken Suit": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Cowgirl Skirt": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Dream Scarf": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Cowbell Necklace": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Milk Apron": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Shepherd Staff": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Sol & Luna": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Fossil Armor": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Fossil Pants": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Rice Shirt": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  Sickle: {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Speed Boots": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Tomato Apron": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Adventurer's Suit": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Adventurer's Torch": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Pumpkin Head": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "Gingerbread Onesie": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
+  "New Years Crown": {
+    description:
+      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/1.png",
+    name: "Beige Farmer Potion",
+  },
   "Beige Farmer Potion": {
     description:
       "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
@@ -12706,18 +13210,6 @@ export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
     image: "../public/wearables/images/251.png",
     name: "Banana Onesie",
   },
-  "Basic Dumbo": {
-    description:
-      "A simple and classic hat featuring the iconic tentacles of a lovable octopus.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Hat" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/252.png",
-    name: "Basic Dumbo",
-  },
   "Companion Cap": {
     description:
       "A trusty cap that keeps you company on your virtual adventures.",
@@ -12729,18 +13221,6 @@ export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/wearables/images/253.png",
     name: "Companion Cap",
-  },
-  "Dazzling Dumbo": {
-    description:
-      "Stand out with this dazzling hat that adds a touch of sparkle to your style.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Hat" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/254.png",
-    name: "Dazzling Dumbo",
   },
   "Deep Sea Helm": {
     description:
@@ -12795,18 +13275,6 @@ export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/wearables/images/258.png",
     name: "Seedling Hat",
-  },
-  "Stormy Dumbo": {
-    description:
-      "Weather the storm in style with this hat featuring the turbulent tentacles of an octopus caught in a tempest.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Hat" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/259.png",
-    name: "Stormy Dumbo",
   },
   "Ugly Christmas Sweater": {
     description: "A whimsical holiday wearable from Earn Alliance",
