@@ -1,11 +1,7 @@
 import mapJson from "assets/map/halloween.json";
 import tilesetConfig from "assets/map/halloween-tileset.json";
 import { SceneId } from "features/world/mmoMachine";
-import {
-  BaseScene,
-  HALLOWEEN_SQUARE_WIDTH,
-  WALKING_SPEED,
-} from "features/world/scenes/BaseScene";
+import { BaseScene, WALKING_SPEED } from "features/world/scenes/BaseScene";
 import { MachineInterpreter } from "./lib/halloweenMachine";
 import { DarknessPipeline } from "./shaders/DarknessShader";
 import { VisibilityPolygon } from "./lib/visibilityPolygon";
@@ -365,15 +361,7 @@ export class HalloweenScene extends BaseScene {
 
       // Spawn enemies up to the maximum limit
       while (this.minGhostPerMin < this.maxGhostPerMin) {
-        const randomX = Phaser.Math.Between(
-          0,
-          this.map.widthInPixels - HALLOWEEN_SQUARE_WIDTH,
-        );
-        const randomY = Phaser.Math.Between(
-          0,
-          this.map.heightInPixels - HALLOWEEN_SQUARE_WIDTH,
-        );
-        const ghost_enemy = this.createEnemy_1(randomX, randomY);
+        const ghost_enemy = this.createEnemy_1();
 
         if (this.currentPlayer) {
           this.physics.add.collider(ghost_enemy, this.currentPlayer, () =>
@@ -385,7 +373,32 @@ export class HalloweenScene extends BaseScene {
     }
   }
 
-  createEnemy_1(x: number, y: number) {
+  createEnemy_1() {
+    if (!this.currentPlayer) return;
+    let x: number, y: number;
+    let isInside = false;
+    const size = 600;
+    do {
+      x = Phaser.Math.Between(
+        Math.floor(this.currentPlayer.x - size),
+        Math.floor(this.currentPlayer.x + size),
+      );
+      y = Phaser.Math.Between(
+        Math.floor(this.currentPlayer.y - size),
+        Math.floor(this.currentPlayer.y + size),
+      );
+      if (
+        x < 0 ||
+        y < 0 ||
+        x > this.map.width * this.map.tileWidth ||
+        y > this.map.height * this.map.tileHeight
+      ) {
+        isInside = false;
+      } else {
+        isInside = true;
+      }
+    } while (isInside);
+
     const enemy1 = this.physics.add
       .sprite(x, y, "ghost_enemy_1", 0)
       .setSize(22, 23)
@@ -482,15 +495,7 @@ export class HalloweenScene extends BaseScene {
       }
 
       while (this.minZombiePerMin < this.maxZombiePerMin) {
-        const randomX = Phaser.Math.Between(
-          0,
-          this.map.widthInPixels - HALLOWEEN_SQUARE_WIDTH,
-        );
-        const randomY = Phaser.Math.Between(
-          0,
-          this.map.heightInPixels - HALLOWEEN_SQUARE_WIDTH,
-        );
-        const zombie_enemy = this.createEnemy_2(randomX, randomY);
+        const zombie_enemy = this.createEnemy_2();
 
         if (this.currentPlayer) {
           this.physics.add.collider(zombie_enemy, this.currentPlayer, () =>
@@ -503,11 +508,29 @@ export class HalloweenScene extends BaseScene {
     }
   }
 
-  createEnemy_2(x: number, y: number) {
+  createEnemy_2() {
+    if (!this.currentPlayer) return;
+    let x: number, y: number;
     let isInsidePolygon = false;
+    const size = 400;
+    const offsetMap = 20;
     do {
-      x = Phaser.Math.Between(0, this.map.width * this.map.tileWidth);
-      y = Phaser.Math.Between(0, this.map.width * this.map.tileWidth);
+      x = Phaser.Math.Between(
+        Math.floor(this.currentPlayer.x - size),
+        Math.floor(this.currentPlayer.x + size),
+      );
+      y = Phaser.Math.Between(
+        Math.floor(this.currentPlayer.y - size),
+        Math.floor(this.currentPlayer.y + size),
+      );
+      if (
+        x < offsetMap ||
+        y < offsetMap ||
+        x > this.map.width * this.map.tileWidth - offsetMap ||
+        y > this.map.height * this.map.tileHeight - offsetMap
+      ) {
+        continue;
+      }
       isInsidePolygon = this.polygonShapes.some((shape) =>
         Phaser.Geom.Polygon.Contains(shape, x, y),
       );
@@ -962,10 +985,27 @@ export class HalloweenScene extends BaseScene {
   }
 
   private createLamp() {
+    if (!this.currentPlayer) return;
     let x: number, y: number, isInsidePolygon;
+    const size = 500;
+    const offsetMap = 20;
     do {
-      x = Phaser.Math.Between(0, this.map.width * this.map.tileWidth);
-      y = Phaser.Math.Between(0, this.map.width * this.map.tileWidth);
+      x = Phaser.Math.Between(
+        Math.floor(this.currentPlayer.x - size),
+        Math.floor(this.currentPlayer.x + size),
+      );
+      y = Phaser.Math.Between(
+        Math.floor(this.currentPlayer.y - size),
+        Math.floor(this.currentPlayer.y + size),
+      );
+      if (
+        x < offsetMap ||
+        y < offsetMap ||
+        x > this.map.width * this.map.tileWidth - offsetMap ||
+        y > this.map.height * this.map.tileHeight - offsetMap
+      ) {
+        continue;
+      }
       isInsidePolygon = this.polygonShapes.some((shape) =>
         Phaser.Geom.Polygon.Contains(shape, x, y),
       );
