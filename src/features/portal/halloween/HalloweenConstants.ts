@@ -28,6 +28,7 @@ export const LAMPS_CONFIGURATION: { x: number; y: number }[] = [
 export const MAX_LAMPS_IN_MAP = 50;
 
 export const INITIAL_LAMPS_LIGHT_RADIUS = 0.3;
+export const JOYSTICK_LIGHT_RADIUS = 0.08;
 export const MIN_PLAYER_LIGHT_RADIUS = 0.1;
 export const MAX_PLAYER_LIGHT_RADIUS = 0.7;
 export const MAX_PLAYER_LAMPS = 10;

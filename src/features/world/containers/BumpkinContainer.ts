@@ -1141,14 +1141,9 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       value = `${value > 0 ? "+" : "-"}${Math.abs(value)}`;
     }
 
-    const label = this.scene.add.bitmapText(
-      -2,
-      -25,
-      "Teeny Tiny Pixls",
-      value,
-      4,
-      1,
-    );
+    const label = this.scene.add
+      .bitmapText(1, -23, "Teeny Tiny Pixls", value, 4, 1)
+      .setOrigin(0.5);
 
     label.setTintFill(0xffffff);
     this.add(label);

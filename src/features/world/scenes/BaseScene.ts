@@ -598,8 +598,8 @@ export abstract class BaseScene extends Phaser.Scene {
         x: centerX,
         y: centerY - 35 + height / this.zoom / 2,
         radius: 15,
-        base: this.add.circle(0, 0, 15, 0x000000, 0.2).setDepth(1000000000),
-        thumb: this.add.circle(0, 0, 7, 0xffffff, 0.2).setDepth(1000000000),
+        base: this.add.circle(0, 0, 15, 0x333333, 0.8).setDepth(1000000000),
+        thumb: this.add.circle(0, 0, 7, 0xcccccc, 0.8).setDepth(1000000000),
         forceMin: 2,
       });
     }

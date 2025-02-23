@@ -12,6 +12,7 @@ import { VisibilityPolygon } from "./lib/visibilityPolygon";
 import {
   INITIAL_LAMPS_LIGHT_RADIUS,
   MIN_PLAYER_LIGHT_RADIUS,
+  JOYSTICK_LIGHT_RADIUS,
   LAMPS_CONFIGURATION,
   LAMP_SPAWN_BASE_INTERVAL,
   MAX_LAMPS_IN_MAP,
@@ -35,6 +36,7 @@ import { EventObject } from "xstate";
 import { SPAWNS } from "features/world/lib/spawn";
 import { createLightPolygon } from "./lib/HalloweenUtils";
 import { Physics } from "phaser";
+import { isTouchDevice } from "features/world/lib/device";
 
 // export const NPCS: NPCBumpkin[] = [
 //   {
@@ -52,7 +54,10 @@ interface Coordinates {
 
 export class HalloweenScene extends BaseScene {
   private mask?: Phaser.Display.Masks.GeometryMask;
-  private lightedItems!: Phaser.GameObjects.Container[];
+  private lightedItems!: (
+    | Phaser.GameObjects.Container
+    | { x: number; y: number }
+  )[];
   private polygons!: [number, number][][];
   private polygonShapes!: Phaser.Geom.Polygon[];
   private playerPosition!: Coordinates;
@@ -168,6 +173,7 @@ export class HalloweenScene extends BaseScene {
 
     super.create();
 
+    this.initializeControls();
     this.initShaders();
 
     this.backgroundMusic = this.sound.add("backgroundMusic", {
@@ -192,6 +198,7 @@ export class HalloweenScene extends BaseScene {
 
     // Important to first save the player and then the lamps
     this.currentPlayer && (this.lightedItems[0] = this.currentPlayer);
+    this.lightedItems[1] = { x: -500, y: -500 };
     this.createMask();
     this.createWalls();
     this.createAllLamps();
@@ -266,6 +273,9 @@ export class HalloweenScene extends BaseScene {
     if (this.portalService?.state.context.lamps === -1) {
       this.endGame();
     } else {
+      if (this.portalService?.state.context.isJoystickActive) {
+        this.setJoystickPosition();
+      }
       this.adjustShaders();
 
       const { x: currentX = 0, y: currentY = 0 } = this.currentPlayer ?? {};
@@ -328,6 +338,14 @@ export class HalloweenScene extends BaseScene {
     this.currentPlayer.updateLightRadius();
 
     super.update();
+  }
+
+  private initializeControls() {
+    if (isTouchDevice()) {
+      this.portalService?.send("SET_JOYSTICK_ACTIVE", {
+        isJoystickActive: true,
+      });
+    }
   }
 
   // Enemy_1 (ghost_enemy)
@@ -698,7 +716,7 @@ export class HalloweenScene extends BaseScene {
   }
 
   private setDefaultStates() {
-    this.lightedItems = Array(MAX_LAMPS_IN_MAP + 1).fill(null);
+    this.lightedItems = Array(MAX_LAMPS_IN_MAP + 2).fill(null);
     this.polygons = [];
     this.polygonShapes = [];
     this.playerPosition = { x: 0, y: 0 };
@@ -735,8 +753,9 @@ export class HalloweenScene extends BaseScene {
     );
     this.resetAllLamps();
     this.resetAllenemies();
-    this.lightedItems = Array(MAX_LAMPS_IN_MAP + 1).fill(null);
+    this.lightedItems = Array(MAX_LAMPS_IN_MAP + 2).fill(null);
     this.currentPlayer && (this.lightedItems[0] = this.currentPlayer);
+    this.lightedItems[1] = { x: 0, y: 0 };
     this.createAllLamps();
     this.lampSpawnTime = LAMP_SPAWN_BASE_INTERVAL;
     this.deathDate = null;
@@ -770,10 +789,15 @@ export class HalloweenScene extends BaseScene {
     // Set initial values in the shader
     // First position: current player
     const playerLightRadius = [MIN_PLAYER_LIGHT_RADIUS];
+    const joystickLightRadius = [JOYSTICK_LIGHT_RADIUS];
     const lampsLightRadius = new Array(MAX_LAMPS_IN_MAP).fill(
       INITIAL_LAMPS_LIGHT_RADIUS,
     );
-    darknessPipeline.lightRadius = [...playerLightRadius, ...lampsLightRadius];
+    darknessPipeline.lightRadius = [
+      ...playerLightRadius,
+      ...joystickLightRadius,
+      ...lampsLightRadius,
+    ];
   }
 
   private loadBumpkinAnimations() {
@@ -808,7 +832,7 @@ export class HalloweenScene extends BaseScene {
       this.lampSpawnTime += increase;
 
       this.numLampsInMap = this.lightedItems.filter((item, i) => {
-        if (i === 0) return false;
+        if (i === 0 || i === 1) return false;
         return item !== null && item?.x !== -9999 && item?.y !== -9999;
       }).length;
 
@@ -910,6 +934,15 @@ export class HalloweenScene extends BaseScene {
     });
   };
 
+  private setJoystickPosition() {
+    const camera = this.cameras.main;
+    // const centerX = camera.worldView.x + camera.width / (camera.zoom * 2);
+    // const centerY = camera.worldView.y + camera.height / (camera.zoom * 2);
+    const centerX = camera.worldView.x + camera.width / camera.zoom / 2;
+    const centerY = camera.worldView.y + camera.height / camera.zoom;
+    this.lightedItems[1] = { x: centerX, y: centerY - 35 };
+  }
+
   private resetAllenemies() {
     this.ghost_enemies.forEach((item) => {
       item.destroy();
@@ -922,7 +955,7 @@ export class HalloweenScene extends BaseScene {
 
   private resetAllLamps() {
     this.lightedItems.forEach((item, i) => {
-      if (i > 0) {
+      if (i > 1) {
         (item as LampContainer)?.destroyLamp();
       }
     });
@@ -974,7 +1007,7 @@ export class HalloweenScene extends BaseScene {
         }),
     );
 
-    const position = 1;
+    const position = 2;
     if (lamps.length + position <= this.lightedItems.length) {
       this.lightedItems.splice(position, lamps.length, ...lamps);
     }
@@ -1070,7 +1103,8 @@ export class HalloweenScene extends BaseScene {
         normalizedX >= -0.5 &&
         normalizedX <= 1.5 &&
         normalizedY >= -0.5 &&
-        normalizedY <= 1.5
+        normalizedY <= 1.5 &&
+        item instanceof Phaser.GameObjects.Container
       ) {
         this.renderLight(item);
       }
