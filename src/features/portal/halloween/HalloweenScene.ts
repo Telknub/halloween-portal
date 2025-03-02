@@ -274,15 +274,15 @@ export class HalloweenScene extends BaseScene {
       }
       this.adjustShaders();
 
-      const { x: currentX = 0, y: currentY = 0 } = this.currentPlayer ?? {};
-
-      if (
-        this.playerPosition.x !== currentX ||
-        this.playerPosition.y !== currentY
-      ) {
-        this.renderAllLights();
-        this.playerPosition = { x: currentX, y: currentY };
-      }
+      // Shadows
+      // const { x: currentX = 0, y: currentY = 0 } = this.currentPlayer ?? {};
+      // if (
+      //   this.playerPosition.x !== currentX ||
+      //   this.playerPosition.y !== currentY
+      // ) {
+      //   this.renderAllLights();
+      //   this.playerPosition = { x: currentX, y: currentY };
+      // }
 
       if (this.isGamePlaying) {
         this.updateAmountLamps();
@@ -1092,18 +1092,17 @@ export class HalloweenScene extends BaseScene {
   }
 
   private createMask() {
-    const background = this.add.rectangle(
-      this.cameras.main.centerX,
-      this.cameras.main.centerY,
-      this.cameras.main.width,
-      this.cameras.main.height,
-      0x000,
-    );
-    background.setDepth(0);
-
-    this.lightGraphics = this.add.graphics();
-
-    this.mask = this.lightGraphics.createGeometryMask();
+    // Shadows
+    // const background = this.add.rectangle(
+    //   this.cameras.main.centerX,
+    //   this.cameras.main.centerY,
+    //   this.cameras.main.width,
+    //   this.cameras.main.height,
+    //   0x000,
+    // );
+    // background.setDepth(0);
+    // this.lightGraphics = this.add.graphics();
+    // this.mask = this.lightGraphics.createGeometryMask();
 
     // Set up the Z layers to draw in correct order
     this.map.layers.forEach((layerData) => {
@@ -1113,9 +1112,11 @@ export class HalloweenScene extends BaseScene {
         0,
         0,
       );
-      if (layerData.name === "Ground") {
-        layer?.setMask(this.mask as Phaser.Display.Masks.GeometryMask);
-      }
+
+      // Shadows
+      // if (layerData.name === "Ground") {
+      //   layer?.setMask(this.mask as Phaser.Display.Masks.GeometryMask);
+      // }
 
       this.layers[layerData.name] = layer as Phaser.Tilemaps.TilemapLayer;
     });
