@@ -1,424 +1,461 @@
-import { OFFLINE_FARM } from "features/game/lib/landData";
-import { assign, createMachine, Interpreter, State } from "xstate";
-import { CONFIG } from "lib/config";
-import { decodeToken } from "features/auth/actions/login";
+import { createMachine, assign, interpret } from "xstate";
+import { BlockBucks, GameState, InventoryItemName } from "features/game/types/game";
+import { get } from "lodash";
+import { SFL_MAX_MINED } from "features/game/lib/constants";
 import {
-  RESTOCK_ATTEMPTS_SFL,
-  UNLIMITED_ATTEMPTS_SFL,
-  DAILY_ATTEMPTS,
+  INITIAL_LAMPS_LIGHT_RADIUS,
+  MAX_LAMPS_IN_MAP,
+  SET_VISION_RANGE,
 } from "../HalloweenConstants";
-import { GameState } from "features/game/types/game";
-import { purchaseMinigameItem } from "features/game/events/minigames/purchaseMinigameItem";
-import { startMinigameAttempt } from "features/game/events/minigames/startMinigameAttempt";
-import { submitMinigameScore } from "features/game/events/minigames/submitMinigameScore";
-import {
-  achievementsUnlocked,
-  submitScore,
-  startAttempt,
-} from "features/portal/lib/portalUtil";
-import { getUrl, loadPortal } from "features/portal/actions/loadPortal";
-import { getAttemptsLeft } from "./HalloweenUtils";
-import { unlockMinigameAchievements } from "features/game/events/minigames/unlockMinigameAchievements";
-import { HalloweenAchievementsName } from "../HalloweenAchievements";
 
-const getJWT = () => {
-  const code = new URLSearchParams(window.location.search).get("jwt");
-  return code;
-};
-
-export interface Context {
-  id: number;
-  jwt: string | null;
-  isJoystickActive: boolean;
-  state: GameState | undefined;
+export type HalloweenState = {
+  playerHealth: number; // Renomeado de 'lamps'
+  maxPlayerHealth: number; // Nova variável
   score: number;
-  lastScore: number;
-  lamps: number;
-  startedAt: number;
-  attemptsLeft: number;
-}
-
-type GainPointsEvent = {
-  type: "GAIN_POINTS";
-  points: number;
+  // TODO - Add the game state of the individual player (health, inventory, current level, etc.)
+  // It is helpful to follow the game state of the player in case they refresh the page
 };
 
-type UnlockAchievementsEvent = {
-  type: "UNLOCKED_ACHIEVEMENTS";
-  achievementNames: HalloweenAchievementsName[];
+type Context = {
+  state: GameState;
+  sessionId?: string;
+  portalId: string;
+  halloween: HalloweenState;
+  is and isZombieActive: boolean;
 };
 
-type SetJoystickActiveEvent = {
-  type: "SET_JOYSTICK_ACTIVE";
-  isJoystickActive: boolean;
-};
-
-type DeadLampEvent = {
-  type: "DEAD_LAMP";
-  lamps: number;
-};
-
-export type PortalEvent =
-  | SetJoystickActiveEvent
-  | { type: "START" }
-  | { type: "CLAIM" }
-  | { type: "CANCEL_PURCHASE" }
-  | { type: "PURCHASED_RESTOCK" }
-  | { type: "PURCHASED_UNLIMITED" }
-  | { type: "RETRY" }
-  | { type: "CONTINUE" }
-  | { type: "END_GAME_EARLY" }
-  | { type: "GAME_OVER" }
-  | GainPointsEvent
-  | { type: "COLLECT_LAMP" }
-  | DeadLampEvent
-  | UnlockAchievementsEvent;
-
-export type PortalState = {
+type State = {
   value:
-    | "initialising"
-    | "error"
-    | "ready"
-    | "unauthorised"
-    | "loading"
-    | "introduction"
-    | "playing"
-    | "gameOver"
-    | "winner"
-    | "loser"
-    | "complete"
-    | "starting"
-    | "noAttempts";
+  | "loading"
+  | "playing"
+  | "gameOver"
+  | "initialising"
+  | "error"
+  | "levellingUp"
+  | "notReady";
   context: Context;
 };
 
-export type MachineInterpreter = Interpreter<
-  Context,
-  any,
-  PortalEvent,
-  PortalState
->;
+type Event =
+  | { type: "CONNECT" }
+  | { type: "NO_FARM" }
+  | { type: "REFRESH" }
+  | { type: "PLAY" }
+  | { type: "CONTINUE" }
+  | { type: "GAME_OVER" }
+  | { type: "RESET" }
+  | { type: "SET_SESSION_ID"; sessionId: string }
+  | { type: "SET_BUMPKIN"; bumpkin: any }
+  | { type: "GAIN_POINTS" }
+  | { type: "COLLECT_LAMP" } // Este evento ainda pode ser usado, mas agora para 'playerHealth'
+  | { type: "DEAD_LAMP"; lamps: number } // Este evento ainda pode ser usado, mas agora para 'playerHealth'
+  | { type: "PLAYER_TAKES_DAMAGE"; amount: number } // NOVO: Jogador recebe dano
+  | { type: "PLAYER_HEALS"; amount: number } // NOVO: Jogador se cura
+  | { type: "SET_READY" }
+  | { type: "KICK" }
+  | { type: "ADD_ITEM"; item: InventoryItemName; blockBucks?: BlockBucks }
+  | { type: "SET_LIGHT_RADIUS"; lightRadius: number }
+  | { type: "SET_LIGHT_PLAYER_RADIUS"; lightRadius: number }
+  | { type: "SET_GHOST_SPAWN_TIME" }
+  | { type: "SET_ZOMBIE_SPAWN_TIME" }
+  | { type: "SET_MAX_GHOSTS" }
+  | { type: "SET_MAX_ZOMBIES" }
+  | { type: "SET_GHOSTS_SPAWNED" }
+  | { type: "SET_ZOMBIES_SPAWNED" }
+  | { type: "SET_SLOW_DOWN" }
+  | { type: "SET_VISION_RANGE" }
+  | { type: "SET_ACCUMULATED_SLOWDOWN" }
+  | { type: "SET_PLAYER_LIGHT_RADIUS" }
+  | { type: "SET_LAMP_USAGE_MULTIPLIER_INTERVAL" }
+  | { type: "SET_MIN_ZOMBIES_PER_MIN" }
+  | { type: "SET_MAX_ZOMBIES_PER_MIN" }
+  | { type: "SET_MIN_GHOST_PER_MIN" }
+  | { type: "SET_MAX_GHOST_PER_MIN" }
+  | { type: "SET_DELAY_SPAWN_TIME" }
+  | { type: "SET_UPDATE_INTERVAL" }
+  | { type: "SET_ACCUMULATED_SLOWDOWN_DURATION" }
+  | { type: "SET_LAST_SLOW_DOWN_TIME" }
+  | { type: "SET_PORTAL_ID"; id: string }
+  | { type: "SET_IS_JOYSTICK_ACTIVE"; isJoystickActive: boolean };
 
-export type PortalMachineState = State<Context, PortalEvent, PortalState>;
+export type MachineInterpreter = ReturnType<typeof interpret<Context, any, Event>>;
 
-const resetGameTransition = {
-  RETRY: {
-    target: "starting",
-    actions: assign({
-      score: () => 0,
-      lamps: () => 0,
-      startedAt: () => 0,
-    }) as any,
-  },
-};
-
-export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
-  id: "portalMachine",
-  initial: "initialising",
+export const halloweenMachine = createMachine<Context, Event, State>({
+  id: "halloweenMachine",
+  initial: "loading",
   context: {
-    id: 0,
-    jwt: getJWT(),
-
-    isJoystickActive: false,
-
-    state: CONFIG.API_URL ? undefined : OFFLINE_FARM,
-
-    score: 0,
-    lastScore: 0,
-    lamps: 0,
-    attemptsLeft: 0,
-    startedAt: 0,
-  },
-  on: {
-    SET_JOYSTICK_ACTIVE: {
-      actions: assign<Context, any>({
-        isJoystickActive: (_: Context, event: SetJoystickActiveEvent) => {
-          return event.isJoystickActive;
-        },
-      }),
+    state: {} as GameState,
+    portalId: "0",
+    halloween: {
+      playerHealth: 5, // Valor inicial de saúde
+      maxPlayerHealth: 5, // Valor máximo de saúde
+      score: 0,
     },
-    UNLOCKED_ACHIEVEMENTS: {
-      actions: assign<Context, any>({
-        state: (context: Context, event: UnlockAchievementsEvent) => {
-          achievementsUnlocked({ achievementNames: event.achievementNames });
-          return unlockMinigameAchievements({
-            state: context.state!,
-            action: {
-              type: "minigame.achievementsUnlocked",
-              id: "halloween",
-              achievementNames: event.achievementNames,
-            },
-          });
-        },
-      }) as any,
-    },
+    is and isZombieActive: false,
   },
   states: {
-    initialising: {
-      always: [
-        {
-          target: "unauthorised",
-          // TODO: Also validate token
-          cond: (context) => !!CONFIG.API_URL && !context.jwt,
-        },
-        {
-          target: "loading",
-        },
-      ],
-    },
     loading: {
-      id: "loading",
+      on: {
+        CONNECT: "initialising",
+        NO_FARM: "notReady",
+        REFRESH: "loading",
+      },
+    },
+    initialising: {
       invoke: {
-        src: async (context) => {
-          if (!getUrl()) {
-            return { game: OFFLINE_FARM, attemptsLeft: DAILY_ATTEMPTS };
-          }
+        src: async () => {
+          const state: GameState = get(
+            window,
+            `___SFL_LITE_INTERFACE___.state`,
+          );
 
-          const { farmId } = decodeToken(context.jwt as string);
-
-          // Load the game data
-          const { game } = await loadPortal({
-            portalId: CONFIG.PORTAL_APP,
-            token: context.jwt as string,
-          });
-
-          const minigame = game.minigames.games["halloween"];
-          const attemptsLeft = getAttemptsLeft(minigame);
-
-          return { game, farmId, attemptsLeft };
+          return { state };
         },
-        onDone: [
-          {
-            target: "introduction",
-            actions: assign({
-              state: (_: any, event) => event.data.game,
-              id: (_: any, event) => event.data.farmId,
-              attemptsLeft: (_: any, event) => event.data.attemptsLeft,
-            }),
-          },
-        ],
-        onError: {
-          target: "error",
-        },
-      },
-    },
-
-    noAttempts: {
-      on: {
-        CANCEL_PURCHASE: {
-          target: "introduction",
-        },
-        PURCHASED_RESTOCK: {
-          target: "introduction",
-          actions: assign<Context>({
-            state: (context: Context) =>
-              purchaseMinigameItem({
-                state: context.state!,
-                action: {
-                  id: "halloween",
-                  sfl: RESTOCK_ATTEMPTS_SFL,
-                  type: "minigame.itemPurchased",
-                  items: {},
-                },
-              }),
-          }) as any,
-        },
-        PURCHASED_UNLIMITED: {
-          target: "introduction",
-          actions: assign<Context>({
-            state: (context: Context) =>
-              purchaseMinigameItem({
-                state: context.state!,
-                action: {
-                  id: "halloween",
-                  sfl: UNLIMITED_ATTEMPTS_SFL,
-                  type: "minigame.itemPurchased",
-                  items: {},
-                },
-              }),
-          }) as any,
-        },
-      },
-    },
-
-    starting: {
-      always: [
-        {
-          target: "noAttempts",
-          cond: (context) => {
-            const minigame = context.state?.minigames.games["halloween"];
-            const attemptsLeft = getAttemptsLeft(minigame);
-            return attemptsLeft <= 0;
-          },
-        },
-        {
-          target: "ready",
-        },
-      ],
-    },
-
-    introduction: {
-      on: {
-        CONTINUE: {
-          target: "starting",
-        },
-      },
-    },
-
-    ready: {
-      on: {
-        START: {
+        onDone: {
           target: "playing",
-          actions: assign<Context>({
-            startedAt: () => Date.now(),
-            score: 0,
-            lamps: 3,
-            state: (context: any) => {
-              startAttempt();
-              return startMinigameAttempt({
-                state: context.state,
-                action: {
-                  type: "minigame.attemptStarted",
-                  id: "halloween",
-                },
-              });
-            },
-            attemptsLeft: (context: Context) => context.attemptsLeft - 1,
-          }) as any,
+          actions: assign((context, event) => ({
+            state: event.data.state,
+          })),
         },
+        onError: "error",
       },
     },
-
     playing: {
       on: {
-        GAIN_POINTS: {
-          actions: assign<Context, any>((context) => {
-            let secondsPassed = !context.startedAt
-              ? 0
-              : Math.max(Date.now() - context.startedAt, 0);
-
-            const diff = secondsPassed - context.score;
-            let newStartedAt = context.startedAt;
-
-            if (diff > 70) {
-              newStartedAt = Date.now() - context.score;
-              secondsPassed = Math.max(Date.now() - newStartedAt, 0);
-            }
-
-            return {
-              score: secondsPassed,
-              startedAt: newStartedAt,
-            };
-          }),
-        },
+        // Renomear COLLECT_LAMP para um nome mais genérico se não for mais coletar "lamps"
+        // Ou adaptar a lógica para aumentar a saúde/pontos.
+        // Por enquanto, vamos manter e fazer com que aumente a saúde.
         COLLECT_LAMP: {
-          actions: assign<Context, any>({
-            lamps: (context: Context) => {
-              return context.lamps + 1;
+          actions: assign((context) => ({
+            halloween: {
+              ...context.halloween,
+              // Não aumentamos playerHealth aqui diretamente, mas sim pontos.
+              // A cura virá de PLAYER_HEALS ou itens.
+              score: context.halloween.score + 1,
             },
-          }),
+          })),
         },
+        // Mudar DEAD_LAMP para PLAYER_TAKES_DAMAGE
         DEAD_LAMP: {
-          actions: assign<Context, any>({
-            lamps: (context: Context, event: DeadLampEvent) => {
-              return context.lamps - event.lamps;
+          actions: assign((context, event) => ({
+            halloween: {
+              ...context.halloween,
+              playerHealth: Math.max(0, context.halloween.playerHealth - event.lamps),
             },
-          }),
+          })),
         },
-        END_GAME_EARLY: {
-          actions: assign<Context, any>({
-            startedAt: () => 0,
-            lastScore: (context: Context) => {
-              return context.score;
+        // NOVO: Evento para jogador receber dano
+        PLAYER_TAKES_DAMAGE: {
+          actions: assign((context, event) => ({
+            halloween: {
+              ...context.halloween,
+              playerHealth: Math.max(0, context.halloween.playerHealth - event.amount),
             },
-            state: (context: Context) => {
-              submitScore({ score: Math.round(context.score) });
-              return submitMinigameScore({
-                state: context.state as any,
-                action: {
-                  type: "minigame.scoreSubmitted",
-                  score: Math.round(context.score),
-                  id: "halloween",
-                },
-              });
-            },
-          }),
-          target: "introduction",
+          })),
         },
-        GAME_OVER: {
-          target: "gameOver",
-          actions: assign({
-            lastScore: (context: any) => {
-              return context.score;
+        // NOVO: Evento para jogador se curar
+        PLAYER_HEALS: {
+          actions: assign((context, event) => ({
+            halloween: {
+              ...context.halloween,
+              playerHealth: Math.min(context.halloween.maxPlayerHealth, context.halloween.playerHealth + event.amount),
             },
-            state: (context: any) => {
-              submitScore({ score: context.score });
-              return submitMinigameScore({
-                state: context.state,
-                action: {
-                  type: "minigame.scoreSubmitted",
-                  score: Math.round(context.score),
-                  id: "halloween",
+          })),
+        },
+        GAIN_POINTS: {
+          actions: assign((context) => ({
+            halloween: {
+              ...context.halloween,
+              score: context.halloween.score + 1,
+            },
+          })),
+        },
+        GAME_OVER: "gameOver",
+        SET_PLAYER_LIGHT_RADIUS: {
+          actions: assign((context, event) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  playerLightRadius: (event as any).lightRadius,
                 },
-              });
+              },
             },
-          }) as any,
+          })),
+        },
+        SET_GHOST_SPAWN_TIME: {
+          actions: assign((context) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  lastSpawnedGhost: Date.now(),
+                },
+              },
+            },
+          })),
+        },
+        SET_ZOMBIE_SPAWN_TIME: {
+          actions: assign((context) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  lastSpawnedZombie: Date.now(),
+                },
+              },
+            },
+          })),
+        },
+        SET_MAX_GHOSTS: {
+          actions: assign((context, event) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  maxGhosts: (event as any).maxGhosts,
+                },
+              },
+            },
+          })),
+        },
+        SET_MAX_ZOMBIES: {
+          actions: assign((context, event) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  maxZombies: (event as any).maxZombies,
+                },
+              },
+            },
+          })),
+        },
+        SET_GHOSTS_SPAWNED: {
+          actions: assign((context, event) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  ghostsSpawned: (event as any).ghostsSpawned,
+                },
+              },
+            },
+          })),
+        },
+        SET_ZOMBIES_SPAWNED: {
+          actions: assign((context, event) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  zombiesSpawned: (event as any).zombiesSpawned,
+                },
+              },
+            },
+          })),
+        },
+        SET_SLOW_DOWN: {
+          actions: assign((context) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  slowdowns: (
+                    context.state.minigames?.halloween?.slowdowns || 0
+                  ) + 1,
+                },
+              },
+            },
+          })),
+        },
+        SET_VISION_RANGE: {
+          actions: assign((context) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  visionRange: INITIAL_LAMPS_LIGHT_RADIUS,
+                },
+              },
+            },
+          })),
+        },
+        SET_LAMP_USAGE_MULTIPLIER_INTERVAL: {
+          actions: assign((context) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  lampUsageMultiplierInterval: Date.now(),
+                },
+              },
+            },
+          })),
+        },
+        SET_MIN_ZOMBIES_PER_MIN: {
+          actions: assign((context, event) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  minZombiesPerMin: (event as any).minZombiesPerMin,
+                },
+              },
+            },
+          })),
+        },
+        SET_MAX_ZOMBIES_PER_MIN: {
+          actions: assign((context, event) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  maxZombiesPerMin: (event as any).maxZombiesPerMin,
+                },
+              },
+            },
+          })),
+        },
+        SET_MIN_GHOST_PER_MIN: {
+          actions: assign((context, event) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  minGhostsPerMin: (event as any).minGhostsPerMin,
+                },
+              },
+            },
+          })),
+        },
+        SET_MAX_GHOST_PER_MIN: {
+          actions: assign((context, event) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  maxGhostsPerMin: (event as any).maxGhostsPerMin,
+                },
+              },
+            },
+          })),
+        },
+        SET_DELAY_SPAWN_TIME: {
+          actions: assign((context) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  delaySpawnTime: Date.now(),
+                },
+              },
+            },
+          })),
+        },
+        SET_UPDATE_INTERVAL: {
+          actions: assign((context) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  updateInterval: Date.now(),
+                },
+              },
+            },
+          })),
+        },
+        SET_ACCUMULATED_SLOWDOWN_DURATION: {
+          actions: assign((context) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  accumulatedSlowdownDuration: Date.now(),
+                },
+              },
+            },
+          })),
+        },
+        SET_LAST_SLOW_DOWN_TIME: {
+          actions: assign((context) => ({
+            state: {
+              ...context.state,
+              minigames: {
+                ...context.state.minigames,
+                halloween: {
+                  ...context.state.minigames?.halloween,
+                  lastSlowDownTime: Date.now(),
+                },
+              },
+            },
+          })),
+        },
+        SET_PORTAL_ID: {
+          actions: assign((context, event) => ({
+            portalId: (event as any).id,
+          })),
+        },
+        SET_IS_JOYSTICK_ACTIVE: {
+          actions: assign((context, event) => ({
+            isJoystickActive: (event as any).isJoystickActive,
+          })),
         },
       },
+      always: {
+        // Transição para gameOver se a saúde do jogador for 0 ou menos
+        target: "gameOver",
+        cond: (context) => context.halloween.playerHealth <= 0,
+      },
     },
-
     gameOver: {
-      always: [
-        {
-          // they have already completed the mission before
-          target: "complete",
-          cond: (context) => {
-            const dateKey = new Date().toISOString().slice(0, 10);
-
-            const minigame = context.state?.minigames.games["halloween"];
-            const history = minigame?.history ?? {};
-
-            return !!history[dateKey]?.prizeClaimedAt;
-          },
-        },
-
-        {
-          target: "winner",
-          cond: (context) => {
-            const prize = context.state?.minigames.prizes["halloween"];
-            if (!prize) {
-              return false;
-            }
-
-            return context.score >= prize.score;
-          },
-        },
-        {
-          target: "loser",
-        },
-      ],
+      on: {
+        PLAY: "playing",
+      },
     },
-
-    winner: {
-      on: resetGameTransition,
+    notReady: {
+      on: {
+        PLAY: "initialising",
+      },
     },
-
-    loser: {
-      on: resetGameTransition,
-    },
-
-    complete: {
-      on: resetGameTransition,
-    },
-
     error: {
       on: {
-        RETRY: {
-          target: "initialising",
-        },
+        REFRESH: "loading",
       },
     },
-
-    unauthorised: {},
   },
 });
