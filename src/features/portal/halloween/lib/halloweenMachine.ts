@@ -6,6 +6,7 @@ import {
   RESTOCK_ATTEMPTS_SFL,
   UNLIMITED_ATTEMPTS_SFL,
   DAILY_ATTEMPTS,
+  PLAYER_MAX_HEALTH,
 } from "../HalloweenConstants";
 import { GameState } from "features/game/types/game";
 import { purchaseMinigameItem } from "features/game/events/minigames/purchaseMinigameItem";
@@ -33,7 +34,7 @@ export interface Context {
   state: GameState | undefined;
   score: number;
   lastScore: number;
-  lamps: number;
+  health: number; // SUBSTITUIU 'lamps'
   startedAt: number;
   attemptsLeft: number;
 }
@@ -53,9 +54,10 @@ type SetJoystickActiveEvent = {
   isJoystickActive: boolean;
 };
 
-type DeadLampEvent = {
-  type: "DEAD_LAMP";
-  lamps: number;
+// NOVO EVENTO
+type PlayerDamagedEvent = {
+  type: "PLAYER_DAMAGED";
+  damage: number;
 };
 
 export type PortalEvent =
@@ -70,8 +72,7 @@ export type PortalEvent =
   | { type: "END_GAME_EARLY" }
   | { type: "GAME_OVER" }
   | GainPointsEvent
-  | { type: "COLLECT_LAMP" }
-  | DeadLampEvent
+  | PlayerDamagedEvent // NOVO
   | UnlockAchievementsEvent;
 
 export type PortalState = {
@@ -106,7 +107,7 @@ const resetGameTransition = {
     target: "starting",
     actions: assign({
       score: () => 0,
-      lamps: () => 0,
+      health: () => PLAYER_MAX_HEALTH, // RESET VIDA
       startedAt: () => 0,
     }) as any,
   },
@@ -118,14 +119,11 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
   context: {
     id: 0,
     jwt: getJWT(),
-
     isJoystickActive: false,
-
     state: CONFIG.API_URL ? undefined : OFFLINE_FARM,
-
     score: 0,
     lastScore: 0,
-    lamps: 0,
+    health: PLAYER_MAX_HEALTH, // VIDA INICIAL
     attemptsLeft: 0,
     startedAt: 0,
   },
@@ -158,7 +156,6 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
       always: [
         {
           target: "unauthorised",
-          // TODO: Also validate token
           cond: (context) => !!CONFIG.API_URL && !context.jwt,
         },
         {
@@ -175,8 +172,6 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
           }
 
           const { farmId } = decodeToken(context.jwt as string);
-
-          // Load the game data
           const { game } = await loadPortal({
             portalId: CONFIG.PORTAL_APP,
             token: context.jwt as string,
@@ -272,7 +267,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
           actions: assign<Context>({
             startedAt: () => Date.now(),
             score: 0,
-            lamps: 3,
+            health: PLAYER_MAX_HEALTH, // INICIA A VIDA
             state: (context: any) => {
               startAttempt();
               return startMinigameAttempt({
@@ -290,7 +285,16 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
     },
 
     playing: {
+      always: {
+        target: "gameOver",
+        cond: (context) => context.health <= 0,
+      },
       on: {
+        PLAYER_DAMAGED: {
+          actions: assign({
+            health: (context, event) => Math.max(0, context.health - event.damage),
+          }),
+        },
         GAIN_POINTS: {
           actions: assign<Context, any>((context) => {
             let secondsPassed = !context.startedAt
@@ -311,26 +315,10 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
             };
           }),
         },
-        COLLECT_LAMP: {
-          actions: assign<Context, any>({
-            lamps: (context: Context) => {
-              return context.lamps + 1;
-            },
-          }),
-        },
-        DEAD_LAMP: {
-          actions: assign<Context, any>({
-            lamps: (context: Context, event: DeadLampEvent) => {
-              return context.lamps - event.lamps;
-            },
-          }),
-        },
         END_GAME_EARLY: {
           actions: assign<Context, any>({
             startedAt: () => 0,
-            lastScore: (context: Context) => {
-              return context.score;
-            },
+            lastScore: (context: Context) => context.score,
             state: (context: Context) => {
               submitScore({ score: Math.round(context.score) });
               return submitMinigameScore({
@@ -348,9 +336,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
         GAME_OVER: {
           target: "gameOver",
           actions: assign({
-            lastScore: (context: any) => {
-              return context.score;
-            },
+            lastScore: (context: any) => context.score,
             state: (context: any) => {
               submitScore({ score: context.score });
               return submitMinigameScore({
@@ -370,26 +356,19 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
     gameOver: {
       always: [
         {
-          // they have already completed the mission before
           target: "complete",
           cond: (context) => {
             const dateKey = new Date().toISOString().slice(0, 10);
-
             const minigame = context.state?.minigames.games["halloween"];
             const history = minigame?.history ?? {};
-
             return !!history[dateKey]?.prizeClaimedAt;
           },
         },
-
         {
           target: "winner",
           cond: (context) => {
             const prize = context.state?.minigames.prizes["halloween"];
-            if (!prize) {
-              return false;
-            }
-
+            if (!prize) return false;
             return context.score >= prize.score;
           },
         },

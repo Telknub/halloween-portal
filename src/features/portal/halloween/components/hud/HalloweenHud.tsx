@@ -7,10 +7,11 @@ import { PortalMachineState } from "../../lib/halloweenMachine";
 import { HalloweenTimeScore } from "./HalloweenTimeScore";
 import { HalloweenSettings } from "./HalloweenSettings";
 import { HalloweenTravel } from "./HalloweenTravel";
-import { HalloweenInventory } from "./HalloweenInventory";
+// import { HalloweenInventory } from "./HalloweenInventory"; // REMOVIDO
 import { useAchievementToast } from "../../providers/AchievementToastProvider";
-import { HalloweenTimeDead } from "./HalloweenTimeDead";
+// import { HalloweenTimeDead } from "./HalloweenTimeDead"; // REMOVIDO
 import { HalloweenTarget } from "./HalloweenTarget";
+import { HealthBar } from "./HealthBar"; // NOVO
 
 const _isJoystickActive = (state: PortalMachineState) =>
   state.context.isJoystickActive;
@@ -25,10 +26,8 @@ export const HalloweenHud: React.FC = () => {
   const achievements = useSelector(portalService, _achievements);
   const isPlaying = useSelector(portalService, _isPlaying);
 
-  // achievement toast provider
   const { showAchievementToasts } = useAchievementToast();
 
-  // show new achievements
   const [existingAchievementNames, setExistingAchievements] = React.useState(
     Object.keys(achievements),
   );
@@ -56,7 +55,8 @@ export const HalloweenHud: React.FC = () => {
         >
           {isPlaying && (
             <>
-              <HalloweenTarget />
+              {/* <HalloweenTarget /> */}
+              <HealthBar />
               <HalloweenTimeScore />
             </>
           )}
@@ -64,12 +64,7 @@ export const HalloweenHud: React.FC = () => {
 
         <HalloweenTravel />
         <HalloweenSettings />
-        {isPlaying && (
-          <>
-            <HalloweenInventory />
-            <HalloweenTimeDead />
-          </>
-        )}
+        {/* Lógica de inventário removida */}
       </div>
     </HudContainer>
   );
