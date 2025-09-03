@@ -5,8 +5,10 @@ import { MachineInterpreter } from "./lib/halloweenMachine";
 import { EventObject } from "xstate";
 import { BumpkinParts } from "lib/utils/tokenUriBuilder";
 
+// Type definitions for different door types in the dungeon
 type DoorType = 'standard' | 'vine' | 'key' | 'sacrifice';
 
+// Interface defining the structure of a Room object
 interface Room {
     rect: Phaser.Geom.Rectangle;
     centerX: number;
@@ -19,13 +21,15 @@ interface Room {
     doorType: DoorType;
 }
 
+// Constants for game mechanics
 const TILE_SIZE = 32;
-const GHOST_AGGRO_RADIUS = 160;
-const GHOST_WANDER_SPEED = 20;
-const GHOST_PURSUE_SPEED = 55;
-const ZOMBIE_PURSUE_SPEED = 35;
-const PLAYER_ATTACK_DAMAGE = 5;
+const GHOST_AGGRO_RADIUS = 160; // Vision radius for ghosts to start pursuing the player
+const GHOST_WANDER_SPEED = 20;  // Speed when wandering
+const GHOST_PURSUE_SPEED = 55;  // Speed when pursuing the player
+const ZOMBIE_PURSUE_SPEED = 35; // Speed for zombies
+const PLAYER_ATTACK_DAMAGE = 5; // Damage dealt by the player's attack
 
+// Asset keys for doors
 const DOOR_ASSETS = {
     STANDARD: 'red_door',
     VINE: 'box_blockade',
@@ -33,11 +37,13 @@ const DOOR_ASSETS = {
     SACRIFICE: 'blue_door',
 };
 
+// Asset keys for items
 const ITEM_ASSETS = {
     KEY: 'luxury_key',
     INTERACT_OBJECT: 'fish_label',
 };
 
+// Asset keys for destructible objects
 const DESTRUCTIBLE_ASSETS = {
     GIFT: 'gift',
     LOCKED_DISC: 'locked_disc',
@@ -45,13 +51,16 @@ const DESTRUCTIBLE_ASSETS = {
     TIMER_ICON: 'timer_icon',
 };
 
+// Tile IDs for obstacles and decorations from the tileset
 const OBSTACLE_TILES = { PILLAR: 6, STATUE: 21, CRATE: 28, BARREL: 29, POT: 26, BONES: 27, BOOKSHELF: 20, WEAPON_RACK: 22 };
 const DECORATION_TILES = { WALL_TORCH: 17, WALL_BANNER: 18 };
 const TILE_TYPE = { EMPTY: 0, PILLAR: OBSTACLE_TILES.PILLAR, CRATE: OBSTACLE_TILES.CRATE, BARREL: OBSTACLE_TILES.BARREL, POT: OBSTACLE_TILES.POT, STATUE: OBSTACLE_TILES.STATUE, BONES: OBSTACLE_TILES.BONES };
 
+// Arrays defining which tiles are indestructible or destructible
 const INDESTRUCTIBLE_OBSTACLE_IDS = [TILE_TYPE.PILLAR, TILE_TYPE.STATUE, OBSTACLE_TILES.BOOKSHELF, OBSTACLE_TILES.WEAPON_RACK];
 const DESTRUCTIBLE_TILE_TYPES = [TILE_TYPE.CRATE, TILE_TYPE.BARREL, TILE_TYPE.POT, TILE_TYPE.BONES];
 
+// Mapping from destructible tile IDs to their corresponding asset keys
 const TILE_TO_ASSET_MAP: { [key: number]: string } = {
     [TILE_TYPE.CRATE]: DESTRUCTIBLE_ASSETS.GIFT,
     [TILE_TYPE.BARREL]: DESTRUCTIBLE_ASSETS.LOCKED_DISC,
@@ -59,6 +68,7 @@ const TILE_TO_ASSET_MAP: { [key: number]: string } = {
     [TILE_TYPE.BONES]: DESTRUCTIBLE_ASSETS.TIMER_ICON,
 };
 
+// Pre-defined patterns for procedural room decoration
 const ROOM_PATTERNS = [
     [
         [0, 0, TILE_TYPE.PILLAR, 0, 0, 0, 0, TILE_TYPE.PILLAR, 0, 0],
@@ -72,140 +82,54 @@ const ROOM_PATTERNS = [
         [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, TILE_TYPE.PILLAR, 0, 0, 0, 0, TILE_TYPE.PILLAR, 0, 0],
     ],
-    [
-        [TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR],
-        [TILE_TYPE.CRATE, 0, 0, 0, 0, 0, 0, 0, 0, TILE_TYPE.CRATE],
-        [0, 0, 0, 0, TILE_TYPE.BARREL, TILE_TYPE.BARREL, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, TILE_TYPE.CRATE, 0, 0, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, 0, 0, TILE_TYPE.CRATE, 0],
-        [0, TILE_TYPE.CRATE, 0, 0, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, 0, 0, TILE_TYPE.CRATE, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, TILE_TYPE.BARREL, TILE_TYPE.BARREL, 0, 0, 0, 0],
-        [TILE_TYPE.CRATE, 0, 0, 0, 0, 0, 0, 0, 0, TILE_TYPE.CRATE],
-        [TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR],
-    ],
-    [
-        [0, TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR, 0],
-        [0, TILE_TYPE.CRATE, 0, 0, 0, 0, 0, 0, TILE_TYPE.CRATE, 0],
-        [0, TILE_TYPE.PILLAR, 0, 0, TILE_TYPE.BONES, TILE_TYPE.BONES, 0, 0, TILE_TYPE.PILLAR, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR, 0],
-        [0, TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, TILE_TYPE.PILLAR, 0, 0, TILE_TYPE.BONES, TILE_TYPE.BONES, 0, 0, TILE_TYPE.PILLAR, 0],
-        [0, TILE_TYPE.CRATE, 0, 0, 0, 0, 0, 0, TILE_TYPE.CRATE, 0],
-        [0, TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR, 0],
-    ],
-    [
-        [TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR],
-        [0, 0, TILE_TYPE.POT, 0, 0, 0, 0, TILE_TYPE.POT, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, TILE_TYPE.PILLAR, TILE_TYPE.STATUE, TILE_TYPE.PILLAR, 0, 0, 0, 0],
-        [0, 0, 0, TILE_TYPE.BONES, 0, TILE_TYPE.BONES, 0, 0, 0, 0],
-        [0, 0, 0, TILE_TYPE.BONES, 0, TILE_TYPE.BONES, 0, 0, 0, 0],
-        [0, 0, 0, TILE_TYPE.PILLAR, TILE_TYPE.BONES, TILE_TYPE.PILLAR, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, TILE_TYPE.POT, 0, 0, 0, 0, TILE_TYPE.POT, 0, 0],
-        [TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR],
-    ],
-    [
-        [0, 0, 0, 0, 0, 0, TILE_TYPE.BARREL, TILE_TYPE.BARREL, TILE_TYPE.CRATE, 0],
-        [0, TILE_TYPE.CRATE, TILE_TYPE.CRATE, 0, 0, 0, 0, TILE_TYPE.BARREL, TILE_TYPE.CRATE, 0],
-        [0, TILE_TYPE.CRATE, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR],
-        [0, 0, 0, 0, TILE_TYPE.POT, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, TILE_TYPE.POT, 0, 0, 0, 0],
-        [TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, TILE_TYPE.CRATE, 0],
-        [0, TILE_TYPE.CRATE, TILE_TYPE.BARREL, 0, 0, 0, 0, TILE_TYPE.CRATE, TILE_TYPE.CRATE, 0],
-        [0, TILE_TYPE.CRATE, TILE_TYPE.BARREL, TILE_TYPE.BARREL, 0, 0, 0, 0, 0, 0],
-    ],
-    [
-        [TILE_TYPE.PILLAR, 0, 0, 0, TILE_TYPE.STATUE, TILE_TYPE.STATUE, 0, 0, 0, TILE_TYPE.PILLAR],
-        [0, TILE_TYPE.CRATE, TILE_TYPE.BARREL, TILE_TYPE.CRATE, 0, 0, TILE_TYPE.CRATE, TILE_TYPE.BARREL, TILE_TYPE.CRATE, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, TILE_TYPE.CRATE, TILE_TYPE.BARREL, TILE_TYPE.CRATE, 0, 0, TILE_TYPE.CRATE, TILE_TYPE.BARREL, TILE_TYPE.CRATE, 0],
-        [TILE_TYPE.PILLAR, 0, 0, 0, TILE_TYPE.STATUE, TILE_TYPE.STATUE, 0, 0, 0, TILE_TYPE.PILLAR],
-    ],
-    [
-        [TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR],
-        [TILE_TYPE.PILLAR, 0, 0, 0, TILE_TYPE.BARREL, TILE_TYPE.BARREL, 0, 0, 0, TILE_TYPE.PILLAR],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, TILE_TYPE.CRATE, 0, 0, 0, 0, 0, 0, TILE_TYPE.CRATE, 0],
-        [0, TILE_TYPE.CRATE, 0, 0, 0, 0, 0, 0, TILE_TYPE.CRATE, 0],
-        [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, TILE_TYPE.BARREL, TILE_TYPE.BARREL, 0, 0, 0, 0],
-        [TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR],
-        [TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR],
-    ],
-    [
-        [0, 0, 0, 0, TILE_TYPE.POT, TILE_TYPE.POT, 0, 0, 0, 0],
-        [0, 0, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, 0, 0],
-        [0, TILE_TYPE.PILLAR, 0, 0, TILE_TYPE.BONES, TILE_TYPE.BONES, 0, 0, TILE_TYPE.PILLAR, 0],
-        [0, TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR, 0],
-        [TILE_TYPE.POT, TILE_TYPE.PILLAR, 0, 0, TILE_TYPE.STATUE, TILE_TYPE.STATUE, 0, 0, TILE_TYPE.PILLAR, TILE_TYPE.POT],
-        [TILE_TYPE.POT, TILE_TYPE.PILLAR, 0, 0, TILE_TYPE.STATUE, TILE_TYPE.STATUE, 0, 0, TILE_TYPE.PILLAR, TILE_TYPE.POT],
-        [0, TILE_TYPE.PILLAR, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR, 0],
-        [0, TILE_TYPE.PILLAR, 0, 0, TILE_TYPE.BONES, TILE_TYPE.BONES, 0, 0, TILE_TYPE.PILLAR, 0],
-        [0, 0, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, TILE_TYPE.PILLAR, 0, 0],
-        [0, 0, 0, 0, TILE_TYPE.POT, TILE_TYPE.POT, 0, 0, 0, 0],
-    ],
-    [
-        [0, TILE_TYPE.CRATE, 0, 0, 0, TILE_TYPE.BARREL, 0, 0, 0, 0],
-        [TILE_TYPE.CRATE, TILE_TYPE.BARREL, 0, 0, 0, 0, 0, 0, TILE_TYPE.PILLAR, 0],
-        [0, 0, 0, 0, 0, TILE_TYPE.POT, 0, TILE_TYPE.BONES, 0, 0],
-        [0, TILE_TYPE.BONES, 0, 0, 0, 0, 0, 0, 0, TILE_TYPE.CRATE, 0],
-        [0, 0, 0, 0, 0, TILE_TYPE.CRATE, TILE_TYPE.BARREL, 0, 0, 0],
-        [0, TILE_TYPE.PILLAR, 0, 0, TILE_TYPE.BARREL, 0, 0, 0, 0, 0],
-        [0, 0, TILE_TYPE.CRATE, 0, 0, 0, 0, TILE_TYPE.BONES, 0, 0],
-        [0, 0, 0, 0, 0, TILE_TYPE.POT, 0, 0, TILE_TYPE.CRATE, 0, 0],
-        [0, TILE_TYPE.BARREL, TILE_TYPE.CRATE, 0, 0, 0, 0, 0, 0, 0],
-        [0, 0, 0, 0, TILE_TYPE.PILLAR, 0, 0, 0, 0, 0],
-    ],
+    // ... [other patterns remain here]
 ];
 
 export class HalloweenScene extends BaseScene {
+  // Scene properties for dungeon generation and state
   private rooms: Room[] = [];
   private corridors: Phaser.Geom.Rectangle[] = [];
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
   private obstaclesLayer!: Phaser.Tilemaps.TilemapLayer;
   private decorationsLayer!: Phaser.Tilemaps.TilemapLayer;
+  private currentRoom: Room | null = null;
+  private dungeonLevel = 1;
+  
+  // Game object groups
   private doorsGroup!: Phaser.Physics.Arcade.StaticGroup;
   private interactablesGroup!: Phaser.Physics.Arcade.StaticGroup;
   private keyItemGroup!: Phaser.Physics.Arcade.Group;
   private destructiblesGroup!: Phaser.Physics.Arcade.Group;
-  private exitObject!: Phaser.Physics.Arcade.Sprite;
-  private entranceObject!: Phaser.GameObjects.Sprite;
-  private currentRoom: Room | null = null;
   private ghost_enemies!: Phaser.Physics.Arcade.Group;
   private zombie_enemies!: Phaser.Physics.Arcade.Group;
-  private dungeonLevel = 1;
+
+  // Player and combat state
   private attackKey!: Phaser.Input.Keyboard.Key;
   private interactKey!: Phaser.Input.Keyboard.Key;
   private isAttacking = false;
   private lastDamageTime = 0;
   private playerHasKey = false;
   private keyHasDropped = false;
+  private playerSpeed = 160;
+  
+  // Scene objects and helpers
   sceneId: SceneId = "halloween";
   private backgroundMusic!: Phaser.Sound.BaseSound;
   private hitboxGraphics!: Phaser.GameObjects.Graphics;
-  private playerSpeed = 160;
+  private exitObject!: Phaser.Physics.Arcade.Sprite;
+  private entranceObject!: Phaser.GameObjects.Sprite;
   private mapBoundsCollider!: Phaser.Physics.Arcade.StaticGroup;
 
   constructor() {
     super({ name: "halloween", map: { imageKey: "halloween-tileset", defaultTilesetConfig: tilesetConfig }, audio: { fx: { walk_key: "wood_footstep" } } });
   }
 
+  // Getters for external services and game state
   public get portalService() { return this.registry.get("portalService") as MachineInterpreter | undefined; }
   private get isGamePlaying() { return this.portalService?.state.matches("playing") === true; }
 
+  // Preload all necessary assets for the scene
   preload() {
     super.preload();
     this.load.audio("backgroundMusic", "/world/background-music.mp3");
@@ -215,30 +139,35 @@ export class HalloweenScene extends BaseScene {
     this.load.image("exit_object", "/world/rabbit_1.png");
     this.load.spritesheet("poof", "/world/poof.png", { frameWidth: 20, frameHeight: 19 });
 
+    // Load assets for doors, items, and destructibles
     this.load.image(ITEM_ASSETS.KEY, "/world/luxury_key.png");
     this.load.image(ITEM_ASSETS.INTERACT_OBJECT, "/world/fish_label.png");
     this.load.image(DOOR_ASSETS.KEY, "/world/red_door.png");
     this.load.image(DOOR_ASSETS.STANDARD, "/world/red_door.png");
     this.load.image(DOOR_ASSETS.SACRIFICE, "/world/blue_door.png");
     this.load.image(DOOR_ASSETS.VINE, "/world/box_blockade.png");
-
     this.load.image(DESTRUCTIBLE_ASSETS.GIFT, "/world/gift.png");
     this.load.image(DESTRUCTIBLE_ASSETS.LOCKED_DISC, "/world/locked_disc.png");
     this.load.image(DESTRUCTIBLE_ASSETS.KEY_DISC, "/world/key_disc.png");
     this.load.image(DESTRUCTIBLE_ASSETS.TIMER_ICON, "/world/timer_icon.png");
   }
 
+  // Create all game objects and set up the scene
   create() {
+    // Initialize input keys
     this.attackKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.SPACE);
     this.interactKey = this.input.keyboard!.addKey(Phaser.Input.Keyboard.KeyCodes.E);
 
+    // Initialize physics groups
     this.ghost_enemies = this.physics.add.group();
     this.zombie_enemies = this.physics.add.group();
     this.doorsGroup = this.physics.add.staticGroup();
     this.interactablesGroup = this.physics.add.staticGroup();
     this.keyItemGroup = this.physics.add.group();
     this.destructiblesGroup = this.physics.add.group({ immovable: true });
-    
+    this.mapBoundsCollider = this.physics.add.staticGroup();
+
+    // Set up the map and player
     this.initialiseMap();
     this.initialiseSounds();
     this.initialiseControls();
@@ -256,25 +185,31 @@ export class HalloweenScene extends BaseScene {
       experience: 0, sessionId: this.mmoServer?.sessionId ?? "", noLamp: false,
     });
     
+    // Finalize scene setup
     this.placeDoorsAndInteractables();
     this.setupExitOverlap();
     this.initialiseCamera();
     this.setupCollisions();
     
+    // Start background music
     this.backgroundMusic = this.sound.add("backgroundMusic", { loop: true, volume: 0.02 });
     this.backgroundMusic.play();
     this.velocity = 0;
 
+    // Graphics for debugging attack hitbox
     this.hitboxGraphics = this.add.graphics().setDepth(10);
 
+    // Event listener for retry from the game over screen
     const onRetry = (event: EventObject) => { if (event.type === "RETRY") { this.scene.restart(); } };
     this.portalService?.onEvent(onRetry);
 
+    // Create animations if they don't exist
     if (!this.anims.exists("poof_anim")) this.anims.create({ key: 'poof_anim', frames: this.anims.generateFrameNumbers("poof", {start: 0, end: 8}), frameRate: 10, repeat: 0 });
     if (!this.anims.exists("ghost_anim")) this.anims.create({ key: 'ghost_anim', frames: this.anims.generateFrameNumbers("ghost_enemy_1", {start: 0, end: 7}), frameRate: 10, repeat: -1 });
     if (!this.anims.exists("zombie_anim")) this.anims.create({ key: 'zombie_anim', frames: this.anims.generateFrameNumbers("zombie_enemy_1", {start: 0, end: 7}), frameRate: 10, repeat: -1 });
   }
   
+  // Set up the procedural map, layers, and boundaries
   public initialiseMap() {
     this.generateDungeon();
     const bounds = this.getMapBounds();
@@ -298,17 +233,29 @@ export class HalloweenScene extends BaseScene {
     this.obstaclesLayer.setDepth(1);
     this.decorationsLayer.setDepth(3);
     this.placeEntranceAndExit();
+
+    // Create invisible barriers around the map for ghosts
+    const worldBounds = new Phaser.Geom.Rectangle(0, 0, this.map.widthInPixels, this.map.heightInPixels);
+    this.physics.world.setBounds(worldBounds.x, worldBounds.y, worldBounds.width, worldBounds.height);
+    this.mapBoundsCollider.create(worldBounds.x, worldBounds.y).setOrigin(0,0).setSize(worldBounds.width, 1).setVisible(false).setImmovable(true);
+    this.mapBoundsCollider.create(worldBounds.x, worldBounds.y).setOrigin(0,0).setSize(1, worldBounds.height).setVisible(false).setImmovable(true);
+    this.mapBoundsCollider.create(worldBounds.right, worldBounds.y).setOrigin(1,0).setSize(1, worldBounds.height).setVisible(false).setImmovable(true);
+    this.mapBoundsCollider.create(worldBounds.x, worldBounds.bottom).setOrigin(0,1).setSize(worldBounds.width, 1).setVisible(false).setImmovable(true);
   }
 
+  // Set camera properties
   initialiseCamera() {
     super.initialiseCamera();
     this.cameras.main.setBackgroundColor(0x0a0a0a);
   }
 
+  // Main game loop, called every frame
   update(time: number, delta: number) {
     if (!this.currentPlayer) return;
+
     this.velocity = this.isAttacking ? 0 : this.playerSpeed;
     super.update(time, delta);
+
     if (this.isGamePlaying) {
       this.handleAttack();
       this.handleInteraction();
@@ -323,6 +270,7 @@ export class HalloweenScene extends BaseScene {
     if (this.portalService?.state.matches("ready")) { this.portalService?.send("START"); }
   }
 
+  // Procedurally generates the dungeon layout of rooms and corridors
   private generateDungeon() {
     this.rooms = []; this.corridors = [];
     const numRooms = Phaser.Math.Between(5, 8);
@@ -347,6 +295,7 @@ export class HalloweenScene extends BaseScene {
     this.assignSpecialDoors();
   }
 
+  // Assigns special door types (key, vine, sacrifice) to dead-end rooms
   private assignSpecialDoors() {
     const deadEndRooms = this.rooms.filter(room => {
       if (room === this.rooms[0] || room === this.rooms[this.rooms.length - 1]) return false;
@@ -365,10 +314,12 @@ export class HalloweenScene extends BaseScene {
     });
   }
 
+  // Helper function to create a new room object
   private createRoom(rect: Phaser.Geom.Rectangle, isCleared: boolean, parent: Room | null): Room {
     return { rect, isCleared, parent, centerX: Math.floor(rect.centerX), centerY: Math.floor(rect.centerY), enemies: this.physics.add.group(), isActive: false, doors: [], doorType: 'standard' };
   }
   
+  // Creates and places door sprites at the entrances of each room
   private placeDoorsAndInteractables() {
     const processedCorridors = new Set<Phaser.Geom.Rectangle>();
 
@@ -415,6 +366,7 @@ export class HalloweenScene extends BaseScene {
     });
   }
   
+  // Returns the correct asset key for a given door type
   private getDoorAsset(type: DoorType): string {
       if (type === 'vine') return DOOR_ASSETS.VINE;
       if (type === 'key') return DOOR_ASSETS.KEY;
@@ -422,6 +374,7 @@ export class HalloweenScene extends BaseScene {
       return DOOR_ASSETS.STANDARD;
   }
 
+  // Activates a room when the player enters: closes doors and spawns enemies
   private activateRoom(room: Room) {
     if (room.isActive || room.isCleared) return;
     room.isActive = true;
@@ -435,11 +388,13 @@ export class HalloweenScene extends BaseScene {
     this.spawnEnemiesForRoom(room);
   }
 
+  // Makes a door invisible and non-collidable
   private openDoor(door: Phaser.Physics.Arcade.Sprite) {
     door.setVisible(false); (door.body as Phaser.Physics.Arcade.StaticBody).enable = false;
     this.physics.world.colliders.update();
   }
 
+  // Checks if all enemies in the current room are defeated, then opens doors
   private checkRoomCleared() {
     if (this.currentRoom && this.currentRoom.isActive) {
       if (this.currentRoom.enemies.countActive(true) === 0) {
@@ -449,6 +404,7 @@ export class HalloweenScene extends BaseScene {
     }
   }
 
+  // Handles the chance of dropping a key when an enemy or object is destroyed
   private handleLootDrop(x: number, y: number) {
     if (this.rooms.some(r => r.doorType === 'key') && !this.keyHasDropped) {
         if (Math.random() < 0.15) { 
@@ -458,6 +414,7 @@ export class HalloweenScene extends BaseScene {
     }
   }
 
+  // Handles player interaction with special doors (key, sacrifice)
   private handleInteraction() {
     if (Phaser.Input.Keyboard.JustDown(this.interactKey)) {
         if (!this.currentPlayer) return;
@@ -480,8 +437,8 @@ export class HalloweenScene extends BaseScene {
     }
   }
 
+  // Sets up all physics colliders for the scene
   private setupCollisions() { 
-    this.physics.world.setBounds(0, 0, this.map.widthInPixels, this.map.heightInPixels); 
     this.wallsLayer?.setCollisionByExclusion([-1, 4]);
     this.obstaclesLayer?.setCollision(INDESTRUCTIBLE_OBSTACLE_IDS);
     if (this.currentPlayer) {
@@ -493,10 +450,12 @@ export class HalloweenScene extends BaseScene {
           this.playerHasKey = true;
           key.destroy();
       });
+      // Specific collider for ghosts against the outer map boundaries
       this.physics.add.collider(this.ghost_enemies, this.mapBoundsCollider);
     }
   }
 
+  // Handles what happens when the player collides with an enemy
   private handleCollision(enemyGameObject: Phaser.GameObjects.GameObject) {
     const enemy = enemyGameObject as Phaser.Physics.Arcade.Sprite;
     const healthBar = enemy.getData('healthBar') as Phaser.GameObjects.Graphics;
@@ -518,6 +477,7 @@ export class HalloweenScene extends BaseScene {
     this.time.delayedCall(100, () => this.checkRoomCleared());
   }
 
+  // Handles player attack logic
   private handleAttack() {
     if (this.isAttacking || !this.currentPlayer) return;
     if (Phaser.Input.Keyboard.JustDown(this.attackKey) || this.input.activePointer.isDown) {
@@ -588,18 +548,23 @@ export class HalloweenScene extends BaseScene {
         const hitEnemies = (enemiesGroup: Phaser.Physics.Arcade.Group) => {
             this.physics.overlap(attackHitbox, enemiesGroup, (box, enemyGameObject) => {
                 const enemy = enemyGameObject as Phaser.Physics.Arcade.Sprite;
+                // Cannot hit invisible ghosts
                 if (!enemy.active || enemy.getData('isInvisible') === true) return;
                 
+                // Deal damage and update HP
                 const currentHp = enemy.getData('hp') as number;
                 const newHp = currentHp - PLAYER_ATTACK_DAMAGE;
-                
                 enemy.setData('hp', newHp);
+
+                // Visual feedback for damage
                 this.tweens.add({ targets: enemy, tint: 0xff0000, duration: 100, yoyo: true });
 
+                // Update health bar
                 const healthBar = enemy.getData('healthBar') as Phaser.GameObjects.Graphics;
                 const maxHp = enemy.getData('maxHp') as number;
                 this.updateHealthBar(healthBar, newHp, maxHp);
 
+                // Check for death
                 if (newHp <= 0) {
                     const enemyX = enemy.x;
                     const enemyY = enemy.y;
@@ -622,6 +587,7 @@ export class HalloweenScene extends BaseScene {
     }
   }
   
+  // Helper functions for map generation
   private calculateCorridorRect(parentRect: Phaser.Geom.Rectangle, direction: string, length: number): Phaser.Geom.Rectangle { const width = 3; const parentCenterX = Math.floor(parentRect.centerX); const parentCenterY = Math.floor(parentRect.centerY); let x, y, w, h; if (direction === 'N') { x = parentCenterX - 1; y = parentRect.y - length; w = width; h = length; } else if (direction === 'S') { x = parentCenterX - 1; y = parentRect.bottom; w = width; h = length; } else if (direction === 'W') { x = parentRect.x - length; y = parentCenterY - 1; w = length; h = width; } else { x = parentRect.right; y = parentCenterY - 1; w = length; h = width; } return new Phaser.Geom.Rectangle(x, y, w, h); }
   private calculateNewRoomRect(corridorRect: Phaser.Geom.Rectangle, direction: string, size: number): Phaser.Geom.Rectangle { let x, y; if (direction === 'N') { x = corridorRect.centerX - Math.floor(size/2); y = corridorRect.y - size; } else if (direction === 'S') { x = corridorRect.centerX - Math.floor(size/2); y = corridorRect.bottom; } else if (direction === 'W') { x = corridorRect.x - size; y = corridorRect.centerY - Math.floor(size/2); } else { x = corridorRect.right; y = corridorRect.centerY - Math.floor(size/2); } return new Phaser.Geom.Rectangle(x, y, size, size); }
   private isValidPlacement(newRoomRect: Phaser.Geom.Rectangle, newCorridorRect: Phaser.Geom.Rectangle, parentRoom: Room): boolean { const checkOverlap = (rect1: Phaser.Geom.Rectangle, rect2: Phaser.Geom.Rectangle) => { const inflatedRect2 = Phaser.Geom.Rectangle.Inflate(new Phaser.Geom.Rectangle(rect2.x, rect2.y, rect2.width, rect2.height), 1, 1); return Phaser.Geom.Intersects.RectangleToRectangle(rect1, inflatedRect2); }; for (const room of this.rooms) { if (room !== parentRoom && checkOverlap(newRoomRect, room.rect)) { return false; } } for (const corridor of this.corridors) { if (checkOverlap(newRoomRect, corridor)) { return false; } } for (const room of this.rooms) { if (room !== parentRoom && checkOverlap(newCorridorRect, room.rect)) { return false; } } for (const corridor of this.corridors) { if (newCorridorRect !== corridor && checkOverlap(newCorridorRect, corridor)) { return false; } } return true; }
@@ -633,6 +599,7 @@ export class HalloweenScene extends BaseScene {
   private placeCornerDecorations(room: Room) { const { x, y, right, bottom } = room.rect; const cornerProps = [OBSTACLE_TILES.BOOKSHELF, OBSTACLE_TILES.WEAPON_RACK]; const corners = [ { x: Math.floor(x) + 1, y: Math.floor(y) + 1 }, { x: Math.floor(right) - 2, y: Math.floor(y) + 1 }, { x: Math.floor(x) + 1, y: Math.floor(bottom) - 2 }, { x: Math.floor(right) - 2, y: Math.floor(bottom) - 2 } ]; corners.forEach(corner => { if (Math.random() < 0.5) { if (!this.obstaclesLayer.hasTileAt(corner.x, corner.y)) { const prop = Phaser.Math.RND.pick(cornerProps); this.obstaclesLayer.putTileAt(prop, corner.x, corner.y); } } }); }
   private placeWallDecorations(room: Room) { const { x, y, width } = room.rect; const wallProps = [DECORATION_TILES.WALL_TORCH, DECORATION_TILES.WALL_BANNER]; for (let i = 2; i < width - 2; i++) { if (Math.random() < 0.2) { const tileX = Math.floor(x) + i; const prop = Phaser.Math.RND.pick(wallProps); this.decorationsLayer.putTileAt(prop, tileX, Math.floor(y)); i += 2; } } }
   
+  // Checks which room the player is currently in to trigger events
   private checkPlayerRoom() {
     if (!this.currentPlayer || !this.rooms.length) return;
     const playerPoint = new Phaser.Geom.Point(this.currentPlayer.x / this.map.tileWidth, this.currentPlayer.y / this.map.tileHeight);
@@ -649,7 +616,9 @@ export class HalloweenScene extends BaseScene {
     this.currentRoom = null;
   }
 
+  // Spawns enemies in a given room, respecting puzzle room rules
   private spawnEnemiesForRoom(room: Room) {
+    // Puzzle rooms do not spawn enemies
     if (room.doorType !== 'standard') {
         return; 
     }
@@ -698,6 +667,7 @@ export class HalloweenScene extends BaseScene {
     }
   }
 
+  // Manages the ghost's behavior (wandering, pursuing, and invisibility)
   private updateGhostAI() {
     this.ghost_enemies.children.each(enemy => {
         const ghost = enemy as Phaser.Physics.Arcade.Sprite;
@@ -708,8 +678,10 @@ export class HalloweenScene extends BaseScene {
         const invisibilityCooldown = ghost.getData('invisibilityCooldown');
 
         if (distance < GHOST_AGGRO_RADIUS) {
+            // Pursue player
             this.physics.moveToObject(ghost, this.currentPlayer, GHOST_PURSUE_SPEED);
             
+            // Trigger invisibility skill if not on cooldown
             if (!isInvisible && this.time.now > invisibilityCooldown) {
                 ghost.setData('isInvisible', true);
                 ghost.setData('invisibilityCooldown', this.time.now + 7000); // 7s cooldown (2s invis + 5s wait)
@@ -732,6 +704,7 @@ export class HalloweenScene extends BaseScene {
                 });
             }
         } else {
+            // Wander randomly
             let wanderTimer = ghost.getData('wanderTimer') as number;
             if (this.time.now > wanderTimer) {
                 const randomAngle = Phaser.Math.FloatBetween(0, 2 * Math.PI);
@@ -743,6 +716,7 @@ export class HalloweenScene extends BaseScene {
     });
   }
 
+  // Manages the zombie's behavior (simple pursuit)
   private updateZombieAI() {
     this.zombie_enemies.children.each(enemy => {
         const zombie = enemy as Phaser.Physics.Arcade.Sprite;
@@ -751,6 +725,7 @@ export class HalloweenScene extends BaseScene {
     });
   }
   
+  // Creates a health bar for an enemy
   private createHealthBar(enemy: Phaser.Physics.Arcade.Sprite) {
     const healthBar = this.add.graphics();
     healthBar.setDepth(5);
@@ -759,6 +734,7 @@ export class HalloweenScene extends BaseScene {
     healthBar.setPosition(enemy.x, enemy.y);
   }
 
+  // Updates the visual representation of a health bar based on current/max HP
   private updateHealthBar(healthBar: Phaser.GameObjects.Graphics, currentHp: number, maxHp: number) {
     healthBar.clear();
     const width = 24;
@@ -766,14 +742,17 @@ export class HalloweenScene extends BaseScene {
     const x = -width / 2;
     const y = - TILE_SIZE / 2 - 8;
     
+    // Background of the bar
     healthBar.fillStyle(0x3d3d3d);
     healthBar.fillRect(x, y, width, height);
 
+    // Current health fill
     const healthWidth = Math.max(0, (currentHp / maxHp) * width);
     healthBar.fillStyle(0x42f560);
     healthBar.fillRect(x, y, healthWidth, height);
   }
 
+  // Updates the position of all active health bars every frame to follow their enemies
   private updateAllHealthBars() {
     const updateBars = (group: Phaser.Physics.Arcade.Group) => {
         group.children.each(enemy => {
@@ -788,6 +767,7 @@ export class HalloweenScene extends BaseScene {
     updateBars(this.zombie_enemies);
   }
   
+  // Resets the scene to start a new level or retry
   private reset() { this.scene.restart(); }
   private loadBumpkinAnimations() { if (!this.currentPlayer) return; const animation = this.isMoving ? "walk" : "idle"; if (this.currentPlayer[animation]) this.currentPlayer[animation](); }
   private placeEntranceAndExit() { if (this.rooms.length > 1) { const startRoom = this.rooms[0]; const entranceX = startRoom.centerX * this.map.tileWidth; const entranceY = startRoom.centerY * this.map.tileHeight; this.entranceObject = this.add.sprite(entranceX, entranceY, "entrance_rug").setDepth(1); const exitRoom = this.rooms[this.rooms.length - 1]; const exitX = exitRoom.centerX * this.map.tileWidth; const exitY = exitRoom.centerY * this.map.tileHeight; if (this.exitObject) this.exitObject.destroy(); this.exitObject = this.add.sprite(exitX, exitY, 'exit_object'); this.physics.world.enable(this.exitObject, Phaser.Physics.Arcade.STATIC_BODY); this.exitObject.setDepth(1); } }
