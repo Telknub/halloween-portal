@@ -95,12 +95,15 @@ export function makeGame(farm: any): GameState {
     experiments: farm.experiments,
     rewards: farm.rewards,
     megastore: {
-      available: {
-        from: 0,
-        to: 0,
-      },
-      collectibles: [],
-      wearables: [],
+      ...farm.megastore,
+      wearables: farm.megastore.wearables.map((wearable: any) => ({
+        ...wearable,
+        price: new Decimal(wearable.price),
+      })),
+      collectibles: farm.megastore.collectibles.map((collectible: any) => ({
+        ...collectible,
+        price: new Decimal(collectible.price),
+      })),
     },
     goblinMarket: farm.goblinMarket,
     faction: farm.faction,
