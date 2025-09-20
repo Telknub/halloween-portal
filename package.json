@@ -23,6 +23,7 @@
     "not op_mini all"
   ],
   "dependencies": {
+    "0xsequence": "^1.8.7",
     "@0xsequence/wagmi-connector": "^3.1.1",
     "@anima-protocol/personhood-sdk-react": "^0.4.6",
     "@headlessui/react": "^1.7.18",
@@ -37,7 +38,6 @@
     "@walletconnect/modal": "^2.5.4",
     "@xstate/inspect": "^0.6.2",
     "@xstate/react": "^3.0.1",
-    "0xsequence": "^1.8.7",
     "bad-words": "^3.0.4",
     "browserify-zlib": "^0.2.0",
     "canvas-confetti": "^1.9.2",

@@ -16,7 +16,10 @@ export const HalloweenPhaser: React.FC = () => {
 
   const game = useRef<Game>();
 
+  // This must match the key of your scene [HalloweenScene]
   const scene = "halloween";
+
+  // Preloader is useful if you want to load the standard Sunflower Land assets + SFX
   const scenes = [Preloader, HalloweenScene];
 
   useEffect(() => {
@@ -28,20 +31,30 @@ export const HalloweenPhaser: React.FC = () => {
       },
       backgroundColor: "#000000",
       parent: "phaser-example",
+
       autoRound: true,
       pixelArt: true,
       plugins: {
         global: [
-          { key: "rexNinePatchPlugin", plugin: NinePatchPlugin, start: true },
-          { key: "rexVirtualJoystick", plugin: VirtualJoystickPlugin, start: true },
+          {
+            key: "rexNinePatchPlugin",
+            plugin: NinePatchPlugin,
+            start: true,
+          },
+          {
+            key: "rexVirtualJoystick",
+            plugin: VirtualJoystickPlugin,
+            start: true,
+          },
         ],
       },
       width: window.innerWidth,
       height: window.innerHeight,
+
       physics: {
         default: "arcade",
         arcade: {
-          debug: false, // DESATIVADO
+          debug: true,
           gravity: { x: 0, y: 0 },
         },
       },
@@ -71,8 +84,15 @@ export const HalloweenPhaser: React.FC = () => {
   return (
     <div>
       <div id="game-content" ref={ref} />
+
+      {/* Comment out if you don't want to use our standard Bumpkin NPCs + click interactions */}
       <NPCModals id={portalState.context.id as number} scene={"halloween"} />
-      <InteractableModals id={portalState.context.id as number} scene="halloween" />
+
+      {/* Comment out if you don't want to use pop up modals from in game interactables */}
+      <InteractableModals
+        id={portalState.context.id as number}
+        scene="halloween"
+      />
     </div>
   );
 };
