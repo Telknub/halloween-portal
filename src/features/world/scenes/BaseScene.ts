@@ -54,14 +54,14 @@ export type NPCBumpkin = {
 const SEND_PACKET_RATE = 10;
 const NAME_TAG_OFFSET_PX = 12;
 
-export const HALLOWEEN_SQUARE_WIDTH = 32;
+export const HALLOWEEN_SQUARE_WIDTH = 16;
 export const WALKING_SPEED = 50;
 
 type BaseSceneOptions = {
   name: SceneId;
   map: {
     tilesetUrl?: string;
-    json: any;
+    json?: any;
     padding?: [number, number];
     imageKey?: string;
     defaultTilesetConfig?: any;
@@ -454,37 +454,37 @@ export abstract class BaseScene extends Phaser.Scene {
     // Debugging purposes - display colliders in pink
     this.physics.world.drawDebug = false;
 
-    // // Set up the Z layers to draw in correct order
-    // const TOP_LAYERS = [
-    //   "Decorations Layer 1",
-    //   "Decorations Foreground",
-    //   "Decorations Layer 2",
-    //   "Decorations Layer 3",
-    //   "Decorations Layer 4",
-    //   "Building Layer 2",
-    //   "Building Layer 3",
-    //   "Building Layer 4",
-    //   "Club House Roof",
-    //   "Building Layer 4",
-    //   "Building Decorations 2",
-    // ];
-    // this.map.layers.forEach((layerData, idx) => {
-    //   if (layerData.name === "Crows" || layerData.name === "NewLayer") return;
+    // Set up the Z layers to draw in correct order
+    const TOP_LAYERS = [
+      "Decorations Layer 1",
+      "Decorations Foreground",
+      "Decorations Layer 2",
+      "Decorations Layer 3",
+      "Decorations Layer 4",
+      "Building Layer 2",
+      "Building Layer 3",
+      "Building Layer 4",
+      "Club House Roof",
+      "Building Layer 4",
+      "Building Decorations 2",
+    ];
+    this.map.layers.forEach((layerData, idx) => {
+      if (layerData.name === "Crows" || layerData.name === "NewLayer") return;
 
-    //   const layer = this.map.createLayer(layerData.name, [tileset], 0, 0);
-    //   if (TOP_LAYERS.includes(layerData.name)) {
-    //     layer?.setDepth(1000000);
-    //   }
+      const layer = this.map.createLayer(layerData.name, [tileset], 0, 0);
+      if (TOP_LAYERS.includes(layerData.name)) {
+        layer?.setDepth(1000000);
+      }
 
-    //   this.layers[layerData.name] = layer as Phaser.Tilemaps.TilemapLayer;
-    // });
+      this.layers[layerData.name] = layer as Phaser.Tilemaps.TilemapLayer;
+    });
 
-    this.physics.world.setBounds(
-      0,
-      0,
-      this.map.width * HALLOWEEN_SQUARE_WIDTH,
-      this.map.height * HALLOWEEN_SQUARE_WIDTH,
-    );
+    // this.physics.world.setBounds(
+    //   0,
+    //   0,
+    //   this.map.width * HALLOWEEN_SQUARE_WIDTH,
+    //   this.map.height * HALLOWEEN_SQUARE_WIDTH,
+    // );
   }
 
   public initialiseCamera() {
@@ -498,13 +498,6 @@ export abstract class BaseScene extends Phaser.Scene {
     );
 
     camera.setZoom(this.zoom);
-
-    // Center it on canvas
-    const offsetX =
-      (window.innerWidth - this.map.width * 4 * HALLOWEEN_SQUARE_WIDTH) / 2;
-    const offsetY =
-      (window.innerHeight - this.map.height * 4 * HALLOWEEN_SQUARE_WIDTH) / 2;
-    camera.setPosition(Math.max(offsetX, 0), Math.max(offsetY, 0));
 
     camera.fadeIn(500);
 

@@ -33,6 +33,8 @@ import { SPAWNS } from "features/world/lib/spawn";
 import { createLightPolygon } from "./lib/HalloweenUtils";
 import { Physics } from "phaser";
 import { isTouchDevice } from "features/world/lib/device";
+import { Map } from "./map/map";
+import { BlacksmithContainer } from "./containers/BlacksmithContainer";
 
 // export const NPCS: NPCBumpkin[] = [
 //   {
@@ -95,7 +97,6 @@ export class HalloweenScene extends BaseScene {
     super({
       name: "halloween",
       map: {
-        json: mapJson,
         imageKey: "halloween-tileset",
         defaultTilesetConfig: tilesetConfig,
       },
@@ -160,46 +161,66 @@ export class HalloweenScene extends BaseScene {
       frameWidth: 96,
       frameHeight: 21,
     });
+
+    // Halloween 2025
+    this.load.spritesheet("blacksmith", "world/blacksmith.webp", {
+      frameWidth: 45,
+      frameHeight: 58,
+    });
   }
 
+  // init(data: any) {
+  //   if (data) {
+  //     console.log(data.score);
+  //     console.log(data.level);
+  //   }
+  // }
+
   async create() {
-    this.map = this.make.tilemap({
-      key: "halloween",
-    });
-
     super.create();
+    new Map({
+      scene: this,
+      player: this.currentPlayer,
+    });
 
-    this.initializeControls();
-    this.initShaders();
+    // setTimeout(() => {
+    //   this.scene.restart({
+    //     score: 2000,
+    //     level: 3,
+    //   });
+    // }, 5000);
 
-    this.backgroundMusic = this.sound.add("backgroundMusic", {
-      loop: true,
-      volume: 0.02,
-    });
-    this.backgroundMusic.play();
-    this.ghostSound = this.sound.add("ghostSound", {
-      loop: true,
-      volume: 0.0,
-    });
-    this.ghostSound.play();
-    this.zombieSound = this.sound.add("zombieSound", {
-      loop: true,
-      volume: 0.0,
-    });
-    this.zombieSound.play();
+    // this.initializeControls();
+    // this.initShaders();
+
+    // this.backgroundMusic = this.sound.add("backgroundMusic", {
+    //   loop: true,
+    //   volume: 0.02,
+    // });
+    // this.backgroundMusic.play();
+    // this.ghostSound = this.sound.add("ghostSound", {
+    //   loop: true,
+    //   volume: 0.0,
+    // });
+    // this.ghostSound.play();
+    // this.zombieSound = this.sound.add("zombieSound", {
+    //   loop: true,
+    //   volume: 0.0,
+    // });
+    // this.zombieSound.play();
 
     // this.AnimationEnemy_2();  // Create zombie animations
 
-    // this.physics.world.drawDebug = true;
+    this.physics.world.drawDebug = false;
 
     // Important to first save the player and then the lamps
-    this.currentPlayer && (this.lightedItems[0] = this.currentPlayer);
-    this.lightedItems[1] = { x: -500, y: -500 };
-    this.createMask();
-    this.createWalls();
-    this.createAllLamps();
+    // this.currentPlayer && (this.lightedItems[0] = this.currentPlayer);
+    // this.lightedItems[1] = { x: -500, y: -500 };
+    // this.createMask();
+    // this.createWalls();
+    // this.createAllLamps();
 
-    this.velocity = 0;
+    // this.velocity = 0;
 
     // reload scene when player hit retry
     const onRetry = (event: EventObject) => {
@@ -219,48 +240,6 @@ export class HalloweenScene extends BaseScene {
       }
     };
     this.portalService?.onEvent(onRetry);
-
-    // Prevent zoom
-    window.addEventListener(
-      "wheel",
-      function (e) {
-        if (e.ctrlKey) {
-          e.preventDefault();
-        }
-      },
-      { passive: false },
-    );
-    window.addEventListener("keydown", function (e) {
-      if (
-        (e.ctrlKey || e.metaKey) &&
-        (e.key === "+" || e.key === "-" || e.key === "=")
-      ) {
-        e.preventDefault();
-      }
-    });
-    document.addEventListener(
-      "touchstart",
-      function (e) {
-        if (e.touches.length > 1) {
-          e.preventDefault();
-        }
-      },
-      { passive: false },
-    );
-    document.addEventListener("gesturestart", function (e) {
-      e.preventDefault();
-    });
-
-    document.addEventListener("visibilitychange", () => {
-      if (document.hidden) {
-        this.gameOverNoMoveTime = Date.now();
-      } else {
-        const diff = Date.now() - this.gameOverNoMoveTime;
-        if (diff > 5000) {
-          this.portalService?.send("GAME_OVER");
-        }
-      }
-    });
   }
 
   update() {
@@ -269,10 +248,10 @@ export class HalloweenScene extends BaseScene {
     if (this.portalService?.state.context.lamps === -1) {
       this.endGame();
     } else {
-      if (this.portalService?.state.context.isJoystickActive) {
-        this.setJoystickPosition();
-      }
-      this.adjustShaders();
+      // if (this.portalService?.state.context.isJoystickActive) {
+      //   this.setJoystickPosition();
+      // }
+      // this.adjustShaders();
 
       // Shadows
       // const { x: currentX = 0, y: currentY = 0 } = this.currentPlayer ?? {};
@@ -285,44 +264,41 @@ export class HalloweenScene extends BaseScene {
       // }
 
       if (this.isGamePlaying) {
-        this.updateAmountLamps();
-
-        this.enemy_1();
-        this.faceDirectionEnemy_1();
-
-        this.enemy_2();
-        this.checkZombiesInsideWalls();
-        this.faceDirectionEnemy_2();
-        this.portalService?.send("GAIN_POINTS");
-
-        if (!this.isMoving) {
-          this.gameOverNoMove += 1;
-          if (this.gameOverNoMove > 1000) {
-            this.portalService?.send("GAME_OVER");
-          }
-          if (this.gameOverNoMove > 500) {
-            this.currentPlayer.addLabel("Move!");
-          }
-        } else {
-          this.gameOverNoMove = 0;
-        }
-        if (this.portalService?.state.context.lamps === 0) {
-          this.playWarningSound();
-        }
-        if (
-          (this.portalService as MachineInterpreter)?.state.context.lamps > 0
-        ) {
-          this.stopWarningSound();
-        }
+        // this.updateAmountLamps();
+        // this.enemy_1();
+        // this.faceDirectionEnemy_1();
+        // this.enemy_2();
+        // this.checkZombiesInsideWalls();
+        // this.faceDirectionEnemy_2();
+        // this.portalService?.send("GAIN_POINTS");
+        // if (!this.isMoving) {
+        //   this.gameOverNoMove += 1;
+        //   if (this.gameOverNoMove > 1000) {
+        //     this.portalService?.send("GAME_OVER");
+        //   }
+        //   if (this.gameOverNoMove > 500) {
+        //     this.currentPlayer.addLabel("Move!");
+        //   }
+        // } else {
+        //   this.gameOverNoMove = 0;
+        // }
+        // if (this.portalService?.state.context.lamps === 0) {
+        //   this.playWarningSound();
+        // }
+        // if (
+        //   (this.portalService as MachineInterpreter)?.state.context.lamps > 0
+        // ) {
+        //   this.stopWarningSound();
+        // }
       } else {
         this.velocity = 0;
       }
 
       this.loadBumpkinAnimations();
 
-      this.setLampSpawnTime();
-      this.handleZombieSound();
-      this.handleGhostSound();
+      // this.setLampSpawnTime();
+      // this.handleZombieSound();
+      // this.handleGhostSound();
 
       if (this.isGameReady) {
         this.portalService?.send("START");
@@ -331,7 +307,7 @@ export class HalloweenScene extends BaseScene {
       }
     }
 
-    this.currentPlayer.updateLightRadius();
+    // this.currentPlayer.updateLightRadius();
 
     super.update();
   }

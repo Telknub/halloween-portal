@@ -43,6 +43,10 @@ export abstract class Preloader extends Phaser.Scene {
       );
 
       this.load.image("halloween-tileset", `world/labirinto_tileset.png`);
+      this.load.image(
+        "halloween-2025-tileset",
+        `world/halloween_2025_tileset.png`,
+      );
 
       this.load.image(
         "easter-tileset",

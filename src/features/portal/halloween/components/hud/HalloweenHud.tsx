@@ -64,12 +64,12 @@ export const HalloweenHud: React.FC = () => {
 
         <HalloweenTravel />
         <HalloweenSettings />
-        {isPlaying && (
+        {/* {isPlaying && (
           <>
             <HalloweenInventory />
             <HalloweenTimeDead />
           </>
-        )}
+        )} */}
       </div>
     </HudContainer>
   );

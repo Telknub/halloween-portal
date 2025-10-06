@@ -1,6 +1,41 @@
 import { Equipped } from "features/game/types/bumpkin";
 import { ITEM_DETAILS } from "features/game/types/images";
 import { translate } from "lib/i18n/translate";
+import { ROOM_INNER_HEIGHT, ROOM_INNER_WIDTH } from "./map/rooms/RoomTileMap";
+
+export type Direction = "top" | "bottom" | "left" | "right";
+export type RoomType =
+  | "initial"
+  | "enemy"
+  | "puzzle"
+  | "boss"
+  | "blacksmith"
+  | "skeleton";
+
+export const OPPOSITE_DIRECTIONS: Record<Direction, Direction> = {
+  top: "bottom",
+  bottom: "top",
+  left: "right",
+  right: "left",
+};
+
+export const TILE_SIZE = 32;
+export const MAP_OFFSET = TILE_SIZE * 3;
+export const MAP_OFFSET_X_RULES: Partial<Record<Direction, number>> = {
+  left: 1,
+  right: -1,
+};
+export const MAP_OFFSET_Y_RULES: Partial<Record<Direction, number>> = {
+  top: 1,
+  bottom: -1,
+};
+
+export const OUTER_WALL_THICKNESS = 3;
+
+export const BLACKSMITH_CONFIGURATION = {
+  x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
+  y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 2 + 5,
+};
 
 export const LAMPS_CONFIGURATION: { x: number; y: number }[] = [
   { x: 290, y: 120 },
@@ -61,6 +96,7 @@ export const SET_SLOW_DOWN = 0.5; // Reduce player's velocity to 50%
 export const SET_SLOW_DOWN_DURATION = 5000; // Slow down for 5 seconds (5000 milliseconds)
 export const ACCUMULATED_SLOWDOWN = 0; // Track total accumulated slowdown time
 export const SET_VISION_RANGE = 200; // Set the vision zombies
+export const AMOUNT_ENEMIES = 5;
 
 export const ITEM_BUMPKIN = {
   x: 0,
