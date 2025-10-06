@@ -152,3 +152,7 @@ export const HALLOWEEN_NPC_WEARABLES: Equipped = {
   background: "Cemetery Background",
   shoes: "Brown Boots",
 };
+
+// Mini_game
+export const SUDOKU_COMPLEXITY = 4;
+export const TEXT = "You got it!";
