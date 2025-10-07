@@ -6,10 +6,10 @@ import {
   TEXT,
 } from "features/portal/halloween/HalloweenConstants";
 import { PIXEL_SCALE } from "features/game/lib/constants";
-import eye from "public/world/Halloween2025/Eye.webp";
-import brain from "public/world/Halloween2025/Brain.webp";
-import skull from "public/world/Halloween2025/Skull.webp";
-import bone from "public/world/Halloween2025/Bone.webp";
+import eye from "public/world/halloween/Eye.webp";
+import brain from "public/world/halloween/Brain.webp";
+import skull from "public/world/halloween/Skull.webp";
+import bone from "public/world/halloween/Bone.webp";
 
 const shovel = SUNNYSIDE.tools.rusty_shovel;
 
