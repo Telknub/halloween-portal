@@ -15,6 +15,7 @@ import {
   ROOM_INNER_WIDTH,
   ROOM_TOTAL_HEIGHT,
   ROOM_TOTAL_WIDTH,
+  smallRoom,
   TILES,
 } from "./RoomTileMap";
 import { BaseScene } from "features/world/scenes/BaseScene";
@@ -167,6 +168,34 @@ export class BaseRoom {
     };
     this.next.relativePosition.x += rulesX[direction] ?? 0;
     this.next.relativePosition.y += rulesY[direction] ?? 0;
+  }
+
+  protected spawnObjectRandomly(
+    addContainer: (x: number, y: number) => void,
+    excludeSmallRoom = false,
+  ) {
+    let isGround = false;
+
+    while (!isGround) {
+      const tileX = Math.floor(Math.random() * this.getContentMatrix[0].length);
+      const tileY = Math.floor(Math.random() * this.getContentMatrix.length);
+      const isInsideSmallRoom =
+        tileX >= 3 &&
+        tileX <= smallRoom[0].length &&
+        tileY >= 2 &&
+        tileY <= smallRoom.length;
+
+      if (
+        this.getContentMatrix[tileY][tileX] === TILES.GROUND &&
+        (!excludeSmallRoom || isInsideSmallRoom)
+      ) {
+        const posX = tileX * TILE_SIZE;
+        const posY = tileY * TILE_SIZE;
+        const { x, y } = this.getRelativePosition(posX, posY);
+        addContainer(x, y);
+        isGround = true;
+      }
+    }
   }
 
   private createRandomPath({ entry, excludedSide }: CreateRandomPathProps) {

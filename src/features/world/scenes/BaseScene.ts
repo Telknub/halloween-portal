@@ -55,7 +55,7 @@ const SEND_PACKET_RATE = 10;
 const NAME_TAG_OFFSET_PX = 12;
 
 export const HALLOWEEN_SQUARE_WIDTH = 16;
-export const WALKING_SPEED = 50;
+export const WALKING_SPEED = 300;
 
 type BaseSceneOptions = {
   name: SceneId;
