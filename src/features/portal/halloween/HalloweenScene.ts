@@ -163,9 +163,50 @@ export class HalloweenScene extends BaseScene {
     });
 
     // Halloween 2025
+    // Blacksmith
     this.load.spritesheet("blacksmith", "world/blacksmith.webp", {
       frameWidth: 45,
       frameHeight: 58,
+    });
+
+    // Statues
+    this.load.image("statue1", "world/statue1_idle.webp");
+    this.load.image("statue2", "world/statue2_idle.webp");
+    this.load.image("statue3", "world/statue3_idle.webp");
+    this.load.image("statue4", "world/statue4_idle.webp");
+
+    this.load.spritesheet("statue1_hit", "world/statue1_hit.webp", {
+      frameWidth: 17,
+      frameHeight: 30,
+    });
+    this.load.spritesheet("statue2_hit", "world/statue2_hit.webp", {
+      frameWidth: 17,
+      frameHeight: 33,
+    });
+    this.load.spritesheet("statue3_hit", "world/statue3_hit.webp", {
+      frameWidth: 17,
+      frameHeight: 32,
+    });
+    this.load.spritesheet("statue4_hit", "world/statue4_hit.webp", {
+      frameWidth: 17,
+      frameHeight: 33,
+    });
+
+    this.load.spritesheet("statue1_break", "world/statue1_break.webp", {
+      frameWidth: 17,
+      frameHeight: 30,
+    });
+    this.load.spritesheet("statue2_break", "world/statue2_break.webp", {
+      frameWidth: 17,
+      frameHeight: 33,
+    });
+    this.load.spritesheet("statue3_break", "world/statue3_break.webp", {
+      frameWidth: 17,
+      frameHeight: 32,
+    });
+    this.load.spritesheet("statue4_break", "world/statue4_break.webp", {
+      frameWidth: 17,
+      frameHeight: 33,
     });
   }
 
@@ -211,7 +252,7 @@ export class HalloweenScene extends BaseScene {
 
     // this.AnimationEnemy_2();  // Create zombie animations
 
-    this.physics.world.drawDebug = false;
+    this.physics.world.drawDebug = true;
 
     // Important to first save the player and then the lamps
     // this.currentPlayer && (this.lightedItems[0] = this.currentPlayer);

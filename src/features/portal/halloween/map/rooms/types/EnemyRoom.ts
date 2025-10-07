@@ -29,29 +29,16 @@ export class EnemyRoom extends BaseRoom {
 
   private createEnemies() {
     for (let i = 0; i < AMOUNT_ENEMIES; i++) {
-      this.createEnemy();
+      this.spawnObjectRandomly((x, y) => this.createEnemy(x, y));
     }
   }
 
-  private createEnemy() {
-    let isGround = false;
-
-    while (!isGround) {
-      const tileX = Math.floor(Math.random() * this.getContentMatrix[0].length);
-      const tileY = Math.floor(Math.random() * this.getContentMatrix.length);
-
-      if (this.getContentMatrix[tileY][tileX] === TILES.GROUND) {
-        const posX = tileX * TILE_SIZE;
-        const posY = tileY * TILE_SIZE;
-        const { x, y } = this.getRelativePosition(posX, posY);
-        // Add logic to add enemy
-        // new EnemyContainer({
-        //   x,
-        //   y,
-        //   ...
-        // })
-        isGround = true;
-      }
-    }
+  private createEnemy(x: number, y: number) {
+    // Create logic to add your enemy
+    // new EnemyContainer({
+    //   x,
+    //   y,
+    //   ...
+    // })
   }
 }

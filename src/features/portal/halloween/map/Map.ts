@@ -25,7 +25,7 @@ export class Map {
     this.createMap();
     this.initialiseCamera();
     this.initialiseLayers();
-    this.initialiseCollisions();
+    // this.initialiseCollisions();
     this.initialiseObjects();
   }
 
