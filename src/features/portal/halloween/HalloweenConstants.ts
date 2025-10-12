@@ -2,6 +2,7 @@ import { Equipped } from "features/game/types/bumpkin";
 import { ITEM_DETAILS } from "features/game/types/images";
 import { translate } from "lib/i18n/translate";
 import { ROOM_INNER_HEIGHT, ROOM_INNER_WIDTH } from "./map/rooms/RoomTileMap";
+import slidingPuzzleImg from "public/world/halloween/ForSlidingPuzzle.webp";
 
 export type Direction = "top" | "bottom" | "left" | "right";
 export type RoomType =
@@ -182,3 +183,10 @@ export const ACTIVATE_FLAMETHROWER = {
   position_2,
   position_3: position_1 + position_2,
 };
+
+export const SLIDING_PUZZLE_MOVESTOSOLVE = 4;
+export const SLIDING_PUZZLE_IMG = slidingPuzzleImg;
+export const VICTORY_TEXT = {
+  Sudoku: "You got it!",
+  SlidinpPuzzle: "Puzzle Solved!",
+}
