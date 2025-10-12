@@ -1,10 +1,6 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseScene } from "features/world/scenes/BaseScene";
 import { MachineInterpreter } from "../lib/halloweenMachine";
-import { MAX_PLAYER_LAMPS } from "../HalloweenConstants";
-import { VisibilityPolygon } from "../lib/visibilityPolygon";
-import { createLightPolygon } from "../lib/HalloweenUtils";
-import { translate } from "lib/i18n/translate";
 
 interface Props {
   x: number;
@@ -12,63 +8,40 @@ interface Props {
   id: number;
   scene: BaseScene;
   player?: BumpkinContainer;
-  visibilityPolygon?: VisibilityPolygon;
-  polygonWalls?: [number, number][][];
 }
 
 export class LampContainer extends Phaser.GameObjects.Container {
+  private id: number;
   private player?: BumpkinContainer;
-  private visibilityPolygon?: VisibilityPolygon;
-  private polygonWalls?: [number, number][][];
-  polygonLight!: number[][] | null;
+  private spriteName: string;
+  private sprite: Phaser.GameObjects.Sprite;
 
-  constructor({
-    x,
-    y,
-    id,
-    scene,
-    player,
-    visibilityPolygon,
-    polygonWalls,
-  }: Props) {
+  constructor({ x, y, id, scene, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
+    this.id = id;
     this.player = player;
-    this.visibilityPolygon = visibilityPolygon;
-    this.polygonWalls = polygonWalls;
 
     // Sprite Lamp
-    const spriteName = "lamp";
-    const lamp = scene.add.sprite(0, 0, spriteName);
+    this.spriteName = "lamp";
+    this.sprite = scene.add.sprite(0, 0, this.spriteName);
 
     // Animation
-    this.scene.anims.create({
-      key: `${spriteName}_${id}_action`,
-      frames: this.scene.anims.generateFrameNumbers(spriteName, {
-        start: 0,
-        end: 3,
-      }),
-      repeat: -1,
-      frameRate: 10,
-    });
-    lamp.play(`${spriteName}_${id}_action`, true);
+    this.createAnimation();
 
-    scene.physics.add.existing(this);
+    if (id !== -1) {
+      // Overlaps
+      this.createOverlaps();
 
-    if (!!this.body && !!player) {
+      scene.physics.add.existing(this);
       (this.body as Phaser.Physics.Arcade.Body)
-        .setSize(lamp.width, lamp.height)
-        .setOffset(0, 2)
+        .setSize(this.sprite.width, this.sprite.height)
         .setImmovable(true)
         .setCollideWorldBounds(true);
-
-      scene.physics.add.overlap(this, player, () => this.collectLamp());
     }
 
-    this.changePosition(x, y);
-    this.setSize(lamp.width, lamp.height);
-    this.add(lamp);
-    this.setScale(0.8);
+    this.setSize(this.sprite.width, this.sprite.height);
+    this.add(this.sprite);
 
     scene.add.existing(this);
   }
@@ -79,32 +52,27 @@ export class LampContainer extends Phaser.GameObjects.Container {
       | undefined;
   }
 
-  private collectLamp() {
-    if (this.portalService?.state.context.lamps === MAX_PLAYER_LAMPS) {
-      this.player?.speak(translate("halloween.noMoreSpace"));
-      return;
-    }
-
-    this.player?.stopSpeaking();
-    this.portalService?.send("COLLECT_LAMP");
-    this.destroyLamp();
+  private createAnimation() {
+    this.scene.anims.create({
+      key: `${this.spriteName}_${this.id}_action`,
+      frames: this.scene.anims.generateFrameNumbers(this.spriteName, {
+        start: 0,
+        end: 3,
+      }),
+      repeat: -1,
+      frameRate: 10,
+    });
+    this.sprite.play(`${this.spriteName}_${this.id}_action`, true);
   }
 
-  destroyLamp() {
-    this.setPosition(-9999, -9999);
+  private createOverlaps() {
+    if (!this.player) return;
+    this.scene.physics.add.overlap(this.player, this, () => this.collect());
+  }
+
+  private collect() {
+    this.portalService?.send("COLLECT_TOOL", { tool: "lamp" });
+    this.player?.lampVisibility(true);
     this.destroy();
-  }
-
-  changePosition(x: number, y: number) {
-    if (!this.visibilityPolygon || !this.polygonWalls) return;
-
-    this.setX(x);
-    this.setY(y);
-    this.polygonLight = createLightPolygon(
-      x,
-      y,
-      this.visibilityPolygon,
-      this.polygonWalls,
-    );
   }
 }

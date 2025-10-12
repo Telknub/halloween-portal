@@ -16,6 +16,7 @@ export interface PanelProps extends React.HTMLAttributes<HTMLDivElement> {
   hasTabs?: boolean;
   tabAlignment?: "top" | "left";
   bumpkinParts?: Partial<Equipped>;
+  bumpkinImage?: string;
 }
 
 /**
@@ -25,11 +26,12 @@ export const Panel: React.FC<PanelProps> = ({
   children,
   hasTabs,
   bumpkinParts,
+  bumpkinImage,
   ...divProps
 }) => {
   return (
     <>
-      {bumpkinParts && (
+      {bumpkinParts ? (
         <div
           className="absolute pointer-events-none"
           style={{
@@ -41,7 +43,26 @@ export const Panel: React.FC<PanelProps> = ({
         >
           <DynamicNFT bumpkinParts={bumpkinParts} />
         </div>
+      ) : (
+        bumpkinImage && (
+          <div
+            className="absolute pointer-events-none"
+            style={{
+              zIndex: -10,
+              top: `${PIXEL_SCALE * -61}px`,
+              left: `${PIXEL_SCALE * -8}px`,
+              width: `${PIXEL_SCALE * 100}px`,
+            }}
+          >
+            <img
+              src={bumpkinImage}
+              alt="fader"
+              className="absolute top-0 left-0 w-full"
+            />
+          </div>
+        )
       )}
+
       <OuterPanel hasTabs={hasTabs} {...divProps}>
         <InnerPanel>{children}</InnerPanel>
       </OuterPanel>

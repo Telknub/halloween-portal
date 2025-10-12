@@ -104,9 +104,11 @@ export type NPCName =
   | "peggy"
   | "petro"
   | "pharaoh"
-  | "worried pete";
+  | "worried pete"
+  | "initial_skeleton"
+  | "final_skeleton";
 
-export const NPC_WEARABLES: Record<NPCName, Equipped> = {
+export const NPC_WEARABLES: Partial<Record<NPCName, Equipped>> = {
   richie: {
     body: "Beige Farmer Potion",
     background: "Dawn Breaker Background",

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext } from "react";
 import { useSelector } from "@xstate/react";
 import { PortalContext } from "../../lib/PortalProvider";
 import { PIXEL_SCALE } from "features/game/lib/constants";
@@ -7,87 +7,70 @@ import { PortalMachineState } from "../../lib/halloweenMachine";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 import { Box } from "components/ui/Box";
 import Decimal from "decimal.js-light";
-import { ITEM_DETAILS } from "features/game/types/images";
-import { ProgressBar } from "components/ui/ProgressBar";
-import {
-  DURATION_LAMP_SECONDS,
-  LAMP_USAGE_MULTIPLIER_INTERVAL,
-  MAX_LAMP_USAGE_MULTIPLIER,
-  MAX_PLAYER_LAMPS,
-} from "../../HalloweenConstants";
 
-const _lamps = (state: PortalMachineState) => state.context.lamps;
-const _score = (state: PortalMachineState) => state.context.score;
+import sword from "public/world/sword_icon.png";
+import pickaxe from "public/world/pickaxe_icon.png";
+import lampFront from "assets/halloween/lamp_front.gif";
+import bone from "public/world/bone1.png";
+
+const _tools = (state: PortalMachineState) => state.context.tools;
+const _selectedTool = (state: PortalMachineState) => state.context.selectedTool;
+const _bones = (state: PortalMachineState) => state.context.bones;
+
+const toolImages = {
+  sword: sword,
+  pickaxe: pickaxe,
+  lamp: lampFront,
+};
 
 export const HalloweenInventory: React.FC = () => {
   const { t } = useAppTranslation();
 
   const { portalService } = useContext(PortalContext);
 
-  const lamps = useSelector(portalService, _lamps);
-  const score = useSelector(portalService, _score);
-
-  const increaseFactor = Math.min(
-    Math.floor(score / LAMP_USAGE_MULTIPLIER_INTERVAL),
-    MAX_LAMP_USAGE_MULTIPLIER,
-  );
-
-  const [timeLeft, setTimeLeft] = useState(DURATION_LAMP_SECONDS);
-  const [progress, setProgress] = useState(100);
-
-  useEffect(() => {
-    if (lamps > 0) {
-      let time = DURATION_LAMP_SECONDS;
-      const intervalId = setInterval(() => {
-        const newTimeLeft = time - (1 + increaseFactor);
-        setProgress((newTimeLeft / DURATION_LAMP_SECONDS) * 100);
-
-        if (newTimeLeft <= 0 && lamps > 0) {
-          portalService.send("DEAD_LAMP", { lamps: 1 });
-          setProgress(100);
-          time = DURATION_LAMP_SECONDS;
-        } else if (newTimeLeft <= 0 && lamps === 0) {
-          clearInterval(intervalId);
-        }
-
-        time = newTimeLeft;
-      }, 1000);
-
-      return () => clearInterval(intervalId);
-    }
-  }, [lamps]);
+  const tools = useSelector(portalService, _tools);
+  const selectedTool = useSelector(portalService, _selectedTool);
+  const bones = useSelector(portalService, _bones);
 
   return (
-    <div
-      className="absolute flex flex-col items-center"
-      style={{
-        top: `${PIXEL_SCALE * 3}px`,
-        right: `${PIXEL_SCALE * 3}px`,
-      }}
-    >
-      <Label type={"default"}>{t("halloween.inventory")}</Label>
-
-      <div className="relative flex flex-col items-center">
-        <Box
-          countLabelType={lamps === MAX_PLAYER_LAMPS ? "danger" : "default"}
-          count={new Decimal(lamps)}
-          image={ITEM_DETAILS["Lamp Front"].image}
-        />
-        {!!lamps && (
-          <ProgressBar
-            className="w-[42px] h-[18.375px] absolute -bottom-1"
-            percentage={progress}
-            type="progress"
-            formatLength="short"
-          />
+    <>
+      <div
+        className="absolute flex flex-col items-center"
+        style={{
+          top: `${PIXEL_SCALE * 3}px`,
+          right: `${PIXEL_SCALE * 3}px`,
+        }}
+      >
+        {tools.length ? (
+          <>
+            <Label type={"default"}>{t("halloween.tools")}</Label>
+            <div className="relative flex flex-col items-center">
+              {tools.map((tool, i) => (
+                <Box
+                  key={i}
+                  image={toolImages[tool]}
+                  onClick={() => {
+                    return;
+                  }}
+                  isSelected={selectedTool === tool}
+                />
+              ))}
+            </div>
+          </>
+        ) : (
+          ""
+        )}
+        {bones ? (
+          <>
+            <Label type={"default"}>{t("halloween.items")}</Label>
+            <div className="relative flex flex-col items-center">
+              <Box image={bone} count={new Decimal(bones)} />
+            </div>
+          </>
+        ) : (
+          ""
         )}
       </div>
-
-      {!!increaseFactor && (
-        <Label type={"danger"} className="mt-1">
-          {t("halloween.lampWear", { multiplier: increaseFactor + 1 })}
-        </Label>
-      )}
-    </div>
+    </>
   );
 };

@@ -3,6 +3,16 @@ import { ITEM_DETAILS } from "features/game/types/images";
 import { translate } from "lib/i18n/translate";
 import { ROOM_INNER_HEIGHT, ROOM_INNER_WIDTH } from "./map/rooms/RoomTileMap";
 
+export type Tools = "sword" | "lamp" | "pickaxe";
+export type ToolActions = "attack" | "mining";
+export type HalloweenNpcNames = "initial_skeleton" | "final_skeleton";
+export type AnimationKeys =
+  | "walk"
+  | "idle"
+  | "carry"
+  | "carryIdle"
+  | "attack"
+  | "mining";
 export type Direction = "top" | "bottom" | "left" | "right";
 export type RoomType =
   | "initial"
@@ -37,28 +47,65 @@ export const BLACKSMITH_CONFIGURATION = {
   y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 2 + 5,
 };
 
-export const LAMPS_CONFIGURATION: { x: number; y: number }[] = [
-  { x: 290, y: 120 },
-  { x: 510, y: 120 },
-  { x: 615, y: 200 },
-  // { x: 610, y: 425 },
-  { x: 480, y: 560 },
-  { x: 110, y: 410 },
-  // { x: 385, y: 315 },
-  { x: 800, y: 110 },
-  { x: 856, y: 418 },
-  // { x: 1270, y: 354 },
-  { x: 1468, y: 124 },
-  { x: 1116, y: 134 },
-  // { x: 385, y: 315 },
-  { x: 1440, y: 600 },
-  { x: 200, y: 965 },
-  // { x: 572, y: 1106 },
-  { x: 908, y: 908 },
-  // { x: 1490, y: 900 },
-  { x: 900, y: 1340 },
-  { x: 1308, y: 1144 },
-];
+export const TOOL_ACTION_MAP: Partial<Record<Tools, ToolActions>> = {
+  sword: "attack",
+  pickaxe: "mining",
+};
+
+export const INITIAL_SKELETON_KEY = "initial_skeleton_flow_complete";
+export const FINAL_SKELETON_KEY = "final_skeleton_flow_complete";
+export const INITIAL_SKELETON_NPC_NAME: HalloweenNpcNames = "initial_skeleton";
+export const FINAL_SKELETON_NPC_NAME: HalloweenNpcNames = "final_skeleton";
+export const SKELETON_INITIAL_ROOM_CONFIG = {
+  top: {
+    x: (TILE_SIZE * (ROOM_INNER_WIDTH - 2.5)) / 2,
+    y: TILE_SIZE / 2,
+    direction: "right",
+  },
+  bottom: {
+    x: (TILE_SIZE * (ROOM_INNER_WIDTH - 2.5)) / 2,
+    y: TILE_SIZE * (ROOM_INNER_HEIGHT - 0.2),
+    direction: "right",
+  },
+  left: {
+    x: TILE_SIZE / 4,
+    y: (TILE_SIZE * (ROOM_INNER_HEIGHT - 2.2)) / 2,
+    direction: "left",
+  },
+  right: {
+    x: TILE_SIZE * (ROOM_INNER_WIDTH - 0.2),
+    y: (TILE_SIZE * (ROOM_INNER_HEIGHT - 2.2)) / 2,
+    direction: "right",
+  },
+};
+export const SKELETON_FINAL_ROOM_CONFIG = {
+  x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
+  y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 2,
+  direction: "right",
+};
+
+// export const LAMPS_CONFIGURATION: { x: number; y: number }[] = [
+//   { x: 290, y: 120 },
+//   { x: 510, y: 120 },
+//   { x: 615, y: 200 },
+//   // { x: 610, y: 425 },
+//   { x: 480, y: 560 },
+//   { x: 110, y: 410 },
+//   // { x: 385, y: 315 },
+//   { x: 800, y: 110 },
+//   { x: 856, y: 418 },
+//   // { x: 1270, y: 354 },
+//   { x: 1468, y: 124 },
+//   { x: 1116, y: 134 },
+//   // { x: 385, y: 315 },
+//   { x: 1440, y: 600 },
+//   { x: 200, y: 965 },
+//   // { x: 572, y: 1106 },
+//   { x: 908, y: 908 },
+//   // { x: 1490, y: 900 },
+//   { x: 900, y: 1340 },
+//   { x: 1308, y: 1144 },
+// ];
 
 export const MAX_LAMPS_IN_MAP = 50;
 
@@ -100,7 +147,7 @@ export const AMOUNT_ENEMIES = 5;
 
 export const ITEM_BUMPKIN = {
   x: 0,
-  y: -12,
+  y: -14,
 };
 
 export const RESOURCES_TABLE: {

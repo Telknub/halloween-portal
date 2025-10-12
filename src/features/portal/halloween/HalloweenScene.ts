@@ -9,7 +9,6 @@ import {
   INITIAL_LAMPS_LIGHT_RADIUS,
   MIN_PLAYER_LIGHT_RADIUS,
   JOYSTICK_LIGHT_RADIUS,
-  LAMPS_CONFIGURATION,
   LAMP_SPAWN_BASE_INTERVAL,
   MAX_LAMPS_IN_MAP,
   LAMP_SPAWN_INCREASE_PERCENTAGE,
@@ -26,6 +25,10 @@ import {
   SET_SLOW_DOWN_DURATION,
   SET_VISION_RANGE,
   LAMP_USAGE_MULTIPLIER_INTERVAL,
+  TOOL_ACTION_MAP,
+  Tools,
+  AnimationKeys,
+  ToolActions,
 } from "./HalloweenConstants";
 import { LampContainer } from "./containers/LampContainer";
 import { EventObject } from "xstate";
@@ -33,8 +36,7 @@ import { SPAWNS } from "features/world/lib/spawn";
 import { createLightPolygon } from "./lib/HalloweenUtils";
 import { Physics } from "phaser";
 import { isTouchDevice } from "features/world/lib/device";
-import { Map } from "./map/map";
-import { BlacksmithContainer } from "./containers/BlacksmithContainer";
+import { Map } from "./map/Map";
 
 // export const NPCS: NPCBumpkin[] = [
 //   {
@@ -102,7 +104,7 @@ export class HalloweenScene extends BaseScene {
       },
       audio: { fx: { walk_key: "wood_footstep" } },
     });
-    this.setDefaultStates();
+    // this.setDefaultStates();
   }
 
   private get isGameReady() {
@@ -126,11 +128,6 @@ export class HalloweenScene extends BaseScene {
     this.load.audio("ghostDeathSound", "/world/ghost-death.wav");
     this.load.audio("shadows", "/world/shadows.mp3");
     this.load.audio("tension", "/world/tension.mp3");
-
-    this.load.spritesheet("lamp", "world/lamp.png", {
-      frameWidth: 14,
-      frameHeight: 20,
-    });
 
     this.load.spritesheet("ghost_enemy_1", "world/ghost_enemy_1.png", {
       frameWidth: 22,
@@ -208,6 +205,26 @@ export class HalloweenScene extends BaseScene {
       frameWidth: 17,
       frameHeight: 33,
     });
+
+    // Bones
+    this.load.image("bone1", "world/bone1.png");
+    this.load.image("bone2", "world/bone2.png");
+    this.load.image("bone3", "world/bone3.png");
+    this.load.image("bone4", "world/bone4.png");
+    this.load.image("bone5", "world/bone5.png");
+
+    // Skeleton
+    this.load.spritesheet("skeleton", "world/skeleton.webp", {
+      frameWidth: 15,
+      frameHeight: 21,
+    });
+
+    // Tools
+    this.load.image("pickaxe", "world/pickaxe_icon.png");
+    this.load.spritesheet("lamp", "world/lamp.png", {
+      frameWidth: 14,
+      frameHeight: 20,
+    });
   }
 
   // init(data: any) {
@@ -268,7 +285,7 @@ export class HalloweenScene extends BaseScene {
       if (event.type === "RETRY") {
         this.isCameraFading = true;
         this.cameras.main.fadeOut(500);
-        this.reset();
+        // this.reset();
         this.cameras.main.on(
           "camerafadeoutcomplete",
           () => {
@@ -355,6 +372,24 @@ export class HalloweenScene extends BaseScene {
 
   private initializeControls() {
     if (isTouchDevice()) {
+      // const leftButton = this.add
+      //   .image(leftButtonX, buttonY, "left_button")
+      //   .setAlpha(0.8)
+      //   .setInteractive()
+      //   .setDepth(1000)
+      //   .on("pointerdown", () => {
+      //     if (!this.mobileKeys.left) {
+      //       this.mobileKeys.left = true;
+      //       this.portalService?.send("CHANGE_TOOL");
+      //       leftButton.setTexture("left_button_pressed");
+
+      //       this.scene.time.delayedCall(200, () => {
+      //         this.mobileKeys.left = false;
+      //         leftButton.setTexture("left_button");
+      //       });
+      //     }
+      //   });
+
       this.portalService?.send("SET_JOYSTICK_ACTIVE", {
         isJoystickActive: true,
       });
@@ -796,7 +831,7 @@ export class HalloweenScene extends BaseScene {
     this.lightedItems = Array(MAX_LAMPS_IN_MAP + 2).fill(null);
     this.currentPlayer && (this.lightedItems[0] = this.currentPlayer);
     this.lightedItems[1] = { x: 0, y: 0 };
-    this.createAllLamps();
+    // this.createAllLamps();
     this.lampSpawnTime = LAMP_SPAWN_BASE_INTERVAL;
     this.deathDate = null;
     this.amountLamps = 3;
@@ -842,22 +877,53 @@ export class HalloweenScene extends BaseScene {
 
   private loadBumpkinAnimations() {
     if (!this.currentPlayer) return;
+    if (!this.cursorKeys) return;
 
-    const lamps = this.portalService?.state?.context?.lamps;
-
+    const selectedTool = this.portalService?.state?.context
+      ?.selectedTool as Tools;
     const itemBumpkinX = this.currentPlayer.directionFacing === "left" ? -1 : 1;
+    let animation!: AnimationKeys;
 
-    const animation = this.isMoving
-      ? lamps
-        ? "carry"
-        : "walk"
-      : lamps
-        ? "carryIdle"
-        : "idle";
+    if (
+      !this.currentPlayer.isHurting &&
+      !this.currentPlayer.isAttacking &&
+      !this.currentPlayer.isMining
+    ) {
+      animation = this.isMoving
+        ? selectedTool === "lamp"
+          ? "carry"
+          : "walk"
+        : selectedTool === "lamp"
+          ? "carryIdle"
+          : "idle";
+    }
+
+    if (
+      (Phaser.Input.Keyboard.JustDown(this.cursorKeys.space) ||
+        this.mobileKeys.useTool) &&
+      !this.currentPlayer.isHurting
+    ) {
+      if (selectedTool !== "lamp")
+        animation = TOOL_ACTION_MAP[selectedTool] as ToolActions;
+    }
+
+    if (
+      (Phaser.Input.Keyboard.JustDown(
+        this.cursorKeys.q as Phaser.Input.Keyboard.Key,
+      ) ||
+        this.mobileKeys.changeTool) &&
+      !this.currentPlayer.isHurting
+    ) {
+      this.portalService?.send("CHANGE_TOOL");
+      const lampVisibility =
+        this.portalService?.state?.context?.selectedTool === "lamp"
+          ? true
+          : false;
+      this.currentPlayer.lampVisibility(lampVisibility);
+    }
 
     this.currentPlayer.lamp?.setX(itemBumpkinX);
-    this.currentPlayer[animation]();
-    this.currentPlayer.lampVisibility(!!lamps);
+    this.currentPlayer?.[animation]?.();
   }
 
   private setLampSpawnTime() {
@@ -1048,27 +1114,27 @@ export class HalloweenScene extends BaseScene {
     // console.log(this.lightedItems);
   }
 
-  private createAllLamps() {
-    if (!this.currentPlayer) return;
+  // private createAllLamps() {
+  //   if (!this.currentPlayer) return;
 
-    const lamps = LAMPS_CONFIGURATION.map(
-      (lamp, i) =>
-        new LampContainer({
-          x: lamp.x,
-          y: lamp.y,
-          id: i,
-          scene: this as BaseScene,
-          player: this.currentPlayer,
-          visibilityPolygon: this.visibilityPolygon,
-          polygonWalls: this.polygons,
-        }),
-    );
+  //   const lamps = LAMPS_CONFIGURATION.map(
+  //     (lamp, i) =>
+  //       new LampContainer({
+  //         x: lamp.x,
+  //         y: lamp.y,
+  //         id: i,
+  //         scene: this as BaseScene,
+  //         player: this.currentPlayer,
+  //         visibilityPolygon: this.visibilityPolygon,
+  //         polygonWalls: this.polygons,
+  //       }),
+  //   );
 
-    const position = 2;
-    if (lamps.length + position <= this.lightedItems.length) {
-      this.lightedItems.splice(position, lamps.length, ...lamps);
-    }
-  }
+  //   const position = 2;
+  //   if (lamps.length + position <= this.lightedItems.length) {
+  //     this.lightedItems.splice(position, lamps.length, ...lamps);
+  //   }
+  // }
 
   private createWalls() {
     if (!this.currentPlayer) return;

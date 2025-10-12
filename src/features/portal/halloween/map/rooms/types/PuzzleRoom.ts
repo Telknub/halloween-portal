@@ -17,5 +17,23 @@ export class PuzzleRoom extends BaseRoom {
     super({ scene, hasEntry, hasExit, matrix, type: "puzzle", player });
   }
 
-  createObjects() {}
+  createObjects() {
+    const statuePos = this.spawnObjectRandomly(
+      (x, y) => this.createStatues(x, y),
+      true,
+    );
+    this.spawnObjectRandomly((x, y) => this.createBones(x, y), true, statuePos);
+    this.id === 2 &&
+      this.spawnObjectRandomly(
+        (x, y) => this.createLamp(x, y),
+        true,
+        statuePos,
+      );
+    this.id === 3 &&
+      this.spawnObjectRandomly(
+        (x, y) => this.createPickaxe(x, y),
+        true,
+        statuePos,
+      );
+  }
 }

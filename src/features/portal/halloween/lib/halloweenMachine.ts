@@ -6,6 +6,7 @@ import {
   RESTOCK_ATTEMPTS_SFL,
   UNLIMITED_ATTEMPTS_SFL,
   DAILY_ATTEMPTS,
+  Tools,
 } from "../HalloweenConstants";
 import { GameState } from "features/game/types/game";
 import { purchaseMinigameItem } from "features/game/events/minigames/purchaseMinigameItem";
@@ -33,14 +34,15 @@ export interface Context {
   state: GameState | undefined;
   score: number;
   lastScore: number;
-  lamps: number;
+  selectedTool: Tools | null;
+  tools: Tools[];
+  bones: number;
   startedAt: number;
   attemptsLeft: number;
 }
 
 type GainPointsEvent = {
   type: "GAIN_POINTS";
-  points: number;
 };
 
 type UnlockAchievementsEvent = {
@@ -53,9 +55,17 @@ type SetJoystickActiveEvent = {
   isJoystickActive: boolean;
 };
 
-type DeadLampEvent = {
-  type: "DEAD_LAMP";
-  lamps: number;
+type CollectToolEvent = {
+  type: "COLLECT_TOOL";
+  tool: Tools;
+};
+
+type SelectToolEvent = {
+  type: "CHANGE_TOOL";
+};
+
+type CollectBoneEvent = {
+  type: "COLLECT_BONE";
 };
 
 export type PortalEvent =
@@ -70,8 +80,9 @@ export type PortalEvent =
   | { type: "END_GAME_EARLY" }
   | { type: "GAME_OVER" }
   | GainPointsEvent
-  | { type: "COLLECT_LAMP" }
-  | DeadLampEvent
+  | CollectToolEvent
+  | SelectToolEvent
+  | CollectBoneEvent
   | UnlockAchievementsEvent;
 
 export type PortalState = {
@@ -106,7 +117,9 @@ const resetGameTransition = {
     target: "starting",
     actions: assign({
       score: () => 0,
-      lamps: () => 0,
+      selectedTool: () => null,
+      tools: () => [],
+      bones: () => 0,
       startedAt: () => 0,
     }) as any,
   },
@@ -125,24 +138,28 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
 
     score: 0,
     lastScore: 0,
-    lamps: 0,
     attemptsLeft: 0,
     startedAt: 0,
+
+    // Halloween
+    selectedTool: null,
+    tools: [],
+    bones: 0,
   },
   on: {
     SET_JOYSTICK_ACTIVE: {
-      actions: assign<Context, any>({
+      actions: assign({
         isJoystickActive: (_: Context, event: SetJoystickActiveEvent) => {
           return event.isJoystickActive;
         },
       }),
     },
     UNLOCKED_ACHIEVEMENTS: {
-      actions: assign<Context, any>({
+      actions: assign({
         state: (context: Context, event: UnlockAchievementsEvent) => {
           achievementsUnlocked({ achievementNames: event.achievementNames });
           return unlockMinigameAchievements({
-            state: context.state!,
+            state: context.state as GameState,
             action: {
               type: "minigame.achievementsUnlocked",
               id: "halloween",
@@ -150,7 +167,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
             },
           });
         },
-      }) as any,
+      }),
     },
   },
   states: {
@@ -191,9 +208,9 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
           {
             target: "introduction",
             actions: assign({
-              state: (_: any, event) => event.data.game,
-              id: (_: any, event) => event.data.farmId,
-              attemptsLeft: (_: any, event) => event.data.attemptsLeft,
+              state: (_: Context, event) => event.data.game,
+              id: (_: Context, event) => event.data.farmId,
+              attemptsLeft: (_: Context, event) => event.data.attemptsLeft,
             }),
           },
         ],
@@ -210,10 +227,10 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
         },
         PURCHASED_RESTOCK: {
           target: "introduction",
-          actions: assign<Context>({
+          actions: assign({
             state: (context: Context) =>
               purchaseMinigameItem({
-                state: context.state!,
+                state: context.state as GameState,
                 action: {
                   id: "halloween",
                   sfl: RESTOCK_ATTEMPTS_SFL,
@@ -221,14 +238,14 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                   items: {},
                 },
               }),
-          }) as any,
+          }),
         },
         PURCHASED_UNLIMITED: {
           target: "introduction",
-          actions: assign<Context>({
+          actions: assign({
             state: (context: Context) =>
               purchaseMinigameItem({
-                state: context.state!,
+                state: context.state as GameState,
                 action: {
                   id: "halloween",
                   sfl: UNLIMITED_ATTEMPTS_SFL,
@@ -236,7 +253,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                   items: {},
                 },
               }),
-          }) as any,
+          }),
         },
       },
     },
@@ -269,14 +286,16 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
       on: {
         START: {
           target: "playing",
-          actions: assign<Context>({
+          actions: assign({
             startedAt: () => Date.now(),
             score: 0,
-            lamps: 3,
-            state: (context: any) => {
+            selectedTool: null,
+            tools: [],
+            bones: 0,
+            state: (context: Context) => {
               startAttempt();
               return startMinigameAttempt({
-                state: context.state,
+                state: context.state as GameState,
                 action: {
                   type: "minigame.attemptStarted",
                   id: "halloween",
@@ -284,7 +303,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
               });
             },
             attemptsLeft: (context: Context) => context.attemptsLeft - 1,
-          }) as any,
+          }),
         },
       },
     },
@@ -292,41 +311,46 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
     playing: {
       on: {
         GAIN_POINTS: {
-          actions: assign<Context, any>((context) => {
-            let secondsPassed = !context.startedAt
-              ? 0
-              : Math.max(Date.now() - context.startedAt, 0);
-
-            const diff = secondsPassed - context.score;
-            let newStartedAt = context.startedAt;
-
-            if (diff > 70) {
-              newStartedAt = Date.now() - context.score;
-              secondsPassed = Math.max(Date.now() - newStartedAt, 0);
-            }
-
-            return {
-              score: secondsPassed,
-              startedAt: newStartedAt,
-            };
-          }),
-        },
-        COLLECT_LAMP: {
-          actions: assign<Context, any>({
-            lamps: (context: Context) => {
-              return context.lamps + 1;
+          actions: assign({
+            score: (context: Context) => {
+              return context.score + 1;
             },
           }),
         },
-        DEAD_LAMP: {
-          actions: assign<Context, any>({
-            lamps: (context: Context, event: DeadLampEvent) => {
-              return context.lamps - event.lamps;
+        COLLECT_TOOL: {
+          actions: assign((context: Context, event: CollectToolEvent) => {
+            const alreadyCollected = context.tools.some(
+              (tool) => tool === event.tool,
+            );
+            return {
+              tools: alreadyCollected
+                ? context.tools
+                : [...context.tools, event.tool],
+              selectedTool: event.tool,
+            };
+          }),
+        },
+        CHANGE_TOOL: {
+          actions: assign({
+            selectedTool: (context: Context) => {
+              const { tools, selectedTool } = context;
+              if (!tools.length) return null;
+
+              const currentIndex = tools.indexOf(selectedTool as Tools);
+              const nextIndex = (currentIndex + 1) % tools.length;
+              return tools[nextIndex];
+            },
+          }),
+        },
+        COLLECT_BONE: {
+          actions: assign({
+            bones: (context: Context) => {
+              return context.bones + 1;
             },
           }),
         },
         END_GAME_EARLY: {
-          actions: assign<Context, any>({
+          actions: assign({
             startedAt: () => 0,
             lastScore: (context: Context) => {
               return context.score;
@@ -334,7 +358,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
             state: (context: Context) => {
               submitScore({ score: Math.round(context.score) });
               return submitMinigameScore({
-                state: context.state as any,
+                state: context.state as GameState,
                 action: {
                   type: "minigame.scoreSubmitted",
                   score: Math.round(context.score),
@@ -348,13 +372,13 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
         GAME_OVER: {
           target: "gameOver",
           actions: assign({
-            lastScore: (context: any) => {
+            lastScore: (context: Context) => {
               return context.score;
             },
-            state: (context: any) => {
+            state: (context: Context) => {
               submitScore({ score: context.score });
               return submitMinigameScore({
-                state: context.state,
+                state: context.state as GameState,
                 action: {
                   type: "minigame.scoreSubmitted",
                   score: Math.round(context.score),
@@ -362,7 +386,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                 },
               });
             },
-          }) as any,
+          }),
         },
       },
     },

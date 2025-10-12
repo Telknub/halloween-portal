@@ -124,6 +124,11 @@ export abstract class BaseScene extends Phaser.Scene {
   soundEffects: AudioController[] = [];
   walkAudioController?: WalkAudioController;
 
+  mobileKeys: { useTool: boolean; changeTool: boolean } = {
+    useTool: false,
+    changeTool: false,
+  };
+
   cursorKeys:
     | {
         up: Phaser.Input.Keyboard.Key;
@@ -134,6 +139,8 @@ export abstract class BaseScene extends Phaser.Scene {
         s?: Phaser.Input.Keyboard.Key;
         a?: Phaser.Input.Keyboard.Key;
         d?: Phaser.Input.Keyboard.Key;
+        q?: Phaser.Input.Keyboard.Key;
+        space: Phaser.Input.Keyboard.Key;
       }
     | undefined;
 
@@ -616,6 +623,10 @@ export abstract class BaseScene extends Phaser.Scene {
       );
       this.cursorKeys.s = this.input.keyboard?.addKey("S", false);
       this.cursorKeys.d = this.input.keyboard?.addKey("D", false);
+      this.cursorKeys.q = this.input.keyboard?.addKey(
+        layout === "QWERTY" ? "Q" : "E",
+        false,
+      );
 
       this.input.keyboard?.removeCapture("SPACE");
     }

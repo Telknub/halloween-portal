@@ -16,6 +16,7 @@ export type Message = {
 interface Props {
   onClose: () => void;
   bumpkinParts?: Partial<Equipped>;
+  bumpkinImage?: string;
   className?: string;
   message: Message[];
 }
@@ -26,6 +27,7 @@ interface Props {
 export const SpeakingModal: React.FC<Props> = ({
   onClose,
   bumpkinParts,
+  bumpkinImage,
   className,
   message,
 }) => {
@@ -90,6 +92,7 @@ export const SpeakingModal: React.FC<Props> = ({
     <Panel
       className={classNames("relative w-full", className)}
       bumpkinParts={bumpkinParts}
+      bumpkinImage={bumpkinImage}
     >
       <div className="flex flex-col">
         <div

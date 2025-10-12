@@ -5,6 +5,7 @@ import { BLACKSMITH_CONFIGURATION } from "features/portal/halloween/HalloweenCon
 import { BaseScene } from "features/world/scenes/BaseScene";
 import { BlacksmithContainer } from "features/portal/halloween/containers/BlacksmithContainer";
 import { StatueContainer } from "features/portal/halloween/containers/StatueContainer";
+import { BoneContainer } from "features/portal/halloween/containers/BoneContainer";
 
 interface Props {
   scene: BaseScene;
@@ -22,9 +23,12 @@ export class BlacksmithRoom extends BaseRoom {
 
   createObjects() {
     this.createBlacksmith();
-    this.spawnObjectRandomly((x, y) => this.createStatues(x, y));
-    this.createBones();
-    this.createDecorations();
+    const statuePos = this.spawnObjectRandomly(
+      (x, y) => this.createStatues(x, y),
+      true,
+    );
+    this.spawnObjectRandomly((x, y) => this.createBones(x, y), true, statuePos);
+    this.createDecorationRandomly();
   }
 
   private createBlacksmith() {
@@ -39,18 +43,4 @@ export class BlacksmithRoom extends BaseRoom {
       player: this.player,
     });
   }
-
-  private createStatues(x: number, y: number) {
-    new StatueContainer({
-      x,
-      y,
-      id: this.id,
-      scene: this.scene,
-      player: this.player,
-    });
-  }
-
-  private createBones() {}
-
-  private createDecorations() {}
 }

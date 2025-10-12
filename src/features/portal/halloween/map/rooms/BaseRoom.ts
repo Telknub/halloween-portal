@@ -19,6 +19,10 @@ import {
   TILES,
 } from "./RoomTileMap";
 import { BaseScene } from "features/world/scenes/BaseScene";
+import { StatueContainer } from "../../containers/StatueContainer";
+import { BoneContainer } from "../../containers/BoneContainer";
+import { LampContainer } from "../../containers/LampContainer";
+import { PickaxeContainer } from "../../containers/PickaxeContainer";
 
 interface Props {
   scene: BaseScene;
@@ -31,7 +35,7 @@ interface Props {
 
 interface CreateRandomPathProps {
   entry?: Direction | null;
-  excludedSide?: Direction[];
+  excludedSides?: Direction[];
 }
 
 export class BaseRoom {
@@ -76,10 +80,15 @@ export class BaseRoom {
         entry: OPPOSITE_DIRECTIONS[prevExit],
       }) as Direction;
     }
-    if (this.hasExit)
+    if (this.hasExit) {
+      const excludedSides =
+        this.type === "skeleton"
+          ? ([...this.getExcludedSides, "bottom"] as Direction[])
+          : this.getExcludedSides;
       this.exit = this.createRandomPath({
-        excludedSide: this.getExcludedSides,
+        excludedSides,
       });
+    }
   }
 
   setupMapOffsetMultiplier(offsetMultiplier: { x: number; y: number }) {
@@ -173,7 +182,8 @@ export class BaseRoom {
   protected spawnObjectRandomly(
     addContainer: (x: number, y: number) => void,
     excludeSmallRoom = false,
-  ) {
+    excludedPositions: { x: number; y: number }[] = [],
+  ): { x: number; y: number }[] {
     let isGround = false;
 
     while (!isGround) {
@@ -181,28 +191,74 @@ export class BaseRoom {
       const tileY = Math.floor(Math.random() * this.getContentMatrix.length);
       const isInsideSmallRoom =
         tileX >= 3 &&
-        tileX <= smallRoom[0].length &&
+        tileX <= 3 + smallRoom[0].length &&
         tileY >= 2 &&
-        tileY <= smallRoom.length;
+        tileY <= 2 + smallRoom.length;
 
       if (
         this.getContentMatrix[tileY][tileX] === TILES.GROUND &&
-        (!excludeSmallRoom || isInsideSmallRoom)
+        !excludedPositions.some(
+          (pos: { x: number; y: number }) => pos.x === tileX && pos.y === tileY,
+        ) &&
+        (!excludeSmallRoom || !isInsideSmallRoom)
       ) {
         const posX = tileX * TILE_SIZE;
         const posY = tileY * TILE_SIZE;
         const { x, y } = this.getRelativePosition(posX, posY);
         addContainer(x, y);
         isGround = true;
+        return [{ x: tileX, y: tileY }];
       }
     }
+
+    return [{ x: 0, y: 0 }];
   }
 
-  private createRandomPath({ entry, excludedSide }: CreateRandomPathProps) {
+  protected createStatues(x: number, y: number) {
+    new StatueContainer({
+      x,
+      y,
+      id: this.id,
+      scene: this.scene,
+      player: this.player,
+    });
+  }
+
+  protected createBones(x: number, y: number) {
+    new BoneContainer({
+      x,
+      y,
+      scene: this.scene,
+      player: this.player,
+    });
+  }
+
+  protected createPickaxe(x: number, y: number) {
+    new PickaxeContainer({
+      x,
+      y,
+      scene: this.scene,
+      player: this.player,
+    });
+  }
+
+  protected createLamp(x: number, y: number) {
+    new LampContainer({
+      x,
+      y,
+      id: this.id,
+      scene: this.scene,
+      player: this.player,
+    });
+  }
+
+  protected createDecorationRandomly() {}
+
+  private createRandomPath({ entry, excludedSides }: CreateRandomPathProps) {
     // Define possible entrance locations (top, right, bottom, left)
     const sides = ["top", "right", "bottom", "left"] as const;
-    const availableSides = excludedSide?.length
-      ? sides.filter((side) => !excludedSide.includes(side))
+    const availableSides = excludedSides?.length
+      ? sides.filter((side) => !excludedSides.includes(side))
       : sides;
     const randomSide =
       entry ??

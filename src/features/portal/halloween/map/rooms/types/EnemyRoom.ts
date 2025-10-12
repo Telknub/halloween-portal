@@ -7,7 +7,6 @@ import {
   AMOUNT_ENEMIES,
   TILE_SIZE,
 } from "features/portal/halloween/HalloweenConstants";
-import { BlacksmithContainer } from "features/portal/halloween/containers/BlacksmithContainer";
 
 interface Props {
   scene: BaseScene;
@@ -25,12 +24,32 @@ export class EnemyRoom extends BaseRoom {
 
   createObjects() {
     this.createEnemies();
+    const statuePos = this.spawnObjectRandomly((x, y) =>
+      this.createStatues(x, y),
+    );
+    this.spawnObjectRandomly(
+      (x, y) => this.createBones(x, y),
+      false,
+      statuePos,
+    );
+    this.id === 2 &&
+      this.spawnObjectRandomly(
+        (x, y) => this.createLamp(x, y),
+        false,
+        statuePos,
+      );
+    this.id === 3 &&
+      this.spawnObjectRandomly(
+        (x, y) => this.createPickaxe(x, y),
+        false,
+        statuePos,
+      );
   }
 
   private createEnemies() {
-    for (let i = 0; i < AMOUNT_ENEMIES; i++) {
-      this.spawnObjectRandomly((x, y) => this.createEnemy(x, y));
-    }
+    // for (let i = 0; i < AMOUNT_ENEMIES; i++) {
+    //   this.spawnObjectRandomly((x, y) => this.createEnemy(x, y));
+    // }
   }
 
   private createEnemy(x: number, y: number) {

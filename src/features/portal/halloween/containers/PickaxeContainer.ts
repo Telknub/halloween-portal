@@ -1,5 +1,6 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseScene } from "features/world/scenes/BaseScene";
+import { MachineInterpreter } from "../lib/halloweenMachine";
 
 interface Props {
   x: number;
@@ -8,10 +9,11 @@ interface Props {
   player?: BumpkinContainer;
 }
 
-export class BlacksmithContainer extends Phaser.GameObjects.Container {
+export class PickaxeContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   private spriteName: string;
   private sprite: Phaser.GameObjects.Sprite;
+  scene: BaseScene;
 
   constructor({ x, y, scene, player }: Props) {
     super(scene, x, y);
@@ -19,11 +21,8 @@ export class BlacksmithContainer extends Phaser.GameObjects.Container {
     this.player = player;
 
     // Sprite
-    this.spriteName = "blacksmith";
+    this.spriteName = "pickaxe";
     this.sprite = scene.add.sprite(0, 0, this.spriteName);
-
-    // Animation
-    this.createAnimation();
 
     // Overlaps
     this.createOverlaps();
@@ -40,21 +39,20 @@ export class BlacksmithContainer extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
-  private createAnimation() {
-    this.scene.anims.create({
-      key: `${this.spriteName}_action`,
-      frames: this.scene.anims.generateFrameNumbers(this.spriteName, {
-        start: 0,
-        end: 11,
-      }),
-      repeat: -1,
-      frameRate: 10,
-    });
-    this.sprite.play(`${this.spriteName}_action`, true);
+  private get portalService() {
+    return this.scene.registry.get("portalService") as
+      | MachineInterpreter
+      | undefined;
   }
 
   private createOverlaps() {
     if (!this.player) return;
-    this.scene.physics.add.collider(this.player, this);
+    this.scene.physics.add.overlap(this.player, this, () => this.collect());
+  }
+
+  private collect() {
+    this.portalService?.send("COLLECT_TOOL", { tool: "pickaxe" });
+    this.player?.lampVisibility(false);
+    this.destroy();
   }
 }

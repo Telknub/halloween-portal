@@ -35,6 +35,7 @@ export class LifeBar extends Phaser.GameObjects.Container {
     this.bar = scene.add.rectangle(0, 0, width, 2, 0x00ff00);
     this.bar.setOrigin(0.5);
 
+    this.setVisible(false);
     this.add([this.border, this.background, this.bar]);
   }
 
@@ -47,6 +48,8 @@ export class LifeBar extends Phaser.GameObjects.Container {
   }
 
   setHealth(value: number) {
+    const isVisible = value < this.maxHealth ? true : false;
+    this.setVisible(isVisible);
     this.currentHealth = Phaser.Math.Clamp(value, 0, this.maxHealth);
     const healthRatio = this.currentHealth / this.maxHealth;
     this.bar.width = this.maxWidth * healthRatio;

@@ -14,14 +14,10 @@ import { ITEM_IDS } from "features/game/types/bumpkin";
 import { CONFIG } from "lib/config";
 import { formatNumber } from "lib/utils/formatNumber";
 import { LampContainer } from "features/portal/halloween/containers/LampContainer";
-import {
-  ITEM_BUMPKIN,
-  MIN_PLAYER_LIGHT_RADIUS,
-  STEP_PLAYER_LIGHT_RADIUS,
-} from "features/portal/halloween/HalloweenConstants";
+import { ITEM_BUMPKIN } from "features/portal/halloween/HalloweenConstants";
 import { BaseScene } from "../scenes/BaseScene";
-import { DarknessPipeline } from "features/portal/halloween/shaders/DarknessShader";
-import { MachineInterpreter } from "features/portal/halloween/lib/halloweenMachine";
+import { onAnimationComplete } from "features/portal/halloween/lib/HalloweenUtils";
+import { EventBus } from "features/portal/halloween/lib/EventBus";
 
 const NAME_ALIASES: Partial<Record<NPCName, string>> = {
   "pumpkin' pete": "pete",
@@ -57,9 +53,6 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   // Animation Keys
   private idleSpriteKey: string | undefined;
   private walkingSpriteKey: string | undefined;
-  private carryingSpriteKey: string | undefined;
-  private carryingIdleSpriteKey: string | undefined;
-  private deathSpriteKey: string | undefined;
   private idleAnimationKey: string | undefined;
   private walkingAnimationKey: string | undefined;
   private digAnimationKey: string | undefined;
@@ -68,13 +61,27 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   private frontAuraKey: string | undefined;
   private frontAuraAnimationKey: string | undefined;
   private backAuraAnimationKey: string | undefined;
-  private carryingAnimationKey: string | undefined;
-  private carryingIdleAnimationKey: string | undefined;
-  private deathAnimationKey: string | undefined;
   private direction: "left" | "right" = "right";
 
   // Halloween
-  public lamp: LampContainer | null;
+  private carryingSpriteKey: string | undefined;
+  private carryingIdleSpriteKey: string | undefined;
+  private deathSpriteKey: string | undefined;
+  private attackSpriteKey: string | undefined;
+  private miningSpriteKey: string | undefined;
+  private hurtSpriteKey: string | undefined;
+  private carryingAnimationKey: string | undefined;
+  private carryingIdleAnimationKey: string | undefined;
+  private deathAnimationKey: string | undefined;
+  private attackAnimationKey: string | undefined;
+  private miningAnimationKey: string | undefined;
+  private hurtAnimationKey: string | undefined;
+  isHurting = false;
+  isAttacking = false;
+  isMining = false;
+  lamp!: LampContainer;
+  pickaxe!: Phaser.GameObjects.Zone;
+  sword!: Phaser.GameObjects.Zone;
 
   constructor({
     scene,
@@ -105,9 +112,10 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.silhouette = scene.add.sprite(0, 0, "silhouette");
     this.add(this.silhouette);
     this.sprite = this.silhouette;
-    this.lamp = null;
-
-    this.loadLamp();
+    // Halloween
+    this.createSword();
+    this.createPickaxe();
+    this.createLamp();
 
     this.shadow = this.scene.add
       .sprite(0.5, 8, "shadow")
@@ -175,15 +183,23 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.idleSpriteKey = `${keyName}-bumpkin-idle-sheet`;
     this.walkingSpriteKey = `${keyName}-bumpkin-walking-sheet`;
     this.idleAnimationKey = `${keyName}-bumpkin-idle`;
-    this.carryingSpriteKey = `${keyName}-bumpkin-carrying-sheet`;
-    this.carryingIdleSpriteKey = `${keyName}-bumpkin-carrying-idle-sheet`;
-    this.deathSpriteKey = `${keyName}-bumpkin-death-sheet`;
     this.walkingAnimationKey = `${keyName}-bumpkin-walking`;
     this.digAnimationKey = `${keyName}-bumpkin-dig`;
     this.drillAnimationKey = `${keyName}-bumpkin-drilling`;
+
+    // Halloween
+    this.carryingSpriteKey = `${keyName}-bumpkin-carrying-sheet`;
+    this.carryingIdleSpriteKey = `${keyName}-bumpkin-carrying-idle-sheet`;
+    this.deathSpriteKey = `${keyName}-bumpkin-death-sheet`;
+    this.attackSpriteKey = `${keyName}-bumpkin-attack-sheet`;
+    this.miningSpriteKey = `${keyName}-bumpkin-mining-sheet`;
+    this.hurtSpriteKey = `${keyName}-bumpkin-hurt-sheet`;
     this.carryingAnimationKey = `${keyName}-bumpkin-carrying`;
     this.carryingIdleAnimationKey = `${keyName}-bumpkin-carrying-idle`;
     this.deathAnimationKey = `${keyName}-bumpkin-death`;
+    this.attackAnimationKey = `${keyName}-bumpkin-attack`;
+    this.miningAnimationKey = `${keyName}-bumpkin-mining`;
+    this.hurtAnimationKey = `${keyName}-bumpkin-hurt`;
 
     await buildNPCSheets({
       parts: this.clothing,
@@ -269,6 +285,38 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       });
     }
 
+    // If the texture already exists, we can use it immediately
+    if (scene.textures.exists(this.digAnimationKey)) {
+      this.createDigAnimation();
+    } else {
+      const url = getAnimationUrl(this.clothing, "dig");
+      const digLoader = scene.load.spritesheet(this.digAnimationKey, url, {
+        frameWidth: 96,
+        frameHeight: 64,
+      });
+
+      digLoader.once(Phaser.Loader.Events.COMPLETE, () => {
+        this.createDigAnimation();
+        digLoader.removeAllListeners();
+      });
+    }
+
+    if (scene.textures.exists(this.drillAnimationKey)) {
+      this.createDrillAnimation();
+    } else {
+      const url = getAnimationUrl(this.clothing, "drilling");
+      const drillLoader = scene.load.spritesheet(this.drillAnimationKey, url, {
+        frameWidth: 96,
+        frameHeight: 64,
+      });
+
+      drillLoader.once(Phaser.Loader.Events.COMPLETE, () => {
+        this.createDrillAnimation();
+        drillLoader.removeAllListeners();
+      });
+    }
+
+    // Halloween
     // Carry
     if (scene.textures.exists(this.carryingSpriteKey)) {
       this.createCarryingAnimation();
@@ -325,34 +373,51 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       });
     }
 
-    // If the texture already exists, we can use it immediately
-    if (scene.textures.exists(this.digAnimationKey)) {
-      this.createDigAnimation();
+    // Attack
+    if (scene.textures.exists(this.attackSpriteKey)) {
+      this.createAttackAnimation();
     } else {
-      const url = getAnimationUrl(this.clothing, "dig");
-      const digLoader = scene.load.spritesheet(this.digAnimationKey, url, {
+      const url = getAnimationUrl(this.clothing, "attack");
+      const attackLoader = scene.load.spritesheet(this.attackSpriteKey, url, {
         frameWidth: 96,
         frameHeight: 64,
       });
 
-      digLoader.once(Phaser.Loader.Events.COMPLETE, () => {
-        this.createDigAnimation();
-        digLoader.removeAllListeners();
+      attackLoader.on(Phaser.Loader.Events.COMPLETE, () => {
+        this.createAttackAnimation();
+        attackLoader.removeAllListeners();
       });
     }
 
-    if (scene.textures.exists(this.drillAnimationKey)) {
-      this.createDrillAnimation();
+    // Mining
+    if (scene.textures.exists(this.miningSpriteKey)) {
+      this.createMiningAnimation();
     } else {
-      const url = getAnimationUrl(this.clothing, "drilling");
-      const drillLoader = scene.load.spritesheet(this.drillAnimationKey, url, {
+      const url = getAnimationUrl(this.clothing, "mining");
+      const miningLoader = scene.load.spritesheet(this.miningSpriteKey, url, {
         frameWidth: 96,
         frameHeight: 64,
       });
 
-      drillLoader.once(Phaser.Loader.Events.COMPLETE, () => {
-        this.createDrillAnimation();
-        drillLoader.removeAllListeners();
+      miningLoader.on(Phaser.Loader.Events.COMPLETE, () => {
+        this.createMiningAnimation();
+        miningLoader.removeAllListeners();
+      });
+    }
+
+    // Hurt
+    if (scene.textures.exists(this.hurtSpriteKey)) {
+      this.createHurtAnimation();
+    } else {
+      const url = getAnimationUrl(this.clothing, "hurt");
+      const hurtLoader = scene.load.spritesheet(this.hurtSpriteKey, url, {
+        frameWidth: 96,
+        frameHeight: 64,
+      });
+
+      hurtLoader.on(Phaser.Loader.Events.COMPLETE, () => {
+        this.createHurtAnimation();
+        hurtLoader.removeAllListeners();
       });
     }
 
@@ -499,7 +564,58 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
           end: 12,
         },
       ),
-      repeat: -1,
+      repeat: 0,
+      frameRate: 10,
+    });
+  }
+
+  private createAttackAnimation() {
+    if (!this.scene || !this.scene.anims) return;
+
+    this.scene.anims.create({
+      key: this.attackAnimationKey,
+      frames: this.scene.anims.generateFrameNumbers(
+        this.attackSpriteKey as string,
+        {
+          start: 0,
+          end: 7,
+        },
+      ),
+      repeat: 0,
+      frameRate: 12,
+    });
+  }
+
+  private createMiningAnimation() {
+    if (!this.scene || !this.scene.anims) return;
+
+    this.scene.anims.create({
+      key: this.miningAnimationKey,
+      frames: this.scene.anims.generateFrameNumbers(
+        this.miningSpriteKey as string,
+        {
+          start: 0,
+          end: 7,
+        },
+      ),
+      repeat: 0,
+      frameRate: 12,
+    });
+  }
+
+  private createHurtAnimation() {
+    if (!this.scene || !this.scene.anims) return;
+
+    this.scene.anims.create({
+      key: this.hurtAnimationKey,
+      frames: this.scene.anims.generateFrameNumbers(
+        this.hurtSpriteKey as string,
+        {
+          start: 0,
+          end: 7,
+        },
+      ),
+      repeat: 0,
       frameRate: 10,
     });
   }
@@ -1083,11 +1199,85 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     }
   }
 
+  public attack() {
+    if (
+      this.sprite?.anims &&
+      this.scene?.anims.exists(this.attackAnimationKey as string) &&
+      this.sprite?.anims.getName() !== this.attackAnimationKey
+    ) {
+      try {
+        this.isAttacking = true;
+        this.enableSword(true);
+        this.sprite.anims.play(this.attackAnimationKey as string, true);
+        onAnimationComplete(
+          this.sprite,
+          this.attackAnimationKey as string,
+          () => {
+            this.isAttacking = false;
+            this.enableSword(false);
+          },
+        );
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log("Bumpkin Container: Error playing attack animation: ", e);
+      }
+    }
+  }
+
+  public mining() {
+    if (
+      this.sprite?.anims &&
+      this.scene?.anims.exists(this.miningAnimationKey as string) &&
+      this.sprite?.anims.getName() !== this.miningAnimationKey
+    ) {
+      try {
+        this.isMining = true;
+        this.enablePickaxe(true);
+        this.sprite.anims.play(this.miningAnimationKey as string, true);
+        onAnimationComplete(
+          this.sprite,
+          this.miningAnimationKey as string,
+          () => {
+            this.isMining = false;
+            this.enablePickaxe(false);
+            EventBus.emit("animation-mining-completed");
+          },
+        );
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log("Bumpkin Container: Error playing mining animation: ", e);
+      }
+    }
+  }
+
+  public hurt() {
+    if (
+      this.sprite?.anims &&
+      this.scene?.anims.exists(this.hurtAnimationKey as string) &&
+      this.sprite?.anims.getName() !== this.hurtAnimationKey
+    ) {
+      try {
+        this.isHurting = true;
+        this.isAttacking = false;
+        this.isMining = false;
+        this.sprite.anims.play(this.hurtAnimationKey as string, true);
+        onAnimationComplete(
+          this.sprite,
+          this.hurtAnimationKey as string,
+          () => (this.isHurting = false),
+        );
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.log("Bumpkin Container: Error playing hurt animation: ", e);
+      }
+    }
+  }
+
   public lampVisibility(value: boolean) {
     this.lamp?.setVisible(value);
   }
 
-  private loadLamp() {
+  private createLamp() {
     this.lamp = new LampContainer({
       x: ITEM_BUMPKIN.x,
       y: ITEM_BUMPKIN.y,
@@ -1098,57 +1288,113 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.add(this.lamp);
   }
 
-  private get portalService() {
-    return this.scene.registry.get("portalService") as
-      | MachineInterpreter
-      | undefined;
+  // private get portalService() {
+  //   return this.scene.registry.get("portalService") as
+  //     | MachineInterpreter
+  //     | undefined;
+  // }
+
+  // public updateLightRadius() {
+  //   const darknessPipeline = this.scene.cameras.main.getPostPipeline(
+  //     "DarknessPipeline",
+  //   ) as DarknessPipeline;
+
+  //   const finalStep =
+  //     MIN_PLAYER_LIGHT_RADIUS +
+  //     STEP_PLAYER_LIGHT_RADIUS * (this.portalService?.state.context.lamps || 0);
+
+  //   if (finalStep != darknessPipeline.lightRadius[0]) {
+  //     const step = (finalStep - darknessPipeline.lightRadius[0]) / 10;
+
+  //     const animationRadius = setInterval(() => {
+  //       darknessPipeline.lightRadius[0] += step;
+  //       if (step >= 0) {
+  //         if (darknessPipeline.lightRadius[0] >= finalStep) {
+  //           darknessPipeline.lightRadius[0] = finalStep;
+  //           clearInterval(animationRadius);
+  //         }
+  //       } else if (step < 0) {
+  //         if (darknessPipeline.lightRadius[0] <= finalStep) {
+  //           darknessPipeline.lightRadius[0] = finalStep;
+  //           clearInterval(animationRadius);
+  //         }
+  //       }
+  //     }, 100);
+  //   }
+  // }
+
+  // public addLabel(value: number | string) {
+  //   this.stopSpeaking();
+  //   this.reaction.clear(true, true);
+
+  //   if (typeof value === "number") {
+  //     value = `${value > 0 ? "+" : "-"}${Math.abs(value)}`;
+  //   }
+
+  //   const label = this.scene.add
+  //     .bitmapText(1, -23, "Teeny Tiny Pixls", value, 4, 1)
+  //     .setOrigin(0.5);
+
+  //   label.setTintFill(0xffffff);
+  //   this.add(label);
+  //   this.reaction.add(label);
+
+  //   this.destroyReaction();
+  // }
+
+  createPickaxe() {
+    this.pickaxe = this.scene.add.zone(0, 0, 0, 0);
+    this.scene.physics.world.enable(this.pickaxe);
+    const basketBody = this.pickaxe.body as Phaser.Physics.Arcade.Body;
+    basketBody.setAllowGravity(false);
+    basketBody.enable = false;
+    this.add(this.pickaxe);
   }
 
-  public updateLightRadius() {
-    const darknessPipeline = this.scene.cameras.main.getPostPipeline(
-      "DarknessPipeline",
-    ) as DarknessPipeline;
+  createSword() {
+    this.sword = this.scene.add.zone(0, 0, 0, 0).setOrigin(0);
+    this.scene.physics.world.enable(this.sword);
+    const swordBody = this.sword.body as Phaser.Physics.Arcade.Body;
+    swordBody.setAllowGravity(false);
+    swordBody.enable = false;
+    this.add(this.sword);
+  }
 
-    const finalStep =
-      MIN_PLAYER_LIGHT_RADIUS +
-      STEP_PLAYER_LIGHT_RADIUS * (this.portalService?.state.context.lamps || 0);
+  enablePickaxe(state: boolean) {
+    const pickaxeBody = this.pickaxe?.body as Phaser.Physics.Arcade.Body;
+    pickaxeBody.enable = state;
+    if (!state) return;
 
-    if (finalStep != darknessPipeline.lightRadius[0]) {
-      const step = (finalStep - darknessPipeline.lightRadius[0]) / 10;
-
-      const animationRadius = setInterval(() => {
-        darknessPipeline.lightRadius[0] += step;
-        if (step >= 0) {
-          if (darknessPipeline.lightRadius[0] >= finalStep) {
-            darknessPipeline.lightRadius[0] = finalStep;
-            clearInterval(animationRadius);
-          }
-        } else if (step < 0) {
-          if (darknessPipeline.lightRadius[0] <= finalStep) {
-            darknessPipeline.lightRadius[0] = finalStep;
-            clearInterval(animationRadius);
-          }
-        }
-      }, 100);
+    const x = 2;
+    const y = -8;
+    const width = 43;
+    const height = 15;
+    // this.scene.sound.play("pickaxe", { volume: PORTAL_VOLUME });
+    if (this.direction === "right") {
+      pickaxeBody?.setSize(width, height);
+      this.pickaxe?.setPosition(x, y);
+    } else if (this.direction === "left") {
+      pickaxeBody?.setSize(width, height);
+      this.pickaxe?.setPosition(x - 5, y);
     }
   }
 
-  public addLabel(value: number | string) {
-    this.stopSpeaking();
-    this.reaction.clear(true, true);
+  enableSword(state: boolean) {
+    const swordBody = this.sword?.body as Phaser.Physics.Arcade.Body;
+    swordBody.enable = state;
+    if (!state) return;
 
-    if (typeof value === "number") {
-      value = `${value > 0 ? "+" : "-"}${Math.abs(value)}`;
+    const x = -12;
+    const y = -17;
+    const width = 35;
+    const height = 15;
+    // this.scene.sound.play("sword", { volume: PORTAL_VOLUME });
+    if (this.direction === "right") {
+      swordBody?.setSize(width, height);
+      this.sword?.setPosition(x, y);
+    } else if (this.direction === "left") {
+      swordBody?.setSize(width, height);
+      this.sword?.setPosition(x - 5, y);
     }
-
-    const label = this.scene.add
-      .bitmapText(1, -23, "Teeny Tiny Pixls", value, 4, 1)
-      .setOrigin(0.5);
-
-    label.setTintFill(0xffffff);
-    this.add(label);
-    this.reaction.add(label);
-
-    this.destroyReaction();
   }
 }
