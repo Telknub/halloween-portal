@@ -2,6 +2,7 @@ import { Equipped } from "features/game/types/bumpkin";
 import { ITEM_DETAILS } from "features/game/types/images";
 import { translate } from "lib/i18n/translate";
 import { ROOM_INNER_HEIGHT, ROOM_INNER_WIDTH } from "./map/rooms/RoomTileMap";
+import slidingPuzzleImg from "public/world/halloween/ForSlidingPuzzle.webp";
 
 export type Tools = "sword" | "lamp" | "pickaxe";
 export type ToolActions = "attack" | "mining";
@@ -203,3 +204,36 @@ export const HALLOWEEN_NPC_WEARABLES: Equipped = {
 // Mini_game
 export const SUDOKU_COMPLEXITY = 4;
 export const TEXT = "You got it!";
+
+// Enemies Configuration
+interface Position {
+  x: number;
+  y: number;
+}
+
+export const BOSS_ENEMY_CONFIGURATION: Position = {
+  x: (ROOM_INNER_WIDTH * TILE_SIZE) / 6,
+  y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 5,
+};
+
+export const REMOVE_ATTACK = 1000;
+
+const limitX = 230;
+const stop_position = [50, 80, 90, 110, 130, 150];
+const randomPosition = Math.floor(Math.random() * stop_position.length);
+const position_1 = stop_position[randomPosition];
+const position_2 = limitX - position_1;
+
+export const BASICROOM_X_GUIDE: number[] = [380, 830, 1280, 1725, 2170, 2630];
+export const ACTIVATE_FLAMETHROWER = {
+  position_1,
+  position_2,
+  position_3: position_1 + position_2,
+};
+
+export const SLIDING_PUZZLE_MOVESTOSOLVE = 4;
+export const SLIDING_PUZZLE_IMG = slidingPuzzleImg;
+export const VICTORY_TEXT = {
+  Sudoku: "You got it!",
+  SlidinpPuzzle: "Puzzle Solved!",
+}
