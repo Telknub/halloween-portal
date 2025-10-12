@@ -69,6 +69,10 @@ export class BaseRoom {
     throw new Error("Method 'createObjects' must be implemented by subclass");
   }
 
+  getmapOffsetMultiplierX() {
+    return this.mapOffsetMultiplier.x;
+  }
+
   createPaths() {
     if (this.hasEntry) {
       const prevExit = (this.prev as BaseRoom)?.exit as Direction;
@@ -92,7 +96,7 @@ export class BaseRoom {
       this.mapOffsetMultiplier = offsetMultiplier;
     }
 
-    console.log(`Room ${this.id}:`, this.mapOffsetMultiplier);
+    // console.log(`Room ${this.id}:`, this.mapOffsetMultiplier);
   }
 
   get getOffset() {
