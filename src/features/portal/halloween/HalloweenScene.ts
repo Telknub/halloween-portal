@@ -255,6 +255,38 @@ export class HalloweenScene extends BaseScene {
       frameWidth: 32,
       frameHeight: 91,
     });
+    this.load.spritesheet(
+      "dungeonMummy_idle",
+      "world/halloween/dungeonMummy_idle.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      },
+    );
+    this.load.spritesheet(
+      "dungeonMummy_walk",
+      "world/halloween/dungeonMummy_walk.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      },
+    );
+    this.load.spritesheet(
+      "dungeonMummy_attack",
+      "world/halloween/dungeonMummy_attack.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      },
+    );
+    this.load.spritesheet(
+      "dungeonMummy_defeat",
+      "world/halloween/dungeonMummy_defeat.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      },
+    );
   }
 
   // init(data: any) {
