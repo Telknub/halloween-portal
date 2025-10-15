@@ -1,12 +1,12 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseRoom } from "../BaseRoom";
 import { basicRoom } from "../RoomTileMap";
-import { BaseScene } from "features/world/scenes/BaseScene";
+import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
 import { BOSS_ENEMY_CONFIGURATION } from "features/portal/halloween/HalloweenConstants";
 import { BossContainer } from "features/portal/halloween/containers/BossContainer";
 
 interface Props {
-  scene: BaseScene;
+  scene: HalloweenScene;
   hasEntry?: boolean;
   hasExit?: boolean;
   matrix?: number[][];

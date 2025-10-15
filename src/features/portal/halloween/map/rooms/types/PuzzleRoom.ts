@@ -1,10 +1,10 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseRoom } from "../BaseRoom";
 import { createCenterRoom } from "../../Utils";
-import { BaseScene } from "features/world/scenes/BaseScene";
+import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
 
 interface Props {
-  scene: BaseScene;
+  scene: HalloweenScene;
   hasEntry?: boolean;
   hasExit?: boolean;
   matrix?: number[][];
@@ -35,5 +35,6 @@ export class PuzzleRoom extends BaseRoom {
         true,
         statuePos,
       );
+    this.spawnObjectRandomly((x, y) => this.createRelic(x, y));
   }
 }

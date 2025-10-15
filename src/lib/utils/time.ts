@@ -142,7 +142,7 @@ export const millisecondsToString = (
   const millisecondsValue = {
     value: roundingFunction(milliseconds % ONE_SEC),
     unit: translate("time.ms.med"),
-    pluralisedUnit: translate("time.mss.med"),
+    pluralisedUnit: translate("time.ms.med"),
     unitShort: translate("time.millisecond.short"),
   };
   const secondsValue = {

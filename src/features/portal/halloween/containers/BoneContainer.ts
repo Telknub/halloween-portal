@@ -1,11 +1,11 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { BaseScene } from "features/world/scenes/BaseScene";
 import { MachineInterpreter } from "../lib/halloweenMachine";
+import { HalloweenScene } from "../HalloweenScene";
 
 interface Props {
   x: number;
   y: number;
-  scene: BaseScene;
+  scene: HalloweenScene;
   player?: BumpkinContainer;
 }
 
@@ -13,7 +13,7 @@ export class BoneContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   private spriteName: string;
   private sprite: Phaser.GameObjects.Sprite;
-  scene: BaseScene;
+  scene: HalloweenScene;
 
   constructor({ x, y, scene, player }: Props) {
     super(scene, x, y);
@@ -21,8 +21,9 @@ export class BoneContainer extends Phaser.GameObjects.Container {
     this.player = player;
 
     // Sprite
-    const bones = ["bone1", "bone2", "bone3", "bone4", "bone5"];
-    this.spriteName = bones[Math.floor(Math.random() * bones.length)];
+    this.spriteName =
+      scene.bones[Math.floor(Math.random() * scene.bones.length)];
+    scene.bones = scene.bones.filter((bone) => bone !== this.spriteName);
     this.sprite = scene.add.sprite(0, 0, this.spriteName);
 
     // Overlaps
@@ -52,7 +53,7 @@ export class BoneContainer extends Phaser.GameObjects.Container {
   }
 
   private collect() {
-    this.portalService?.send("COLLECT_BONE");
+    this.portalService?.send("COLLECT_BONE", { boneName: this.spriteName });
     this.destroy();
   }
 }

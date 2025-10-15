@@ -1,14 +1,17 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { BaseScene } from "features/world/scenes/BaseScene";
+import { HalloweenScene } from "../HalloweenScene";
 import { MachineInterpreter } from "../lib/halloweenMachine";
 import { npcModalManager } from "features/world/ui/NPCModals";
 import { translate } from "lib/i18n/translate";
-import { HalloweenNpcNames } from "../HalloweenConstants";
+import {
+  FINAL_SKELETON_NPC_NAME,
+  HalloweenNpcNames,
+} from "../HalloweenConstants";
 
 interface Props {
   x: number;
   y: number;
-  scene: BaseScene;
+  scene: HalloweenScene;
   id: number;
   direction: string;
   flowCompleteKey: string;
@@ -23,7 +26,7 @@ export class SkeletonContainer extends Phaser.GameObjects.Container {
   private spriteName: string;
   private sprite: Phaser.GameObjects.Sprite;
   private alert: Phaser.GameObjects.Sprite;
-  scene: BaseScene;
+  scene: HalloweenScene;
 
   constructor({
     x,
@@ -70,12 +73,6 @@ export class SkeletonContainer extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
-  private get portalService() {
-    return this.scene.registry.get("portalService") as
-      | MachineInterpreter
-      | undefined;
-  }
-
   private createAnimation() {
     const animationKey = `${this.spriteName}_${this.id}_action`;
     this.scene.anims.create({
@@ -96,6 +93,15 @@ export class SkeletonContainer extends Phaser.GameObjects.Container {
   }
 
   private createEvents() {
+    let relicName = "";
+    if (this.npcName === FINAL_SKELETON_NPC_NAME) {
+      relicName =
+        this.scene.relics[Math.floor(Math.random() * this.scene.relics.length)];
+      this.scene.relics = this.scene.relics.filter(
+        (relic) => relic !== relicName,
+      );
+    }
+
     this.sprite.setInteractive({ cursor: "pointer" }).on("pointerdown", () => {
       const distance = Phaser.Math.Distance.BetweenPoints(
         this.player as BumpkinContainer,
@@ -106,7 +112,7 @@ export class SkeletonContainer extends Phaser.GameObjects.Container {
         return;
       }
 
-      npcModalManager.open(this.npcName);
+      npcModalManager.open(this.npcName, { relicName });
 
       if (this.alert?.active) {
         this.alert?.destroy();

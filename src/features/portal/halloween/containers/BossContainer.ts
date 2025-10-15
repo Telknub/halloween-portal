@@ -1,5 +1,5 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { BaseScene } from "features/world/scenes/BaseScene";
+import { HalloweenScene } from "../HalloweenScene";
 import { MachineInterpreter } from "../lib/halloweenMachine";
 import {
   REMOVE_ATTACK,
@@ -12,14 +12,14 @@ import { BaseRoom } from "../map/rooms/BaseRoom";
 interface Props {
   x: number;
   y: number;
-  scene: BaseScene;
+  scene: HalloweenScene;
   player?: BumpkinContainer;
   room: BaseRoom;
 }
 
 export class BossContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
-  scene: BaseScene;
+  scene: HalloweenScene;
   private spriteName: string;
   private overlapHandler?: Phaser.Physics.Arcade.Collider;
   private spriteBody: Phaser.GameObjects.Sprite;

@@ -20,6 +20,39 @@ export const OUTER_WALLS = {
   R_OUT: 28, // Right Outer
 };
 
+export const DECORATION = {
+  GROUND_1: 27,
+  GROUND_2: 48,
+  GROUND_3: 49,
+  GROUND_4: 50,
+  TL_IN_1: 18, // Top Left Inner
+  TL_IN_2: 0,
+  TR_IN_1: 20, // Top Right Inner
+  TR_IN_2: 4,
+  BL_IN: 40, // Bottom Left Inner
+  BR_IN: 42, // Bottom Right Inner
+  T_IN_1: 19, // Top Inner
+  T_IN_2: 5,
+  T_IN_3: 6,
+  T_IN_4: 7,
+  B_IN: 41, // Bottom Inner
+  L_IN: 29, // Left Inner
+  R_IN: 31, // Right Inner
+  TL_OUT: 12, // Top Left Outer
+  TR_OUT: 14, // Top Right Outer
+  BL_OUT_1: 34, // Bottom Left Outer
+  BL_OUT_2: 0,
+  BR_OUT_1: 36, // Bottom Right Outer
+  BR_OUT_2: 4,
+  T_OUT: 41, // Top Outer
+  B_OUT_1: 19, // Bottom Outer
+  B_OUT_2: 5,
+  B_OUT_3: 6,
+  B_OUT_4: 7,
+  L_OUT: 31, // Left OuterS
+  R_OUT: 29, // Right Outer
+};
+
 export const WALLS = {
   ...INNER_WALLS,
   ...OUTER_WALLS,
@@ -250,3 +283,38 @@ export const ROOM_WALLS = [
   wall10,
   wall11,
 ];
+
+export const DECORATION_TILES = {
+  [TILES.GROUND]: [
+    DECORATION.GROUND_1,
+    DECORATION.GROUND_2,
+    DECORATION.GROUND_3,
+    DECORATION.GROUND_4,
+  ],
+  [TILES.TL_IN]: [DECORATION.TL_IN_1, DECORATION.TL_IN_2],
+  [TILES.TR_IN]: [DECORATION.TR_IN_1, DECORATION.TR_IN_2],
+  [TILES.BL_IN]: [DECORATION.BL_IN],
+  [TILES.BR_IN]: [DECORATION.BR_IN],
+  [TILES.T_IN]: [
+    DECORATION.T_IN_1,
+    DECORATION.T_IN_2,
+    DECORATION.T_IN_3,
+    DECORATION.T_IN_4,
+  ],
+  [TILES.B_IN]: [DECORATION.B_IN],
+  [TILES.L_IN]: [DECORATION.L_IN],
+  [TILES.R_IN]: [DECORATION.R_IN],
+  [TILES.TL_OUT]: [DECORATION.TL_OUT],
+  [TILES.TR_OUT]: [DECORATION.TR_OUT],
+  [TILES.BL_OUT]: [DECORATION.BL_OUT_1, DECORATION.BL_OUT_2],
+  [TILES.BR_OUT]: [DECORATION.BR_OUT_1, DECORATION.BR_OUT_2],
+  [TILES.T_OUT]: [DECORATION.T_OUT],
+  [TILES.B_OUT]: [
+    DECORATION.B_OUT_1,
+    DECORATION.B_OUT_2,
+    DECORATION.B_OUT_3,
+    DECORATION.B_OUT_4,
+  ],
+  [TILES.L_OUT]: [DECORATION.L_OUT],
+  [TILES.R_OUT]: [DECORATION.R_OUT],
+};

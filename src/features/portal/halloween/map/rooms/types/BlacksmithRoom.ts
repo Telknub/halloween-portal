@@ -2,13 +2,11 @@ import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseRoom } from "../BaseRoom";
 import { createSmallRoom } from "../../Utils";
 import { BLACKSMITH_CONFIGURATION } from "features/portal/halloween/HalloweenConstants";
-import { BaseScene } from "features/world/scenes/BaseScene";
+import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
 import { BlacksmithContainer } from "features/portal/halloween/containers/BlacksmithContainer";
-import { StatueContainer } from "features/portal/halloween/containers/StatueContainer";
-import { BoneContainer } from "features/portal/halloween/containers/BoneContainer";
 
 interface Props {
-  scene: BaseScene;
+  scene: HalloweenScene;
   hasEntry?: boolean;
   hasExit?: boolean;
   matrix?: number[][];
@@ -29,6 +27,7 @@ export class BlacksmithRoom extends BaseRoom {
     );
     this.spawnObjectRandomly((x, y) => this.createBones(x, y), true, statuePos);
     this.createDecorationRandomly();
+    this.spawnObjectRandomly((x, y) => this.createRelic(x, y));
   }
 
   private createBlacksmith() {

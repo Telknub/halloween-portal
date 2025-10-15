@@ -323,7 +323,7 @@ export const STATIC_OFFLINE_FARM: GameState = {
           Mark: 45,
         },
         wearables: {},
-        score: 165000,
+        score: 5,
         startAt: 1734566400000,
         endAt: 1734652800000,
       },

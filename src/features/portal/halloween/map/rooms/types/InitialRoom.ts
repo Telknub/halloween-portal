@@ -1,7 +1,7 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseRoom } from "../BaseRoom";
 import { basicRoom } from "../RoomTileMap";
-import { BaseScene } from "features/world/scenes/BaseScene";
+import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
 import {
   INITIAL_SKELETON_KEY,
   INITIAL_SKELETON_NPC_NAME,
@@ -10,7 +10,7 @@ import {
 import { SkeletonContainer } from "features/portal/halloween/containers/SkeletonContainer";
 
 interface Props {
-  scene: BaseScene;
+  scene: HalloweenScene;
   hasEntry?: boolean;
   hasExit?: boolean;
   matrix?: number[][];

@@ -2,14 +2,13 @@ import React, { useContext } from "react";
 import { useSelector } from "@xstate/react";
 import { PortalContext } from "../../lib/PortalProvider";
 import { SUNNYSIDE } from "assets/sunnyside";
-import { millisecondsToString } from "lib/utils/time";
 import { Label } from "components/ui/Label";
 import { PortalMachineState } from "../../lib/halloweenMachine";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 
 const _score = (state: PortalMachineState) => state.context.score;
 
-export const HalloweenTimeScore: React.FC = () => {
+export const HalloweenScore: React.FC = () => {
   const { t } = useAppTranslation();
 
   const { portalService } = useContext(PortalContext);
@@ -23,9 +22,7 @@ export const HalloweenTimeScore: React.FC = () => {
       type={"info"}
     >
       {t("halloween.score", {
-        score: millisecondsToString(score, {
-          length: "full",
-        }),
+        score: score,
       })}
     </Label>
   );

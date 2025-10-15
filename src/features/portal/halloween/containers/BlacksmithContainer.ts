@@ -1,10 +1,13 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { BaseScene } from "features/world/scenes/BaseScene";
+import { HalloweenScene } from "../HalloweenScene";
+import { translate } from "lib/i18n/translate";
+import { npcModalManager } from "features/world/ui/NPCModals";
+import { BLACKSMITH_KEY, BLACKSMITH_NPC_NAME } from "../HalloweenConstants";
 
 interface Props {
   x: number;
   y: number;
-  scene: BaseScene;
+  scene: HalloweenScene;
   player?: BumpkinContainer;
 }
 
@@ -12,21 +15,28 @@ export class BlacksmithContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   private spriteName: string;
   private sprite: Phaser.GameObjects.Sprite;
+  private alert: Phaser.GameObjects.Sprite;
+  scene: HalloweenScene;
 
   constructor({ x, y, scene, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
     this.player = player;
+    localStorage.setItem(BLACKSMITH_KEY, "false");
 
     // Sprite
     this.spriteName = "blacksmith";
     this.sprite = scene.add.sprite(0, 0, this.spriteName);
+    this.alert = this.scene.add.sprite(-12, -16, "alert").setSize(4, 10);
 
     // Animation
     this.createAnimation();
 
     // Overlaps
     this.createOverlaps();
+
+    // Events
+    this.createEvents();
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
@@ -35,7 +45,7 @@ export class BlacksmithContainer extends Phaser.GameObjects.Container {
       .setCollideWorldBounds(true);
 
     this.setSize(this.sprite.width, this.sprite.height);
-    this.add(this.sprite);
+    this.add([this.sprite, this.alert]);
 
     scene.add.existing(this);
   }
@@ -56,5 +66,30 @@ export class BlacksmithContainer extends Phaser.GameObjects.Container {
   private createOverlaps() {
     if (!this.player) return;
     this.scene.physics.add.collider(this.player, this);
+  }
+
+  private createEvents() {
+    const relicName =
+      this.scene.relics[Math.floor(Math.random() * this.scene.relics.length)];
+    this.scene.relics = this.scene.relics.filter(
+      (relic) => relic !== relicName,
+    );
+
+    this.sprite.setInteractive({ cursor: "pointer" }).on("pointerdown", () => {
+      const distance = Phaser.Math.Distance.BetweenPoints(
+        this.player as BumpkinContainer,
+        this,
+      );
+      if (distance > 40) {
+        this.player?.speak(translate("base.iam.far.away"));
+        return;
+      }
+
+      npcModalManager.open(BLACKSMITH_NPC_NAME, { relicName });
+
+      if (this.alert?.active) {
+        this.alert?.destroy();
+      }
+    });
   }
 }

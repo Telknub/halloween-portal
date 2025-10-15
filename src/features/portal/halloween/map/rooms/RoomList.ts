@@ -21,17 +21,17 @@ import { InitialRoom } from "./types/InitialRoom";
 import { PuzzleRoom } from "./types/PuzzleRoom";
 import { BlacksmithRoom } from "./types/BlacksmithRoom";
 import { SkeletonRoom } from "./types/SkeletonRoom";
-import { BaseScene } from "features/world/scenes/BaseScene";
+import { HalloweenScene } from "../../HalloweenScene";
 
 export class RoomList {
-  private scene: BaseScene;
+  private scene: HalloweenScene;
   private player?: BumpkinContainer;
   private head: BaseRoom | null = null;
   private tail: BaseRoom | null = null;
   private length = 0;
   private mapRoomSize = { width: 0, height: 0 };
 
-  constructor(scene: BaseScene, player?: BumpkinContainer) {
+  constructor(scene: HalloweenScene, player?: BumpkinContainer) {
     this.scene = scene;
     this.player = player;
   }

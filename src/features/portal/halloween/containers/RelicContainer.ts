@@ -1,6 +1,8 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { HalloweenScene } from "../HalloweenScene";
 import { MachineInterpreter } from "../lib/halloweenMachine";
+import { Relics } from "../HalloweenConstants";
+import { interactableModalManager } from "features/world/ui/InteractableModals";
 
 interface Props {
   x: number;
@@ -9,7 +11,7 @@ interface Props {
   player?: BumpkinContainer;
 }
 
-export class PickaxeContainer extends Phaser.GameObjects.Container {
+export class RelicContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   private spriteName: string;
   private sprite: Phaser.GameObjects.Sprite;
@@ -21,8 +23,10 @@ export class PickaxeContainer extends Phaser.GameObjects.Container {
     this.player = player;
 
     // Sprite
-    this.spriteName = "pickaxe";
-    this.sprite = scene.add.sprite(0, 0, this.spriteName);
+    this.spriteName =
+      scene.relics[Math.floor(Math.random() * scene.relics.length)];
+    scene.relics = scene.relics.filter((relic) => relic !== this.spriteName);
+    this.sprite = scene.add.sprite(0, 0, this.spriteName).setScale(0.7);
 
     // Overlaps
     this.createOverlaps();
@@ -51,8 +55,9 @@ export class PickaxeContainer extends Phaser.GameObjects.Container {
   }
 
   private collect() {
-    this.portalService?.send("COLLECT_TOOL", { tool: "pickaxe" });
-    this.player?.lampVisibility(false);
+    this.portalService?.send("GAIN_POINTS");
+    this.scene.applyRelicBuff(this.spriteName as Relics);
+    interactableModalManager.open("relic", { relicName: this.spriteName });
     this.destroy();
   }
 }

@@ -5,7 +5,6 @@ import { SUNNYSIDE } from "assets/sunnyside";
 import { Label } from "components/ui/Label";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 import { PortalMachineState } from "../../lib/halloweenMachine";
-import { millisecondsToString } from "lib/utils/time";
 
 const _target = (state: PortalMachineState) =>
   state.context.state?.minigames.prizes["halloween"]?.score ?? 0;
@@ -27,9 +26,7 @@ export const HalloweenTarget: React.FC = () => {
       type={isTargetReached ? "success" : "vibrant"}
     >
       {t("halloween.targetScore", {
-        target: millisecondsToString(target, {
-          length: "full",
-        }),
+        target: target,
       })}
     </Label>
   );

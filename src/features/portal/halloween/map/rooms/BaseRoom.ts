@@ -18,14 +18,15 @@ import {
   smallRoom,
   TILES,
 } from "./RoomTileMap";
-import { BaseScene } from "features/world/scenes/BaseScene";
+import { HalloweenScene } from "../../HalloweenScene";
 import { StatueContainer } from "../../containers/StatueContainer";
 import { BoneContainer } from "../../containers/BoneContainer";
 import { LampContainer } from "../../containers/LampContainer";
 import { PickaxeContainer } from "../../containers/PickaxeContainer";
+import { RelicContainer } from "../../containers/RelicContainer";
 
 interface Props {
-  scene: BaseScene;
+  scene: HalloweenScene;
   hasEntry?: boolean;
   hasExit?: boolean;
   matrix?: number[][];
@@ -42,7 +43,7 @@ export class BaseRoom {
   protected hasEntry: boolean;
   protected hasExit: boolean;
   protected type: RoomType;
-  protected scene: BaseScene;
+  protected scene: HalloweenScene;
   player?: BumpkinContainer;
   id!: number;
   matrix: number[][];
@@ -105,7 +106,7 @@ export class BaseRoom {
       this.mapOffsetMultiplier = offsetMultiplier;
     }
 
-    // console.log(`Room ${this.id}:`, this.mapOffsetMultiplier);
+    console.log(`Room ${this.id}:`, this.mapOffsetMultiplier);
   }
 
   get getOffset() {
@@ -251,6 +252,15 @@ export class BaseRoom {
       x,
       y,
       id: this.id,
+      scene: this.scene,
+      player: this.player,
+    });
+  }
+
+  protected createRelic(x: number, y: number) {
+    new RelicContainer({
+      x,
+      y,
       scene: this.scene,
       player: this.player,
     });

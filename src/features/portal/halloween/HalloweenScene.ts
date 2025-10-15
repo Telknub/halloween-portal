@@ -29,6 +29,9 @@ import {
   Tools,
   AnimationKeys,
   ToolActions,
+  BONES,
+  RELICS,
+  Relics,
 } from "./HalloweenConstants";
 import { LampContainer } from "./containers/LampContainer";
 import { EventObject } from "xstate";
@@ -37,6 +40,7 @@ import { createLightPolygon } from "./lib/HalloweenUtils";
 import { Physics } from "phaser";
 import { isTouchDevice } from "features/world/lib/device";
 import { Map } from "./map/Map";
+import { EventBus } from "./lib/EventBus";
 
 // export const NPCS: NPCBumpkin[] = [
 //   {
@@ -85,6 +89,8 @@ export class HalloweenScene extends BaseScene {
   private lastAttempt!: number;
   private gameOverNoMove!: number;
   private gameOverNoMoveTime!: number;
+  bones = BONES;
+  relics = RELICS;
 
   sceneId: SceneId = "halloween";
   private backgroundMusic!: Phaser.Sound.BaseSound;
@@ -206,12 +212,22 @@ export class HalloweenScene extends BaseScene {
       frameHeight: 33,
     });
 
+    // Relics
+    this.load.image("envy", "world/relic1.png");
+    this.load.image("gluttony", "world/relic2.png");
+    this.load.image("greed", "world/relic3.png");
+    this.load.image("lust", "world/relic4.png");
+    this.load.image("pride", "world/relic5.png");
+    this.load.image("sloth", "world/relic6.png");
+    this.load.image("wrath", "world/relic7.png");
+    this.load.image("deceit", "world/relic8.webp");
+
     // Bones
-    this.load.image("bone1", "world/bone1.png");
-    this.load.image("bone2", "world/bone2.png");
-    this.load.image("bone3", "world/bone3.png");
-    this.load.image("bone4", "world/bone4.png");
-    this.load.image("bone5", "world/bone5.png");
+    this.load.image("femur", "world/bone1.png");
+    this.load.image("mandible", "world/bone2.png");
+    this.load.image("spine", "world/bone3.png");
+    this.load.image("clavicles", "world/bone4.png");
+    this.load.image("scapula", "world/bone5.png");
 
     // Skeleton
     this.load.spritesheet("skeleton", "world/skeleton.webp", {
@@ -255,6 +271,10 @@ export class HalloweenScene extends BaseScene {
       frameWidth: 32,
       frameHeight: 91,
     });
+    this.load.spritesheet("fire", "world/halloween/fire.webp", {
+      frameWidth: 10,
+      frameHeight: 15,
+    });
   }
 
   // init(data: any) {
@@ -278,7 +298,8 @@ export class HalloweenScene extends BaseScene {
     //   });
     // }, 5000);
 
-    // this.initializeControls();
+    this.initializeControls();
+    this.initialiseEvents();
     // this.initShaders();
 
     // this.backgroundMusic = this.sound.add("backgroundMusic", {
@@ -309,32 +330,14 @@ export class HalloweenScene extends BaseScene {
     // this.createAllLamps();
 
     // this.velocity = 0;
-
-    // reload scene when player hit retry
-    const onRetry = (event: EventObject) => {
-      if (event.type === "RETRY") {
-        this.isCameraFading = true;
-        this.cameras.main.fadeOut(500);
-        // this.reset();
-        this.cameras.main.on(
-          "camerafadeoutcomplete",
-          () => {
-            this.cameras.main.fadeIn(500);
-            this.velocity = WALKING_SPEED;
-            this.isCameraFading = false;
-          },
-          this,
-        );
-      }
-    };
-    this.portalService?.onEvent(onRetry);
   }
 
   update() {
     if (!this.currentPlayer) return;
+    if (!this.portalService) return;
 
-    if (this.portalService?.state.context.lamps === -1) {
-      this.endGame();
+    if (this.portalService.state.context.lives <= 0) {
+      // this.endGame();
     } else {
       // if (this.portalService?.state.context.isJoystickActive) {
       //   this.setJoystickPosition();
@@ -379,7 +382,7 @@ export class HalloweenScene extends BaseScene {
         //   this.stopWarningSound();
         // }
       } else {
-        this.velocity = 0;
+        // this.velocity = 0;
       }
 
       this.loadBumpkinAnimations();
@@ -426,484 +429,555 @@ export class HalloweenScene extends BaseScene {
     }
   }
 
-  // Enemy_1 (ghost_enemy)
-  enemy_1() {
-    // Delay the spawning of enemies by 10 seconds at the start
-    const currentTime = this.time.now;
-
-    if (currentTime - this.lastAttempt > this.dalaySpawnTime) {
-      // Reset spawn count after a minute
-      if (currentTime - this.lastSpawnTimeGhost > this.updateInterval) {
-        // console.log(
-        //   `Enemy count has been reset. Total enemies spawned: ${this.minGhostPerMin}`,
-        // );
-        this.minGhostPerMin = 0;
-        this.lastSpawnTimeGhost = currentTime;
-      }
-
-      // Spawn enemies up to the maximum limit
-      while (this.minGhostPerMin < this.maxGhostPerMin) {
-        const ghost_enemy =
-          this.createEnemy_1() as Phaser.Physics.Arcade.Sprite;
-
-        if (this.currentPlayer) {
-          this.physics.add.collider(ghost_enemy, this.currentPlayer, () =>
-            this.handleCollision(ghost_enemy),
-          );
-        }
-        this.minGhostPerMin++;
-      }
-    }
-  }
-
-  createEnemy_1() {
-    if (!this.currentPlayer) return;
-    let x: number, y: number;
-    let isNotInside = true;
-    const size = 1000;
-    const offsetMap = 20;
-    do {
-      x = Phaser.Math.Between(
-        Math.floor(this.currentPlayer.x - size),
-        Math.floor(this.currentPlayer.x + size),
-      );
-      y = Phaser.Math.Between(
-        Math.floor(this.currentPlayer.y - size),
-        Math.floor(this.currentPlayer.y + size),
-      );
-      if (
-        x > offsetMap &&
-        y > offsetMap &&
-        x < this.map.width * this.map.tileWidth - offsetMap &&
-        y < this.map.height * this.map.tileHeight - offsetMap
-      ) {
-        isNotInside = false;
-      }
-    } while (isNotInside);
-
-    const enemy1 = this.physics.add
-      .sprite(x, y, "ghost_enemy_1", 0)
-      .setSize(22, 23)
-      .setOffset(-0.5)
-      .setVelocity(Phaser.Math.Between(10, 20), Phaser.Math.Between(10, 20))
-      .setCollideWorldBounds(true)
-      .setBounce(1, 1);
-
-    this.ghost_enemies.push(enemy1);
-    this.AnimationEnemy_1();
-    // console.log(`Spawned ghost #${this.minGhostPerMin + 1}:`, { x, y });
-    return enemy1;
-  }
-
-  AnimationEnemy_1() {
-    ["ghost_enemy_1", "ghost_enemy_2"].forEach((key) => {
-      if (!this.anims.exists(`${key}_anim`)) {
-        this.anims.create({
-          key: `${key}_anim`,
-          frames: this.anims.generateFrameNumbers(key, { start: 0, end: 12 }),
-          repeat: -1,
-          frameRate: 10,
-        });
-      }
-    });
-  }
-
-  // Handle collision with ghost_enemy
-  handleCollision(ghost_enemy: Phaser.Physics.Arcade.Sprite) {
-    const { x, y } = ghost_enemy;
-    const poof_1 = this.add.sprite(x, y, "poof_1").play("poof_1_anim", true);
-
-    this.stealLamps();
-
-    if (!this.anims.exists("poof_1_anim")) {
-      this.anims.create({
-        key: "poof_1_anim",
-        frames: this.anims.generateFrameNumbers("poof_1", {
-          start: 0,
-          end: 11,
-        }),
-        repeat: 0,
-        frameRate: 10,
-      });
-    }
-
-    poof_1.play("poof_1_anim", true);
-    this.ghostDeathSound = this.sound.add("ghostDeathSound", {
-      loop: false,
-      volume: 0.4,
-    });
-    this.ghostDeathSound.play();
-    this.ghostDeathSound.on("complete", () => this.ghostDeathSound.destroy());
-
-    poof_1.on("animationcomplete", () => poof_1.destroy());
-    ghost_enemy.destroy();
-    this.ghost_enemies = this.ghost_enemies.filter(
-      (sprite) => sprite !== ghost_enemy,
-    );
-    this.currentPlayer && this.handleDimEffect();
-  }
-
-  handleDimEffect() {
-    const darknessPipeline = this.cameras.main.getPostPipeline(
-      "DarknessPipeline",
-    ) as DarknessPipeline;
-    darknessPipeline.lightRadius[0] = 0; // Dim the light immediately
-  }
-
-  // Animation Direction of Enemy_1
-  faceDirectionEnemy_1() {
-    this.ghost_enemies.forEach((ghost_enemy) => {
-      if (ghost_enemy.body) {
-        const animKey =
-          ghost_enemy.body.velocity.x > 0
-            ? "ghost_enemy_1_anim"
-            : "ghost_enemy_2_anim";
-        ghost_enemy.play(animKey, true);
-      }
-    });
-  }
-
-  // Enemy_2 (zombie_enemy)
-  enemy_2() {
-    const currentTime = this.time.now;
-
-    if (currentTime - this.lastAttempt > this.dalaySpawnTime) {
-      if (currentTime - this.lastSpawnTimeZombie > this.updateInterval) {
-        // console.log(
-        //   `Enemy count has been reset. Total enemies spawned: ${this.minZombiePerMin}`,
-        // );
-        this.minZombiePerMin = 0;
-        this.lastSpawnTimeZombie = currentTime;
-      }
-
-      while (this.minZombiePerMin < this.maxZombiePerMin) {
-        const zombie_enemy =
-          this.createEnemy_2() as Phaser.Physics.Arcade.Sprite;
-
-        if (this.currentPlayer) {
-          this.physics.add.collider(zombie_enemy, this.currentPlayer, () =>
-            this.handleCollisionZombie(zombie_enemy),
-          );
-        }
-
-        this.minZombiePerMin++;
-      }
-    }
-  }
-
-  createEnemy_2() {
-    if (!this.currentPlayer) return;
-    let x: number, y: number;
-    let isInsidePolygon = true;
-    const size = 400;
-    const offsetMap = 20;
-    do {
-      x = Phaser.Math.Between(
-        Math.floor(this.currentPlayer.x - size),
-        Math.floor(this.currentPlayer.x + size),
-      );
-      y = Phaser.Math.Between(
-        Math.floor(this.currentPlayer.y - size),
-        Math.floor(this.currentPlayer.y + size),
-      );
-      if (
-        x > offsetMap &&
-        y > offsetMap &&
-        x < this.map.width * this.map.tileWidth - offsetMap &&
-        y < this.map.height * this.map.tileHeight - offsetMap
-      ) {
-        isInsidePolygon = this.polygonShapes.some((shape) =>
-          Phaser.Geom.Polygon.Contains(shape, x, y),
-        );
-      }
-    } while (isInsidePolygon);
-
-    const enemy2 = this.physics.add
-      .sprite(x, y, "zombie_enemy_1", 0)
-      .setSize(15.8, 17)
-      .setOffset(-0.5)
-      .setVelocity(Phaser.Math.Between(10, 15))
-      .setCollideWorldBounds(true)
-      .setBounce(1, 1);
-
-    this.zombie_enemies.push(enemy2);
-    this.AnimationEnemy_2();
-    this.handleZombieCollisions(enemy2);
-    // console.log(`Spawned Zombie #${this.minZombiePerMin + 1}:`, { x, y });
-    return enemy2;
-  }
-
-  handleZombieCollisions(newZombie: Phaser.Physics.Arcade.Sprite) {
-    this.zombie_enemies.forEach((existingZombie) => {
-      if (existingZombie !== newZombie) {
-        this.physics.add.collider(newZombie, existingZombie);
-      }
-    });
-  }
-
-  AnimationEnemy_2() {
-    ["zombie_enemy_1", "zombie_enemy_2"].forEach((key) => {
-      if (!this.anims.exists(`${key}_anim`)) {
-        this.anims.create({
-          key: `${key}_anim`,
-          frames: this.anims.generateFrameNumbers(key, { start: 0, end: 7 }),
-          repeat: -1,
-          frameRate: 10,
-        });
-      }
-    });
-  }
-
-  handleCollisionZombie(zombie_enemy: Phaser.Physics.Arcade.Sprite) {
-    const { x, y } = zombie_enemy;
-    const zombie_death = this.add
-      .sprite(x, y, "zombie_death")
-      .play("zombie_death_anim", true);
-
-    this.stealLamps();
-
-    if (!this.anims.exists("zombie_death_anim")) {
-      this.anims.create({
-        key: "zombie_death_anim",
-        frames: this.anims.generateFrameNumbers("zombie_death", {
-          start: 0,
-          end: 12,
-        }),
-        repeat: 0,
-        frameRate: 10,
-      });
-    }
-
-    zombie_death.play("zombie_death_anim", true);
-    this.zombieDeathSound = this.sound.add("ghostDeathSound", {
-      loop: false,
-      volume: 0.7,
-    });
-    this.zombieDeathSound.play();
-    this.zombieDeathSound.on("complete", () => this.zombieDeathSound.destroy());
-    zombie_death.on("animationcomplete", () => zombie_death.destroy());
-    zombie_enemy.destroy();
-    this.zombie_enemies = this.zombie_enemies.filter(
-      (sprite) => sprite !== zombie_enemy,
-    );
-    this.handlePlayerEnemyCollision();
-  }
-
-  handlePlayerEnemyCollision() {
-    if (this.currentPlayer && this.currentPlayer.body) {
-      const originalVelocity = WALKING_SPEED;
-      this.velocity *= this.SetSlowDown;
-
-      this.accumulatedSlowdown += this.setSlowdownDuration;
-
-      if (this.slowdownTimeout) {
-        clearTimeout(this.slowdownTimeout);
-      }
-
-      this.slowdownTimeout = setTimeout(() => {
-        if (this.currentPlayer) {
-          this.velocity = originalVelocity;
-          this.accumulatedSlowdown = 0;
-        }
-      }, this.accumulatedSlowdown);
-    }
-  }
-
-  handleZombieSound() {
-    let z_e: number | Physics.Arcade.Sprite | null = null;
-    let zDis = 10000;
-    let distance;
-
-    this.zombie_enemies.forEach((zombie_enemy) => {
-      if (this.currentPlayer && zombie_enemy) {
-        distance = Phaser.Math.Distance.Between(
-          this.currentPlayer.x,
-          this.currentPlayer.y,
-          zombie_enemy.x,
-          zombie_enemy.y,
-        );
-        if (distance < zDis) {
-          z_e = zombie_enemy;
-          zDis = distance;
-        }
-      }
+  private initialiseEvents() {
+    EventBus.on("apply-relic-buff", (name: Relics) => {
+      this.applyRelicBuff(name);
     });
 
-    const canHearDistance = 150;
-    const maxVolume = 1;
-    const minVolume = 0.0;
-
-    let volume = minVolume;
-    if (zDis < canHearDistance) {
-      volume = Phaser.Math.Linear(maxVolume, minVolume, zDis / canHearDistance);
-    } else {
-      volume = 0.0;
-    }
-
-    (this.zombieSound as any).setVolume(volume);
-    // console.log(zDis);
+    // // reload scene when player hit retry
+    // const onRetry = (event: EventObject) => {
+    //   if (event.type === "RETRY") {
+    //     this.isCameraFading = true;
+    //     this.cameras.main.fadeOut(500);
+    //     // this.reset();
+    //     this.cameras.main.on(
+    //       "camerafadeoutcomplete",
+    //       () => {
+    //         this.cameras.main.fadeIn(500);
+    //         this.velocity = WALKING_SPEED;
+    //         this.isCameraFading = false;
+    //       },
+    //       this,
+    //     );
+    //   }
+    // };
+    // this.portalService?.onEvent(onRetry);
   }
 
-  handleGhostSound() {
-    let z_e: number | Physics.Arcade.Sprite | null = null;
-    let zDis = 10000;
-    let distance;
-
-    this.ghost_enemies.forEach((ghost_enemy) => {
-      if (this.currentPlayer && ghost_enemy) {
-        distance = Phaser.Math.Distance.Between(
-          this.currentPlayer.x,
-          this.currentPlayer.y,
-          ghost_enemy.x,
-          ghost_enemy.y,
-        );
-        if (distance < zDis) {
-          z_e = ghost_enemy;
-          zDis = distance;
-        }
-      }
-    });
-
-    const canHearDistance = 150;
-    const maxVolume = 0.5;
-    const minVolume = 0.0;
-
-    let volume = minVolume;
-    if (zDis < canHearDistance) {
-      volume = Phaser.Math.Linear(maxVolume, minVolume, zDis / canHearDistance);
-    } else {
-      volume = 0.0;
-    }
-
-    (this.ghostSound as any).setVolume(volume);
-    //console.log(zDis)
+  applyRelicBuff(name: Relics) {
+    const effectAction = {
+      envy: () => this.applyEnvyBuff(),
+      gluttony: () => this.applyGluttonyBuff(),
+      greed: () => this.applyGreedBuff(),
+      lust: () => this.applyLustBuff(),
+      pride: () => this.applyPrideBuff(),
+      sloth: () => this.applySlothBuff(),
+      wrath: () => this.applyWrathBuff(),
+      deceit: () => this.applyDeceitBuff(),
+    };
+    this.portalService?.send("COLLECT_RELIC", { relicName: name });
+    effectAction[name]();
   }
 
-  faceDirectionEnemy_2() {
-    const visionRange = this.setVisionRange;
-    this.zombie_enemies.forEach((zombie) => {
-      if (this.currentPlayer && zombie.body) {
-        const distanceToPlayer = Phaser.Math.Distance.Between(
-          zombie.x,
-          zombie.y,
-          this.currentPlayer.x,
-          this.currentPlayer.y,
-        );
-
-        if (distanceToPlayer <= visionRange) {
-          this.physics.moveToObject(zombie, this.currentPlayer, 15);
-          if (zombie.body.velocity.x > 0) {
-            zombie.play("zombie_enemy_1_anim", true);
-          } else if (zombie.body.velocity.x < 0) {
-            zombie.play("zombie_enemy_2_anim", true);
-          }
-        } else {
-          zombie.setVelocity(0, 0);
-        }
-      }
-    });
+  applyEnvyBuff() {
+    const currentSwordDamage =
+      this.currentPlayer?.getDamage("sword", "all") ?? 0;
+    this.currentPlayer?.setDamage("sword", currentSwordDamage + 3);
   }
 
-  checkZombiesInsideWalls() {
-    this.zombie_enemies.forEach((zombie) => {
-      if (zombie.body && this.currentPlayer) {
-        const isInsidePolygon = this.polygonShapes.some((shape) =>
-          Phaser.Geom.Polygon.Contains(shape, zombie.x, zombie.y),
-        );
-
-        if (isInsidePolygon) {
-          zombie.setVelocity(-zombie.body.velocity.x, -zombie.body.velocity.y);
-          zombie.x += zombie.body.velocity.x * 0.1;
-          zombie.y += zombie.body.velocity.y * 0.1;
-        }
-      }
-    });
+  applyGluttonyBuff() {
+    this.velocity *= 1.25;
   }
 
-  private setDefaultStates() {
-    this.lightedItems = Array(MAX_LAMPS_IN_MAP + 2).fill(null);
-    this.polygons = [];
-    this.polygonShapes = [];
-    this.playerPosition = { x: 0, y: 0 };
-    this.visibilityPolygon = new VisibilityPolygon();
-    this.lampSpawnTime = LAMP_SPAWN_BASE_INTERVAL;
-    this.numLampsInMap = LAMPS_CONFIGURATION.length;
-    this.deathDate = null;
-    this.amountLamps = 3;
-    this.lastAttempt = 0;
-    this.gameOverNoMove = 0;
-
-    // Enemies
-    this.ghost_enemies = [];
-    this.zombie_enemies = [];
-    this.lastSpawnTimeGhost = LAST_SPAWN_TIME_GHOST;
-    this.lastSpawnTimeZombie = LAST_SPAWN_TIME_ZOMBIE;
-    this.dalaySpawnTime = DELAY_SPAWN_TIME;
-    this.updateInterval = UPDATE_INTERVAL;
-    this.minGhostPerMin = MIN_GHOST_PER_MIN;
-    this.maxGhostPerMin = MAX_GHOST_PER_MIN;
-    this.minZombiePerMin = MIN_ZOMBIE_PER_MIN;
-    this.maxZombiePerMin = MAX_ZOMBIE_PER_MIN;
-    this.SetSlowDown = SET_SLOW_DOWN;
-    this.setSlowdownDuration = SET_SLOW_DOWN_DURATION;
-    this.accumulatedSlowdown = ACCUMULATED_SLOWDOWN;
-    this.slowdownTimeout = null;
-    this.setVisionRange = SET_VISION_RANGE;
+  applyGreedBuff() {
+    this.currentPlayer?.setFireRadius(0.3);
   }
 
-  private reset() {
-    this.currentPlayer?.setPosition(
-      SPAWNS()[this.sceneId].default.x,
-      SPAWNS()[this.sceneId].default.y,
-    );
-    this.resetAllLamps();
-    this.resetAllenemies();
-    this.lightedItems = Array(MAX_LAMPS_IN_MAP + 2).fill(null);
-    this.currentPlayer && (this.lightedItems[0] = this.currentPlayer);
-    this.lightedItems[1] = { x: 0, y: 0 };
-    // this.createAllLamps();
-    this.lampSpawnTime = LAMP_SPAWN_BASE_INTERVAL;
-    this.deathDate = null;
-    this.amountLamps = 3;
-    this.lastAttempt = this.time.now;
-    this.gameOverNoMove = 0;
-
-    // Enemies
-    this.ghost_enemies = [];
-    this.zombie_enemies = [];
-    this.lastSpawnTimeGhost = LAST_SPAWN_TIME_GHOST;
-    this.lastSpawnTimeZombie = LAST_SPAWN_TIME_ZOMBIE;
-    this.minGhostPerMin = MIN_GHOST_PER_MIN;
-    this.minZombiePerMin = MIN_ZOMBIE_PER_MIN;
-    this.accumulatedSlowdown = ACCUMULATED_SLOWDOWN;
-    this.slowdownTimeout = null;
+  applyLustBuff() {
+    this.portalService?.send("INCREASE_MAX_LIVES", { lives: 1 });
+    this.portalService?.send("RESTORE_LIVES", { lives: 2 });
   }
 
-  private initShaders() {
-    if (!this.currentPlayer) return;
-
-    (
-      this.renderer as Phaser.Renderer.WebGL.WebGLRenderer
-    ).pipelines?.addPostPipeline("DarkModePipeline", DarknessPipeline);
-    this.cameras.main.setPostPipeline(DarknessPipeline);
-
-    const darknessPipeline = this.cameras.main.getPostPipeline(
-      "DarknessPipeline",
-    ) as DarknessPipeline;
-
-    // Set initial values in the shader
-    // First position: current player
-    const playerLightRadius = [MIN_PLAYER_LIGHT_RADIUS];
-    const joystickLightRadius = [JOYSTICK_LIGHT_RADIUS];
-    const lampsLightRadius = new Array(MAX_LAMPS_IN_MAP).fill(
-      INITIAL_LAMPS_LIGHT_RADIUS,
-    );
-    darknessPipeline.lightRadius = [
-      ...playerLightRadius,
-      ...joystickLightRadius,
-      ...lampsLightRadius,
-    ];
+  applyPrideBuff() {
+    this.currentPlayer?.setDoubleDamageChange(0.2);
   }
+
+  applySlothBuff() {}
+
+  applyWrathBuff() {
+    this.currentPlayer?.setFrameRateAttack(0.3);
+  }
+
+  applyDeceitBuff() {}
+
+  // // Enemy_1 (ghost_enemy)
+  // enemy_1() {
+  //   // Delay the spawning of enemies by 10 seconds at the start
+  //   const currentTime = this.time.now;
+
+  //   if (currentTime - this.lastAttempt > this.dalaySpawnTime) {
+  //     // Reset spawn count after a minute
+  //     if (currentTime - this.lastSpawnTimeGhost > this.updateInterval) {
+  //       // console.log(
+  //       //   `Enemy count has been reset. Total enemies spawned: ${this.minGhostPerMin}`,
+  //       // );
+  //       this.minGhostPerMin = 0;
+  //       this.lastSpawnTimeGhost = currentTime;
+  //     }
+
+  //     // Spawn enemies up to the maximum limit
+  //     while (this.minGhostPerMin < this.maxGhostPerMin) {
+  //       const ghost_enemy =
+  //         this.createEnemy_1() as Phaser.Physics.Arcade.Sprite;
+
+  //       if (this.currentPlayer) {
+  //         this.physics.add.collider(ghost_enemy, this.currentPlayer, () =>
+  //           this.handleCollision(ghost_enemy),
+  //         );
+  //       }
+  //       this.minGhostPerMin++;
+  //     }
+  //   }
+  // }
+
+  // createEnemy_1() {
+  //   if (!this.currentPlayer) return;
+  //   let x: number, y: number;
+  //   let isNotInside = true;
+  //   const size = 1000;
+  //   const offsetMap = 20;
+  //   do {
+  //     x = Phaser.Math.Between(
+  //       Math.floor(this.currentPlayer.x - size),
+  //       Math.floor(this.currentPlayer.x + size),
+  //     );
+  //     y = Phaser.Math.Between(
+  //       Math.floor(this.currentPlayer.y - size),
+  //       Math.floor(this.currentPlayer.y + size),
+  //     );
+  //     if (
+  //       x > offsetMap &&
+  //       y > offsetMap &&
+  //       x < this.map.width * this.map.tileWidth - offsetMap &&
+  //       y < this.map.height * this.map.tileHeight - offsetMap
+  //     ) {
+  //       isNotInside = false;
+  //     }
+  //   } while (isNotInside);
+
+  //   const enemy1 = this.physics.add
+  //     .sprite(x, y, "ghost_enemy_1", 0)
+  //     .setSize(22, 23)
+  //     .setOffset(-0.5)
+  //     .setVelocity(Phaser.Math.Between(10, 20), Phaser.Math.Between(10, 20))
+  //     .setCollideWorldBounds(true)
+  //     .setBounce(1, 1);
+
+  //   this.ghost_enemies.push(enemy1);
+  //   this.AnimationEnemy_1();
+  //   // console.log(`Spawned ghost #${this.minGhostPerMin + 1}:`, { x, y });
+  //   return enemy1;
+  // }
+
+  // AnimationEnemy_1() {
+  //   ["ghost_enemy_1", "ghost_enemy_2"].forEach((key) => {
+  //     if (!this.anims.exists(`${key}_anim`)) {
+  //       this.anims.create({
+  //         key: `${key}_anim`,
+  //         frames: this.anims.generateFrameNumbers(key, { start: 0, end: 12 }),
+  //         repeat: -1,
+  //         frameRate: 10,
+  //       });
+  //     }
+  //   });
+  // }
+
+  // // Handle collision with ghost_enemy
+  // handleCollision(ghost_enemy: Phaser.Physics.Arcade.Sprite) {
+  //   const { x, y } = ghost_enemy;
+  //   const poof_1 = this.add.sprite(x, y, "poof_1").play("poof_1_anim", true);
+
+  //   this.stealLamps();
+
+  //   if (!this.anims.exists("poof_1_anim")) {
+  //     this.anims.create({
+  //       key: "poof_1_anim",
+  //       frames: this.anims.generateFrameNumbers("poof_1", {
+  //         start: 0,
+  //         end: 11,
+  //       }),
+  //       repeat: 0,
+  //       frameRate: 10,
+  //     });
+  //   }
+
+  //   poof_1.play("poof_1_anim", true);
+  //   this.ghostDeathSound = this.sound.add("ghostDeathSound", {
+  //     loop: false,
+  //     volume: 0.4,
+  //   });
+  //   this.ghostDeathSound.play();
+  //   this.ghostDeathSound.on("complete", () => this.ghostDeathSound.destroy());
+
+  //   poof_1.on("animationcomplete", () => poof_1.destroy());
+  //   ghost_enemy.destroy();
+  //   this.ghost_enemies = this.ghost_enemies.filter(
+  //     (sprite) => sprite !== ghost_enemy,
+  //   );
+  //   this.currentPlayer && this.handleDimEffect();
+  // }
+
+  // handleDimEffect() {
+  //   const darknessPipeline = this.cameras.main.getPostPipeline(
+  //     "DarknessPipeline",
+  //   ) as DarknessPipeline;
+  //   darknessPipeline.lightRadius[0] = 0; // Dim the light immediately
+  // }
+
+  // // Animation Direction of Enemy_1
+  // faceDirectionEnemy_1() {
+  //   this.ghost_enemies.forEach((ghost_enemy) => {
+  //     if (ghost_enemy.body) {
+  //       const animKey =
+  //         ghost_enemy.body.velocity.x > 0
+  //           ? "ghost_enemy_1_anim"
+  //           : "ghost_enemy_2_anim";
+  //       ghost_enemy.play(animKey, true);
+  //     }
+  //   });
+  // }
+
+  // // Enemy_2 (zombie_enemy)
+  // enemy_2() {
+  //   const currentTime = this.time.now;
+
+  //   if (currentTime - this.lastAttempt > this.dalaySpawnTime) {
+  //     if (currentTime - this.lastSpawnTimeZombie > this.updateInterval) {
+  //       // console.log(
+  //       //   `Enemy count has been reset. Total enemies spawned: ${this.minZombiePerMin}`,
+  //       // );
+  //       this.minZombiePerMin = 0;
+  //       this.lastSpawnTimeZombie = currentTime;
+  //     }
+
+  //     while (this.minZombiePerMin < this.maxZombiePerMin) {
+  //       const zombie_enemy =
+  //         this.createEnemy_2() as Phaser.Physics.Arcade.Sprite;
+
+  //       if (this.currentPlayer) {
+  //         this.physics.add.collider(zombie_enemy, this.currentPlayer, () =>
+  //           this.handleCollisionZombie(zombie_enemy),
+  //         );
+  //       }
+
+  //       this.minZombiePerMin++;
+  //     }
+  //   }
+  // }
+
+  // createEnemy_2() {
+  //   if (!this.currentPlayer) return;
+  //   let x: number, y: number;
+  //   let isInsidePolygon = true;
+  //   const size = 400;
+  //   const offsetMap = 20;
+  //   do {
+  //     x = Phaser.Math.Between(
+  //       Math.floor(this.currentPlayer.x - size),
+  //       Math.floor(this.currentPlayer.x + size),
+  //     );
+  //     y = Phaser.Math.Between(
+  //       Math.floor(this.currentPlayer.y - size),
+  //       Math.floor(this.currentPlayer.y + size),
+  //     );
+  //     if (
+  //       x > offsetMap &&
+  //       y > offsetMap &&
+  //       x < this.map.width * this.map.tileWidth - offsetMap &&
+  //       y < this.map.height * this.map.tileHeight - offsetMap
+  //     ) {
+  //       isInsidePolygon = this.polygonShapes.some((shape) =>
+  //         Phaser.Geom.Polygon.Contains(shape, x, y),
+  //       );
+  //     }
+  //   } while (isInsidePolygon);
+
+  //   const enemy2 = this.physics.add
+  //     .sprite(x, y, "zombie_enemy_1", 0)
+  //     .setSize(15.8, 17)
+  //     .setOffset(-0.5)
+  //     .setVelocity(Phaser.Math.Between(10, 15))
+  //     .setCollideWorldBounds(true)
+  //     .setBounce(1, 1);
+
+  //   this.zombie_enemies.push(enemy2);
+  //   this.AnimationEnemy_2();
+  //   this.handleZombieCollisions(enemy2);
+  //   // console.log(`Spawned Zombie #${this.minZombiePerMin + 1}:`, { x, y });
+  //   return enemy2;
+  // }
+
+  // handleZombieCollisions(newZombie: Phaser.Physics.Arcade.Sprite) {
+  //   this.zombie_enemies.forEach((existingZombie) => {
+  //     if (existingZombie !== newZombie) {
+  //       this.physics.add.collider(newZombie, existingZombie);
+  //     }
+  //   });
+  // }
+
+  // AnimationEnemy_2() {
+  //   ["zombie_enemy_1", "zombie_enemy_2"].forEach((key) => {
+  //     if (!this.anims.exists(`${key}_anim`)) {
+  //       this.anims.create({
+  //         key: `${key}_anim`,
+  //         frames: this.anims.generateFrameNumbers(key, { start: 0, end: 7 }),
+  //         repeat: -1,
+  //         frameRate: 10,
+  //       });
+  //     }
+  //   });
+  // }
+
+  // handleCollisionZombie(zombie_enemy: Phaser.Physics.Arcade.Sprite) {
+  //   const { x, y } = zombie_enemy;
+  //   const zombie_death = this.add
+  //     .sprite(x, y, "zombie_death")
+  //     .play("zombie_death_anim", true);
+
+  //   this.stealLamps();
+
+  //   if (!this.anims.exists("zombie_death_anim")) {
+  //     this.anims.create({
+  //       key: "zombie_death_anim",
+  //       frames: this.anims.generateFrameNumbers("zombie_death", {
+  //         start: 0,
+  //         end: 12,
+  //       }),
+  //       repeat: 0,
+  //       frameRate: 10,
+  //     });
+  //   }
+
+  //   zombie_death.play("zombie_death_anim", true);
+  //   this.zombieDeathSound = this.sound.add("ghostDeathSound", {
+  //     loop: false,
+  //     volume: 0.7,
+  //   });
+  //   this.zombieDeathSound.play();
+  //   this.zombieDeathSound.on("complete", () => this.zombieDeathSound.destroy());
+  //   zombie_death.on("animationcomplete", () => zombie_death.destroy());
+  //   zombie_enemy.destroy();
+  //   this.zombie_enemies = this.zombie_enemies.filter(
+  //     (sprite) => sprite !== zombie_enemy,
+  //   );
+  //   this.handlePlayerEnemyCollision();
+  // }
+
+  // handlePlayerEnemyCollision() {
+  //   if (this.currentPlayer && this.currentPlayer.body) {
+  //     const originalVelocity = WALKING_SPEED;
+  //     this.velocity *= this.SetSlowDown;
+
+  //     this.accumulatedSlowdown += this.setSlowdownDuration;
+
+  //     if (this.slowdownTimeout) {
+  //       clearTimeout(this.slowdownTimeout);
+  //     }
+
+  //     this.slowdownTimeout = setTimeout(() => {
+  //       if (this.currentPlayer) {
+  //         this.velocity = originalVelocity;
+  //         this.accumulatedSlowdown = 0;
+  //       }
+  //     }, this.accumulatedSlowdown);
+  //   }
+  // }
+
+  // handleZombieSound() {
+  //   let z_e: number | Physics.Arcade.Sprite | null = null;
+  //   let zDis = 10000;
+  //   let distance;
+
+  //   this.zombie_enemies.forEach((zombie_enemy) => {
+  //     if (this.currentPlayer && zombie_enemy) {
+  //       distance = Phaser.Math.Distance.Between(
+  //         this.currentPlayer.x,
+  //         this.currentPlayer.y,
+  //         zombie_enemy.x,
+  //         zombie_enemy.y,
+  //       );
+  //       if (distance < zDis) {
+  //         z_e = zombie_enemy;
+  //         zDis = distance;
+  //       }
+  //     }
+  //   });
+
+  //   const canHearDistance = 150;
+  //   const maxVolume = 1;
+  //   const minVolume = 0.0;
+
+  //   let volume = minVolume;
+  //   if (zDis < canHearDistance) {
+  //     volume = Phaser.Math.Linear(maxVolume, minVolume, zDis / canHearDistance);
+  //   } else {
+  //     volume = 0.0;
+  //   }
+
+  //   (this.zombieSound as any).setVolume(volume);
+  //   // console.log(zDis);
+  // }
+
+  // handleGhostSound() {
+  //   let z_e: number | Physics.Arcade.Sprite | null = null;
+  //   let zDis = 10000;
+  //   let distance;
+
+  //   this.ghost_enemies.forEach((ghost_enemy) => {
+  //     if (this.currentPlayer && ghost_enemy) {
+  //       distance = Phaser.Math.Distance.Between(
+  //         this.currentPlayer.x,
+  //         this.currentPlayer.y,
+  //         ghost_enemy.x,
+  //         ghost_enemy.y,
+  //       );
+  //       if (distance < zDis) {
+  //         z_e = ghost_enemy;
+  //         zDis = distance;
+  //       }
+  //     }
+  //   });
+
+  //   const canHearDistance = 150;
+  //   const maxVolume = 0.5;
+  //   const minVolume = 0.0;
+
+  //   let volume = minVolume;
+  //   if (zDis < canHearDistance) {
+  //     volume = Phaser.Math.Linear(maxVolume, minVolume, zDis / canHearDistance);
+  //   } else {
+  //     volume = 0.0;
+  //   }
+
+  //   (this.ghostSound as any).setVolume(volume);
+  //   //console.log(zDis)
+  // }
+
+  // faceDirectionEnemy_2() {
+  //   const visionRange = this.setVisionRange;
+  //   this.zombie_enemies.forEach((zombie) => {
+  //     if (this.currentPlayer && zombie.body) {
+  //       const distanceToPlayer = Phaser.Math.Distance.Between(
+  //         zombie.x,
+  //         zombie.y,
+  //         this.currentPlayer.x,
+  //         this.currentPlayer.y,
+  //       );
+
+  //       if (distanceToPlayer <= visionRange) {
+  //         this.physics.moveToObject(zombie, this.currentPlayer, 15);
+  //         if (zombie.body.velocity.x > 0) {
+  //           zombie.play("zombie_enemy_1_anim", true);
+  //         } else if (zombie.body.velocity.x < 0) {
+  //           zombie.play("zombie_enemy_2_anim", true);
+  //         }
+  //       } else {
+  //         zombie.setVelocity(0, 0);
+  //       }
+  //     }
+  //   });
+  // }
+
+  // checkZombiesInsideWalls() {
+  //   this.zombie_enemies.forEach((zombie) => {
+  //     if (zombie.body && this.currentPlayer) {
+  //       const isInsidePolygon = this.polygonShapes.some((shape) =>
+  //         Phaser.Geom.Polygon.Contains(shape, zombie.x, zombie.y),
+  //       );
+
+  //       if (isInsidePolygon) {
+  //         zombie.setVelocity(-zombie.body.velocity.x, -zombie.body.velocity.y);
+  //         zombie.x += zombie.body.velocity.x * 0.1;
+  //         zombie.y += zombie.body.velocity.y * 0.1;
+  //       }
+  //     }
+  //   });
+  // }
+
+  // private setDefaultStates() {
+  //   this.lightedItems = Array(MAX_LAMPS_IN_MAP + 2).fill(null);
+  //   this.polygons = [];
+  //   this.polygonShapes = [];
+  //   this.playerPosition = { x: 0, y: 0 };
+  //   this.visibilityPolygon = new VisibilityPolygon();
+  //   this.lampSpawnTime = LAMP_SPAWN_BASE_INTERVAL;
+  //   this.numLampsInMap = LAMPS_CONFIGURATION.length;
+  //   this.deathDate = null;
+  //   this.amountLamps = 3;
+  //   this.lastAttempt = 0;
+  //   this.gameOverNoMove = 0;
+
+  //   // Enemies
+  //   this.ghost_enemies = [];
+  //   this.zombie_enemies = [];
+  //   this.lastSpawnTimeGhost = LAST_SPAWN_TIME_GHOST;
+  //   this.lastSpawnTimeZombie = LAST_SPAWN_TIME_ZOMBIE;
+  //   this.dalaySpawnTime = DELAY_SPAWN_TIME;
+  //   this.updateInterval = UPDATE_INTERVAL;
+  //   this.minGhostPerMin = MIN_GHOST_PER_MIN;
+  //   this.maxGhostPerMin = MAX_GHOST_PER_MIN;
+  //   this.minZombiePerMin = MIN_ZOMBIE_PER_MIN;
+  //   this.maxZombiePerMin = MAX_ZOMBIE_PER_MIN;
+  //   this.SetSlowDown = SET_SLOW_DOWN;
+  //   this.setSlowdownDuration = SET_SLOW_DOWN_DURATION;
+  //   this.accumulatedSlowdown = ACCUMULATED_SLOWDOWN;
+  //   this.slowdownTimeout = null;
+  //   this.setVisionRange = SET_VISION_RANGE;
+  // }
+
+  // private reset() {
+  //   this.currentPlayer?.setPosition(
+  //     SPAWNS()[this.sceneId].default.x,
+  //     SPAWNS()[this.sceneId].default.y,
+  //   );
+  //   this.resetAllLamps();
+  //   this.resetAllenemies();
+  //   this.lightedItems = Array(MAX_LAMPS_IN_MAP + 2).fill(null);
+  //   this.currentPlayer && (this.lightedItems[0] = this.currentPlayer);
+  //   this.lightedItems[1] = { x: 0, y: 0 };
+  //   // this.createAllLamps();
+  //   this.lampSpawnTime = LAMP_SPAWN_BASE_INTERVAL;
+  //   this.deathDate = null;
+  //   this.amountLamps = 3;
+  //   this.lastAttempt = this.time.now;
+  //   this.gameOverNoMove = 0;
+
+  //   // Enemies
+  //   this.ghost_enemies = [];
+  //   this.zombie_enemies = [];
+  //   this.lastSpawnTimeGhost = LAST_SPAWN_TIME_GHOST;
+  //   this.lastSpawnTimeZombie = LAST_SPAWN_TIME_ZOMBIE;
+  //   this.minGhostPerMin = MIN_GHOST_PER_MIN;
+  //   this.minZombiePerMin = MIN_ZOMBIE_PER_MIN;
+  //   this.accumulatedSlowdown = ACCUMULATED_SLOWDOWN;
+  //   this.slowdownTimeout = null;
+  // }
+
+  // private initShaders() {
+  //   if (!this.currentPlayer) return;
+
+  //   (
+  //     this.renderer as Phaser.Renderer.WebGL.WebGLRenderer
+  //   ).pipelines?.addPostPipeline("DarkModePipeline", DarknessPipeline);
+  //   this.cameras.main.setPostPipeline(DarknessPipeline);
+
+  //   const darknessPipeline = this.cameras.main.getPostPipeline(
+  //     "DarknessPipeline",
+  //   ) as DarknessPipeline;
+
+  //   // Set initial values in the shader
+  //   // First position: current player
+  //   const playerLightRadius = [MIN_PLAYER_LIGHT_RADIUS];
+  //   const joystickLightRadius = [JOYSTICK_LIGHT_RADIUS];
+  //   const lampsLightRadius = new Array(MAX_LAMPS_IN_MAP).fill(
+  //     INITIAL_LAMPS_LIGHT_RADIUS,
+  //   );
+  //   darknessPipeline.lightRadius = [
+  //     ...playerLightRadius,
+  //     ...joystickLightRadius,
+  //     ...lampsLightRadius,
+  //   ];
+  // }
 
   private loadBumpkinAnimations() {
     if (!this.currentPlayer) return;
@@ -931,10 +1005,12 @@ export class HalloweenScene extends BaseScene {
     if (
       (Phaser.Input.Keyboard.JustDown(this.cursorKeys.space) ||
         this.mobileKeys.useTool) &&
-      !this.currentPlayer.isHurting
+      !this.currentPlayer.isHurting &&
+      !this.currentPlayer.isAttacking &&
+      !this.currentPlayer.isMining &&
+      !this.currentPlayer.isBurning
     ) {
-      if (selectedTool !== "lamp")
-        animation = TOOL_ACTION_MAP[selectedTool] as ToolActions;
+      animation = TOOL_ACTION_MAP[selectedTool] as ToolActions;
     }
 
     if (
@@ -956,193 +1032,193 @@ export class HalloweenScene extends BaseScene {
     this.currentPlayer?.[animation]?.();
   }
 
-  private setLampSpawnTime() {
-    const score = Math.floor(this.portalService?.state.context.score || 0);
-    if (score >= this.lampSpawnTime) {
-      const increase = Math.floor(
-        LAMP_SPAWN_BASE_INTERVAL *
-          (1 +
-            LAMP_SPAWN_INCREASE_PERCENTAGE *
-              Math.floor(score / LAMP_SPAWN_BASE_INTERVAL)),
-      );
-      this.lampSpawnTime += increase;
+  // private setLampSpawnTime() {
+  //   const score = Math.floor(this.portalService?.state.context.score || 0);
+  //   if (score >= this.lampSpawnTime) {
+  //     const increase = Math.floor(
+  //       LAMP_SPAWN_BASE_INTERVAL *
+  //         (1 +
+  //           LAMP_SPAWN_INCREASE_PERCENTAGE *
+  //             Math.floor(score / LAMP_SPAWN_BASE_INTERVAL)),
+  //     );
+  //     this.lampSpawnTime += increase;
 
-      this.numLampsInMap = this.lightedItems.filter((item, i) => {
-        if (i === 0 || i === 1) return false;
-        return item !== null && item?.x !== -9999 && item?.y !== -9999;
-      }).length;
+  //     this.numLampsInMap = this.lightedItems.filter((item, i) => {
+  //       if (i === 0 || i === 1) return false;
+  //       return item !== null && item?.x !== -9999 && item?.y !== -9999;
+  //     }).length;
 
-      if (this.numLampsInMap < MAX_LAMPS_IN_MAP) {
-        // console.log("Goal: ", this.lampSpawnTime, "Increase: ", increase);
-        // console.log("Lamps in the map", this.numLampsInMap);
-        this.createLamp();
-      }
-    }
-  }
+  //     if (this.numLampsInMap < MAX_LAMPS_IN_MAP) {
+  //       // console.log("Goal: ", this.lampSpawnTime, "Increase: ", increase);
+  //       // console.log("Lamps in the map", this.numLampsInMap);
+  //       this.createLamp();
+  //     }
+  //   }
+  // }
 
-  private stealLamps() {
-    if (!this.portalService) return;
+  // private stealLamps() {
+  //   if (!this.portalService) return;
 
-    let stolenLamps =
-      Math.floor(
-        this.portalService.state.context.score / LAMP_USAGE_MULTIPLIER_INTERVAL,
-      ) + 1;
+  //   let stolenLamps =
+  //     Math.floor(
+  //       this.portalService.state.context.score / LAMP_USAGE_MULTIPLIER_INTERVAL,
+  //     ) + 1;
 
-    if (stolenLamps > this.portalService.state.context.lamps) {
-      stolenLamps = this.portalService.state.context.lamps;
-    }
+  //   if (stolenLamps > this.portalService.state.context.lamps) {
+  //     stolenLamps = this.portalService.state.context.lamps;
+  //   }
 
-    this.portalService?.send("DEAD_LAMP", { lamps: stolenLamps });
-  }
+  //   this.portalService?.send("DEAD_LAMP", { lamps: stolenLamps });
+  // }
 
-  private updateAmountLamps() {
-    if (!this.portalService) return;
+  // private updateAmountLamps() {
+  //   if (!this.portalService) return;
 
-    const amountLamps = this.portalService.state.context.lamps;
+  //   const amountLamps = this.portalService.state.context.lamps;
 
-    if (amountLamps > 0 && amountLamps !== this.amountLamps) {
-      const amount = this.portalService.state.context.lamps - this.amountLamps;
-      this.currentPlayer?.addLabel(amount);
-      this.amountLamps = this.portalService?.state.context.lamps;
-    }
-  }
+  //   if (amountLamps > 0 && amountLamps !== this.amountLamps) {
+  //     const amount = this.portalService.state.context.lamps - this.amountLamps;
+  //     this.currentPlayer?.addLabel(amount);
+  //     this.amountLamps = this.portalService?.state.context.lamps;
+  //   }
+  // }
 
-  private playWarningSound() {
-    if (this.shadows) return;
-    if (this.tension) return;
+  // private playWarningSound() {
+  //   if (this.shadows) return;
+  //   if (this.tension) return;
 
-    this.shadows = this.sound.add("shadows", {
-      loop: false,
-      volume: 0.15,
-    });
-    this.shadows.play();
-    this.shadows.on("complete", () => {
-      this.shadows?.destroy();
-      this.shadows = null;
-    });
+  //   this.shadows = this.sound.add("shadows", {
+  //     loop: false,
+  //     volume: 0.15,
+  //   });
+  //   this.shadows.play();
+  //   this.shadows.on("complete", () => {
+  //     this.shadows?.destroy();
+  //     this.shadows = null;
+  //   });
 
-    this.tension = this.sound.add("tension", {
-      loop: false,
-      volume: 0.5,
-    });
-    this.tension.play();
-    this.tension.on("complete", () => {
-      this.tension?.destroy();
-      this.tension = null;
-    });
-  }
+  //   this.tension = this.sound.add("tension", {
+  //     loop: false,
+  //     volume: 0.5,
+  //   });
+  //   this.tension.play();
+  //   this.tension.on("complete", () => {
+  //     this.tension?.destroy();
+  //     this.tension = null;
+  //   });
+  // }
 
-  private stopWarningSound() {
-    if (!this.shadows) return;
-    if (!this.tension) return;
+  // private stopWarningSound() {
+  //   if (!this.shadows) return;
+  //   if (!this.tension) return;
 
-    this.shadows.stop();
-    this.shadows.destroy();
-    this.shadows = null;
+  //   this.shadows.stop();
+  //   this.shadows.destroy();
+  //   this.shadows = null;
 
-    this.tension.stop();
-    this.tension.destroy();
-    this.tension = null;
-  }
+  //   this.tension.stop();
+  //   this.tension.destroy();
+  //   this.tension = null;
+  // }
 
-  private getNormalizedCoords(x: number, y: number) {
-    const xPos =
-      ((x - this.cameras.main.worldView.x) / this.cameras.main.width) *
-      this.cameras.main.zoom;
-    const yPos =
-      ((y - this.cameras.main.worldView.y) / this.cameras.main.height) *
-      this.cameras.main.zoom;
+  // private getNormalizedCoords(x: number, y: number) {
+  //   const xPos =
+  //     ((x - this.cameras.main.worldView.x) / this.cameras.main.width) *
+  //     this.cameras.main.zoom;
+  //   const yPos =
+  //     ((y - this.cameras.main.worldView.y) / this.cameras.main.height) *
+  //     this.cameras.main.zoom;
 
-    return [xPos, yPos];
-  }
+  //   return [xPos, yPos];
+  // }
 
-  private adjustShaders = () => {
-    const darknessPipeline = this.cameras.main.getPostPipeline(
-      "DarknessPipeline",
-    ) as DarknessPipeline;
+  // private adjustShaders = () => {
+  //   const darknessPipeline = this.cameras.main.getPostPipeline(
+  //     "DarknessPipeline",
+  //   ) as DarknessPipeline;
 
-    this.lightedItems.forEach((light, i) => {
-      const coordinates = light
-        ? { x: light.x, y: light.y }
-        : { x: -9999, y: -9999 };
-      const [x, y] = this.getNormalizedCoords(coordinates.x, coordinates.y);
-      darknessPipeline.lightSources[i] = { x: x, y: y };
-    });
-  };
+  //   this.lightedItems.forEach((light, i) => {
+  //     const coordinates = light
+  //       ? { x: light.x, y: light.y }
+  //       : { x: -9999, y: -9999 };
+  //     const [x, y] = this.getNormalizedCoords(coordinates.x, coordinates.y);
+  //     darknessPipeline.lightSources[i] = { x: x, y: y };
+  //   });
+  // };
 
-  private setJoystickPosition() {
-    const camera = this.cameras.main;
-    // const centerX = camera.worldView.x + camera.width / (camera.zoom * 2);
-    // const centerY = camera.worldView.y + camera.height / (camera.zoom * 2);
-    const centerX = camera.worldView.x + camera.width / camera.zoom / 2;
-    const centerY = camera.worldView.y + camera.height / camera.zoom;
-    this.lightedItems[1] = { x: centerX, y: centerY - 35 };
-  }
+  // private setJoystickPosition() {
+  //   const camera = this.cameras.main;
+  //   // const centerX = camera.worldView.x + camera.width / (camera.zoom * 2);
+  //   // const centerY = camera.worldView.y + camera.height / (camera.zoom * 2);
+  //   const centerX = camera.worldView.x + camera.width / camera.zoom / 2;
+  //   const centerY = camera.worldView.y + camera.height / camera.zoom;
+  //   this.lightedItems[1] = { x: centerX, y: centerY - 35 };
+  // }
 
-  private resetAllenemies() {
-    this.ghost_enemies.forEach((item) => {
-      item.destroy();
-    });
+  // private resetAllenemies() {
+  //   this.ghost_enemies.forEach((item) => {
+  //     item.destroy();
+  //   });
 
-    this.zombie_enemies.forEach((item) => {
-      item.destroy();
-    });
-  }
+  //   this.zombie_enemies.forEach((item) => {
+  //     item.destroy();
+  //   });
+  // }
 
-  private resetAllLamps() {
-    this.lightedItems.forEach((item, i) => {
-      if (i > 1) {
-        (item as LampContainer)?.destroyLamp();
-      }
-    });
-  }
+  // private resetAllLamps() {
+  //   this.lightedItems.forEach((item, i) => {
+  //     if (i > 1) {
+  //       (item as LampContainer)?.destroyLamp();
+  //     }
+  //   });
+  // }
 
-  private createLamp() {
-    if (!this.currentPlayer) return;
-    let x: number, y: number;
-    let isInsidePolygon = true;
-    const size = 500;
-    const offsetMap = 20;
-    do {
-      x = Phaser.Math.Between(
-        Math.floor(this.currentPlayer.x - size),
-        Math.floor(this.currentPlayer.x + size),
-      );
-      y = Phaser.Math.Between(
-        Math.floor(this.currentPlayer.y - size),
-        Math.floor(this.currentPlayer.y + size),
-      );
-      if (
-        x > offsetMap &&
-        y > offsetMap &&
-        x < this.map.width * this.map.tileWidth - offsetMap &&
-        y < this.map.height * this.map.tileHeight - offsetMap
-      ) {
-        isInsidePolygon = this.polygonShapes.some((shape) =>
-          Phaser.Geom.Polygon.Contains(shape, x, y),
-        );
-      }
-    } while (isInsidePolygon);
+  // private createLamp() {
+  //   if (!this.currentPlayer) return;
+  //   let x: number, y: number;
+  //   let isInsidePolygon = true;
+  //   const size = 500;
+  //   const offsetMap = 20;
+  //   do {
+  //     x = Phaser.Math.Between(
+  //       Math.floor(this.currentPlayer.x - size),
+  //       Math.floor(this.currentPlayer.x + size),
+  //     );
+  //     y = Phaser.Math.Between(
+  //       Math.floor(this.currentPlayer.y - size),
+  //       Math.floor(this.currentPlayer.y + size),
+  //     );
+  //     if (
+  //       x > offsetMap &&
+  //       y > offsetMap &&
+  //       x < this.map.width * this.map.tileWidth - offsetMap &&
+  //       y < this.map.height * this.map.tileHeight - offsetMap
+  //     ) {
+  //       isInsidePolygon = this.polygonShapes.some((shape) =>
+  //         Phaser.Geom.Polygon.Contains(shape, x, y),
+  //       );
+  //     }
+  //   } while (isInsidePolygon);
 
-    const index = this.lightedItems.findIndex(
-      (item) => item === null || (item?.x === -9999 && item?.y === -9999),
-    );
+  //   const index = this.lightedItems.findIndex(
+  //     (item) => item === null || (item?.x === -9999 && item?.y === -9999),
+  //   );
 
-    const lamp = new LampContainer({
-      x: x,
-      y: y,
-      id: index,
-      scene: this as BaseScene,
-      player: this.currentPlayer,
-      visibilityPolygon: this.visibilityPolygon,
-      polygonWalls: this.polygons,
-    });
+  //   const lamp = new LampContainer({
+  //     x: x,
+  //     y: y,
+  //     id: index,
+  //     scene: this as BaseScene,
+  //     player: this.currentPlayer,
+  //     visibilityPolygon: this.visibilityPolygon,
+  //     polygonWalls: this.polygons,
+  //   });
 
-    this.lightedItems[index] = lamp;
+  //   this.lightedItems[index] = lamp;
 
-    // console.log("x: ", x, "y: ", y);
-    // console.log(this.lightedItems);
-  }
+  //   // console.log("x: ", x, "y: ", y);
+  //   // console.log(this.lightedItems);
+  // }
 
   // private createAllLamps() {
   //   if (!this.currentPlayer) return;
@@ -1166,140 +1242,140 @@ export class HalloweenScene extends BaseScene {
   //   }
   // }
 
-  private createWalls() {
-    if (!this.currentPlayer) return;
+  // private createWalls() {
+  //   if (!this.currentPlayer) return;
 
-    // Create walls with polygon points collision
-    const collisions = mapJson.layers.find(
-      (layer) => layer.name === "Collision",
-    )?.objects;
+  //   // Create walls with polygon points collision
+  //   const collisions = mapJson.layers.find(
+  //     (layer) => layer.name === "Collision",
+  //   )?.objects;
 
-    collisions?.forEach((collision) => {
-      if (collision?.polygon) {
-        const polygon: [number, number][] = [];
-        const polygonPoints: Phaser.Geom.Point[] = [];
-        collision.polygon.forEach((position) => {
-          polygon.push([collision.x + position.x, collision.y + position.y]);
-          polygonPoints.push(
-            new Phaser.Geom.Point(
-              collision.x + position.x,
-              collision.y + position.y,
-            ),
-          );
-        });
-        this.polygons.push(polygon);
-        this.polygonShapes.push(new Phaser.Geom.Polygon(polygonPoints));
-      }
-    });
+  //   collisions?.forEach((collision) => {
+  //     if (collision?.polygon) {
+  //       const polygon: [number, number][] = [];
+  //       const polygonPoints: Phaser.Geom.Point[] = [];
+  //       collision.polygon.forEach((position) => {
+  //         polygon.push([collision.x + position.x, collision.y + position.y]);
+  //         polygonPoints.push(
+  //           new Phaser.Geom.Point(
+  //             collision.x + position.x,
+  //             collision.y + position.y,
+  //           ),
+  //         );
+  //       });
+  //       this.polygons.push(polygon);
+  //       this.polygonShapes.push(new Phaser.Geom.Polygon(polygonPoints));
+  //     }
+  //   });
 
-    // walls around game perimeter
-    this.polygons.push([
-      [-1, -1],
-      [this.map.width * this.map.tileWidth + 1, -1],
-      [
-        this.map.width * this.map.tileWidth + 1,
-        this.map.height * this.map.tileHeight + 1,
-      ],
-      [-1, this.map.height * this.map.tileHeight + 1],
-    ]);
-  }
+  //   // walls around game perimeter
+  //   this.polygons.push([
+  //     [-1, -1],
+  //     [this.map.width * this.map.tileWidth + 1, -1],
+  //     [
+  //       this.map.width * this.map.tileWidth + 1,
+  //       this.map.height * this.map.tileHeight + 1,
+  //     ],
+  //     [-1, this.map.height * this.map.tileHeight + 1],
+  //   ]);
+  // }
 
-  private createMask() {
-    // Shadows
-    // const background = this.add.rectangle(
-    //   this.cameras.main.centerX,
-    //   this.cameras.main.centerY,
-    //   this.cameras.main.width,
-    //   this.cameras.main.height,
-    //   0x000,
-    // );
-    // background.setDepth(0);
-    // this.lightGraphics = this.add.graphics();
-    // this.mask = this.lightGraphics.createGeometryMask();
+  // private createMask() {
+  //   // Shadows
+  //   // const background = this.add.rectangle(
+  //   //   this.cameras.main.centerX,
+  //   //   this.cameras.main.centerY,
+  //   //   this.cameras.main.width,
+  //   //   this.cameras.main.height,
+  //   //   0x000,
+  //   // );
+  //   // background.setDepth(0);
+  //   // this.lightGraphics = this.add.graphics();
+  //   // this.mask = this.lightGraphics.createGeometryMask();
 
-    // Set up the Z layers to draw in correct order
-    this.map.layers.forEach((layerData) => {
-      const layer = this.map.createLayer(
-        layerData.name,
-        [this.map.getTileset("Sunnyside V3") as Phaser.Tilemaps.Tileset],
-        0,
-        0,
-      );
+  //   // Set up the Z layers to draw in correct order
+  //   this.map.layers.forEach((layerData) => {
+  //     const layer = this.map.createLayer(
+  //       layerData.name,
+  //       [this.map.getTileset("Sunnyside V3") as Phaser.Tilemaps.Tileset],
+  //       0,
+  //       0,
+  //     );
 
-      // Shadows
-      // if (layerData.name === "Ground") {
-      //   layer?.setMask(this.mask as Phaser.Display.Masks.GeometryMask);
-      // }
+  //     // Shadows
+  //     // if (layerData.name === "Ground") {
+  //     //   layer?.setMask(this.mask as Phaser.Display.Masks.GeometryMask);
+  //     // }
 
-      this.layers[layerData.name] = layer as Phaser.Tilemaps.TilemapLayer;
-    });
-  }
+  //     this.layers[layerData.name] = layer as Phaser.Tilemaps.TilemapLayer;
+  //   });
+  // }
 
-  private renderAllLights() {
-    if (!this.lightGraphics) return;
+  // private renderAllLights() {
+  //   if (!this.lightGraphics) return;
 
-    this.lightGraphics.clear();
-    this.lightedItems.forEach((item) => {
-      if (!this.currentPlayer) return;
-      if (!item) return;
+  //   this.lightGraphics.clear();
+  //   this.lightedItems.forEach((item) => {
+  //     if (!this.currentPlayer) return;
+  //     if (!item) return;
 
-      const normalizedX =
-        ((item.x - this.cameras.main.worldView.x) / this.cameras.main.width) *
-        this.cameras.main.zoom;
-      const normalizedY =
-        ((item.y - this.cameras.main.worldView.y) / this.cameras.main.height) *
-        this.cameras.main.zoom;
+  //     const normalizedX =
+  //       ((item.x - this.cameras.main.worldView.x) / this.cameras.main.width) *
+  //       this.cameras.main.zoom;
+  //     const normalizedY =
+  //       ((item.y - this.cameras.main.worldView.y) / this.cameras.main.height) *
+  //       this.cameras.main.zoom;
 
-      // Position deleted x: -9999 and y: -9999
-      if (
-        item.x !== -9999 &&
-        item.y !== -9999 &&
-        normalizedX >= -0.5 &&
-        normalizedX <= 1.5 &&
-        normalizedY >= -0.5 &&
-        normalizedY <= 1.5 &&
-        item instanceof Phaser.GameObjects.Container
-      ) {
-        this.renderLight(item);
-      }
-    });
-  }
+  //     // Position deleted x: -9999 and y: -9999
+  //     if (
+  //       item.x !== -9999 &&
+  //       item.y !== -9999 &&
+  //       normalizedX >= -0.5 &&
+  //       normalizedX <= 1.5 &&
+  //       normalizedY >= -0.5 &&
+  //       normalizedY <= 1.5 &&
+  //       item instanceof Phaser.GameObjects.Container
+  //     ) {
+  //       this.renderLight(item);
+  //     }
+  //   });
+  // }
 
-  private renderLight(item: Phaser.GameObjects.Container) {
-    if (!this.lightGraphics) return;
+  // private renderLight(item: Phaser.GameObjects.Container) {
+  //   if (!this.lightGraphics) return;
 
-    const visibility =
-      item instanceof LampContainer
-        ? item.polygonLight
-        : createLightPolygon(
-            item.x,
-            item.y,
-            this.visibilityPolygon,
-            this.polygons,
-          );
+  //   const visibility =
+  //     item instanceof LampContainer
+  //       ? item.polygonLight
+  //       : createLightPolygon(
+  //           item.x,
+  //           item.y,
+  //           this.visibilityPolygon,
+  //           this.polygons,
+  //         );
 
-    // begin a drawing path
-    this.lightGraphics.beginPath();
+  //   // begin a drawing path
+  //   this.lightGraphics.beginPath();
 
-    if (visibility) {
-      // move the graphic pen to first vertex of light polygon
-      this.lightGraphics.moveTo(visibility[0][0], visibility[0][1]);
+  //   if (visibility) {
+  //     // move the graphic pen to first vertex of light polygon
+  //     this.lightGraphics.moveTo(visibility[0][0], visibility[0][1]);
 
-      // loop through all light polygon vertices
-      for (let i = 1; i <= visibility.length; i++) {
-        // draw a line to i-th light polygon vertex
-        this.lightGraphics.lineTo(
-          visibility[i % visibility.length][0],
-          visibility[i % visibility.length][1],
-        );
-      }
-    }
+  //     // loop through all light polygon vertices
+  //     for (let i = 1; i <= visibility.length; i++) {
+  //       // draw a line to i-th light polygon vertex
+  //       this.lightGraphics.lineTo(
+  //         visibility[i % visibility.length][0],
+  //         visibility[i % visibility.length][1],
+  //       );
+  //     }
+  //   }
 
-    // close, stroke and fill light polygon
-    this.lightGraphics.closePath();
-    this.lightGraphics.fillPath();
-    this.lightGraphics.strokePath();
-  }
+  //   // close, stroke and fill light polygon
+  //   this.lightGraphics.closePath();
+  //   this.lightGraphics.fillPath();
+  //   this.lightGraphics.strokePath();
+  // }
 
   private endGame() {
     this.isCameraFading = true;

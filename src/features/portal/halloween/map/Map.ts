@@ -1,21 +1,29 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { RoomList } from "./rooms/RoomList";
-import { RoomType, TILE_SIZE } from "../HalloweenConstants";
-import { TILES } from "./rooms/RoomTileMap";
-import { BaseScene } from "features/world/scenes/BaseScene";
+import {
+  DEFAULT_GROUND_DECORATION_CHANCE,
+  GROUND_DECORATION_CHANCE,
+  RoomType,
+  TILE_SIZE,
+  WALL_DECORATION_CHANCE,
+} from "../HalloweenConstants";
+import { DECORATION_TILES, TILES } from "./rooms/RoomTileMap";
+import { HalloweenScene } from "../HalloweenScene";
 
 interface Props {
-  scene: BaseScene;
+  scene: HalloweenScene;
   player?: BumpkinContainer;
 }
 
 export class Map {
-  private scene!: BaseScene;
+  private scene!: HalloweenScene;
   private player?: BumpkinContainer;
   private map!: Phaser.Tilemaps.Tilemap;
   private tileset!: Phaser.Tilemaps.Tileset;
   private groundLayer!: Phaser.Tilemaps.TilemapLayer;
   private wallsLayer!: Phaser.Tilemaps.TilemapLayer;
+  private decorationGroundLayer!: Phaser.Tilemaps.TilemapLayer;
+  private decorationWallsLayer!: Phaser.Tilemaps.TilemapLayer;
   private mapData!: number[][];
   private rooms!: RoomList;
 
@@ -87,9 +95,20 @@ export class Map {
       0,
       0,
     ) as Phaser.Tilemaps.TilemapLayer;
-
+    this.decorationGroundLayer = this.map.createBlankLayer(
+      "decoration ground",
+      this.tileset,
+      0,
+      0,
+    ) as Phaser.Tilemaps.TilemapLayer;
     this.wallsLayer = this.map.createBlankLayer(
       "walls",
+      this.tileset,
+      0,
+      0,
+    ) as Phaser.Tilemaps.TilemapLayer;
+    this.decorationWallsLayer = this.map.createBlankLayer(
+      "decoration walls",
       this.tileset,
       0,
       0,
@@ -97,14 +116,36 @@ export class Map {
 
     for (let y = 0; y < this.getDimensions.rows; y++) {
       for (let x = 0; x < this.getDimensions.columns; x++) {
-        // console.log(this.mapData);
         const tileIndex = this.mapData[y][x];
 
+        // Base ground tile
         this.groundLayer.putTileAt(TILES.GROUND, x, y);
 
-        // Only place wall tiles in the walls layer
+        // Add random ground decoration
+        const groundDecorations = DECORATION_TILES[TILES.GROUND];
+        if (groundDecorations && Math.random() < GROUND_DECORATION_CHANCE) {
+          let randomDecoration;
+          if (Math.random() < DEFAULT_GROUND_DECORATION_CHANCE) {
+            randomDecoration = groundDecorations[0];
+          } else {
+            const others = groundDecorations.slice(1);
+            randomDecoration = Phaser.Utils.Array.GetRandom(others);
+          }
+          this.decorationGroundLayer.putTileAt(randomDecoration, x, y);
+        }
+
+        // Add walls and possible wall decorations
         if (tileIndex !== TILES.GROUND) {
           this.wallsLayer.putTileAt(tileIndex, x, y);
+
+          const wallDecorations = DECORATION_TILES[tileIndex];
+          if (wallDecorations && Math.random() < WALL_DECORATION_CHANCE) {
+            const randomDecoration =
+              wallDecorations[
+                Math.floor(Math.random() * wallDecorations.length)
+              ];
+            this.decorationWallsLayer.putTileAt(randomDecoration, x, y);
+          }
         }
       }
     }
@@ -115,6 +156,14 @@ export class Map {
       this.getDimensions.height,
     );
     this.wallsLayer.setDisplaySize(
+      this.getDimensions.width,
+      this.getDimensions.height,
+    );
+    this.decorationGroundLayer.setDisplaySize(
+      this.getDimensions.width,
+      this.getDimensions.height,
+    );
+    this.decorationWallsLayer.setDisplaySize(
       this.getDimensions.width,
       this.getDimensions.height,
     );

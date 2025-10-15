@@ -14,10 +14,16 @@ import { ITEM_IDS } from "features/game/types/bumpkin";
 import { CONFIG } from "lib/config";
 import { formatNumber } from "lib/utils/formatNumber";
 import { LampContainer } from "features/portal/halloween/containers/LampContainer";
-import { ITEM_BUMPKIN } from "features/portal/halloween/HalloweenConstants";
+import {
+  Enemies,
+  ITEM_BUMPKIN,
+  PLAYER_DAMAGE,
+  Tools,
+} from "features/portal/halloween/HalloweenConstants";
 import { BaseScene } from "../scenes/BaseScene";
 import { onAnimationComplete } from "features/portal/halloween/lib/HalloweenUtils";
 import { EventBus } from "features/portal/halloween/lib/EventBus";
+import { FireContainer } from "features/portal/halloween/containers/FireContainer";
 
 const NAME_ALIASES: Partial<Record<NPCName, string>> = {
   "pumpkin' pete": "pete",
@@ -76,10 +82,15 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   private attackAnimationKey: string | undefined;
   private miningAnimationKey: string | undefined;
   private hurtAnimationKey: string | undefined;
+  private damage = PLAYER_DAMAGE;
+  private doubleDamageChange = 0;
+  private frameRateAttack!: number;
   isHurting = false;
   isAttacking = false;
   isMining = false;
+  isBurning = false;
   lamp!: LampContainer;
+  fire!: FireContainer;
   pickaxe!: Phaser.GameObjects.Zone;
   sword!: Phaser.GameObjects.Zone;
 
@@ -112,10 +123,6 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.silhouette = scene.add.sprite(0, 0, "silhouette");
     this.add(this.silhouette);
     this.sprite = this.silhouette;
-    // Halloween
-    this.createSword();
-    this.createPickaxe();
-    this.createLamp();
 
     this.shadow = this.scene.add
       .sprite(0.5, 8, "shadow")
@@ -123,6 +130,12 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.add(this.shadow).moveTo(this.shadow, 0);
 
     this.loadSprites(scene);
+
+    // Halloween
+    this.createSword();
+    this.createPickaxe();
+    this.createFire();
+    this.createLamp();
 
     this.setSize(SQUARE_WIDTH, SQUARE_WIDTH + 15);
 
@@ -569,8 +582,9 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     });
   }
 
-  private createAttackAnimation() {
+  private createAttackAnimation(frameRate = 12) {
     if (!this.scene || !this.scene.anims) return;
+    this.frameRateAttack = frameRate;
 
     this.scene.anims.create({
       key: this.attackAnimationKey,
@@ -582,7 +596,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         },
       ),
       repeat: 0,
-      frameRate: 12,
+      frameRate: frameRate,
     });
   }
 
@@ -1288,6 +1302,31 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.add(this.lamp);
   }
 
+  public enableFire() {
+    this.isBurning = true;
+    const fireBody = this.fire.body as Phaser.Physics.Arcade.Body;
+    fireBody.setEnable(true);
+    this.fire.setVisible(true);
+    this.fire.activate(() => {
+      fireBody.setEnable(false);
+      this.fire.setVisible(false);
+      this.isBurning = false;
+    });
+  }
+
+  private createFire() {
+    this.fire = new FireContainer({
+      x: 0,
+      y: 0,
+      scene: this.scene as BaseScene,
+    });
+    this.fire.setVisible(false);
+    const fireBody = this.fire.body as Phaser.Physics.Arcade.Body;
+    fireBody.setEnable(false);
+    this.add(this.fire);
+    this.moveTo(this.fire, 0);
+  }
+
   // private get portalService() {
   //   return this.scene.registry.get("portalService") as
   //     | MachineInterpreter
@@ -1384,10 +1423,10 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     swordBody.enable = state;
     if (!state) return;
 
-    const x = -12;
-    const y = -17;
-    const width = 35;
-    const height = 15;
+    const x = 2;
+    const y = -9;
+    const width = 45;
+    const height = 25;
     // this.scene.sound.play("sword", { volume: PORTAL_VOLUME });
     if (this.direction === "right") {
       swordBody?.setSize(width, height);
@@ -1396,5 +1435,35 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       swordBody?.setSize(width, height);
       this.sword?.setPosition(x - 5, y);
     }
+  }
+
+  setDamage(tool: Tools, value: number) {
+    Object.keys(this.damage[tool]).map((enemy) => {
+      this.damage[tool][enemy as Enemies] = value;
+    });
+  }
+
+  getDamage(tool: Tools, enemy: Enemies) {
+    const damage = this.damage?.[tool]?.[enemy] || this.damage?.[tool].all;
+    if (Math.random() < this.doubleDamageChange && tool === "sword") {
+      return damage * 2;
+    }
+    return damage;
+  }
+
+  setDoubleDamageChange(value: number) {
+    this.doubleDamageChange = value;
+  }
+
+  setFireRadius(value: number) {
+    const radius = this.fire.radius * (1 + value);
+    const numFires = this.fire.numFires * (1 + value);
+    this.fire.createSprites(radius, numFires);
+  }
+
+  setFrameRateAttack(value: number) {
+    this.attackAnimationKey = this.attackAnimationKey + "-fast";
+    const frameRateAttack = this.frameRateAttack * (1 + value);
+    this.createAttackAnimation(frameRateAttack);
   }
 }

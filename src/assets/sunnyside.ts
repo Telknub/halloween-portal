@@ -622,6 +622,7 @@ export const SUNNYSIDE = {
     add_button: `${CONFIG.PROTECTED_IMAGE_URL}/ui/add-button.png`,
     cursor: `${CONFIG.PROTECTED_IMAGE_URL}/ui/cursor.png`,
     round_button: `${CONFIG.PROTECTED_IMAGE_URL}/ui/round_button.png`,
+    round_button_pressed: `${CONFIG.PROTECTED_IMAGE_URL}/ui/round_button_pressed.png`,
     select_box: `${CONFIG.PROTECTED_IMAGE_URL}/ui/select_box.png`,
     green_bar_0: `${CONFIG.PROTECTED_IMAGE_URL}/ui/greenbar_00.png`,
     green_bar_1: `${CONFIG.PROTECTED_IMAGE_URL}/ui/greenbar_01.png`,

@@ -2,18 +2,54 @@ import { Equipped } from "features/game/types/bumpkin";
 import { ITEM_DETAILS } from "features/game/types/images";
 import { translate } from "lib/i18n/translate";
 import { ROOM_INNER_HEIGHT, ROOM_INNER_WIDTH } from "./map/rooms/RoomTileMap";
+
 import slidingPuzzleImg from "public/world/halloween/ForSlidingPuzzle.webp";
+import femur from "public/world/bone1.png";
+import mandible from "public/world/bone2.png";
+import spine from "public/world/bone3.png";
+import clavicles from "public/world/bone4.png";
+import scapula from "public/world/bone5.png";
+import envy from "public/world/relic1.png";
+import gluttony from "public/world/relic2.png";
+import greed from "public/world/relic3.png";
+import lust from "public/world/relic4.png";
+import pride from "public/world/relic5.png";
+import sloth from "public/world/relic6.png";
+import wrath from "public/world/relic7.png";
+import deceit from "public/world/relic8.webp";
 
 export type Tools = "sword" | "lamp" | "pickaxe";
-export type ToolActions = "attack" | "mining";
-export type HalloweenNpcNames = "initial_skeleton" | "final_skeleton";
+export type ToolActions = "attack" | "mining" | "enableFire";
+export type HalloweenNpcNames =
+  | "initial_skeleton"
+  | "final_skeleton"
+  | "blacksmith";
+export type Bones = "femur" | "mandible" | "spine" | "clavicles" | "scapula";
+export type Damages = Partial<Record<Enemies, number>> & { all: number };
+export type Enemies =
+  | "zombie"
+  | "ghost"
+  | "mummy"
+  | "golem"
+  | "finalBoss"
+  | "all";
+export type Relics =
+  | "envy"
+  | "gluttony"
+  | "greed"
+  | "lust"
+  | "pride"
+  | "sloth"
+  | "wrath"
+  | "deceit";
 export type AnimationKeys =
   | "walk"
   | "idle"
   | "carry"
   | "carryIdle"
   | "attack"
-  | "mining";
+  | "mining"
+  | "enableFire";
 export type Direction = "top" | "bottom" | "left" | "right";
 export type RoomType =
   | "initial"
@@ -22,6 +58,12 @@ export type RoomType =
   | "boss"
   | "blacksmith"
   | "skeleton";
+
+export interface CodexData {
+  image: string;
+  description?: string;
+  isFound: boolean;
+}
 
 export const OPPOSITE_DIRECTIONS: Record<Direction, Direction> = {
   top: "bottom",
@@ -50,13 +92,16 @@ export const BLACKSMITH_CONFIGURATION = {
 
 export const TOOL_ACTION_MAP: Partial<Record<Tools, ToolActions>> = {
   sword: "attack",
+  lamp: "enableFire",
   pickaxe: "mining",
 };
 
-export const INITIAL_SKELETON_KEY = "initial_skeleton_flow_complete";
-export const FINAL_SKELETON_KEY = "final_skeleton_flow_complete";
 export const INITIAL_SKELETON_NPC_NAME: HalloweenNpcNames = "initial_skeleton";
 export const FINAL_SKELETON_NPC_NAME: HalloweenNpcNames = "final_skeleton";
+export const BLACKSMITH_NPC_NAME: HalloweenNpcNames = "blacksmith";
+export const INITIAL_SKELETON_KEY = "initial_skeleton_flow_complete";
+export const FINAL_SKELETON_KEY = "final_skeleton_flow_complete";
+export const BLACKSMITH_KEY = "blacksmith_flow_complete";
 export const SKELETON_INITIAL_ROOM_CONFIG = {
   top: {
     x: (TILE_SIZE * (ROOM_INNER_WIDTH - 2.5)) / 2,
@@ -84,6 +129,78 @@ export const SKELETON_FINAL_ROOM_CONFIG = {
   y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 2,
   direction: "right",
 };
+
+export const GROUND_DECORATION_CHANCE = 0.3;
+export const WALL_DECORATION_CHANCE = 0.3;
+export const DEFAULT_GROUND_DECORATION_CHANCE = 0.9;
+
+export const BONE_CODEX: Record<Bones, CodexData> = {
+  femur: { image: femur, isFound: false },
+  mandible: { image: mandible, isFound: false },
+  spine: { image: spine, isFound: false },
+  clavicles: { image: clavicles, isFound: false },
+  scapula: { image: scapula, isFound: false },
+};
+export const RELIC_CODEX: Record<Relics, CodexData> = {
+  envy: {
+    image: envy,
+    description: translate("halloween.envyBuff"),
+    isFound: false,
+  },
+  gluttony: {
+    image: gluttony,
+    description: translate("halloween.gluttonyBuff"),
+    isFound: false,
+  },
+  greed: {
+    image: greed,
+    description: translate("halloween.greedBuff"),
+    isFound: false,
+  },
+  lust: {
+    image: lust,
+    description: translate("halloween.lustBuff"),
+    isFound: false,
+  },
+  pride: {
+    image: pride,
+    description: translate("halloween.prideBuff"),
+    isFound: false,
+  },
+  sloth: {
+    image: sloth,
+    description: translate("halloween.slothBuff"),
+    isFound: false,
+  },
+  wrath: {
+    image: wrath,
+    description: translate("halloween.wrathBuff"),
+    isFound: false,
+  },
+  deceit: {
+    image: deceit,
+    description: translate("halloween.deceitBuff"),
+    isFound: false,
+  },
+};
+export const BONES = Object.keys(BONE_CODEX);
+export const RELICS = Object.keys(RELIC_CODEX);
+
+export const PLAYER_DAMAGE: Record<Tools, Damages> = {
+  sword: {
+    all: 5,
+  },
+  pickaxe: {
+    all: 2,
+    golem: 10,
+  },
+  lamp: {
+    all: 3,
+    mummy: 10,
+  },
+};
+
+export const GAME_LIVES = 5;
 
 // export const LAMPS_CONFIGURATION: { x: number; y: number }[] = [
 //   { x: 290, y: 120 },
@@ -236,4 +353,4 @@ export const SLIDING_PUZZLE_IMG = slidingPuzzleImg;
 export const VICTORY_TEXT = {
   Sudoku: "You got it!",
   SlidinpPuzzle: "Puzzle Solved!",
-}
+};

@@ -1,9 +1,9 @@
-import { BaseScene } from "features/world/scenes/BaseScene";
+import { HalloweenScene } from "../HalloweenScene";
 
 interface Props {
   x: number;
   y: number;
-  scene: BaseScene;
+  scene: HalloweenScene;
   width: number;
   maxHealth: number;
 }

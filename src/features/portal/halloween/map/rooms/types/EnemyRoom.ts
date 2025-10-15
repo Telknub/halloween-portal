@@ -1,7 +1,7 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseRoom } from "../BaseRoom";
 import { createRandomRoom } from "../../Utils";
-import { BaseScene } from "features/world/scenes/BaseScene";
+import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
 import { TILES } from "../RoomTileMap";
 import {
   AMOUNT_ENEMIES,
@@ -9,7 +9,7 @@ import {
 } from "features/portal/halloween/HalloweenConstants";
 
 interface Props {
-  scene: BaseScene;
+  scene: HalloweenScene;
   hasEntry?: boolean;
   hasExit?: boolean;
   matrix?: number[][];
@@ -44,6 +44,7 @@ export class EnemyRoom extends BaseRoom {
         false,
         statuePos,
       );
+    this.spawnObjectRandomly((x, y) => this.createRelic(x, y));
   }
 
   private createEnemies() {

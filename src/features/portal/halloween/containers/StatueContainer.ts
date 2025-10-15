@@ -1,5 +1,5 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { BaseScene } from "features/world/scenes/BaseScene";
+import { HalloweenScene } from "../HalloweenScene";
 import { LifeBar } from "./LifeBar";
 import { onAnimationComplete } from "../lib/HalloweenUtils";
 import { EventBus } from "../lib/EventBus";
@@ -8,7 +8,7 @@ interface Props {
   x: number;
   y: number;
   id: number;
-  scene: BaseScene;
+  scene: HalloweenScene;
   player?: BumpkinContainer;
 }
 
@@ -19,7 +19,7 @@ export class StatueContainer extends Phaser.GameObjects.Container {
   private sprite: Phaser.GameObjects.Sprite;
   private lifeBar: LifeBar;
   private isHurting = false;
-  scene: BaseScene;
+  scene: HalloweenScene;
 
   constructor({ x, y, id, scene, player }: Props) {
     super(scene, x, y);

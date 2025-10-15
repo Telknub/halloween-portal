@@ -4,12 +4,14 @@ import { PortalContext } from "../../lib/PortalProvider";
 import { PIXEL_SCALE } from "features/game/lib/constants";
 import { HudContainer } from "components/ui/HudContainer";
 import { PortalMachineState } from "../../lib/halloweenMachine";
-import { HalloweenTimeScore } from "./HalloweenTimeScore";
+import { HalloweenScore } from "./HalloweenScore";
 import { HalloweenSettings } from "./HalloweenSettings";
 import { HalloweenTravel } from "./HalloweenTravel";
 import { HalloweenInventory } from "./HalloweenInventory";
 import { useAchievementToast } from "../../providers/AchievementToastProvider";
 import { HalloweenTarget } from "./HalloweenTarget";
+import { HalloweenLives } from "./HalloweenLives";
+import { HalloweenTimer } from "./HalloweenTimer";
 
 const _isJoystickActive = (state: PortalMachineState) =>
   state.context.isJoystickActive;
@@ -47,7 +49,7 @@ export const HalloweenHud: React.FC = () => {
     <HudContainer>
       <div>
         <div
-          className="absolute"
+          className="absolute flex flex-col gap-1"
           style={{
             top: `${PIXEL_SCALE * 4}px`,
             left: `${PIXEL_SCALE * 6}px`,
@@ -55,8 +57,10 @@ export const HalloweenHud: React.FC = () => {
         >
           {isPlaying && (
             <>
+              <HalloweenLives />
+              <HalloweenTimer />
               <HalloweenTarget />
-              <HalloweenTimeScore />
+              <HalloweenScore />
             </>
           )}
         </div>

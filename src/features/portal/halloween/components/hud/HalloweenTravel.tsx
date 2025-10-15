@@ -2,16 +2,14 @@ import React, { useContext, useEffect, useState } from "react";
 import { useSelector } from "@xstate/react";
 import { PortalContext } from "../../lib/PortalProvider";
 import { PIXEL_SCALE } from "features/game/lib/constants";
-import { SUNNYSIDE } from "assets/sunnyside";
 import worldIcon from "assets/icons/world.png";
 import { goHome } from "features/portal/lib/portalUtil";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 import { ConfirmationModal } from "components/ui/ConfirmationModal";
 import { PortalMachineState } from "../../lib/halloweenMachine";
 import { useSound } from "lib/utils/hooks/useSound";
-import classNames from "classnames";
-import { isTouchDevice } from "features/world/lib/device";
 import { HALLOWEEN_NPC_WEARABLES } from "../../HalloweenConstants";
+import { RoundButton } from "components/ui/RoundButton";
 
 const _isPlaying = (state: PortalMachineState) => state.matches("playing");
 const _isJoystickActive = (state: PortalMachineState) =>
@@ -44,17 +42,7 @@ export const HalloweenTravel: React.FC = () => {
           bottom: `${PIXEL_SCALE * 3}px`,
         }}
       >
-        <div
-          className={classNames(
-            "flex relative z-50 justify-center cursor-pointer",
-            {
-              "hover:img-highlight": !isJoystickActive && !isTouchDevice(),
-            },
-          )}
-          style={{
-            width: `${PIXEL_SCALE * 22}px`,
-            height: `${PIXEL_SCALE * 23}px`,
-          }}
+        <RoundButton
           onClick={() => {
             button.play();
             if (isPlaying) {
@@ -65,22 +53,15 @@ export const HalloweenTravel: React.FC = () => {
           }}
         >
           <img
-            src={SUNNYSIDE.ui.round_button}
-            className="absolute"
-            style={{
-              width: `${PIXEL_SCALE * 22}px`,
-            }}
-          />
-          <img
             src={worldIcon}
+            className="absolute group-active:translate-y-[2px]"
             style={{
               width: `${PIXEL_SCALE * 12}px`,
               left: `${PIXEL_SCALE * 5}px`,
               top: `${PIXEL_SCALE * 4}px`,
             }}
-            className="absolute"
           />
-        </div>
+        </RoundButton>
       </div>
       <ConfirmationModal
         bumpkinParts={HALLOWEEN_NPC_WEARABLES}

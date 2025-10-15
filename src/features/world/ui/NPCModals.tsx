@@ -37,17 +37,18 @@ import { Digby } from "./beach/Digby";
 import { CropsAndChickens } from "./portals/CropsAndChickens";
 import { ExampleDonations } from "./donations/ExampleDonations";
 import { NPCS_WITH_ALERTS } from "../containers/BumpkinContainer";
+import { BlacksmithNPC } from "features/portal/halloween/components/npcs/BlacksmithNPC";
 
 class NpcModalManager {
-  private listener?: (npc: NPCName, isOpen: boolean) => void;
+  private listener?: (npc: NPCName, isOpen: boolean, data: any) => void;
 
-  public open(npc: NPCName) {
+  public open(npc: NPCName, data = {}) {
     if (this.listener) {
-      this.listener(npc, true);
+      this.listener(npc, true, data);
     }
   }
 
-  public listen(cb: (npc: NPCName, isOpen: boolean) => void) {
+  public listen(cb: (npc: NPCName, isOpen: boolean, data: any) => void) {
     this.listener = cb;
   }
 }
@@ -67,12 +68,14 @@ export const NPCModals: React.FC<Props> = ({ scene, id }) => {
   const { t } = useAppTranslation();
 
   const [npc, setNpc] = useState<NPCName | undefined>(getInitialNPC(scene));
+  const [data, setData] = useState({});
 
   const { gameService } = useContext(Context);
 
   useEffect(() => {
-    npcModalManager.listen((npc) => {
+    npcModalManager.listen((npc, isOpen, data) => {
       setNpc(npc);
+      setData(data);
     });
   }, []);
 
@@ -101,7 +104,12 @@ export const NPCModals: React.FC<Props> = ({ scene, id }) => {
             <ExampleDonations onClose={closeModal} />
           </CloseButtonPanel>
         )}
-        {npc === "final_skeleton" && <FinalSkeletonNPC onClose={closeModal} />}
+        {npc === "blacksmith" && (
+          <BlacksmithNPC onClose={closeModal} data={data} />
+        )}
+        {npc === "final_skeleton" && (
+          <FinalSkeletonNPC onClose={closeModal} data={data} />
+        )}
         {npc === "initial_skeleton" && (
           <InitialSkeletonNPC onClose={closeModal} />
         )}
@@ -192,9 +200,9 @@ export const NPCModals: React.FC<Props> = ({ scene, id }) => {
         {npc === "pumpkin' pete" && (
           <DeliveryPanel npc={npc} onClose={closeModal} />
         )}
-        {npc === "blacksmith" && (
+        {/* {npc === "blacksmith" && (
           <DeliveryPanel npc={npc} onClose={closeModal} />
-        )}
+        )} */}
         {npc === "peggy" && <DeliveryPanel npc={npc} onClose={closeModal} />}
         {npc === "raven" && <DeliveryPanel npc={npc} onClose={closeModal} />}
         {npc === "victoria" && <DeliveryPanel npc={npc} onClose={closeModal} />}

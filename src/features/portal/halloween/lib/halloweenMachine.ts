@@ -6,7 +6,13 @@ import {
   RESTOCK_ATTEMPTS_SFL,
   UNLIMITED_ATTEMPTS_SFL,
   DAILY_ATTEMPTS,
+  BONE_CODEX,
+  RELIC_CODEX,
   Tools,
+  Bones,
+  CodexData,
+  Relics,
+  GAME_LIVES,
 } from "../HalloweenConstants";
 import { GameState } from "features/game/types/game";
 import { purchaseMinigameItem } from "features/game/events/minigames/purchaseMinigameItem";
@@ -36,7 +42,10 @@ export interface Context {
   lastScore: number;
   selectedTool: Tools | null;
   tools: Tools[];
-  bones: number;
+  boneCodex: Record<Bones, CodexData>;
+  relicCodex: Record<Relics, CodexData>;
+  lives: number;
+  maxLives: number;
   startedAt: number;
   attemptsLeft: number;
 }
@@ -66,6 +75,27 @@ type SelectToolEvent = {
 
 type CollectBoneEvent = {
   type: "COLLECT_BONE";
+  boneName: Bones;
+};
+
+type CollectRelicEvent = {
+  type: "COLLECT_RELIC";
+  relicName: Relics;
+};
+
+type LoseLivesEvent = {
+  type: "LOSE_LIVES";
+  lives: number;
+};
+
+type RestoreLivesEvent = {
+  type: "RESTORE_LIVES";
+  lives: number;
+};
+
+type IncreaseMaxLivesEvent = {
+  type: "INCREASE_MAX_LIVES";
+  lives: number;
 };
 
 export type PortalEvent =
@@ -83,6 +113,10 @@ export type PortalEvent =
   | CollectToolEvent
   | SelectToolEvent
   | CollectBoneEvent
+  | CollectRelicEvent
+  | LoseLivesEvent
+  | RestoreLivesEvent
+  | IncreaseMaxLivesEvent
   | UnlockAchievementsEvent;
 
 export type PortalState = {
@@ -119,7 +153,10 @@ const resetGameTransition = {
       score: () => 0,
       selectedTool: () => null,
       tools: () => [],
-      bones: () => 0,
+      boneCodex: () => BONE_CODEX,
+      relicCodex: () => RELIC_CODEX,
+      lives: () => GAME_LIVES,
+      maxLives: () => GAME_LIVES,
       startedAt: () => 0,
     }) as any,
   },
@@ -144,7 +181,10 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
     // Halloween
     selectedTool: null,
     tools: [],
-    bones: 0,
+    boneCodex: BONE_CODEX,
+    relicCodex: RELIC_CODEX,
+    lives: GAME_LIVES,
+    maxLives: GAME_LIVES,
   },
   on: {
     SET_JOYSTICK_ACTIVE: {
@@ -291,7 +331,10 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
             score: 0,
             selectedTool: null,
             tools: [],
-            bones: 0,
+            boneCodex: BONE_CODEX,
+            relicCodex: RELIC_CODEX,
+            lives: GAME_LIVES,
+            maxLives: GAME_LIVES,
             state: (context: Context) => {
               startAttempt();
               return startMinigameAttempt({
@@ -314,6 +357,32 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
           actions: assign({
             score: (context: Context) => {
               return context.score + 1;
+            },
+          }),
+        },
+        LOSE_LIVES: {
+          actions: assign({
+            lives: (context: Context, event: LoseLivesEvent) => {
+              const lives = Math.max(context.lives - event.lives, 0);
+              return lives;
+            },
+          }),
+        },
+        RESTORE_LIVES: {
+          actions: assign({
+            lives: (context: Context, event: RestoreLivesEvent) => {
+              const lives = Math.min(
+                context.lives + event.lives,
+                context.maxLives,
+              );
+              return lives;
+            },
+          }),
+        },
+        INCREASE_MAX_LIVES: {
+          actions: assign({
+            maxLives: (context: Context, event: IncreaseMaxLivesEvent) => {
+              return context.maxLives + event.lives;
             },
           }),
         },
@@ -344,8 +413,25 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
         },
         COLLECT_BONE: {
           actions: assign({
-            bones: (context: Context) => {
-              return context.bones + 1;
+            boneCodex: (context: Context, event: CollectBoneEvent) => ({
+              ...context.boneCodex,
+              [event.boneName]: {
+                ...context.boneCodex[event.boneName],
+                isFound: true,
+              },
+            }),
+          }),
+        },
+        COLLECT_RELIC: {
+          actions: assign({
+            relicCodex: (context: Context, event: CollectRelicEvent) => {
+              return {
+                ...context.relicCodex,
+                [event.relicName]: {
+                  ...context.relicCodex[event.relicName],
+                  isFound: true,
+                },
+              };
             },
           }),
         },

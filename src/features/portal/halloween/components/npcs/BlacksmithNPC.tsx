@@ -2,14 +2,10 @@ import { SpeakingModal } from "features/game/components/SpeakingModal";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 import React, { useEffect, useState } from "react";
 import { PIXEL_SCALE } from "features/game/lib/constants";
-import {
-  FINAL_SKELETON_KEY,
-  RELIC_CODEX,
-  Relics,
-} from "../../HalloweenConstants";
+import { BLACKSMITH_KEY, RELIC_CODEX, Relics } from "../../HalloweenConstants";
 import { Label } from "components/ui/Label";
 
-import skeleton from "public/world/skeletonPortrait.png";
+import blacksmith from "public/world/blacksmithPortrait.png";
 import lightning from "assets/icons/lightning.png";
 import { EventBus } from "../../lib/EventBus";
 
@@ -18,15 +14,14 @@ interface Props {
   data?: any;
 }
 
-export const FinalSkeletonNPC: React.FC<Props> = ({ onClose, data }) => {
+export const BlacksmithNPC: React.FC<Props> = ({ onClose, data }) => {
   const [showFirstDialogue, setShowFirstDialogue] = useState(true);
   const [showRepeatDialogue, setShowRepeatDialogue] = useState(false);
   const { t } = useAppTranslation();
   const relic = RELIC_CODEX?.[data?.relicName as Relics];
 
   useEffect(() => {
-    const alreadyCompleted =
-      localStorage.getItem(FINAL_SKELETON_KEY) === "true";
+    const alreadyCompleted = localStorage.getItem(BLACKSMITH_KEY) === "true";
 
     if (alreadyCompleted) {
       setShowRepeatDialogue(true);
@@ -38,11 +33,11 @@ export const FinalSkeletonNPC: React.FC<Props> = ({ onClose, data }) => {
       <SpeakingModal
         message={[
           {
-            text: t("halloween.finalSkeleton4"),
+            text: t("halloween.blacksmith2"),
           },
         ]}
         onClose={() => onClose()}
-        bumpkinImage={skeleton}
+        bumpkinImage={blacksmith}
       />
     );
   }
@@ -52,21 +47,15 @@ export const FinalSkeletonNPC: React.FC<Props> = ({ onClose, data }) => {
       <SpeakingModal
         message={[
           {
-            text: t("halloween.finalSkeleton1"),
-          },
-          {
-            text: t("halloween.finalSkeleton2"),
-          },
-          {
-            text: t("halloween.finalSkeleton3"),
+            text: t("halloween.blacksmith1"),
           },
         ]}
         onClose={() => {
-          localStorage.setItem(FINAL_SKELETON_KEY, "true");
+          localStorage.setItem(BLACKSMITH_KEY, "true");
           EventBus.emit("apply-relic-buff", data?.relicName);
           setShowFirstDialogue(false);
         }}
-        bumpkinImage={skeleton}
+        bumpkinImage={blacksmith}
       />
     );
   }

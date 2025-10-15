@@ -35,10 +35,10 @@ export const HalloweenRulesPanel: React.FC<Props> = ({
           icon: SUNNYSIDE.icons.plant,
           name: t("halloween.mission"),
         },
-        {
-          icon: SUNNYSIDE.icons.heart,
-          name: t("donate"),
-        },
+        // {
+        //   icon: SUNNYSIDE.icons.heart,
+        //   name: t("donate"),
+        // },
       ]}
     >
       <>
@@ -51,7 +51,7 @@ export const HalloweenRulesPanel: React.FC<Props> = ({
             onConfirm={onConfirm}
           />
         )}
-        {tab === 1 && <HalloweenDonations />}
+        {/* {tab === 1 && <HalloweenDonations />} */}
       </>
     </CloseButtonPanel>
   );

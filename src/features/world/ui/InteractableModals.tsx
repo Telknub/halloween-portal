@@ -35,6 +35,7 @@ import { FruitDash } from "./portals/FruitDash";
 import { DesertNoticeboard } from "./beach/DesertNoticeboard";
 import { PirateChestModal } from "./chests/PirateChest";
 import { ExampleDonations } from "./donations/ExampleDonations";
+import { RelicModal } from "features/portal/halloween/components/interactables/RelicModal";
 
 type InteractableName =
   | "desert_noticeboard"
@@ -120,18 +121,26 @@ type InteractableName =
   | "desert_book_1"
   | "desert_book_2"
   | "desert_book_3"
-  | "desert_book_4";
+  | "desert_book_4"
+  | "relic"
+  | "statue";
 
 class InteractableModalManager {
-  private listener?: (name: InteractableName, isOpen: boolean) => void;
+  private listener?: (
+    name: InteractableName,
+    isOpen: boolean,
+    data: any,
+  ) => void;
 
-  public open(name: InteractableName) {
+  public open(name: InteractableName, data = {}) {
     if (this.listener) {
-      this.listener(name, true);
+      this.listener(name, true, data);
     }
   }
 
-  public listen(cb: (name: InteractableName, isOpen: boolean) => void) {
+  public listen(
+    cb: (name: InteractableName, isOpen: boolean, data: any) => void,
+  ) {
     this.listener = cb;
   }
 }
@@ -161,10 +170,12 @@ export const InteractableModals: React.FC<Props> = ({ id, scene }) => {
     InteractableName | undefined
   >(getInitialModal(scene));
   const [isLoading, setIsLoading] = useState(false);
+  const [data, setData] = useState({});
 
   useEffect(() => {
-    interactableModalManager.listen((interactable, open) => {
+    interactableModalManager.listen((interactable, open, data) => {
       setInteractable(interactable);
+      setData(data);
     });
   }, []);
 
@@ -176,6 +187,9 @@ export const InteractableModals: React.FC<Props> = ({ id, scene }) => {
 
   return (
     <>
+      <Modal show={interactable === "relic"} onHide={closeModal}>
+        <RelicModal onClose={closeModal} data={data} />
+      </Modal>
       <Modal show={interactable === "weekly_faction_prize"} onHide={closeModal}>
         <FactionWeeklyPrize onClose={closeModal} />
       </Modal>
