@@ -318,9 +318,19 @@ export const HALLOWEEN_NPC_WEARABLES: Equipped = {
   shoes: "Brown Boots",
 };
 
-// Mini_game
-export const SUDOKU_COMPLEXITY = 4;
-export const TEXT = "You got it!";
+// Enemy statistics
+export const BOSS_STATS = {
+  health: 10,
+  damage: 10,
+};
+export const MUMMY_STATS = {
+  health: 10,
+  damage: 10,
+};
+export const GOLEM_STATS = {
+  health: 5,
+  damage: 5,
+};
 
 // Enemies Configuration
 interface Position {
@@ -336,7 +346,9 @@ export const BOSS_ENEMY_CONFIGURATION: Position = {
 export const REMOVE_ATTACK = 1000;
 
 const limitX = 230;
-const stop_position = [50, 80, 90, 110, 130, 150];
+const stop_position = [
+  40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 110, 130, 150,
+];
 const randomPosition = Math.floor(Math.random() * stop_position.length);
 const position_1 = stop_position[randomPosition];
 const position_2 = limitX - position_1;
@@ -348,6 +360,17 @@ export const ACTIVATE_FLAMETHROWER = {
   position_3: position_1 + position_2,
 };
 
+export const MUMMY_ENEMY_CONFIGURATION: Position = {
+  x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
+  y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 2, // adjust back to 2
+};
+
+export const GOLEM_ENEMY_CONFIGURATION: Position = {
+  x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
+  y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 4, // adjust back to 2
+};
+
+// Mini_game
 export const SLIDING_PUZZLE_MOVESTOSOLVE = 4;
 export const SLIDING_PUZZLE_IMG = slidingPuzzleImg;
 export const VICTORY_TEXT = {

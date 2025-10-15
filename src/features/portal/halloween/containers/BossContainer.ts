@@ -5,9 +5,11 @@ import {
   REMOVE_ATTACK,
   BASICROOM_X_GUIDE,
   ACTIVATE_FLAMETHROWER,
+  BOSS_STATS,
 } from "../HalloweenConstants";
 import { LifeBar } from "./LifeBar";
 import { BaseRoom } from "../map/rooms/BaseRoom";
+import { EventBus } from "../lib/EventBus";
 
 interface Props {
   x: number;
@@ -24,7 +26,6 @@ export class BossContainer extends Phaser.GameObjects.Container {
   private overlapHandler?: Phaser.Physics.Arcade.Collider;
   private spriteBody: Phaser.GameObjects.Sprite;
   private spritePower!: Phaser.GameObjects.Sprite;
-  private spriteAttackBody!: Phaser.GameObjects.Sprite;
   private fireParticles:
     | Phaser.GameObjects.Particles.ParticleEmitter
     | undefined;
@@ -32,6 +33,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
   private room: BaseRoom;
   private xGuide: number;
   private spritesPositionX: number;
+  private isHurting = false;
 
   constructor({ x, y, scene, player, room }: Props) {
     super(scene, x, y);
@@ -58,14 +60,15 @@ export class BossContainer extends Phaser.GameObjects.Container {
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
       .setSize(this.spriteBody.width / 2, this.spriteBody.height / 3)
-      .setOffset(0, 80)
+      .setOffset(0, 85)
       .setImmovable(true);
 
     this.setSize(this.spriteBody.width / 2, this.spriteBody.height / 2);
     this.add([this.spriteBody, this.lifeBar]);
 
-    this.createWalking();
     this.createOverlaps();
+    this.createEvents();
+    this.startMove();
 
     scene.add.existing(this);
   }
@@ -81,6 +84,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
     spriteName: string,
     start: number,
     end: number,
+    frameRate: number,
     repeat: number,
   ) {
     this.scene.anims.create({
@@ -89,15 +93,22 @@ export class BossContainer extends Phaser.GameObjects.Container {
         start,
         end,
       }),
-      frameRate: 10,
+      frameRate,
       repeat,
     });
     sprite.play(`${spriteName}_anim`, true);
   }
 
-  private createWalking() {
+  private startMove() {
     if (!this.player) return;
-    this.createAnimation(this.spriteBody, `${this.spriteName}_walk`, 0, 8, -1);
+    this.createAnimation(
+      this.spriteBody,
+      `${this.spriteName}_walk`,
+      0,
+      8,
+      10,
+      -1,
+    );
 
     const xPositions = BASICROOM_X_GUIDE.map(
       (x) => x - ACTIVATE_FLAMETHROWER.position_1,
@@ -115,16 +126,16 @@ export class BossContainer extends Phaser.GameObjects.Container {
           this.createAttack();
           this.scene.time.delayedCall(REMOVE_ATTACK, () => {
             this.removeAttack();
-            this.createWalking2();
+            this.secondMove();
           });
         } else {
-          this.createWalking2();
+          this.secondMove();
         }
       },
     });
   }
 
-  private createWalking2() {
+  private secondMove() {
     const xPositions = BASICROOM_X_GUIDE;
     const targetX = xPositions[this.xGuide];
 
@@ -141,16 +152,16 @@ export class BossContainer extends Phaser.GameObjects.Container {
 
           this.scene.time.delayedCall(REMOVE_ATTACK, () => {
             this.removeAttack();
-            this.createWalking3();
+            this.thirdMove();
           });
         } else {
-          this.createWalking3();
+          this.thirdMove();
         }
       },
     });
   }
 
-  private createWalking3() {
+  private thirdMove() {
     const xPositions = BASICROOM_X_GUIDE.map(
       (x) => x - ACTIVATE_FLAMETHROWER.position_2,
     );
@@ -169,16 +180,16 @@ export class BossContainer extends Phaser.GameObjects.Container {
 
           this.scene.time.delayedCall(REMOVE_ATTACK, () => {
             this.removeAttack();
-            this.createWalking4();
+            this.endMove();
           });
         } else {
-          this.createWalking4();
+          this.endMove();
         }
       },
     });
   }
 
-  private createWalking4() {
+  private endMove() {
     const xPositions = BASICROOM_X_GUIDE.map(
       (x) => x - ACTIVATE_FLAMETHROWER.position_3,
     );
@@ -190,74 +201,107 @@ export class BossContainer extends Phaser.GameObjects.Container {
       alpha: 1,
       duration: 1000,
       ease: "Linear",
-      onComplete: () => this.createWalking(),
+      onComplete: () => this.startMove(),
     });
   }
 
   private createAttack() {
-    this.createAttackBody();
-    this.createPower();
-  }
-
-  private removeAttack() {
-    if (this.spriteAttackBody) {
-      this.spriteAttackBody.setVisible(false);
-    }
-
-    if (this.spriteBody) {
-      this.spriteBody.setVisible(true);
-    }
-
-    if (this.spritePower) {
-      this.spritePower.setVisible(false);
-
-      if (this.spritePower.body) {
-        this.scene.physics.world.disable(this.spritePower);
-      }
-    }
-  }
-
-  private createAttackBody() {
-    this.spriteBody.setVisible(false);
-    this.spriteAttackBody = this.scene.add
-      .sprite(0, this.spritesPositionX, `${this.spriteName}_attack`)
-      .setDepth(1000000)
-      .setScale(1);
     this.createAnimation(
-      this.spriteAttackBody,
+      this.spriteBody,
       `${this.spriteName}_attack`,
       0,
       8,
+      10,
+      -1,
+    );
+    this.createFire();
+    this.createDamage();
+    this.scene.physics.world.enable(this.spritePower);
+  }
+
+  private removeAttack() {
+    if (this.spritePower) {
+      this.createAnimation(
+        this.spriteBody,
+        `${this.spriteName}_walk`,
+        0,
+        8,
+        10,
+        -1,
+      );
+      this.spritePower.setVisible(false);
+      this.scene.physics.world.disable(this.spritePower);
+    }
+  }
+
+  private createFire() {
+    this.spritePower = this.scene.add
+      .sprite(
+        this.spriteBody.x - 18,
+        this.spriteBody.y + 50,
+        `${this.spriteName}_fire`,
+      )
+      .setOrigin(0, 0)
+      .setDepth(1000000000)
+      .setScale(1.2);
+    this.createAnimation(
+      this.spritePower,
+      `${this.spriteName}_fire`,
+      0,
+      8,
+      20,
       -1,
     );
 
-    this.add(this.spriteAttackBody);
+    this.add(this.spritePower);
+
+    this.scene.physics.add.existing(this.spritePower);
+    const body = this.spritePower.body as Phaser.Physics.Arcade.Body;
+    body.setSize(this.spritePower.width, this.spritePower.height);
+    body.setOffset(this.spriteBody.x, this.spriteBody.y - 30);
+    body.enable = false;
   }
 
-  private createPower() {
-    this.spritePower = this.scene.add
-      .sprite(0, 0, `${this.spriteName}_fire`)
-      .setOrigin(0, 0)
-      .setDepth(1000000000)
-      .setScale(1.2)
-      .setPosition(this.spriteBody.x - 20, this.spriteBody.y + 70);
-    this.createAnimation(this.spritePower, `${this.spriteName}_fire`, 0, 8, -1);
-    this.scene.physics.world.enable(this.spritePower);
+  private createDamage() {
+    if (!this.player || !this.spritePower) return;
+    let hasDealtDamage = false;
 
-    this.add(this.spritePower);
+    this.scene.physics.add.overlap(
+      this.player,
+      this.spritePower,
+      () => {
+        if (!hasDealtDamage) {
+          // console.log("-1 Health");
+          hasDealtDamage = true;
+        }
+      },
+      undefined,
+      this,
+    );
   }
 
   private createOverlaps() {
     if (!this.player) return;
-    this.scene.physics.add.overlap(this, this.player, () => this.hit());
+    this.scene.physics.add.collider(this.player, this);
+    this.scene.physics.add.overlap(this, this.player.pickaxe, () => this.hit());
+  }
+
+  private createEvents() {
+    EventBus.on("animation-mining-completed", () => {
+      this.isHurting = false;
+    });
   }
 
   private hit() {
-    if (this.lifeBar.currentHealth > 0) {
-      const newHealth = this.lifeBar.currentHealth - this.lifeBar.maxHealth / 2;
-      this.lifeBar.setHealth(newHealth);
-    } else {
-      this.createDefeat();
+    if (!this.isHurting) {
+      this.isHurting = true;
+      const newHealth =
+        this.lifeBar.currentHealth - this.lifeBar.maxHealth / BOSS_STATS.health;
+      if (newHealth > 0) {
+        this.lifeBar.setHealth(newHealth);
+      } else {
+        this.createDefeat();
+      }
     }
   }
 
@@ -269,14 +313,20 @@ export class BossContainer extends Phaser.GameObjects.Container {
       this.overlapHandler = undefined;
     }
 
-    this.spriteAttackBody?.destroy();
-    this.spritePower?.destroy();
-
-    this.createAnimation(this.spriteBody, `${this.spriteName}_defeat`, 0, 7, 0);
+    this.createAnimation(
+      this.spriteBody,
+      `${this.spriteName}_defeat`,
+      0,
+      7,
+      10,
+      0,
+    );
 
     this.spriteBody.on("animationcomplete", () => {
       this.destroy();
-      // e.g., openPortal(), this.room.onBossDefeated(), etc.
+      // this.openPortal()
     });
   }
+
+  // private openPortal() {}
 }

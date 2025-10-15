@@ -2,11 +2,8 @@ import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseRoom } from "../BaseRoom";
 import { createRandomRoom } from "../../Utils";
 import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
-import { TILES } from "../RoomTileMap";
-import {
-  AMOUNT_ENEMIES,
-  TILE_SIZE,
-} from "features/portal/halloween/HalloweenConstants";
+import { MUMMY_ENEMY_CONFIGURATION } from "features/portal/halloween/HalloweenConstants";
+import { MummyContainer } from "features/portal/halloween/containers/MummyContainer";
 
 interface Props {
   scene: HalloweenScene;
@@ -44,6 +41,7 @@ export class EnemyRoom extends BaseRoom {
         false,
         statuePos,
       );
+    this.createMummyEnemy();
     this.spawnObjectRandomly((x, y) => this.createRelic(x, y));
   }
 
@@ -60,5 +58,18 @@ export class EnemyRoom extends BaseRoom {
     //   y,
     //   ...
     // })
+  }
+
+  private createMummyEnemy() {
+    const { x, y } = this.getRelativePosition(
+      MUMMY_ENEMY_CONFIGURATION.x,
+      MUMMY_ENEMY_CONFIGURATION.y,
+    );
+    new MummyContainer({
+      x,
+      y,
+      scene: this.scene,
+      player: this.player,
+    });
   }
 }
