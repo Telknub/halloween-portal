@@ -32,6 +32,12 @@ import {
   BONES,
   RELICS,
   Relics,
+  ENVY_BUFF_DAMAGE,
+  GLUTTONY_BUFF_PERCENTAGE,
+  GREED_BUFF_RANGE,
+  LUST_BUFF_LIVES,
+  PRIDE_BUFF_PERCENTAGE,
+  WRATH_BUFF_PERCENTAGE,
 } from "./HalloweenConstants";
 import { LampContainer } from "./containers/LampContainer";
 import { EventObject } from "xstate";
@@ -89,6 +95,7 @@ export class HalloweenScene extends BaseScene {
   private lastAttempt!: number;
   private gameOverNoMove!: number;
   private gameOverNoMoveTime!: number;
+  objectsWithCollider: { x: number; y: number }[] = [];
   bones = BONES;
   relics = RELICS;
 
@@ -310,6 +317,172 @@ export class HalloweenScene extends BaseScene {
         frameHeight: 64,
       },
     );
+
+    // Doors
+    // Green door
+    this.load.image(
+      "gate_horizontal_close",
+      "world/gate_horizontal_close.webp",
+    );
+    this.load.spritesheet(
+      "gate_horizontal_close_animation",
+      "world/gate_horizontal_close_animation.webp",
+      {
+        frameWidth: 96,
+        frameHeight: 32,
+      },
+    );
+    this.load.image("gate_horizontal_open", "world/gate_horizontal_open.webp");
+    this.load.spritesheet(
+      "gate_horizontal_open_animation",
+      "world/gate_horizontal_open_animation.webp",
+      {
+        frameWidth: 96,
+        frameHeight: 32,
+      },
+    );
+    this.load.image("gate_vertical_close", "world/gate_vertical_close.webp");
+    this.load.spritesheet(
+      "gate_vertical_close_animation",
+      "world/gate_vertical_close_animation.webp",
+      {
+        frameWidth: 32,
+        frameHeight: 96,
+      },
+    );
+    this.load.image("gate_vertical_open", "world/gate_vertical_open.webp");
+    this.load.spritesheet(
+      "gate_vertical_open_animation",
+      "world/gate_vertical_open_animation.webp",
+      {
+        frameWidth: 32,
+        frameHeight: 96,
+      },
+    );
+
+    // Red door
+    this.load.image(
+      "red_gate_horizontal_close",
+      "world/red_gate_horizontal_close.webp",
+    );
+    this.load.spritesheet(
+      "red_gate_horizontal_close_animation",
+      "world/red_gate_horizontal_close_animation.webp",
+      {
+        frameWidth: 96,
+        frameHeight: 32,
+      },
+    );
+    this.load.image(
+      "red_gate_horizontal_open",
+      "world/red_gate_horizontal_open.webp",
+    );
+    this.load.spritesheet(
+      "red_gate_horizontal_open_animation",
+      "world/red_gate_horizontal_open_animation.webp",
+      {
+        frameWidth: 96,
+        frameHeight: 32,
+      },
+    );
+    this.load.image(
+      "red_gate_vertical_close",
+      "world/red_gate_vertical_close.webp",
+    );
+    this.load.spritesheet(
+      "red_gate_vertical_close_animation",
+      "world/red_gate_vertical_close_animation.webp",
+      {
+        frameWidth: 32,
+        frameHeight: 96,
+      },
+    );
+    this.load.image(
+      "red_gate_vertical_open",
+      "world/red_gate_vertical_open.webp",
+    );
+    this.load.spritesheet(
+      "red_gate_vertical_open_animation",
+      "world/red_gate_vertical_open_animation.webp",
+      {
+        frameWidth: 32,
+        frameHeight: 96,
+      },
+    );
+
+    // Decorations
+    this.load.image(
+      "pile_of_bones",
+      "world/halloween/decorations/pile_of_bones.png",
+    );
+    this.load.image(
+      "bookshelves1",
+      "world/halloween/decorations/bookshelves1.png",
+    );
+    this.load.image(
+      "bookshelves2",
+      "world/halloween/decorations/bookshelves2.png",
+    );
+    this.load.image(
+      "bookshelves3",
+      "world/halloween/decorations/bookshelves3.png",
+    );
+    this.load.image(
+      "bookshelves4",
+      "world/halloween/decorations/bookshelves4.png",
+    );
+    this.load.image(
+      "bookshelves5",
+      "world/halloween/decorations/bookshelves5.png",
+    );
+    this.load.image(
+      "bookshelves6",
+      "world/halloween/decorations/bookshelves6.png",
+    );
+    this.load.image(
+      "bookshelves7",
+      "world/halloween/decorations/bookshelves7.png",
+    );
+    this.load.image(
+      "bookshelves8",
+      "world/halloween/decorations/bookshelves8.png",
+    );
+    this.load.image(
+      "bookshelves9",
+      "world/halloween/decorations/bookshelves9.png",
+    );
+    this.load.image(
+      "bookshelves10",
+      "world/halloween/decorations/bookshelves10.png",
+    );
+    this.load.image(
+      "normal_pillar",
+      "world/halloween/decorations/normal_pillar.png",
+    );
+    this.load.image(
+      "damaged_pillar",
+      "world/halloween/decorations/damaged_pillar.png",
+    );
+    this.load.image(
+      "broken_pillar",
+      "world/halloween/decorations/broken_pillar.png",
+    );
+    this.load.spritesheet(
+      "raveyard",
+      "world/halloween/decorations/raveyard.webp",
+      {
+        frameWidth: 21,
+        frameHeight: 26,
+      },
+    );
+    this.load.spritesheet(
+      "hauntedTomb",
+      "world/halloween/decorations/hauntedTomb.webp",
+      {
+        frameWidth: 21,
+        frameHeight: 30,
+      },
+    );
   }
 
   // init(data: any) {
@@ -507,30 +680,37 @@ export class HalloweenScene extends BaseScene {
   applyEnvyBuff() {
     const currentSwordDamage =
       this.currentPlayer?.getDamage("sword", "all") ?? 0;
-    this.currentPlayer?.setDamage("sword", currentSwordDamage + 3);
+    this.currentPlayer?.setDamage(
+      "sword",
+      currentSwordDamage + ENVY_BUFF_DAMAGE,
+    );
   }
 
   applyGluttonyBuff() {
-    this.velocity *= 1.25;
+    this.velocity *= 1 + GLUTTONY_BUFF_PERCENTAGE;
   }
 
   applyGreedBuff() {
-    this.currentPlayer?.setFireRadius(0.3);
+    this.currentPlayer?.setFireRadius(GREED_BUFF_RANGE);
   }
 
   applyLustBuff() {
-    this.portalService?.send("INCREASE_MAX_LIVES", { lives: 1 });
-    this.portalService?.send("RESTORE_LIVES", { lives: 2 });
+    this.portalService?.send("INCREASE_MAX_LIVES", {
+      lives: LUST_BUFF_LIVES.maxLives,
+    });
+    this.portalService?.send("RESTORE_LIVES", { lives: LUST_BUFF_LIVES.lives });
   }
 
   applyPrideBuff() {
-    this.currentPlayer?.setDoubleDamageChange(0.2);
+    this.currentPlayer?.setDoubleDamageChange(PRIDE_BUFF_PERCENTAGE);
   }
 
-  applySlothBuff() {}
+  applySlothBuff() {
+    this.currentPlayer?.setCanHealWithGates(true);
+  }
 
   applyWrathBuff() {
-    this.currentPlayer?.setFrameRateAttack(0.3);
+    this.currentPlayer?.setFrameRateAttack(WRATH_BUFF_PERCENTAGE);
   }
 
   applyDeceitBuff() {}

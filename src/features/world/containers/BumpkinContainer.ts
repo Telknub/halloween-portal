@@ -18,12 +18,14 @@ import {
   Enemies,
   ITEM_BUMPKIN,
   PLAYER_DAMAGE,
+  SLOTH_BUFF_LIVES,
   Tools,
 } from "features/portal/halloween/HalloweenConstants";
 import { BaseScene } from "../scenes/BaseScene";
 import { onAnimationComplete } from "features/portal/halloween/lib/HalloweenUtils";
 import { EventBus } from "features/portal/halloween/lib/EventBus";
 import { FireContainer } from "features/portal/halloween/containers/FireContainer";
+import { MachineInterpreter } from "features/portal/halloween/lib/halloweenMachine";
 
 const NAME_ALIASES: Partial<Record<NPCName, string>> = {
   "pumpkin' pete": "pete",
@@ -89,6 +91,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   isAttacking = false;
   isMining = false;
   isBurning = false;
+  canHealWithGates = false;
   lamp!: LampContainer;
   fire!: FireContainer;
   pickaxe!: Phaser.GameObjects.Zone;
@@ -1327,11 +1330,11 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.moveTo(this.fire, 0);
   }
 
-  // private get portalService() {
-  //   return this.scene.registry.get("portalService") as
-  //     | MachineInterpreter
-  //     | undefined;
-  // }
+  private get portalService() {
+    return this.scene.registry.get("portalService") as
+      | MachineInterpreter
+      | undefined;
+  }
 
   // public updateLightRadius() {
   //   const darknessPipeline = this.scene.cameras.main.getPostPipeline(
@@ -1465,5 +1468,15 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.attackAnimationKey = this.attackAnimationKey + "-fast";
     const frameRateAttack = this.frameRateAttack * (1 + value);
     this.createAttackAnimation(frameRateAttack);
+  }
+
+  setCanHealWithGates(state: boolean) {
+    this.canHealWithGates = state;
+  }
+
+  healWithGate() {
+    if (this.canHealWithGates) {
+      this.portalService?.send("RESTORE_LIVES", { lives: SLOTH_BUFF_LIVES });
+    }
   }
 }

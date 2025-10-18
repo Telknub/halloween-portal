@@ -38,6 +38,7 @@ import { CropsAndChickens } from "./portals/CropsAndChickens";
 import { ExampleDonations } from "./donations/ExampleDonations";
 import { NPCS_WITH_ALERTS } from "../containers/BumpkinContainer";
 import { BlacksmithNPC } from "features/portal/halloween/components/npcs/BlacksmithNPC";
+import { PlayerNPC } from "features/portal/halloween/components/npcs/PlayerNPC";
 
 class NpcModalManager {
   private listener?: (npc: NPCName, isOpen: boolean, data: any) => void;
@@ -104,6 +105,7 @@ export const NPCModals: React.FC<Props> = ({ scene, id }) => {
             <ExampleDonations onClose={closeModal} />
           </CloseButtonPanel>
         )}
+        {npc === "player" && <PlayerNPC onClose={closeModal} data={data} />}
         {npc === "blacksmith" && (
           <BlacksmithNPC onClose={closeModal} data={data} />
         )}

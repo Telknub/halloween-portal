@@ -4,6 +4,8 @@ import { MachineInterpreter } from "../lib/halloweenMachine";
 import { npcModalManager } from "features/world/ui/NPCModals";
 import { translate } from "lib/i18n/translate";
 import {
+  Bones,
+  CodexData,
   FINAL_SKELETON_NPC_NAME,
   HalloweenNpcNames,
 } from "../HalloweenConstants";
@@ -73,6 +75,12 @@ export class SkeletonContainer extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
+  private get portalService() {
+    return this.scene.registry.get("portalService") as
+      | MachineInterpreter
+      | undefined;
+  }
+
   private createAnimation() {
     const animationKey = `${this.spriteName}_${this.id}_action`;
     this.scene.anims.create({
@@ -112,7 +120,15 @@ export class SkeletonContainer extends Phaser.GameObjects.Container {
         return;
       }
 
-      npcModalManager.open(this.npcName, { relicName });
+      const boneCodex = this.portalService?.state.context.boneCodex as Record<
+        Bones,
+        CodexData
+      >;
+      const hasBones = Object.keys(boneCodex).every(
+        (bone) => boneCodex[bone as Bones].isFound,
+      );
+
+      npcModalManager.open(this.npcName, { relicName, hasBones });
 
       if (this.alert?.active) {
         this.alert?.destroy();

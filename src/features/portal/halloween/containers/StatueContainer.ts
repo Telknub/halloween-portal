@@ -3,6 +3,7 @@ import { HalloweenScene } from "../HalloweenScene";
 import { LifeBar } from "./LifeBar";
 import { onAnimationComplete } from "../lib/HalloweenUtils";
 import { EventBus } from "../lib/EventBus";
+import { TILE_SIZE } from "../HalloweenConstants";
 
 interface Props {
   x: number;
@@ -30,13 +31,13 @@ export class StatueContainer extends Phaser.GameObjects.Container {
     // Sprite
     const statues = ["statue1", "statue2", "statue3", "statue4"];
     this.spriteName = statues[Math.floor(Math.random() * statues.length)];
-    this.sprite = scene.add.sprite(0, 0, this.spriteName);
+    this.sprite = scene.add.sprite(0, 0, this.spriteName).setOrigin(0);
 
     // Animation
     this.createAnimation();
 
     // Overlaps
-    this.createOverlaps();
+    this.createOverlaps(x, y);
 
     // Events
     this.createEvents();
@@ -52,10 +53,15 @@ export class StatueContainer extends Phaser.GameObjects.Container {
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
       .setSize(this.sprite.width, this.sprite.height)
+      .setOffset(this.sprite.width / 2, this.sprite.height / 2)
       .setImmovable(true)
       .setCollideWorldBounds(true);
 
     this.setSize(this.sprite.width, this.sprite.height);
+    this.setPosition(
+      this.x + TILE_SIZE / 2 - this.sprite.width / 2,
+      this.y + TILE_SIZE / 2 - this.sprite.height / 2,
+    );
     this.add([this.sprite, this.lifeBar]);
 
     scene.add.existing(this);
@@ -85,9 +91,10 @@ export class StatueContainer extends Phaser.GameObjects.Container {
     });
   }
 
-  private createOverlaps() {
+  private createOverlaps(x: number, y: number) {
     if (!this.player) return;
     this.scene.physics.add.collider(this.player, this);
+    this.scene.objectsWithCollider.push({ x, y });
     this.scene.physics.add.overlap(this.player.pickaxe, this, () =>
       this.hurt(),
     );

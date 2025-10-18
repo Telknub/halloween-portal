@@ -7,6 +7,7 @@ import { PortalContext } from "../../lib/PortalProvider";
 
 import skeleton from "public/world/skeletonPortrait.png";
 import sword from "public/world/sword.webp";
+import { EventBus } from "../../lib/EventBus";
 
 interface Props {
   onClose: () => void;
@@ -59,6 +60,7 @@ export const InitialSkeletonNPC: React.FC<Props> = ({ onClose }) => {
           localStorage.setItem(INITIAL_SKELETON_KEY, "true");
           setShowFirstDialogue(false);
           portalService.send("COLLECT_TOOL", { tool: "sword" });
+          EventBus.emit("open-gate");
         }}
         bumpkinImage={skeleton}
       />

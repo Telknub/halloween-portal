@@ -1,13 +1,14 @@
 import { SpeakingModal } from "features/game/components/SpeakingModal";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PIXEL_SCALE } from "features/game/lib/constants";
 import { BLACKSMITH_KEY, RELIC_CODEX, Relics } from "../../HalloweenConstants";
 import { Label } from "components/ui/Label";
+import { EventBus } from "../../lib/EventBus";
+import { PortalContext } from "../../lib/PortalProvider";
 
 import blacksmith from "public/world/blacksmithPortrait.png";
 import lightning from "assets/icons/lightning.png";
-import { EventBus } from "../../lib/EventBus";
 
 interface Props {
   onClose: () => void;
@@ -15,6 +16,7 @@ interface Props {
 }
 
 export const BlacksmithNPC: React.FC<Props> = ({ onClose, data }) => {
+  const { portalService } = useContext(PortalContext);
   const [showFirstDialogue, setShowFirstDialogue] = useState(true);
   const [showRepeatDialogue, setShowRepeatDialogue] = useState(false);
   const { t } = useAppTranslation();
@@ -53,6 +55,7 @@ export const BlacksmithNPC: React.FC<Props> = ({ onClose, data }) => {
         onClose={() => {
           localStorage.setItem(BLACKSMITH_KEY, "true");
           EventBus.emit("apply-relic-buff", data?.relicName);
+          portalService.send("GAIN_POINTS");
           setShowFirstDialogue(false);
         }}
         bumpkinImage={blacksmith}

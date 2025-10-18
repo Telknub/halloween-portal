@@ -1,9 +1,15 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseRoom } from "../BaseRoom";
-import { basicRoom } from "../RoomTileMap";
+import { basicRoom, ROOM_INNER_HEIGHT, ROOM_INNER_WIDTH } from "../RoomTileMap";
 import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
-import { BOSS_ENEMY_CONFIGURATION } from "features/portal/halloween/HalloweenConstants";
+import {
+  BOSS_ENEMY_CONFIGURATION,
+  DECORATION_BOSS_CONFIG,
+  TILE_SIZE,
+} from "features/portal/halloween/HalloweenConstants";
 import { BossContainer } from "features/portal/halloween/containers/BossContainer";
+import { GateContainer } from "features/portal/halloween/containers/GateContainer";
+import { DecorationContainer } from "features/portal/halloween/containers/DecorationContainer";
 
 interface Props {
   scene: HalloweenScene;
@@ -14,6 +20,8 @@ interface Props {
 }
 
 export class BossRoom extends BaseRoom {
+  private gate!: GateContainer;
+
   constructor({ scene, hasEntry = true, hasExit = true, player }: Props) {
     super({
       scene,
@@ -26,7 +34,10 @@ export class BossRoom extends BaseRoom {
   }
 
   createObjects() {
-    this.createBossEnemy();
+    this.createDecorationRandomly({ hasDecorationGround: false });
+    this.createStaticDecoration();
+    this.createZone();
+    this.gate = this.createGate();
   }
 
   private createBossEnemy() {
@@ -40,6 +51,44 @@ export class BossRoom extends BaseRoom {
       scene: this.scene,
       player: this.player,
       room: this,
+    });
+  }
+
+  private createZone() {
+    if (!this.player) return;
+
+    const { x, y } = this.getRelativePosition(
+      (TILE_SIZE * ROOM_INNER_WIDTH) / 2,
+      (TILE_SIZE * ROOM_INNER_HEIGHT) / 2,
+    );
+    const zone = this.scene.add
+      .zone(
+        x,
+        y,
+        TILE_SIZE * (ROOM_INNER_WIDTH - 1),
+        TILE_SIZE * (ROOM_INNER_HEIGHT - 1),
+      )
+      .setOrigin(0.5);
+    this.scene.physics.world.enable(zone);
+    const zoneBody = zone.body as Phaser.Physics.Arcade.Body;
+    this.scene.add.existing(zone);
+
+    this.scene.physics.add.overlap(this.player, zone, () => {
+      zoneBody.setEnable(false);
+      this.gate.close();
+      this.createBossEnemy();
+    });
+  }
+
+  private createStaticDecoration() {
+    DECORATION_BOSS_CONFIG.forEach((decoration) => {
+      const { x, y } = this.getRelativePosition(decoration.x, decoration.y);
+      new DecorationContainer({
+        x,
+        y,
+        scene: this.scene,
+        player: this.player,
+      });
     });
   }
 }

@@ -6,6 +6,7 @@ import {
   BASICROOM_X_GUIDE,
   ACTIVATE_FLAMETHROWER,
   BOSS_STATS,
+  BOSS_ENEMY_SPAWN_Y_DISTANCE,
 } from "../HalloweenConstants";
 import { LifeBar } from "./LifeBar";
 import { BaseRoom } from "../map/rooms/BaseRoom";
@@ -32,14 +33,15 @@ export class BossContainer extends Phaser.GameObjects.Container {
   private lifeBar: LifeBar;
   private room: BaseRoom;
   private xGuide: number;
-  private spritesPositionX: number;
   private isHurting = false;
+  private posY: number;
 
   constructor({ x, y, scene, player, room }: Props) {
-    super(scene, x, y);
+    super(scene, x, y - BOSS_ENEMY_SPAWN_Y_DISTANCE);
     this.scene = scene;
     this.player = player;
     this.room = room;
+    this.posY = y;
 
     this.lifeBar = new LifeBar({
       x: 0,
@@ -50,25 +52,25 @@ export class BossContainer extends Phaser.GameObjects.Container {
     });
 
     this.xGuide = room.getmapOffsetMultiplierX();
-    this.spritesPositionX = 30;
 
     this.spriteName = "dungeonBoss";
     this.spriteBody = this.scene.add
-      .sprite(0, this.spritesPositionX, `${this.spriteName}_walk`)
+      .sprite(0, 0, `${this.spriteName}_walk`)
       .setDepth(1000000);
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
       .setSize(this.spriteBody.width / 2, this.spriteBody.height / 3)
-      .setOffset(0, 85)
+      .setOffset(0, 55)
       .setImmovable(true);
 
     this.setSize(this.spriteBody.width / 2, this.spriteBody.height / 2);
+    this.setDepth(10000000);
     this.add([this.spriteBody, this.lifeBar]);
 
     this.createOverlaps();
     this.createEvents();
-    this.startMove();
+    this.spawn();
 
     scene.add.existing(this);
   }
@@ -99,8 +101,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
     sprite.play(`${spriteName}_anim`, true);
   }
 
-  private startMove() {
-    if (!this.player) return;
+  private spawn() {
     this.createAnimation(
       this.spriteBody,
       `${this.spriteName}_walk`,
@@ -109,6 +110,21 @@ export class BossContainer extends Phaser.GameObjects.Container {
       10,
       -1,
     );
+
+    this.scene.tweens.add({
+      targets: this,
+      y: this.posY,
+      duration: 1000,
+      ease: "Linear",
+      onComplete: () => {
+        this.scene.cameras.main.shake(400, 0.001);
+        this.startMove();
+      },
+    });
+  }
+
+  private startMove() {
+    if (!this.player) return;
 
     const xPositions = BASICROOM_X_GUIDE.map(
       (x) => x - ACTIVATE_FLAMETHROWER.position_1,
@@ -258,7 +274,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
     this.scene.physics.add.existing(this.spritePower);
     const body = this.spritePower.body as Phaser.Physics.Arcade.Body;
     body.setSize(this.spritePower.width, this.spritePower.height);
-    body.setOffset(this.spriteBody.x, this.spriteBody.y - 30);
+    body.setOffset(this.spriteBody.x, this.spriteBody.y);
     body.enable = false;
   }
 

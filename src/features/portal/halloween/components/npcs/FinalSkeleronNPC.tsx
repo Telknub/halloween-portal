@@ -1,6 +1,6 @@
 import { SpeakingModal } from "features/game/components/SpeakingModal";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { PIXEL_SCALE } from "features/game/lib/constants";
 import {
   FINAL_SKELETON_KEY,
@@ -8,10 +8,11 @@ import {
   Relics,
 } from "../../HalloweenConstants";
 import { Label } from "components/ui/Label";
+import { EventBus } from "../../lib/EventBus";
+import { PortalContext } from "../../lib/PortalProvider";
 
 import skeleton from "public/world/skeletonPortrait.png";
 import lightning from "assets/icons/lightning.png";
-import { EventBus } from "../../lib/EventBus";
 
 interface Props {
   onClose: () => void;
@@ -19,6 +20,7 @@ interface Props {
 }
 
 export const FinalSkeletonNPC: React.FC<Props> = ({ onClose, data }) => {
+  const { portalService } = useContext(PortalContext);
   const [showFirstDialogue, setShowFirstDialogue] = useState(true);
   const [showRepeatDialogue, setShowRepeatDialogue] = useState(false);
   const { t } = useAppTranslation();
@@ -32,6 +34,20 @@ export const FinalSkeletonNPC: React.FC<Props> = ({ onClose, data }) => {
       setShowRepeatDialogue(true);
     }
   }, []);
+
+  if (!data?.hasBones) {
+    return (
+      <SpeakingModal
+        message={[
+          {
+            text: t("halloween.finalSkeleton5"),
+          },
+        ]}
+        onClose={() => onClose()}
+        bumpkinImage={skeleton}
+      />
+    );
+  }
 
   if (showRepeatDialogue) {
     return (
@@ -64,6 +80,7 @@ export const FinalSkeletonNPC: React.FC<Props> = ({ onClose, data }) => {
         onClose={() => {
           localStorage.setItem(FINAL_SKELETON_KEY, "true");
           EventBus.emit("apply-relic-buff", data?.relicName);
+          portalService.send("GAIN_POINTS");
           setShowFirstDialogue(false);
         }}
         bumpkinImage={skeleton}

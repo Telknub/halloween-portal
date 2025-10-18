@@ -20,28 +20,16 @@ export class EnemyRoom extends BaseRoom {
   }
 
   createObjects() {
+    this.createDecorationRandomly();
     this.createEnemies();
-    const statuePos = this.spawnObjectRandomly((x, y) =>
-      this.createStatues(x, y),
-    );
-    this.spawnObjectRandomly(
-      (x, y) => this.createBones(x, y),
-      false,
-      statuePos,
-    );
-    this.id === 2 &&
-      this.spawnObjectRandomly(
-        (x, y) => this.createLamp(x, y),
-        false,
-        statuePos,
-      );
+    this.spawnObjectRandomly((x, y) => this.createStatues(x, y));
+    this.spawnObjectRandomly((x, y) => this.createBones(x, y));
+    this.id === 2 && this.spawnObjectRandomly((x, y) => this.createLamp(x, y));
     this.id === 3 &&
-      this.spawnObjectRandomly(
-        (x, y) => this.createPickaxe(x, y),
-        false,
-        statuePos,
-      );
+      this.spawnObjectRandomly((x, y) => this.createPickaxe(x, y));
     this.createMummyEnemy();
+    this.createGate();
+
     this.spawnObjectRandomly((x, y) => this.createRelic(x, y));
   }
 

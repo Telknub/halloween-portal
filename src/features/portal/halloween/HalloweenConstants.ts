@@ -1,7 +1,11 @@
 import { Equipped } from "features/game/types/bumpkin";
 import { ITEM_DETAILS } from "features/game/types/images";
 import { translate } from "lib/i18n/translate";
-import { ROOM_INNER_HEIGHT, ROOM_INNER_WIDTH } from "./map/rooms/RoomTileMap";
+import {
+  ROOM_INNER_HEIGHT,
+  ROOM_INNER_WIDTH,
+  TILES,
+} from "./map/rooms/RoomTileMap";
 
 import slidingPuzzleImg from "public/world/halloween/ForSlidingPuzzle.webp";
 import femur from "public/world/bone1.png";
@@ -202,6 +206,123 @@ export const PLAYER_DAMAGE: Record<Tools, Damages> = {
 
 export const GAME_LIVES = 5;
 
+export const GATE_CONFIG = {
+  top: {
+    x: (TILE_SIZE * ROOM_INNER_WIDTH) / 2,
+    y: -TILE_SIZE * 1.5,
+    direction: "horizontal",
+  },
+  bottom: {
+    x: (TILE_SIZE * ROOM_INNER_WIDTH) / 2,
+    y: TILE_SIZE * (ROOM_INNER_HEIGHT + 1.5),
+    direction: "horizontal",
+  },
+  left: {
+    x: -TILE_SIZE * 1.5,
+    y: (TILE_SIZE * ROOM_INNER_HEIGHT) / 2,
+    direction: "vertical",
+  },
+  right: {
+    x: TILE_SIZE * (ROOM_INNER_WIDTH + 1.5),
+    y: (TILE_SIZE * ROOM_INNER_HEIGHT) / 2,
+    direction: "vertical",
+  },
+  blacksmith: {
+    x: (TILE_SIZE * ROOM_INNER_WIDTH) / 2,
+    y: (TILE_SIZE * ROOM_INNER_HEIGHT) / 2 + TILE_SIZE * 1.75,
+    direction: "horizontal",
+  },
+};
+
+export const ROOM_ID_REQUIRED_RELICS: Partial<
+  Record<number | RoomType, number>
+> = {
+  1: 0,
+  2: 1,
+  3: 2,
+  4: 3,
+  5: 4,
+  6: 5,
+  8: 7,
+  blacksmith: 6,
+};
+
+export const ENVY_BUFF_DAMAGE = 3;
+export const GLUTTONY_BUFF_PERCENTAGE = 0.25;
+export const GREED_BUFF_RANGE = 0.3;
+export const LUST_BUFF_LIVES = {
+  lives: 2,
+  maxLives: 1,
+};
+export const PRIDE_BUFF_PERCENTAGE = 0.2;
+export const SLOTH_BUFF_LIVES = 1;
+export const WRATH_BUFF_PERCENTAGE = 0.3;
+export const DECEIT_BUFF_PERCENTAGE = 0.2;
+
+export interface Decoration {
+  name: string;
+  hasCollider?: boolean;
+  hasAnimation?: boolean;
+  scale?: number;
+  offsetX?: number;
+  offsetY?: number;
+}
+export const DECORATION_BORDER_CHACE = 0.2;
+export const DECORATION_BORDER_CONFIG: Record<number, Decoration[]> = {
+  [TILES.T_IN]: [
+    { name: "pile_of_bones", offsetY: 0.25 * TILE_SIZE },
+    { name: "bookshelves2", scale: 2 },
+    { name: "bookshelves3", scale: 2 },
+    { name: "bookshelves4", scale: 2 },
+    { name: "bookshelves7", scale: 2 },
+    { name: "bookshelves8", scale: 2 },
+    { name: "bookshelves9", scale: 2 },
+  ],
+  [TILES.TL_IN]: [
+    { name: "bookshelves1", scale: 2 },
+    { name: "bookshelves5", scale: 2 },
+    { name: "bookshelves6", scale: 2 },
+    { name: "bookshelves10", scale: 2 },
+  ],
+  [TILES.TR_IN]: [
+    { name: "bookshelves1", scale: 2 },
+    { name: "bookshelves5", scale: 2 },
+    { name: "bookshelves6", scale: 2 },
+    { name: "bookshelves10", scale: 2 },
+  ],
+  [TILES.L_IN]: [
+    { name: "bookshelves1", scale: 2 },
+    { name: "bookshelves5", scale: 2 },
+    { name: "bookshelves6", scale: 2 },
+    { name: "bookshelves10", scale: 2 },
+  ],
+  [TILES.R_IN]: [
+    { name: "bookshelves1", scale: 2 },
+    { name: "bookshelves5", scale: 2 },
+    { name: "bookshelves6", scale: 2 },
+    { name: "bookshelves10", scale: 2 },
+  ],
+};
+export const AMOUNT_DECORATION_GROUND = 3;
+export const DECORATION_GROUND_CONFIG: Decoration[] = [
+  { name: "normal_pillar" },
+  { name: "damaged_pillar" },
+  { name: "broken_pillar" },
+];
+export const DECORATION_SKELETON_CONFIG: Decoration[] = [
+  { name: "raveyard", hasAnimation: true },
+  { name: "hauntedTomb", hasAnimation: true },
+];
+export const DECORATION_BOSS_CONFIG: Position[] = [
+  { x: 1 * TILE_SIZE, y: 4 * TILE_SIZE },
+  { x: 3 * TILE_SIZE, y: 5 * TILE_SIZE },
+  { x: 1 * TILE_SIZE, y: 6 * TILE_SIZE },
+  { x: 9 * TILE_SIZE, y: 4 * TILE_SIZE },
+  { x: 7 * TILE_SIZE, y: 5 * TILE_SIZE },
+  { x: 9 * TILE_SIZE, y: 6 * TILE_SIZE },
+  { x: 5 * TILE_SIZE, y: 6 * TILE_SIZE },
+];
+
 // export const LAMPS_CONFIGURATION: { x: number; y: number }[] = [
 //   { x: 290, y: 120 },
 //   { x: 510, y: 120 },
@@ -333,15 +454,17 @@ export const GOLEM_STATS = {
 };
 
 // Enemies Configuration
-interface Position {
+export interface Position {
   x: number;
   y: number;
+  direction?: "horizontal" | "vertical";
 }
 
 export const BOSS_ENEMY_CONFIGURATION: Position = {
-  x: (ROOM_INNER_WIDTH * TILE_SIZE) / 6,
-  y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 5,
+  x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
+  y: TILE_SIZE,
 };
+export const BOSS_ENEMY_SPAWN_Y_DISTANCE = 200;
 
 export const REMOVE_ATTACK = 1000;
 

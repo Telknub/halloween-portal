@@ -30,7 +30,9 @@ export class InitialRoom extends BaseRoom {
   }
 
   createObjects() {
+    this.createDecorationRandomly({ excludeSmallRoom: true });
     this.createSkeleton();
+    this.createGate();
   }
 
   private createSkeleton() {

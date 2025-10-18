@@ -1,6 +1,7 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { MachineInterpreter } from "../lib/halloweenMachine";
 import { HalloweenScene } from "../HalloweenScene";
+import { TILE_SIZE } from "../HalloweenConstants";
 
 interface Props {
   x: number;
@@ -24,7 +25,7 @@ export class BoneContainer extends Phaser.GameObjects.Container {
     this.spriteName =
       scene.bones[Math.floor(Math.random() * scene.bones.length)];
     scene.bones = scene.bones.filter((bone) => bone !== this.spriteName);
-    this.sprite = scene.add.sprite(0, 0, this.spriteName);
+    this.sprite = scene.add.sprite(0, 0, this.spriteName).setOrigin(0);
 
     // Overlaps
     this.createOverlaps();
@@ -32,10 +33,15 @@ export class BoneContainer extends Phaser.GameObjects.Container {
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
       .setSize(this.sprite.width, this.sprite.height)
+      .setOffset(this.sprite.width / 2, this.sprite.height / 2)
       .setImmovable(true)
       .setCollideWorldBounds(true);
 
     this.setSize(this.sprite.width, this.sprite.height);
+    this.setPosition(
+      this.x + TILE_SIZE / 2 - this.sprite.width / 2,
+      this.y + TILE_SIZE / 2 - this.sprite.height / 2,
+    );
     this.add(this.sprite);
 
     scene.add.existing(this);

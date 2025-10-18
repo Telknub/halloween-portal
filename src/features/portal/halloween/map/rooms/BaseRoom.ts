@@ -1,6 +1,7 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import {
   Direction,
+  GATE_CONFIG,
   MAP_OFFSET,
   MAP_OFFSET_X_RULES,
   MAP_OFFSET_Y_RULES,
@@ -8,6 +9,10 @@ import {
   OUTER_WALL_THICKNESS,
   RoomType,
   TILE_SIZE,
+  Position,
+  DECORATION_BORDER_CHACE,
+  DECORATION_BORDER_CONFIG,
+  AMOUNT_DECORATION_GROUND,
 } from "../../HalloweenConstants";
 import {
   basicRoom,
@@ -24,6 +29,8 @@ import { BoneContainer } from "../../containers/BoneContainer";
 import { LampContainer } from "../../containers/LampContainer";
 import { PickaxeContainer } from "../../containers/PickaxeContainer";
 import { RelicContainer } from "../../containers/RelicContainer";
+import { GateContainer } from "../../containers/GateContainer";
+import { DecorationContainer } from "../../containers/DecorationContainer";
 
 interface Props {
   scene: HalloweenScene;
@@ -187,13 +194,17 @@ export class BaseRoom {
   protected spawnObjectRandomly(
     addContainer: (x: number, y: number) => void,
     excludeSmallRoom = false,
-    excludedPositions: { x: number; y: number }[] = [],
-  ): { x: number; y: number }[] {
+  ) {
     let isGround = false;
 
     while (!isGround) {
-      const tileX = Math.floor(Math.random() * this.getContentMatrix[0].length);
-      const tileY = Math.floor(Math.random() * this.getContentMatrix.length);
+      const width = this.getContentMatrix[0].length;
+      const height = this.getContentMatrix.length;
+      const tileX = Math.floor(Math.random() * (width - 2)) + 1;
+      const tileY = Math.floor(Math.random() * (height - 2)) + 1;
+      const posX = tileX * TILE_SIZE;
+      const posY = tileY * TILE_SIZE;
+      const { x, y } = this.getRelativePosition(posX, posY);
       const isInsideSmallRoom =
         tileX >= 3 &&
         tileX <= 3 + smallRoom[0].length &&
@@ -202,21 +213,15 @@ export class BaseRoom {
 
       if (
         this.getContentMatrix[tileY][tileX] === TILES.GROUND &&
-        !excludedPositions.some(
-          (pos: { x: number; y: number }) => pos.x === tileX && pos.y === tileY,
+        !this.scene.objectsWithCollider.some(
+          (pos) => pos.x === x && pos.y === y,
         ) &&
         (!excludeSmallRoom || !isInsideSmallRoom)
       ) {
-        const posX = tileX * TILE_SIZE;
-        const posY = tileY * TILE_SIZE;
-        const { x, y } = this.getRelativePosition(posX, posY);
         addContainer(x, y);
         isGround = true;
-        return [{ x: tileX, y: tileY }];
       }
     }
-
-    return [{ x: 0, y: 0 }];
   }
 
   protected createStatues(x: number, y: number) {
@@ -266,7 +271,89 @@ export class BaseRoom {
     });
   }
 
-  protected createDecorationRandomly() {}
+  protected createGate(roomName?: RoomType) {
+    const gate = roomName ?? this.id === 8 ? this.entry : this.exit;
+    const { x, y } = this.getRelativePosition(
+      GATE_CONFIG[gate as Direction].x,
+      GATE_CONFIG[gate as Direction].y,
+    );
+    return new GateContainer({
+      x,
+      y,
+      scene: this.scene,
+      id: this.id,
+      direction: GATE_CONFIG[gate as Direction].direction,
+      roomName: roomName,
+      player: this.player,
+    });
+  }
+
+  private createDecoration(x: number, y: number, tile: number) {
+    const tileOffsets: Record<number, { x: number; y: number }> = {
+      [TILES.TL_IN]: { x: 0.5, y: 0 },
+      [TILES.L_IN]: { x: 0.5, y: 0 },
+    };
+
+    const offset = tileOffsets?.[tile] ?? { x: 0, y: 0 };
+
+    const { x: posX, y: posY } = this.getRelativePosition(
+      (x + offset.x) * TILE_SIZE,
+      (y + offset.y) * TILE_SIZE,
+    );
+
+    new DecorationContainer({
+      x: posX,
+      y: posY,
+      scene: this.scene,
+      tile,
+      player: this.player,
+    });
+  }
+
+  protected createDecorationBorderRandomly(excludeSmallRoom = false) {
+    const offset = OUTER_WALL_THICKNESS;
+    for (let y = -1; y <= this.getContentMatrix.length; y++) {
+      for (let x = -1; x <= this.getContentMatrix[0].length; x++) {
+        const tile = this.matrix[y + offset][x + offset];
+        if (!(tile in DECORATION_BORDER_CONFIG)) continue;
+        const isInsideSmallRoom =
+          x >= 3 &&
+          x <= 3 + smallRoom[0].length &&
+          y >= 2 &&
+          y <= 2 + smallRoom.length;
+        if (
+          Math.random() < DECORATION_BORDER_CHACE &&
+          (!excludeSmallRoom || !isInsideSmallRoom)
+        ) {
+          this.createDecoration(x, y, tile);
+        }
+      }
+    }
+  }
+
+  protected createDecorationGroundRandomly(excludeSmallRoom = false) {
+    for (let i = 0; i < AMOUNT_DECORATION_GROUND; i++) {
+      this.spawnObjectRandomly((x, y) => {
+        new DecorationContainer({
+          x,
+          y,
+          scene: this.scene,
+          player: this.player,
+        });
+      }, excludeSmallRoom);
+    }
+  }
+
+  protected createDecorationRandomly({
+    hasDecorationBorder = true,
+    hasDecorationGround = true,
+    excludeSmallRoom = false,
+  } = {}) {
+    hasDecorationBorder &&
+      this.createDecorationBorderRandomly(excludeSmallRoom);
+    hasDecorationGround &&
+      this.createDecorationGroundRandomly(excludeSmallRoom);
+  }
 
   private createRandomPath({ entry, excludedSides }: CreateRandomPathProps) {
     // Define possible entrance locations (top, right, bottom, left)
@@ -277,7 +364,7 @@ export class BaseRoom {
     const randomSide =
       entry ??
       availableSides[Math.floor(Math.random() * availableSides.length)];
-    // if (this.id === 1) randomSide = !entry ? "left" : randomSide;
+    // if (this.id === 1) randomSide = !entry ? "right" : randomSide;
     // if (this.id === 2) randomSide = !entry ? "top" : randomSide;
     // if (this.id === 3) randomSide = !entry ? "top" : randomSide;
     // if (this.id === 4) randomSide = !entry ? "right" : randomSide;
