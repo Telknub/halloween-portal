@@ -1,9 +1,8 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { BaseScene } from "features/world/scenes/BaseScene";
 import { MachineInterpreter } from "../lib/halloweenMachine";
 import { LifeBar } from "./LifeBar";
 import { EventBus } from "../lib/EventBus";
-import { MUMMY_STATS } from "../HalloweenConstants";
+import { ENEMY_STATS } from "../HalloweenConstants";
 import { HalloweenScene } from "../HalloweenScene";
 
 interface Props {
@@ -13,28 +12,30 @@ interface Props {
   player?: BumpkinContainer;
 }
 
-export class MummyContainer extends Phaser.GameObjects.Container {
+export class EnemyContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   scene: HalloweenScene;
   private spriteName: string;
   private lifeBar: LifeBar;
-  private spriteBody: Phaser.GameObjects.Sprite;
+  public spriteBody: Phaser.GameObjects.Sprite;
+  private spriteAttack!: Phaser.GameObjects.Sprite;
   private overlapHandler?: Phaser.Physics.Arcade.Collider;
   private followEvent?: Phaser.Time.TimerEvent;
   private isHurting = false;
-  private spriteSmash!: Phaser.GameObjects.Sprite;
   private hasDealtDamage = false;
 
   private lastAttackTime = 0;
-  private attackCooldown = 2000;
-  private chanceToAttack = 2000;
+  private attackCooldown = 2000; // milliseconds
 
   constructor({ x, y, scene, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
     this.player = player;
 
-    this.spriteName = "dungeonMummy";
+    const enemyType = ["ghoul", "ghost"]
+    const ranNum = Math.floor(Math.random() * enemyType.length)
+
+    this.spriteName = enemyType[ranNum];
 
     this.lifeBar = new LifeBar({
       x: 0,
@@ -46,21 +47,20 @@ export class MummyContainer extends Phaser.GameObjects.Container {
 
     this.spriteBody = this.scene.add
       .sprite(0, 0, `${this.spriteName}_idle`)
-      .setDepth(1000000);
+      .setDepth(1000000)
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
-      .setSize(this.spriteBody.width / 2, this.spriteBody.height)
-      .setOffset(16, 0)
+      .setSize(this.spriteBody.width, this.spriteBody.height)
+      .setOffset(0, 0)
       .setImmovable(true);
 
     this.setSize(this.spriteBody.width, this.spriteBody.height);
     this.add([this.spriteBody, this.lifeBar]);
 
-    // Overlap
     this.createOverlaps();
-    // Event
     this.createEvents();
+    this.attackBody();
 
     // Periodically check distance to player and follow/attack
     this.followEvent = this.scene.time.addEvent({
@@ -73,13 +73,10 @@ export class MummyContainer extends Phaser.GameObjects.Container {
   }
 
   public get portalService() {
-    return this.scene.registry.get("portalService") as
-      | MachineInterpreter
-      | undefined;
+    return this.scene.registry.get("portalService") as MachineInterpreter | undefined;
   }
 
-  // update() {
-  // }
+
 
   private createAnimation(
     sprite: Phaser.GameObjects.Sprite,
@@ -87,7 +84,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
     animType: string,
     start: number,
     end: number,
-    repeat: number,
+    repeat: number
   ) {
     const animationKey = `${spriteName}_${animType}_anim`;
 
@@ -115,17 +112,14 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this.x,
       this.y,
       this.player.x,
-      this.player.y,
+      this.player.y
     );
 
-    const attackDistance = 50;
+    const attackDistance = 20;
     const followDistance = 100;
 
     if (distance < attackDistance) {
-      this.stopMovement();
-      this.scene.time.delayedCall(this.chanceToAttack, () => {
-        this.attackPlayer();
-      })
+      this.attackPlayer();
     } else if (distance < followDistance) {
       this.followPlayer();
     } else {
@@ -135,6 +129,8 @@ export class MummyContainer extends Phaser.GameObjects.Container {
 
   private followPlayer() {
     if (!this.player) return;
+    this.spriteAttack.setVisible(false)
+    this.spriteBody.setVisible(true)
 
     const body = this.body as Phaser.Physics.Arcade.Body;
 
@@ -142,14 +138,12 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this.x,
       this.y,
       this.player.x,
-      this.player.y,
+      this.player.y
     );
 
     const speed = 50;
 
     this.scene.physics.velocityFromRotation(angle, speed, body.velocity);
-
-    this.disableSmash();
 
     this.createAnimation(
       this.spriteBody,
@@ -157,8 +151,25 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       "walk",
       0,
       7,
-      -1,
+      -1
     );
+  }
+
+  private attackBody() {
+    this.spriteAttack = this.scene.add
+      .sprite(0, 0, `${this.spriteName}_attack`)
+      .setDepth(1000000000)
+      .setScale(1)
+      .setVisible(false);
+
+    this.add(this.spriteAttack);
+
+    this.scene.physics.add.existing(this.spriteAttack);
+    const body = this.spriteAttack.body as Phaser.Physics.Arcade.Body;
+    body.setSize(this.spriteBody.width / 2, this.spriteBody.height / 2);
+    body.setOffset(9, 9);
+    body.setVelocity(0, 0);
+    body.enable = false;
   }
 
   private attackPlayer() {
@@ -167,22 +178,23 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       return;
     }
 
-    this.createAnimation(
-      this.spriteBody,
-      `${this.spriteName}_attack`,
-      "attack",
-      0,
-      4,
-      -1,
-    );
-
+    this.spriteBody.setVisible(false);
+    this.spriteAttack.setVisible(true);
     this.lastAttackTime = now;
     this.hasDealtDamage = false;
 
-    const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setVelocity(0, 0);
+    this.createAnimation(
+      this.spriteAttack,
+      `${this.spriteName}_attack`,
+      "attack",
+      0,
+      8,
+      -1,
+    );
 
-    this.createSmash();
+    const body = this.spriteAttack.body as Phaser.Physics.Arcade.Body;
+    body.enable = true;
+
     this.createDamage();
   }
 
@@ -190,90 +202,38 @@ export class MummyContainer extends Phaser.GameObjects.Container {
     const body = this.body as Phaser.Physics.Arcade.Body;
     body.setVelocity(0, 0);
 
+    this.spriteAttack.setVisible(false)
+    this.spriteBody.setVisible(true)
     this.createAnimation(
       this.spriteBody,
       `${this.spriteName}_idle`,
       "idle",
       0,
-      8,
-      -1,
+      4,
+      -1
     );
   }
 
-  private createSmash() {
-    if (!this.spriteSmash) {
-      this.hasDealtDamage = false;
-
-      this.spriteSmash = this.scene.add
-        .sprite(0, 10, `${this.spriteName}_smash`)
-        .setDepth(1000000000)
-        .setScale(1.5);
-
-      this.add(this.spriteSmash);
-
-      this.scene.anims.create({
-        key: `${this.spriteName}_smash_anim`,
-        frames: this.scene.anims.generateFrameNumbers(
-          `${this.spriteName}_smash`,
-          {
-            start: 0,
-            end: 3,
-          },
-        ),
-        frameRate: 10,
-        repeat: 0,
-      });
-
-      this.spriteSmash.on(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-        this.disableSmash();
-      });
-
-      this.scene.physics.world.enable(this.spriteSmash);
-
-      const body = this.spriteSmash.body as Phaser.Physics.Arcade.Body;
-      body.setSize(this.spriteSmash.width, this.spriteSmash.height);
-      body.setAllowGravity(false);
-      body.setImmovable(true);
-    }
-
-    // Reactivate and play effect
-    this.spriteSmash.setVisible(true);
-    this.spriteSmash.play(`${this.spriteName}_smash_anim`, true);
-
-    const body = this.spriteSmash.body as Phaser.Physics.Arcade.Body;
-    body.enable = true;
-    body.setOffset(this.spriteSmash.width - 60, this.spriteSmash.height / 6);
-  }
-
-  private disableSmash() {
-    if (this.spriteSmash && this.spriteSmash.body) {
-      const body = this.spriteSmash.body as Phaser.Physics.Arcade.Body;
-      body.enable = false;
-      this.spriteSmash.setVisible(false);
-    }
-  }
-
   private createDamage() {
-    if (!this.player || !this.spriteSmash || this.hasDealtDamage) return;
+    if (!this.player) return;
 
     this.scene.physics.add.overlap(
       this.player,
-      this.spriteSmash,
+      this.spriteAttack,
       () => {
         if (this.hasDealtDamage) return;
         this.hasDealtDamage = true;
-
         // console.log("-1 Health");
         // TODO: Actually subtract health from player here
       },
       undefined,
-      this,
+      this
     );
   }
 
   private createOverlaps() {
     if (!this.player) return;
-    this.scene.physics.add.collider(this.player, this);
+    this.scene.physics.add.collider(this.player, this.spriteBody);
     this.scene.physics.add.overlap(this, this.player.pickaxe, () => this.hit());
   }
 
@@ -286,9 +246,11 @@ export class MummyContainer extends Phaser.GameObjects.Container {
   private hit() {
     if (!this.isHurting) {
       this.isHurting = true;
+
       const newHealth =
         this.lifeBar.currentHealth -
-        this.lifeBar.maxHealth / MUMMY_STATS.health;
+        this.lifeBar.maxHealth / ENEMY_STATS.health;
+
       if (newHealth > 0) {
         this.lifeBar.setHealth(newHealth);
       } else {
@@ -316,14 +278,11 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       "defeat",
       0,
       6,
-      0,
+      0
     );
 
     this.spriteBody.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
       this.destroy();
-      // this.openPortal();
     });
   }
-
-  // private openPortal() {}
 }

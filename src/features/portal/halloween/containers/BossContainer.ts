@@ -2,7 +2,6 @@ import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { HalloweenScene } from "../HalloweenScene";
 import { MachineInterpreter } from "../lib/halloweenMachine";
 import {
-  REMOVE_ATTACK,
   BASICROOM_X_GUIDE,
   ACTIVATE_FLAMETHROWER,
   BOSS_STATS,
@@ -79,16 +78,20 @@ export class BossContainer extends Phaser.GameObjects.Container {
       | undefined;
   }
 
-  private createAnimation(
-    sprite: Phaser.GameObjects.Sprite,
-    spriteName: string,
-    start: number,
-    end: number,
-    frameRate: number,
-    repeat: number,
-  ) {
+private createAnimation(
+  sprite: Phaser.GameObjects.Sprite,
+  spriteName: string,
+  animType: string,
+  start: number,
+  end: number,
+  frameRate: number,
+  repeat: number,
+) {
+  const animationKey = `${spriteName}_${animType}_anim`;
+
+  if (!this.scene.anims.exists(animationKey)) {
     this.scene.anims.create({
-      key: `${spriteName}_anim`,
+      key: animationKey,
       frames: this.scene.anims.generateFrameNumbers(spriteName, {
         start,
         end,
@@ -96,16 +99,19 @@ export class BossContainer extends Phaser.GameObjects.Container {
       frameRate,
       repeat,
     });
-    sprite.play(`${spriteName}_anim`, true);
   }
+
+  sprite.play(animationKey, true);
+}
 
   private startMove() {
     if (!this.player) return;
     this.createAnimation(
       this.spriteBody,
       `${this.spriteName}_walk`,
+      "walk",
       0,
-      8,
+      7,
       10,
       -1,
     );
@@ -124,7 +130,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
         const ranNum = Math.floor(Math.random() * 2);
         if (ranNum === 0) {
           this.createAttack();
-          this.scene.time.delayedCall(REMOVE_ATTACK, () => {
+          this.scene.time.delayedCall(BOSS_STATS.attackRemove, () => {
             this.removeAttack();
             this.secondMove();
           });
@@ -150,7 +156,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
         if (ranNum === 0) {
           this.createAttack();
 
-          this.scene.time.delayedCall(REMOVE_ATTACK, () => {
+          this.scene.time.delayedCall(BOSS_STATS.attackRemove, () => {
             this.removeAttack();
             this.thirdMove();
           });
@@ -178,7 +184,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
         if (ranNum === 0) {
           this.createAttack();
 
-          this.scene.time.delayedCall(REMOVE_ATTACK, () => {
+          this.scene.time.delayedCall(BOSS_STATS.attackRemove, () => {
             this.removeAttack();
             this.endMove();
           });
@@ -209,8 +215,9 @@ export class BossContainer extends Phaser.GameObjects.Container {
     this.createAnimation(
       this.spriteBody,
       `${this.spriteName}_attack`,
+      "attack",
       0,
-      8,
+      7,
       10,
       -1,
     );
@@ -224,8 +231,9 @@ export class BossContainer extends Phaser.GameObjects.Container {
       this.createAnimation(
         this.spriteBody,
         `${this.spriteName}_walk`,
+        "walk",
         0,
-        8,
+        7,
         10,
         -1,
       );
@@ -247,6 +255,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
     this.createAnimation(
       this.spritePower,
       `${this.spriteName}_fire`,
+      "fire",
       0,
       8,
       20,
@@ -271,8 +280,9 @@ export class BossContainer extends Phaser.GameObjects.Container {
       this.spritePower,
       () => {
         if (!hasDealtDamage) {
-          // console.log("-1 Health");
           hasDealtDamage = true;
+          // console.log("-1 Health");
+          // TODO: Actually subtract health from player here
         }
       },
       undefined,
@@ -316,6 +326,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
     this.createAnimation(
       this.spriteBody,
       `${this.spriteName}_defeat`,
+      "defeat",
       0,
       7,
       10,

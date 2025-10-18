@@ -1,8 +1,8 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseRoom } from "../BaseRoom";
 import { basicRoom } from "../RoomTileMap";
+import { BOSS_STATS } from "features/portal/halloween/HalloweenConstants";
 import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
-import { BOSS_ENEMY_CONFIGURATION } from "features/portal/halloween/HalloweenConstants";
 import { BossContainer } from "features/portal/halloween/containers/BossContainer";
 
 interface Props {
@@ -31,8 +31,8 @@ export class BossRoom extends BaseRoom {
 
   private createBossEnemy() {
     const { x, y } = this.getRelativePosition(
-      BOSS_ENEMY_CONFIGURATION.x,
-      BOSS_ENEMY_CONFIGURATION.y,
+      BOSS_STATS.config.x,
+      BOSS_STATS.config.y
     );
     new BossContainer({
       x,

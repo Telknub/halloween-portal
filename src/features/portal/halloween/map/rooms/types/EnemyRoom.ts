@@ -2,8 +2,10 @@ import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseRoom } from "../BaseRoom";
 import { createRandomRoom } from "../../Utils";
 import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
-import { MUMMY_ENEMY_CONFIGURATION } from "features/portal/halloween/HalloweenConstants";
+import { AMOUNT_ENEMIES, GOLEM_STATS, MUMMY_STATS } from "features/portal/halloween/HalloweenConstants";
 import { MummyContainer } from "features/portal/halloween/containers/MummyContainer";
+import { EnemyContainer } from "features/portal/halloween/containers/EnemyContainer";
+import { GolemContainer } from "features/portal/halloween/containers/GolemConatiner";
 
 interface Props {
   scene: HalloweenScene;
@@ -14,6 +16,7 @@ interface Props {
 }
 
 export class EnemyRoom extends BaseRoom {
+  // private mummyEnemy!: MummyContainer;
   constructor({ scene, hasEntry = true, hasExit = true, player }: Props) {
     const matrix = createRandomRoom();
     super({ scene, hasEntry, hasExit, matrix, type: "enemy", player });
@@ -41,35 +44,54 @@ export class EnemyRoom extends BaseRoom {
         false,
         statuePos,
       );
-    this.createMummyEnemy();
-    this.spawnObjectRandomly((x, y) => this.createRelic(x, y));
+      this.spawnObjectRandomly((x, y) => this.createRelic(x, y));
+      // this.createMummyEnemy();
+      this.createGolemEnemy();
   }
 
   private createEnemies() {
-    // for (let i = 0; i < AMOUNT_ENEMIES; i++) {
-    //   this.spawnObjectRandomly((x, y) => this.createEnemy(x, y));
-    // }
+    for (let i = 0; i < AMOUNT_ENEMIES; i++) {
+      this.spawnObjectRandomly((x, y) => this.createEnemy(x, y));
+    }
   }
 
   private createEnemy(x: number, y: number) {
     // Create logic to add your enemy
-    // new EnemyContainer({
-    //   x,
-    //   y,
-    //   ...
-    // })
+    const newEnemy = new EnemyContainer({
+      x,
+      y,
+      scene: this.scene,
+      player: this.player
+    })
   }
 
   private createMummyEnemy() {
     const { x, y } = this.getRelativePosition(
-      MUMMY_ENEMY_CONFIGURATION.x,
-      MUMMY_ENEMY_CONFIGURATION.y,
+      MUMMY_STATS.config.x,
+      MUMMY_STATS.config.y
     );
-    new MummyContainer({
+    const mummyEnemy = new MummyContainer({
       x,
       y,
       scene: this.scene,
       player: this.player,
     });
   }
+
+  private createGolemEnemy() {
+    const { x, y } = this.getRelativePosition(
+      GOLEM_STATS.config.x,
+      GOLEM_STATS.config.y
+    );
+    new GolemContainer({
+      x,
+      y,
+      scene: this.scene,
+      player: this.player,
+    });
+  }
+
+  // update() {
+  //   this.mummyEnemy.update()
+  // }
 }
