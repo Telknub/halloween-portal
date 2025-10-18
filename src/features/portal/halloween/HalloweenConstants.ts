@@ -443,14 +443,30 @@ export const HALLOWEEN_NPC_WEARABLES: Equipped = {
 export const BOSS_STATS = {
   health: 10,
   damage: 10,
+  attackRemove: 1000,
+  config: {
+    x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
+    y: TILE_SIZE,
+  },
 };
+
 export const MUMMY_STATS = {
   health: 10,
   damage: 10,
+  attackDelay: 1000,
+  config: {
+    x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
+    y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 2,
+  },
 };
+
 export const GOLEM_STATS = {
   health: 5,
   damage: 5,
+  config: {
+    x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
+    y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 2,
+  },
 };
 
 // Enemies Configuration
@@ -460,13 +476,12 @@ export interface Position {
   direction?: "horizontal" | "vertical";
 }
 
-export const BOSS_ENEMY_CONFIGURATION: Position = {
-  x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
-  y: TILE_SIZE,
+export const ENEMY_STATS = {
+  health: 2,
+  damage: 10,
+  attackDelay: 1000,
 };
 export const BOSS_ENEMY_SPAWN_Y_DISTANCE = 200;
-
-export const REMOVE_ATTACK = 1000;
 
 const limitX = 230;
 const stop_position = [
@@ -483,17 +498,7 @@ export const ACTIVATE_FLAMETHROWER = {
   position_3: position_1 + position_2,
 };
 
-export const MUMMY_ENEMY_CONFIGURATION: Position = {
-  x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
-  y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 2, // adjust back to 2
-};
-
-export const GOLEM_ENEMY_CONFIGURATION: Position = {
-  x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
-  y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 4, // adjust back to 2
-};
-
-// Mini_game
+// Puzzle mini_game
 export const SLIDING_PUZZLE_MOVESTOSOLVE = 4;
 export const SLIDING_PUZZLE_IMG = slidingPuzzleImg;
 export const VICTORY_TEXT = {

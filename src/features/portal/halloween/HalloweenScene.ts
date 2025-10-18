@@ -47,6 +47,7 @@ import { Physics } from "phaser";
 import { isTouchDevice } from "features/world/lib/device";
 import { Map } from "./map/Map";
 import { EventBus } from "./lib/EventBus";
+// import { EnemyRoom } from "./map/rooms/types/EnemyRoom";
 
 // export const NPCS: NPCBumpkin[] = [
 //   {
@@ -98,6 +99,7 @@ export class HalloweenScene extends BaseScene {
   objectsWithCollider: { x: number; y: number }[] = [];
   bones = BONES;
   relics = RELICS;
+  // private enemyRoom!: EnemyRoom;
 
   sceneId: SceneId = "halloween";
   private backgroundMusic!: Phaser.Sound.BaseSound;
@@ -483,6 +485,92 @@ export class HalloweenScene extends BaseScene {
         frameHeight: 30,
       },
     );
+    this.load.spritesheet(
+      "dungeonMummy_smash",
+      "world/halloween/dungeonMummy_smash.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      },
+    );
+
+    // Golem
+    this.load.spritesheet(
+      "dungeonGolem_idle",
+      "world/halloween/dungeonGolem_idle.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      },
+    );
+    this.load.spritesheet(
+      "dungeonGolem_walk",
+      "world/halloween/dungeonGolem_walk.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      },
+    );
+    this.load.spritesheet(
+      "dungeonGolem_attack",
+      "world/halloween/dungeonGolem_attack.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      },
+    );
+    this.load.spritesheet(
+      "dungeonGolem_defeat",
+      "world/halloween/dungeonGolem_defeat.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      },
+    );
+    this.load.spritesheet(
+      "dungeonGolem_smash",
+      "world/halloween/dungeonGolem_smash.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      },
+    );
+
+    // Ghoul
+    this.load.spritesheet("ghoul_idle", "world/halloween/ghoul_idle.webp", {
+      frameWidth: 30,
+      frameHeight: 32,
+    });
+    this.load.spritesheet("ghoul_walk", "world/halloween/ghoul_walk.webp", {
+      frameWidth: 30,
+      frameHeight: 32,
+    });
+    this.load.spritesheet("ghoul_attack", "world/halloween/ghoul_attack.webp", {
+      frameWidth: 30,
+      frameHeight: 32,
+    });
+    this.load.spritesheet("ghoul_defeat", "world/halloween/ghoul_defeat.webp", {
+      frameWidth: 30,
+      frameHeight: 32,
+    });
+
+    // Ghost
+    this.load.spritesheet("ghost_walk", "world/halloween/ghost_walk.webp", {
+      frameWidth: 37,
+      frameHeight: 40,
+    });
+    this.load.spritesheet("ghost_idle", "world/halloween/ghost_idle.webp", {
+      frameWidth: 37,
+      frameHeight: 40,
+    });
+    this.load.spritesheet("ghost_attack", "world/halloween/ghost_attack.webp", {
+      frameWidth: 37,
+      frameHeight: 40,
+    });
+    this.load.spritesheet("ghost_defeat", "world/halloween/ghost_defeat.webp", {
+      frameWidth: 37,
+      frameHeight: 40,
+    });
   }
 
   // init(data: any) {
@@ -498,6 +586,13 @@ export class HalloweenScene extends BaseScene {
       scene: this,
       player: this.currentPlayer,
     });
+
+    // this.enemyRoom = new EnemyRoom({
+    //   scene: this,
+    //   player: this.currentPlayer,
+    // });
+
+    // this.enemyRoom.createObjects();
 
     // setTimeout(() => {
     //   this.scene.restart({
@@ -543,6 +638,8 @@ export class HalloweenScene extends BaseScene {
   update() {
     if (!this.currentPlayer) return;
     if (!this.portalService) return;
+
+    // this.enemyRoom.update()
 
     if (this.portalService.state.context.lives <= 0) {
       // this.endGame();

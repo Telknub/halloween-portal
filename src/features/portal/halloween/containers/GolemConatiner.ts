@@ -1,9 +1,8 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { BaseScene } from "features/world/scenes/BaseScene";
 import { MachineInterpreter } from "../lib/halloweenMachine";
 import { LifeBar } from "./LifeBar";
 import { EventBus } from "../lib/EventBus";
-import { MUMMY_STATS } from "../HalloweenConstants";
+import { GOLEM_STATS } from "../HalloweenConstants";
 import { HalloweenScene } from "../HalloweenScene";
 
 interface Props {
@@ -13,7 +12,7 @@ interface Props {
   player?: BumpkinContainer;
 }
 
-export class MummyContainer extends Phaser.GameObjects.Container {
+export class GolemContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   scene: HalloweenScene;
   private spriteName: string;
@@ -34,7 +33,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
     this.scene = scene;
     this.player = player;
 
-    this.spriteName = "dungeonMummy";
+    this.spriteName = "dungeonGolem";
 
     this.lifeBar = new LifeBar({
       x: 0,
@@ -77,9 +76,6 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       | MachineInterpreter
       | undefined;
   }
-
-  // update() {
-  // }
 
   private createAnimation(
     sprite: Phaser.GameObjects.Sprite,
@@ -288,7 +284,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this.isHurting = true;
       const newHealth =
         this.lifeBar.currentHealth -
-        this.lifeBar.maxHealth / MUMMY_STATS.health;
+        this.lifeBar.maxHealth / GOLEM_STATS.health;
       if (newHealth > 0) {
         this.lifeBar.setHealth(newHealth);
       } else {
