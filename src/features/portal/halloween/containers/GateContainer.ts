@@ -65,8 +65,9 @@ export class GateContainer extends Phaser.GameObjects.Container {
   }
 
   private createAnimation() {
+    const roomNameOrId = this.roomName || this.id;
     this.scene.anims.create({
-      key: `${this.spriteName}_${this.id}_open_action`,
+      key: `${this.spriteName}_${roomNameOrId}_open_action`,
       frames: this.scene.anims.generateFrameNumbers(
         `${this.spriteName}_open_animation`,
         {
@@ -78,7 +79,7 @@ export class GateContainer extends Phaser.GameObjects.Container {
       frameRate: 10,
     });
     this.scene.anims.create({
-      key: `${this.spriteName}_${this.id}_close_action`,
+      key: `${this.spriteName}_${roomNameOrId}_close_action`,
       frames: this.scene.anims.generateFrameNumbers(
         `${this.spriteName}_close_animation`,
         {
@@ -111,22 +112,23 @@ export class GateContainer extends Phaser.GameObjects.Container {
   }
 
   private createEvents() {
-    EventBus.on("open-gate", () => {
-      this.id === 1 && this.open();
-    });
+    EventBus.on("open-gate", () => this.id === 1 && this.open());
   }
 
   private open() {
-    const animationKey = `${this.spriteName}_${this.id}_open_action`;
+    const roomNameOrId = this.roomName || this.id;
+    const animationKey = `${this.spriteName}_${roomNameOrId}_open_action`;
     this.sprite.play(animationKey, true);
     onAnimationComplete(this.sprite, animationKey, () =>
       this.sprite.setTexture(`${this.spriteName}_open`),
     );
     (this.body as Phaser.Physics.Arcade.Body).setEnable(false);
+    EventBus.emit("create-enemies", { id: this.id });
   }
 
   close() {
-    const animationKey = `${this.spriteName}_${this.id}_close_action`;
+    const roomNameOrId = this.roomName || this.id;
+    const animationKey = `${this.spriteName}_${roomNameOrId}_close_action`;
     this.sprite.play(animationKey, true);
     onAnimationComplete(this.sprite, animationKey, () =>
       this.sprite.setTexture(`${this.spriteName}_close`),

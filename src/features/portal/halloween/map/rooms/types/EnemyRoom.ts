@@ -10,9 +10,12 @@ import {
 import { MummyContainer } from "features/portal/halloween/containers/MummyContainer";
 import { EnemyContainer } from "features/portal/halloween/containers/EnemyContainer";
 import { GolemContainer } from "features/portal/halloween/containers/GolemConatiner";
+import { EventBus } from "features/portal/halloween/lib/EventBus";
+import { RelicContainer } from "features/portal/halloween/containers/RelicContainer";
 
 interface Props {
   scene: HalloweenScene;
+  wallsLayer?: Phaser.Tilemaps.TilemapLayer;
   hasEntry?: boolean;
   hasExit?: boolean;
   matrix?: number[][];
@@ -20,39 +23,70 @@ interface Props {
 }
 
 export class EnemyRoom extends BaseRoom {
-  // private mummyEnemy!: MummyContainer;
-  constructor({ scene, hasEntry = true, hasExit = true, player }: Props) {
+  private enemyIds: number[] = [];
+  private wallsLayer?: Phaser.Tilemaps.TilemapLayer;
+
+  constructor({
+    scene,
+    hasEntry = true,
+    hasExit = true,
+    wallsLayer,
+    player,
+  }: Props) {
     const matrix = createRandomRoom();
     super({ scene, hasEntry, hasExit, matrix, type: "enemy", player });
+
+    this.wallsLayer = wallsLayer;
+    this.createEvents();
+  }
+
+  private createEvents() {
+    EventBus.on("create-enemies", (data: Record<string, number>) => {
+      if (data.id + 1 === this.id) this.createEnemies();
+    });
   }
 
   createObjects() {
     this.createDecorationRandomly();
-    this.createEnemies();
     this.spawnObjectRandomly((x, y) => this.createStatues(x, y));
     this.spawnObjectRandomly((x, y) => this.createBones(x, y));
     this.id === 2 && this.spawnObjectRandomly((x, y) => this.createLamp(x, y));
     this.id === 3 &&
       this.spawnObjectRandomly((x, y) => this.createPickaxe(x, y));
-    // this.createMummyEnemy();
-    this.createGolemEnemy();
     this.createGate();
+  }
 
-    this.spawnObjectRandomly((x, y) => this.createRelic(x, y));
+  private defeatEnemy(id: number) {
+    this.enemyIds = this.enemyIds.filter((enemyId) => enemyId !== id);
+
+    if (!this.enemyIds.length) {
+      Math.random() <= 0.5 ? this.createGolemEnemy() : this.createMummyEnemy();
+    }
+  }
+
+  private defeatMiniBoss(x: number, y: number) {
+    new RelicContainer({
+      x,
+      y,
+      scene: this.scene,
+      player: this.player,
+    });
   }
 
   private createEnemies() {
     for (let i = 0; i < AMOUNT_ENEMIES; i++) {
-      this.spawnObjectRandomly((x, y) => this.createEnemy(x, y));
+      this.spawnObjectRandomly((x, y) => this.createEnemy(x, y, i));
     }
   }
 
-  private createEnemy(x: number, y: number) {
-    // Create logic to add your enemy
-    const newEnemy = new EnemyContainer({
+  private createEnemy(x: number, y: number, id: number) {
+    this.enemyIds.push(id);
+    new EnemyContainer({
       x,
       y,
       scene: this.scene,
+      id,
+      defeat: (id: number) => this.defeatEnemy(id),
       player: this.player,
     });
   }
@@ -62,10 +96,11 @@ export class EnemyRoom extends BaseRoom {
       MUMMY_STATS.config.x,
       MUMMY_STATS.config.y,
     );
-    const mummyEnemy = new MummyContainer({
+    new MummyContainer({
       x,
       y,
       scene: this.scene,
+      defeat: (x: number, y: number) => this.defeatMiniBoss(x, y),
       player: this.player,
     });
   }
@@ -79,11 +114,8 @@ export class EnemyRoom extends BaseRoom {
       x,
       y,
       scene: this.scene,
+      defeat: (x: number, y: number) => this.defeatMiniBoss(x, y),
       player: this.player,
     });
   }
-
-  // update() {
-  //   this.mummyEnemy.update()
-  // }
 }

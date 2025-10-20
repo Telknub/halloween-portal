@@ -201,7 +201,7 @@ export class Map {
   }
 
   private createRooms() {
-    this.rooms = new RoomList(this.scene, this.player);
+    this.rooms = new RoomList(this.scene, this.player, this.wallsLayer);
     const roomTypes: RoomType[] = ["enemy", "puzzle"];
     const maxRepeats = 2;
     const counts = {

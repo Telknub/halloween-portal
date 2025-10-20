@@ -56,8 +56,8 @@ export class RelicContainer extends Phaser.GameObjects.Container {
 
   private collect() {
     this.portalService?.send("GAIN_POINTS");
-    this.scene.applyRelicBuff(this.spriteName as Relics);
-    interactableModalManager.open("relic", { relicName: this.spriteName });
+    this.scene?.applyRelicBuff(this.spriteName as Relics);
+    interactableModalManager?.open("relic", { relicName: this.spriteName });
     this.destroy();
   }
 }

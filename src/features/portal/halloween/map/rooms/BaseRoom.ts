@@ -93,10 +93,7 @@ export class BaseRoom {
       }) as Direction;
     }
     if (this.hasExit) {
-      const excludedSides =
-        this.type === "skeleton"
-          ? ([...this.getExcludedSides, "bottom"] as Direction[])
-          : this.getExcludedSides;
+      const excludedSides = this.getExcludedSides;
       this.exit = this.createRandomPath({
         excludedSides,
       });
@@ -156,24 +153,49 @@ export class BaseRoom {
     return prevPositions;
   }
 
-  private get getExcludedSides(): Direction[] {
-    const excluded: Direction[] = [];
+  private getAdjacentPositions({ x, y }: { x: number; y: number }) {
+    return {
+      top: { x, y: y - 1 },
+      bottom: { x, y: y + 1 },
+      left: { x: x - 1, y },
+      right: { x: x + 1, y },
+    } as const;
+  }
+
+  private excludeSides(currentPosition: { x: number; y: number }): Direction[] {
     const prevPositions = this.getPrevPositions;
-    const sides = {
-      top: { x: this.relativePosition.x, y: this.relativePosition.y - 1 },
-      bottom: { x: this.relativePosition.x, y: this.relativePosition.y + 1 },
-      left: { x: this.relativePosition.x - 1, y: this.relativePosition.y },
-      right: { x: this.relativePosition.x + 1, y: this.relativePosition.y },
-    };
-    for (const [side, pos] of Object.entries(sides) as [
-      Direction,
-      { x: number; y: number },
-    ][]) {
-      if (prevPositions.some((prev) => prev.x === pos.x && prev.y === pos.y)) {
-        excluded.push(side);
-      }
-    }
+    const adjacent = this.getAdjacentPositions(currentPosition);
+
+    const excluded = (
+      Object.entries(adjacent) as [Direction, { x: number; y: number }][]
+    )
+      .filter(([_, pos]) =>
+        prevPositions.some((prev) => prev.x === pos.x && prev.y === pos.y),
+      )
+      .map(([side]) => side);
+
+    if (this.type === "skeleton") excluded.push("bottom");
+
     return excluded;
+  }
+
+  private get getExcludedSides(): Direction[] {
+    const sides: Direction[] = ["top", "right", "bottom", "left"];
+    const adjacent = this.getAdjacentPositions(this.relativePosition);
+    const excluded = new Set(this.excludeSides(this.relativePosition));
+
+    for (const side of sides) {
+      if (excluded.has(side)) continue;
+
+      const nextExcluded = this.next?.excludeSides(adjacent[side]) ?? [];
+      const allSidesExcluded =
+        nextExcluded.length === sides.length &&
+        sides.every((s) => nextExcluded.includes(s));
+
+      if (allSidesExcluded) excluded.add(side);
+    }
+
+    return [...excluded];
   }
 
   private setRelativePosition(direction: Direction) {
@@ -272,7 +294,7 @@ export class BaseRoom {
   }
 
   protected createGate(roomName?: RoomType) {
-    const gate = roomName ?? this.id === 8 ? this.entry : this.exit;
+    const gate = roomName ?? (this.id === 8 ? this.entry : this.exit);
     const { x, y } = this.getRelativePosition(
       GATE_CONFIG[gate as Direction].x,
       GATE_CONFIG[gate as Direction].y,
@@ -364,13 +386,13 @@ export class BaseRoom {
     const randomSide =
       entry ??
       availableSides[Math.floor(Math.random() * availableSides.length)];
-    // if (this.id === 1) randomSide = !entry ? "right" : randomSide;
+    // if (this.id === 1) randomSide = !entry ? "top" : randomSide;
     // if (this.id === 2) randomSide = !entry ? "top" : randomSide;
-    // if (this.id === 3) randomSide = !entry ? "top" : randomSide;
-    // if (this.id === 4) randomSide = !entry ? "right" : randomSide;
-    // if (this.id === 5) randomSide = !entry ? "right" : randomSide;
+    // if (this.id === 3) randomSide = !entry ? "left" : randomSide;
+    // if (this.id === 4) randomSide = !entry ? "left" : randomSide;
+    // if (this.id === 5) randomSide = !entry ? "bottom" : randomSide;
     // if (this.id === 6) randomSide = !entry ? "right" : randomSide;
-    // if (this.id === 7) randomSide = !entry ? "top" : randomSide;
+    // if (this.id === 7) randomSide = !entry ? "right" : randomSide;
 
     this.setRelativePosition(randomSide);
 

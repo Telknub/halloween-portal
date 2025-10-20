@@ -2,13 +2,15 @@ import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { MachineInterpreter } from "../lib/halloweenMachine";
 import { LifeBar } from "./LifeBar";
 import { EventBus } from "../lib/EventBus";
-import { ENEMY_STATS } from "../HalloweenConstants";
+import { Enemies, ENEMY_STATS, Tools } from "../HalloweenConstants";
 import { HalloweenScene } from "../HalloweenScene";
 
 interface Props {
   x: number;
   y: number;
   scene: HalloweenScene;
+  id: number;
+  defeat: (id: number) => void;
   player?: BumpkinContainer;
 }
 
@@ -23,17 +25,21 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
   private followEvent?: Phaser.Time.TimerEvent;
   private isHurting = false;
   private hasDealtDamage = false;
+  private id: number;
+  private defeat: (id: number) => void;
 
   private lastAttackTime = 0;
   private attackCooldown = 2000; // milliseconds
 
-  constructor({ x, y, scene, player }: Props) {
+  constructor({ x, y, scene, id, defeat, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
     this.player = player;
+    this.id = id;
+    this.defeat = defeat;
 
-    const enemyType = ["ghoul", "ghost"]
-    const ranNum = Math.floor(Math.random() * enemyType.length)
+    const enemyType = ["ghoul", "ghost"];
+    const ranNum = Math.floor(Math.random() * enemyType.length);
 
     this.spriteName = enemyType[ranNum];
 
@@ -47,7 +53,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
 
     this.spriteBody = this.scene.add
       .sprite(0, 0, `${this.spriteName}_idle`)
-      .setDepth(1000000)
+      .setDepth(1000000);
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
@@ -73,10 +79,10 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
   }
 
   public get portalService() {
-    return this.scene.registry.get("portalService") as MachineInterpreter | undefined;
+    return this.scene.registry.get("portalService") as
+      | MachineInterpreter
+      | undefined;
   }
-
-
 
   private createAnimation(
     sprite: Phaser.GameObjects.Sprite,
@@ -84,9 +90,9 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
     animType: string,
     start: number,
     end: number,
-    repeat: number
+    repeat: number,
   ) {
-    const animationKey = `${spriteName}_${animType}_anim`;
+    const animationKey = `${spriteName}_${animType}_${this.id}_anim`;
 
     if (!this.scene.anims.exists(animationKey)) {
       this.scene.anims.create({
@@ -112,7 +118,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       this.x,
       this.y,
       this.player.x,
-      this.player.y
+      this.player.y,
     );
 
     const attackDistance = 20;
@@ -129,8 +135,8 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
 
   private followPlayer() {
     if (!this.player) return;
-    this.spriteAttack.setVisible(false)
-    this.spriteBody.setVisible(true)
+    this.spriteAttack.setVisible(false);
+    this.spriteBody.setVisible(true);
 
     const body = this.body as Phaser.Physics.Arcade.Body;
 
@@ -138,10 +144,13 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       this.x,
       this.y,
       this.player.x,
-      this.player.y
+      this.player.y,
     );
 
     const speed = 50;
+
+    if (body.velocity.x > 0) this.spriteBody.setFlipX(false);
+    else if (body.velocity.x < 0) this.spriteBody.setFlipX(true);
 
     this.scene.physics.velocityFromRotation(angle, speed, body.velocity);
 
@@ -151,7 +160,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       "walk",
       0,
       7,
-      -1
+      -1,
     );
   }
 
@@ -188,7 +197,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       `${this.spriteName}_attack`,
       "attack",
       0,
-      8,
+      7,
       -1,
     );
 
@@ -202,15 +211,15 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
     const body = this.body as Phaser.Physics.Arcade.Body;
     body.setVelocity(0, 0);
 
-    this.spriteAttack.setVisible(false)
-    this.spriteBody.setVisible(true)
+    this.spriteAttack.setVisible(false);
+    this.spriteBody.setVisible(true);
     this.createAnimation(
       this.spriteBody,
       `${this.spriteName}_idle`,
       "idle",
       0,
-      4,
-      -1
+      8,
+      -1,
     );
   }
 
@@ -223,33 +232,43 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       () => {
         if (this.hasDealtDamage) return;
         this.hasDealtDamage = true;
-        // console.log("-1 Health");
-        // TODO: Actually subtract health from player here
+        this.player?.takeDamage(this.spriteName as Enemies);
       },
       undefined,
-      this
+      this,
     );
   }
 
   private createOverlaps() {
     if (!this.player) return;
     this.scene.physics.add.collider(this.player, this.spriteBody);
-    this.scene.physics.add.overlap(this, this.player.pickaxe, () => this.hit());
+    this.scene.physics.add.overlap(this, this.player.sword, () =>
+      this.hit("sword"),
+    );
+    this.scene.physics.add.overlap(this, this.player.pickaxe, () =>
+      this.hit("pickaxe"),
+    );
+    this.scene.physics.add.overlap(this, this.player.fire, () =>
+      this.hit("lamp"),
+    );
   }
 
   private createEvents() {
-    EventBus.on("animation-mining-completed", () => {
-      this.isHurting = false;
-    });
+    EventBus.on("animation-attack-completed", () => (this.isHurting = false));
+    EventBus.on("animation-mining-completed", () => (this.isHurting = false));
+    EventBus.on("animation-fire-completed", () => (this.isHurting = false));
   }
 
-  private hit() {
+  private hit(tool: Tools) {
     if (!this.isHurting) {
       this.isHurting = true;
 
-      const newHealth =
-        this.lifeBar.currentHealth -
-        this.lifeBar.maxHealth / ENEMY_STATS.health;
+      const playerDamage = this.player?.getDamage(
+        tool,
+        this.spriteName as Enemies,
+      ) as number;
+
+      const newHealth = this.lifeBar.currentHealth - playerDamage;
 
       if (newHealth > 0) {
         this.lifeBar.setHealth(newHealth);
@@ -278,10 +297,11 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       "defeat",
       0,
       6,
-      0
+      0,
     );
 
     this.spriteBody.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+      this.defeat(this.id);
       this.destroy();
     });
   }

@@ -3,7 +3,19 @@ import { HalloweenScene } from "../HalloweenScene";
 import { LifeBar } from "./LifeBar";
 import { onAnimationComplete } from "../lib/HalloweenUtils";
 import { EventBus } from "../lib/EventBus";
-import { TILE_SIZE } from "../HalloweenConstants";
+import {
+  STATUE_CRITICAL_BUFF_PERCENTAGE,
+  STATUE_DAMAGE_BUFF,
+  STATUE_DAMAGE_DEBUFF,
+  STATUE_EFFECTS,
+  STATUE_SPEED_BUFF_PERCENTAGE,
+  STATUE_SPEED_DEBUFF_PERCENTAGE,
+  statueEffects,
+  TILE_SIZE,
+} from "../HalloweenConstants";
+import { interactableModalManager } from "features/world/ui/InteractableModals";
+import { EnemyContainer } from "./EnemyContainer";
+import { MachineInterpreter } from "../lib/halloweenMachine";
 
 interface Props {
   x: number;
@@ -42,14 +54,6 @@ export class StatueContainer extends Phaser.GameObjects.Container {
     // Events
     this.createEvents();
 
-    this.lifeBar = new LifeBar({
-      x: 0,
-      y: 12,
-      scene: this.scene,
-      width: 10,
-      maxHealth: 10,
-    });
-
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
       .setSize(this.sprite.width, this.sprite.height)
@@ -62,9 +66,22 @@ export class StatueContainer extends Phaser.GameObjects.Container {
       this.x + TILE_SIZE / 2 - this.sprite.width / 2,
       this.y + TILE_SIZE / 2 - this.sprite.height / 2,
     );
+    this.lifeBar = new LifeBar({
+      x: this.sprite.width / 2,
+      y: this.sprite.height / 2 + 12,
+      scene: this.scene,
+      width: 10,
+      maxHealth: 10,
+    });
     this.add([this.sprite, this.lifeBar]);
 
     scene.add.existing(this);
+  }
+
+  private get portalService() {
+    return this.scene.registry.get("portalService") as
+      | MachineInterpreter
+      | undefined;
   }
 
   private createAnimation() {
@@ -122,6 +139,67 @@ export class StatueContainer extends Phaser.GameObjects.Container {
   private break() {
     const animationKey = `${this.spriteName}_${this.id}_break`;
     this.sprite.play(animationKey, true);
-    onAnimationComplete(this.sprite, animationKey, () => this.destroy());
+    onAnimationComplete(this.sprite, animationKey, () => {
+      const effects = Object.keys(STATUE_EFFECTS) as statueEffects[];
+      const effect = effects[Math.floor(Math.random() * effects.length)];
+      const data = { statueName: this.spriteName, effect: effect };
+      this.portalService?.send("COLLECT_STATUE_EFFECT", data);
+      if (effect !== "spawnEnemy")
+        interactableModalManager.open("statue", data);
+      this.applyStatueEffect(effect);
+      this.destroy();
+    });
+  }
+
+  private applyStatueEffect(effect: statueEffects) {
+    const effects = {
+      speedBuff: () => this.applySpeedBuff(),
+      speedDebuff: () => this.applySpeedDebuff(),
+      damageBuff: () => this.applyDamageBuff(),
+      damageDebuff: () => this.applyDamageDebuff(),
+      criticalBuff: () => this.applyCriticalBuff(),
+      spawnEnemy: () => this.applySpawnEnemy(),
+    };
+    effects[effect]();
+  }
+
+  private applySpeedBuff() {
+    this.scene.velocity *= 1 + STATUE_SPEED_BUFF_PERCENTAGE;
+  }
+
+  private applySpeedDebuff() {
+    this.scene.velocity *= 1 + STATUE_SPEED_DEBUFF_PERCENTAGE;
+  }
+
+  private applyDamageBuff() {
+    const currentSwordDamage = this.player?.getDamage("sword", "all") ?? 0;
+    this.player?.setDamage("sword", currentSwordDamage + STATUE_DAMAGE_BUFF);
+  }
+
+  private applyDamageDebuff() {
+    const currentSwordDamage = this.player?.getDamage("sword", "all") ?? 0;
+    this.player?.setDamage("sword", currentSwordDamage + STATUE_DAMAGE_DEBUFF);
+  }
+
+  private applyCriticalBuff() {
+    if (!this.player) return;
+
+    const { doubleDamageChance = 0 } = this.player;
+    const prideBonus = STATUE_CRITICAL_BUFF_PERCENTAGE;
+
+    const doubleDamageChange = doubleDamageChance
+      ? prideBonus
+      : doubleDamageChance * (1 + prideBonus);
+
+    this.player.setDoubleDamageChance(doubleDamageChange);
+  }
+
+  private applySpawnEnemy() {
+    new EnemyContainer({
+      x: this.x,
+      y: this.y,
+      scene: this.scene,
+      player: this.player,
+    });
   }
 }

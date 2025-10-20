@@ -29,9 +29,16 @@ export type HalloweenNpcNames =
   | "final_skeleton"
   | "blacksmith";
 export type Bones = "femur" | "mandible" | "spine" | "clavicles" | "scapula";
+export type statueEffects =
+  | "speedBuff"
+  | "speedDebuff"
+  | "damageBuff"
+  | "damageDebuff"
+  | "criticalBuff"
+  | "spawnEnemy";
 export type Damages = Partial<Record<Enemies, number>> & { all: number };
 export type Enemies =
-  | "zombie"
+  | "ghoul"
   | "ghost"
   | "mummy"
   | "golem"
@@ -203,6 +210,13 @@ export const PLAYER_DAMAGE: Record<Tools, Damages> = {
     mummy: 10,
   },
 };
+export const PLAYER_DAMAGE_TAKEN: Partial<Record<Enemies, number>> = {
+  ghoul: 1,
+  ghost: 1,
+  mummy: 2,
+  golem: 2,
+  finalBoss: 3,
+};
 
 export const GAME_LIVES = 5;
 
@@ -322,6 +336,25 @@ export const DECORATION_BOSS_CONFIG: Position[] = [
   { x: 9 * TILE_SIZE, y: 6 * TILE_SIZE },
   { x: 5 * TILE_SIZE, y: 6 * TILE_SIZE },
 ];
+
+export const STATUE_SPEED_BUFF_PERCENTAGE = 0.25;
+export const STATUE_SPEED_DEBUFF_PERCENTAGE = -0.25;
+export const STATUE_DAMAGE_BUFF = 3;
+export const STATUE_DAMAGE_DEBUFF = -3;
+export const STATUE_CRITICAL_BUFF_PERCENTAGE = 0.2;
+export const STATUE_EFFECTS: Record<statueEffects, string> = {
+  speedBuff: translate("halloween.speedBuff"),
+  speedDebuff: translate("halloween.speedDebuff"),
+  damageBuff: translate("halloween.damageBuff"),
+  damageDebuff: translate("halloween.damageDebuff"),
+  criticalBuff: translate("halloween.criticalBuff"),
+  spawnEnemy: "",
+};
+
+export const HOLE_CONFIG: Position = {
+  x: (TILE_SIZE * ROOM_INNER_WIDTH) / 2,
+  y: (TILE_SIZE * ROOM_INNER_HEIGHT) / 2,
+};
 
 // export const LAMPS_CONFIGURATION: { x: number; y: number }[] = [
 //   { x: 290, y: 120 },

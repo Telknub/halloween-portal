@@ -8,6 +8,16 @@ import { useAppTranslation } from "lib/i18n/useAppTranslations";
 import { Box } from "components/ui/Box";
 import { useSound } from "lib/utils/hooks/useSound";
 import { RoundButton } from "components/ui/RoundButton";
+import { Modal } from "components/ui/Modal";
+import { CloseButtonPanel } from "features/game/components/CloseablePanel";
+import {
+  Bones,
+  Relics,
+  STATUE_EFFECTS,
+  statueEffects,
+} from "../../HalloweenConstants";
+import classNames from "classnames";
+import { InnerPanel } from "components/ui/Panel";
 
 import sword from "public/world/sword_icon.png";
 import pickaxe from "public/world/pickaxe_icon.png";
@@ -17,16 +27,24 @@ import bone from "public/world/bone1.png";
 import shopIcon from "assets/icons/shop.png";
 import lightning from "assets/icons/lightning.png";
 
-import { Modal } from "components/ui/Modal";
-import { CloseButtonPanel } from "features/game/components/CloseablePanel";
-import { Bones, Relics } from "../../HalloweenConstants";
-import classNames from "classnames";
-import { InnerPanel } from "components/ui/Panel";
+import statue1 from "public/world/statue1_idle.webp";
+import statue2 from "public/world/statue2_idle.webp";
+import statue3 from "public/world/statue3_idle.webp";
+import statue4 from "public/world/statue4_idle.webp";
+
+const statues: Record<string, string> = {
+  statue1,
+  statue2,
+  statue3,
+  statue4,
+};
 
 const _tools = (state: PortalMachineState) => state.context.tools;
 const _selectedTool = (state: PortalMachineState) => state.context.selectedTool;
 const _boneCodex = (state: PortalMachineState) => state.context.boneCodex;
 const _relicCodex = (state: PortalMachineState) => state.context.relicCodex;
+const _statueEffects = (state: PortalMachineState) =>
+  state.context.statueEffects;
 
 const toolImages = {
   sword: sword,
@@ -104,9 +122,14 @@ export const HalloweenInventory: React.FC = () => {
                 icon: shopIcon,
                 name: t("halloween.inventory"),
               },
+              {
+                icon: statue1,
+                name: t("halloween.statueEffects"),
+              },
             ]}
           >
             {tab === 0 && <ContentModalInventory />}
+            {tab === 1 && <ContentStatueEffects />}
           </CloseButtonPanel>
         </Modal>
       </div>
@@ -130,10 +153,10 @@ const ContentModalInventory: React.FC = () => {
   return (
     <>
       <div>
-        <Label type="default" icon={relic} className="ml-3">
+        <Label type="default" icon={relic} className="ml-3 mt-2">
           {t("halloween.relics")}
         </Label>
-        <div className="flex flex-wrap p-1 gap-1 max-h-80  overflow-y-auto scrollable">
+        <div className="flex flex-wrap p-1 gap-1 max-h-80 overflow-y-auto scrollable">
           {Object.keys(relicCodex).map((relicName, i) => (
             <Box
               key={i}
@@ -175,6 +198,48 @@ const ContentModalInventory: React.FC = () => {
             <div className="mt-1">
               <Label type="info" icon={lightning}>
                 {itemCodex[selectedItem as Relics | Bones]?.description}
+              </Label>
+            </div>
+          )}
+        </InnerPanel>
+      )}
+    </>
+  );
+};
+
+const ContentStatueEffects: React.FC = () => {
+  const { t } = useAppTranslation();
+  const { portalService } = useContext(PortalContext);
+  const [selectedItem, setSelectedItem] = useState("");
+
+  const statueEffects = useSelector(portalService, _statueEffects);
+
+  return (
+    <>
+      <div>
+        <Label type="default" icon={statue1} className="ml-3 mt-2">
+          {t("halloween.statueEffects")}
+        </Label>
+        <div className="flex flex-wrap p-1 gap-1 max-h-80 overflow-y-auto scrollable">
+          {statueEffects.map((statueEffect, i) => (
+            <Box
+              key={i}
+              image={statues[statueEffect.statueName]}
+              onClick={() => setSelectedItem(statueEffect.effect)}
+              isSelected={selectedItem === statueEffect.effect}
+            />
+          ))}
+        </div>
+      </div>
+      {selectedItem && (
+        <InnerPanel
+          className="relative bottom-[-7px] left-[-7px] !px-2 !pb-1 z-10"
+          style={{ width: "calc(100% + 15px)" }}
+        >
+          {STATUE_EFFECTS[selectedItem as statueEffects] && (
+            <div className="mt-1">
+              <Label type="info" icon={lightning}>
+                {STATUE_EFFECTS[selectedItem as statueEffects]}
               </Label>
             </div>
           )}

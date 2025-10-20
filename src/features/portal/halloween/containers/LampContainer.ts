@@ -30,7 +30,7 @@ export class LampContainer extends Phaser.GameObjects.Container {
     // Animation
     this.createAnimation();
 
-    if (id !== -1) {
+    if (id >= 0) {
       // Overlaps
       this.createOverlaps();
 
@@ -48,6 +48,11 @@ export class LampContainer extends Phaser.GameObjects.Container {
       this.y + TILE_SIZE / 2 - this.sprite.height / 2,
     );
     this.add(this.sprite);
+
+    if (this.id < 0) {
+      this.sprite.setOrigin(0.5);
+      this.setPosition(x, y);
+    }
 
     scene.add.existing(this);
   }

@@ -36,6 +36,7 @@ import { DesertNoticeboard } from "./beach/DesertNoticeboard";
 import { PirateChestModal } from "./chests/PirateChest";
 import { ExampleDonations } from "./donations/ExampleDonations";
 import { RelicModal } from "features/portal/halloween/components/interactables/RelicModal";
+import { StatueModal } from "features/portal/halloween/components/interactables/StatueModal";
 
 type InteractableName =
   | "desert_noticeboard"
@@ -187,6 +188,9 @@ export const InteractableModals: React.FC<Props> = ({ id, scene }) => {
 
   return (
     <>
+      <Modal show={interactable === "statue"} onHide={closeModal}>
+        <StatueModal onClose={closeModal} data={data} />
+      </Modal>
       <Modal show={interactable === "relic"} onHide={closeModal}>
         <RelicModal onClose={closeModal} data={data} />
       </Modal>

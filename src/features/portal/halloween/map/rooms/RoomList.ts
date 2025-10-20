@@ -30,10 +30,16 @@ export class RoomList {
   private tail: BaseRoom | null = null;
   private length = 0;
   private mapRoomSize = { width: 0, height: 0 };
+  private wallsLayer?: Phaser.Tilemaps.TilemapLayer;
 
-  constructor(scene: HalloweenScene, player?: BumpkinContainer) {
+  constructor(
+    scene: HalloweenScene,
+    player?: BumpkinContainer,
+    wallsLayer?: Phaser.Tilemaps.TilemapLayer,
+  ) {
     this.scene = scene;
     this.player = player;
+    this.wallsLayer = wallsLayer;
   }
 
   append(type: RoomType): void {
@@ -47,6 +53,7 @@ export class RoomList {
     } else if (type === "enemy") {
       room = new EnemyRoom({
         scene: this.scene,
+        wallsLayer: this.wallsLayer,
         player: this.player,
       });
     } else if (type === "puzzle") {
@@ -375,7 +382,8 @@ export class RoomList {
     if (!this.head) return [];
 
     const centerPositionX = (ROOM_INNER_WIDTH * TILE_SIZE) / 2;
-    const centerPositionY = (ROOM_INNER_HEIGHT * TILE_SIZE) / 2;
+    const centerPositionY =
+      (ROOM_INNER_HEIGHT * TILE_SIZE) / 2 - TILE_SIZE * 0.8;
 
     this.player?.setPosition(
       centerPositionX + this.head.getOffset.x,

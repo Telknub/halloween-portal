@@ -46,6 +46,7 @@ export interface Context {
   relicCodex: Record<Relics, CodexData>;
   lives: number;
   maxLives: number;
+  statueEffects: Record<string, string>[];
   startedAt: number;
   attemptsLeft: number;
 }
@@ -98,6 +99,12 @@ type IncreaseMaxLivesEvent = {
   lives: number;
 };
 
+type CollectStatueEffectEvent = {
+  type: "COLLECT_STATUE_EFFECT";
+  statueName: string;
+  effect: string;
+};
+
 export type PortalEvent =
   | SetJoystickActiveEvent
   | { type: "START" }
@@ -117,6 +124,7 @@ export type PortalEvent =
   | LoseLivesEvent
   | RestoreLivesEvent
   | IncreaseMaxLivesEvent
+  | CollectStatueEffectEvent
   | UnlockAchievementsEvent;
 
 export type PortalState = {
@@ -157,6 +165,7 @@ const resetGameTransition = {
       relicCodex: () => RELIC_CODEX,
       lives: () => GAME_LIVES,
       maxLives: () => GAME_LIVES,
+      statueEffects: () => [],
       startedAt: () => 0,
     }) as any,
   },
@@ -185,6 +194,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
     relicCodex: RELIC_CODEX,
     lives: GAME_LIVES,
     maxLives: GAME_LIVES,
+    statueEffects: [],
   },
   on: {
     SET_JOYSTICK_ACTIVE: {
@@ -335,6 +345,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
             relicCodex: RELIC_CODEX,
             lives: GAME_LIVES,
             maxLives: GAME_LIVES,
+            statueEffects: [],
             state: (context: Context) => {
               startAttempt();
               return startMinigameAttempt({
@@ -432,6 +443,19 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                   isFound: true,
                 },
               };
+            },
+          }),
+        },
+        COLLECT_STATUE_EFFECT: {
+          actions: assign({
+            statueEffects: (
+              context: Context,
+              event: CollectStatueEffectEvent,
+            ) => {
+              return [
+                ...context.statueEffects,
+                { statueName: event.statueName, effect: event.effect },
+              ];
             },
           }),
         },

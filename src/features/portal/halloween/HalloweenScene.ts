@@ -38,6 +38,7 @@ import {
   LUST_BUFF_LIVES,
   PRIDE_BUFF_PERCENTAGE,
   WRATH_BUFF_PERCENTAGE,
+  DECEIT_BUFF_PERCENTAGE,
 } from "./HalloweenConstants";
 import { LampContainer } from "./containers/LampContainer";
 import { EventObject } from "xstate";
@@ -96,9 +97,10 @@ export class HalloweenScene extends BaseScene {
   private lastAttempt!: number;
   private gameOverNoMove!: number;
   private gameOverNoMoveTime!: number;
-  objectsWithCollider: { x: number; y: number }[] = [];
-  bones = BONES;
-  relics = RELICS;
+  private isGameOver = false;
+  objectsWithCollider!: { x: number; y: number }[];
+  bones!: string[];
+  relics!: string[];
   // private enemyRoom!: EnemyRoom;
 
   sceneId: SceneId = "halloween";
@@ -571,6 +573,12 @@ export class HalloweenScene extends BaseScene {
       frameWidth: 37,
       frameHeight: 40,
     });
+
+    // Hole
+    this.load.spritesheet("hole", "world/hole.png", {
+      frameWidth: 74,
+      frameHeight: 42,
+    });
   }
 
   // init(data: any) {
@@ -582,6 +590,12 @@ export class HalloweenScene extends BaseScene {
 
   async create() {
     super.create();
+    EventBus.removeAllListeners();
+    this.initialiseProperties();
+    this.initializeControls();
+    this.initialiseEvents();
+    this.initialiseFontFamily();
+
     new Map({
       scene: this,
       player: this.currentPlayer,
@@ -601,8 +615,6 @@ export class HalloweenScene extends BaseScene {
     //   });
     // }, 5000);
 
-    this.initializeControls();
-    this.initialiseEvents();
     // this.initShaders();
 
     // this.backgroundMusic = this.sound.add("backgroundMusic", {
@@ -708,6 +720,12 @@ export class HalloweenScene extends BaseScene {
     super.update();
   }
 
+  private initialiseProperties() {
+    this.objectsWithCollider = [];
+    this.bones = BONES;
+    this.relics = RELICS;
+  }
+
   private initializeControls() {
     if (isTouchDevice()) {
       // const leftButton = this.add
@@ -739,24 +757,35 @@ export class HalloweenScene extends BaseScene {
       this.applyRelicBuff(name);
     });
 
-    // // reload scene when player hit retry
-    // const onRetry = (event: EventObject) => {
-    //   if (event.type === "RETRY") {
-    //     this.isCameraFading = true;
-    //     this.cameras.main.fadeOut(500);
-    //     // this.reset();
-    //     this.cameras.main.on(
-    //       "camerafadeoutcomplete",
-    //       () => {
-    //         this.cameras.main.fadeIn(500);
-    //         this.velocity = WALKING_SPEED;
-    //         this.isCameraFading = false;
-    //       },
-    //       this,
-    //     );
-    //   }
-    // };
-    // this.portalService?.onEvent(onRetry);
+    // reload scene when player hit retry
+    const onRetry = (event: EventObject) => {
+      if (event.type === "RETRY") {
+        this.isCameraFading = true;
+        this.cameras.main.fadeOut(500);
+        // this.reset();
+        this.scene.restart();
+        this.cameras.main.on(
+          "camerafadeoutcomplete",
+          () => {
+            this.cameras.main.fadeIn(500);
+            this.velocity = WALKING_SPEED;
+            this.isCameraFading = false;
+          },
+          this,
+        );
+      }
+    };
+    this.portalService?.onEvent(onRetry);
+  }
+
+  private initialiseFontFamily() {
+    this.add
+      .text(0, 0, ".", {
+        fontFamily: "Teeny",
+        fontSize: "1px",
+        color: "#000000",
+      })
+      .setAlpha(0);
   }
 
   applyRelicBuff(name: Relics) {
@@ -799,7 +828,16 @@ export class HalloweenScene extends BaseScene {
   }
 
   applyPrideBuff() {
-    this.currentPlayer?.setDoubleDamageChange(PRIDE_BUFF_PERCENTAGE);
+    if (!this.currentPlayer) return;
+
+    const { doubleDamageChance = 0 } = this.currentPlayer;
+    const prideBonus = PRIDE_BUFF_PERCENTAGE;
+
+    const doubleDamageChange = doubleDamageChance
+      ? prideBonus
+      : doubleDamageChance * (1 + prideBonus);
+
+    this.currentPlayer.setDoubleDamageChance(doubleDamageChange);
   }
 
   applySlothBuff() {
@@ -810,7 +848,9 @@ export class HalloweenScene extends BaseScene {
     this.currentPlayer?.setFrameRateAttack(WRATH_BUFF_PERCENTAGE);
   }
 
-  applyDeceitBuff() {}
+  applyDeceitBuff() {
+    this.currentPlayer?.setDodgeAttackChance(DECEIT_BUFF_PERCENTAGE);
+  }
 
   // // Enemy_1 (ghost_enemy)
   // enemy_1() {
@@ -1690,13 +1730,16 @@ export class HalloweenScene extends BaseScene {
   // }
 
   private endGame() {
-    this.isCameraFading = true;
-    this.velocity = 0;
-    this.currentPlayer?.dead();
-    if (!this.deathDate) {
-      this.deathDate = new Date(new Date().getTime() + 1200);
-    } else if (new Date().getTime() >= this.deathDate.getTime()) {
-      this.portalService?.send("GAME_OVER");
-    }
+    // if (!this.isGameOver) {
+    //   this.isCameraFading = true;
+    //   this.velocity = 0;
+    //   this.currentPlayer?.dead();
+    //   this.isGameOver = true;
+    // }
+    // if (!this.deathDate) {
+    //   this.deathDate = new Date(new Date().getTime() + 1200);
+    // } else if (new Date().getTime() >= this.deathDate.getTime()) {
+    //   this.portalService?.send("GAME_OVER");
+    // }
   }
 }

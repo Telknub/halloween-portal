@@ -18,6 +18,7 @@ import {
   Enemies,
   ITEM_BUMPKIN,
   PLAYER_DAMAGE,
+  PLAYER_DAMAGE_TAKEN,
   SLOTH_BUFF_LIVES,
   Tools,
 } from "features/portal/halloween/HalloweenConstants";
@@ -26,6 +27,8 @@ import { onAnimationComplete } from "features/portal/halloween/lib/HalloweenUtil
 import { EventBus } from "features/portal/halloween/lib/EventBus";
 import { FireContainer } from "features/portal/halloween/containers/FireContainer";
 import { MachineInterpreter } from "features/portal/halloween/lib/halloweenMachine";
+import { translate } from "lib/i18n/translate";
+import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
 
 const NAME_ALIASES: Partial<Record<NPCName, string>> = {
   "pumpkin' pete": "pete",
@@ -71,6 +74,8 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   private backAuraAnimationKey: string | undefined;
   private direction: "left" | "right" = "right";
 
+  scene: HalloweenScene;
+
   // Halloween
   private carryingSpriteKey: string | undefined;
   private carryingIdleSpriteKey: string | undefined;
@@ -84,9 +89,10 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   private attackAnimationKey: string | undefined;
   private miningAnimationKey: string | undefined;
   private hurtAnimationKey: string | undefined;
-  private damage = PLAYER_DAMAGE;
-  private doubleDamageChange = 0;
+  private damage = structuredClone(PLAYER_DAMAGE);
   private frameRateAttack!: number;
+  doubleDamageChance = 0;
+  dodgeAttackChance = 0;
   isHurting = false;
   isAttacking = false;
   isMining = false;
@@ -107,7 +113,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     direction,
     faction,
   }: {
-    scene: Phaser.Scene;
+    scene: HalloweenScene;
     x: number;
     y: number;
     clothing: Player["clothing"];
@@ -194,7 +200,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     return this.direction;
   }
 
-  private async loadSprites(scene: Phaser.Scene) {
+  private async loadSprites(scene: HalloweenScene) {
     const keyName = tokenUriBuilder(this.clothing);
     this.idleSpriteKey = `${keyName}-bumpkin-idle-sheet`;
     this.walkingSpriteKey = `${keyName}-bumpkin-walking-sheet`;
@@ -1206,6 +1212,13 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     ) {
       try {
         this.sprite.anims.play(this.deathAnimationKey as string, true);
+        onAnimationComplete(
+          this.sprite,
+          this.deathAnimationKey as string,
+          () => {
+            this.portalService?.send("GAME_OVER");
+          },
+        );
       } catch (e) {
         // eslint-disable-next-line no-console
         console.log(
@@ -1232,6 +1245,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
           () => {
             this.isAttacking = false;
             this.enableSword(false);
+            EventBus.emit("animation-attack-completed");
           },
         );
       } catch (e) {
@@ -1314,6 +1328,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       fireBody.setEnable(false);
       this.fire.setVisible(false);
       this.isBurning = false;
+      EventBus.emit("animation-fire-completed");
     });
   }
 
@@ -1365,24 +1380,26 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   //   }
   // }
 
-  // public addLabel(value: number | string) {
-  //   this.stopSpeaking();
-  //   this.reaction.clear(true, true);
+  addLabel(value: number | string, { x, y }: { x: number; y: number }) {
+    if (typeof value === "number") {
+      value = `${value > 0 ? "+" : "-"}${Math.abs(value)}`;
+    }
 
-  //   if (typeof value === "number") {
-  //     value = `${value > 0 ? "+" : "-"}${Math.abs(value)}`;
-  //   }
+    const label = this.scene.add
+      .text(x, y, value, {
+        fontSize: "3px",
+        fontFamily: "Teeny",
+        color: "#FFFFFF",
+        resolution: 10,
+        padding: { x: 2, y: 2 },
+      })
+      .setOrigin(0.5);
 
-  //   const label = this.scene.add
-  //     .bitmapText(1, -23, "Teeny Tiny Pixls", value, 4, 1)
-  //     .setOrigin(0.5);
+    label.setShadow(4, 4, "#161424", 0, true, true);
+    this.add(label);
 
-  //   label.setTintFill(0xffffff);
-  //   this.add(label);
-  //   this.reaction.add(label);
-
-  //   this.destroyReaction();
-  // }
+    this.scene.time.delayedCall(1000, () => label.destroy());
+  }
 
   createPickaxe() {
     this.pickaxe = this.scene.add.zone(0, 0, 0, 0);
@@ -1448,14 +1465,14 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
 
   getDamage(tool: Tools, enemy: Enemies) {
     const damage = this.damage?.[tool]?.[enemy] || this.damage?.[tool].all;
-    if (Math.random() < this.doubleDamageChange && tool === "sword") {
+    if (Math.random() < this.doubleDamageChance && tool === "sword") {
       return damage * 2;
     }
     return damage;
   }
 
-  setDoubleDamageChange(value: number) {
-    this.doubleDamageChange = value;
+  setDoubleDamageChance(value: number) {
+    this.doubleDamageChance = value;
   }
 
   setFireRadius(value: number) {
@@ -1478,5 +1495,28 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     if (this.canHealWithGates) {
       this.portalService?.send("RESTORE_LIVES", { lives: SLOTH_BUFF_LIVES });
     }
+  }
+
+  setDodgeAttackChance(value: number) {
+    this.dodgeAttackChance = value;
+  }
+
+  takeDamage(enemy: Enemies) {
+    if (!this.portalService) return;
+
+    let damage = PLAYER_DAMAGE_TAKEN[enemy] as number;
+    if (Math.random() < this.dodgeAttackChance) {
+      damage = 0;
+      this.addLabel(translate("halloween.dodged"), { x: 0, y: 0 });
+    } else {
+      if (this.portalService?.state.context?.lives - damage <= 0) {
+        this.scene.isCameraFading = true;
+        this.scene.velocity = 0;
+        this.dead();
+      } else {
+        this.hurt();
+      }
+    }
+    this.portalService?.send("LOSE_LIVES", { lives: damage });
   }
 }

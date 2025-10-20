@@ -3,13 +3,16 @@ import { BaseScene } from "features/world/scenes/BaseScene";
 import { MachineInterpreter } from "../lib/halloweenMachine";
 import { LifeBar } from "./LifeBar";
 import { EventBus } from "../lib/EventBus";
-import { MUMMY_STATS } from "../HalloweenConstants";
+import { Enemies, MUMMY_STATS, Tools, Damages } from "../HalloweenConstants";
 import { HalloweenScene } from "../HalloweenScene";
+import { RelicContainer } from "./RelicContainer";
+import { onAnimationComplete } from "../lib/HalloweenUtils";
 
 interface Props {
   x: number;
   y: number;
   scene: HalloweenScene;
+  defeat: (x: number, y: number) => void;
   player?: BumpkinContainer;
 }
 
@@ -24,15 +27,17 @@ export class MummyContainer extends Phaser.GameObjects.Container {
   private isHurting = false;
   private spriteSmash!: Phaser.GameObjects.Sprite;
   private hasDealtDamage = false;
+  private defeat: (x: number, y: number) => void;
 
   private lastAttackTime = 0;
   private attackCooldown = 2000;
   private chanceToAttack = 2000;
 
-  constructor({ x, y, scene, player }: Props) {
+  constructor({ x, y, scene, defeat, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
     this.player = player;
+    this.defeat = defeat;
 
     this.spriteName = "dungeonMummy";
 
@@ -78,9 +83,6 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       | undefined;
   }
 
-  // update() {
-  // }
-
   private createAnimation(
     sprite: Phaser.GameObjects.Sprite,
     spriteName: string,
@@ -91,8 +93,8 @@ export class MummyContainer extends Phaser.GameObjects.Container {
   ) {
     const animationKey = `${spriteName}_${animType}_anim`;
 
-    if (!this.scene.anims.exists(animationKey)) {
-      this.scene.anims.create({
+    if (!this.scene?.anims?.exists(animationKey)) {
+      this.scene?.anims?.create({
         key: animationKey,
         frames: this.scene.anims.generateFrameNumbers(spriteName, {
           start,
@@ -103,8 +105,8 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       });
     }
 
-    if (sprite.anims.getName() !== animationKey) {
-      sprite.play(animationKey, true);
+    if (sprite && sprite?.anims?.getName() !== animationKey) {
+      sprite?.play(animationKey, true);
     }
   }
 
@@ -122,10 +124,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
     const followDistance = 100;
 
     if (distance < attackDistance) {
-      this.stopMovement();
-      this.scene.time.delayedCall(this.chanceToAttack, () => {
-        this.attackPlayer();
-      })
+      this.attackPlayer();
     } else if (distance < followDistance) {
       this.followPlayer();
     } else {
@@ -147,6 +146,9 @@ export class MummyContainer extends Phaser.GameObjects.Container {
 
     const speed = 50;
 
+    if (body.velocity.x > 0) this.spriteBody.setFlipX(false);
+    else if (body.velocity.x < 0) this.spriteBody.setFlipX(true);
+
     this.scene.physics.velocityFromRotation(angle, speed, body.velocity);
 
     this.disableSmash();
@@ -162,7 +164,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
   }
 
   private attackPlayer() {
-    const now = this.scene.time.now;
+    const now = this.scene?.time.now;
     if (now - this.lastAttackTime < this.attackCooldown) {
       return;
     }
@@ -274,21 +276,31 @@ export class MummyContainer extends Phaser.GameObjects.Container {
   private createOverlaps() {
     if (!this.player) return;
     this.scene.physics.add.collider(this.player, this);
-    this.scene.physics.add.overlap(this, this.player.pickaxe, () => this.hit());
+    this.scene.physics.add.overlap(this, this.player.sword, () =>
+      this.hit("sword"),
+    );
+    this.scene.physics.add.overlap(this, this.player.pickaxe, () =>
+      this.hit("pickaxe"),
+    );
+    this.scene.physics.add.overlap(this, this.player.fire, () =>
+      this.hit("lamp"),
+    );
   }
 
   private createEvents() {
-    EventBus.on("animation-mining-completed", () => {
-      this.isHurting = false;
-    });
+    EventBus.on("animation-attack-completed", () => (this.isHurting = false));
+    EventBus.on("animation-mining-completed", () => (this.isHurting = false));
+    EventBus.on("animation-fire-completed", () => (this.isHurting = false));
   }
 
-  private hit() {
+  private hit(tool: Tools) {
     if (!this.isHurting) {
       this.isHurting = true;
-      const newHealth =
-        this.lifeBar.currentHealth -
-        this.lifeBar.maxHealth / MUMMY_STATS.health;
+
+      const playerDamage = this.player?.getDamage(tool, "mummy") as number;
+
+      const newHealth = this.lifeBar.currentHealth - playerDamage;
+
       if (newHealth > 0) {
         this.lifeBar.setHealth(newHealth);
       } else {
@@ -320,10 +332,8 @@ export class MummyContainer extends Phaser.GameObjects.Container {
     );
 
     this.spriteBody.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
+      this.defeat(this.x, this.y);
       this.destroy();
-      // this.openPortal();
     });
   }
-
-  // private openPortal() {}
 }
