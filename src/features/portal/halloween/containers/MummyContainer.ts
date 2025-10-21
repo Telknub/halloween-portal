@@ -234,7 +234,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this.scene.physics.world.enable(this.spriteSmash);
 
       const body = this.spriteSmash.body as Phaser.Physics.Arcade.Body;
-      body.setSize(this.spriteSmash.width, this.spriteSmash.height);
+      body.setSize(this.spriteSmash.width, this.spriteSmash.height / 2);
       body.setAllowGravity(false);
       body.setImmovable(true);
     }
@@ -245,7 +245,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
 
     const body = this.spriteSmash.body as Phaser.Physics.Arcade.Body;
     body.enable = true;
-    body.setOffset(this.spriteSmash.width - 60, this.spriteSmash.height / 6);
+    body.setOffset(this.spriteSmash.width - 65, this.spriteSmash.height / 2);
   }
 
   private disableSmash() {
@@ -265,7 +265,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       () => {
         if (this.hasDealtDamage) return;
         this.hasDealtDamage = true;
-        // this.player?.takeDamage("mummy");
+        this.player?.takeDamage("mummy");
       },
       undefined,
       this,

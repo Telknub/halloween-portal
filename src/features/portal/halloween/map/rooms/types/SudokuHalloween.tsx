@@ -277,11 +277,11 @@ export const SudokuHalloween: React.FC<Props> = ({ onClose, onAction }) => {
       {isSolved && (
         <div className="fixed inset-0 z-50 flex justify-center items-center bg-black bg-opacity-70">
           <div
-            className="flex flex-row justify-center items-center w-[15rem] text-black shadow-xl text-2xxl font-bold"
+            className="flex flex-row justify-center items-center w-[15rem] text-white shadow-xl text-2xxl font-bold"
             style={{
               ...pixelGrayBorderStyle,
               padding: `${PIXEL_SCALE * 8}px`,
-              background: "#c0cbdc",
+              background: "#546395",
             }}
           >
             <div className="pr-3">{VICTORY_TEXT.Sudoku}</div>

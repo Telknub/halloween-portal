@@ -6,6 +6,7 @@ import {
   ACTIVATE_FLAMETHROWER,
   BOSS_STATS,
   BOSS_ENEMY_SPAWN_Y_DISTANCE,
+  Tools,
 } from "../HalloweenConstants";
 import { LifeBar } from "./LifeBar";
 import { BaseRoom } from "../map/rooms/BaseRoom";
@@ -236,7 +237,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
       10,
       -1,
     );
-    this.createFire();
+    this.createFlamethrower();
     this.createDamage();
     this.scene.physics.world.enable(this.spritePower);
   }
@@ -257,7 +258,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
     }
   }
 
-  private createFire() {
+  private createFlamethrower() {
     this.spritePower = this.scene.add
       .sprite(
         this.spriteBody.x - 18,
@@ -296,8 +297,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
       () => {
         if (!hasDealtDamage) {
           hasDealtDamage = true;
-          // console.log("-1 Health");
-          // TODO: Actually subtract health from player here
+          this.player?.takeDamage("finalBoss");
         }
       },
       undefined,
@@ -308,20 +308,35 @@ export class BossContainer extends Phaser.GameObjects.Container {
   private createOverlaps() {
     if (!this.player) return;
     this.scene.physics.add.collider(this.player, this);
-    this.scene.physics.add.overlap(this, this.player.pickaxe, () => this.hit());
+    // this.scene.physics.add.collider(
+    //   this.wallsLayer as Phaser.Tilemaps.TilemapLayer,
+    //   this,
+    // );
+    this.scene.physics.add.overlap(this, this.player.sword, () =>
+      this.hit("sword"),
+    );
+    this.scene.physics.add.overlap(this, this.player.pickaxe, () =>
+      this.hit("pickaxe"),
+    );
+    this.scene.physics.add.overlap(this, this.player.fire, () =>
+      this.hit("lamp"),
+    );
   }
 
   private createEvents() {
-    EventBus.on("animation-mining-completed", () => {
-      this.isHurting = false;
-    });
+    EventBus.on("animation-attack-completed", () => (this.isHurting = false));
+    EventBus.on("animation-mining-completed", () => (this.isHurting = false));
+    EventBus.on("animation-fire-completed", () => (this.isHurting = false));
   }
 
-  private hit() {
+  private hit(tool: Tools) {
     if (!this.isHurting) {
       this.isHurting = true;
-      const newHealth =
-        this.lifeBar.currentHealth - this.lifeBar.maxHealth / BOSS_STATS.health;
+
+      const playerDamage = this.player?.getDamage(tool, "finalBoss") as number;
+
+      const newHealth = this.lifeBar.currentHealth - playerDamage;
+
       if (newHealth > 0) {
         this.lifeBar.setHealth(newHealth);
       } else {
@@ -350,9 +365,6 @@ export class BossContainer extends Phaser.GameObjects.Container {
 
     this.spriteBody.on("animationcomplete", () => {
       this.destroy();
-      // this.openPortal()
     });
   }
-
-  // private openPortal() {}
 }
