@@ -49,8 +49,8 @@ interface CreateRandomPathProps {
 export class BaseRoom {
   protected hasEntry: boolean;
   protected hasExit: boolean;
-  protected type: RoomType;
   protected scene: HalloweenScene;
+  type: RoomType;
   player?: BumpkinContainer;
   id!: number;
   matrix: number[][];
@@ -368,7 +368,7 @@ export class BaseRoom {
 
   protected createDecorationRandomly({
     hasDecorationBorder = true,
-    hasDecorationGround = true,
+    hasDecorationGround = false,
     excludeSmallRoom = false,
   } = {}) {
     hasDecorationBorder &&

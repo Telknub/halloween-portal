@@ -286,7 +286,7 @@ export interface Decoration {
   offsetX?: number;
   offsetY?: number;
 }
-export const DECORATION_BORDER_CHACE = 0.2;
+export const DECORATION_BORDER_CHACE = 0.5;
 export const DECORATION_BORDER_CONFIG: Record<number, Decoration[]> = {
   [TILES.T_IN]: [
     { name: "pile_of_bones", offsetY: 0.25 * TILE_SIZE },
@@ -296,6 +296,46 @@ export const DECORATION_BORDER_CONFIG: Record<number, Decoration[]> = {
     { name: "bookshelves7", scale: 2 },
     { name: "bookshelves8", scale: 2 },
     { name: "bookshelves9", scale: 2 },
+    {
+      name: "banner_red_front",
+      offsetY: 0.25 * TILE_SIZE,
+      offsetX: 0.14 * TILE_SIZE,
+    },
+    {
+      name: "banner_grey_front",
+      offsetY: 0.25 * TILE_SIZE,
+      offsetX: 0.14 * TILE_SIZE,
+    },
+    {
+      name: "banner_darkgrey_front",
+      offsetY: 0.25 * TILE_SIZE,
+      offsetX: 0.14 * TILE_SIZE,
+    },
+    {
+      name: "ancient_artifact1",
+      offsetY: 0.25 * TILE_SIZE,
+      offsetX: 0.25 * TILE_SIZE,
+    },
+    {
+      name: "ancient_artifact2",
+      offsetY: 0.25 * TILE_SIZE,
+      offsetX: 0.25 * TILE_SIZE,
+    },
+    {
+      name: "ancient_artifact3",
+      offsetY: 0.25 * TILE_SIZE,
+      offsetX: 0.25 * TILE_SIZE,
+    },
+    {
+      name: "barrel_normal",
+      offsetY: 0.55 * TILE_SIZE,
+      offsetX: 0.2 * TILE_SIZE,
+    },
+    {
+      name: "barrel_broken",
+      offsetY: 0.55 * TILE_SIZE,
+      offsetX: 0.2 * TILE_SIZE,
+    },
   ],
   [TILES.TL_IN]: [
     { name: "bookshelves1", scale: 2 },
@@ -314,19 +354,30 @@ export const DECORATION_BORDER_CONFIG: Record<number, Decoration[]> = {
     { name: "bookshelves5", scale: 2 },
     { name: "bookshelves6", scale: 2 },
     { name: "bookshelves10", scale: 2 },
+    { name: "banner_red_left" },
+    { name: "banner_grey_left" },
+    { name: "banner_darkgrey_left" },
   ],
   [TILES.R_IN]: [
     { name: "bookshelves1", scale: 2 },
     { name: "bookshelves5", scale: 2 },
     { name: "bookshelves6", scale: 2 },
     { name: "bookshelves10", scale: 2 },
+    { name: "banner_red_right" },
+    { name: "banner_grey_right" },
+    { name: "banner_darkgrey_right" },
   ],
 };
-export const AMOUNT_DECORATION_GROUND = 3;
+export const AMOUNT_DECORATION_GROUND = 6;
 export const DECORATION_GROUND_CONFIG: Decoration[] = [
   { name: "normal_pillar" },
   { name: "damaged_pillar" },
   { name: "broken_pillar" },
+  { name: "ancient_artifact1" },
+  { name: "ancient_artifact2" },
+  { name: "ancient_artifact3" },
+  { name: "barrel_normal" },
+  { name: "barrel_broken" },
 ];
 export const DECORATION_SKELETON_CONFIG: Decoration[] = [
   { name: "raveyard", hasAnimation: true },

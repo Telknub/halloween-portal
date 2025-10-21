@@ -30,16 +30,10 @@ export class RoomList {
   private tail: BaseRoom | null = null;
   private length = 0;
   private mapRoomSize = { width: 0, height: 0 };
-  private wallsLayer?: Phaser.Tilemaps.TilemapLayer;
 
-  constructor(
-    scene: HalloweenScene,
-    player?: BumpkinContainer,
-    wallsLayer?: Phaser.Tilemaps.TilemapLayer,
-  ) {
+  constructor(scene: HalloweenScene, player?: BumpkinContainer) {
     this.scene = scene;
     this.player = player;
-    this.wallsLayer = wallsLayer;
   }
 
   append(type: RoomType): void {
@@ -53,7 +47,6 @@ export class RoomList {
     } else if (type === "enemy") {
       room = new EnemyRoom({
         scene: this.scene,
-        wallsLayer: this.wallsLayer,
         player: this.player,
       });
     } else if (type === "puzzle") {
@@ -104,8 +97,14 @@ export class RoomList {
     );
   }
 
-  setupObjects() {
-    this.iterateRooms((room) => room.createObjects());
+  setupObjects(wallsLayer: Phaser.Tilemaps.TilemapLayer) {
+    this.iterateRooms((room) => {
+      if (room.type === "enemy") {
+        (room as EnemyRoom).createObjects(wallsLayer);
+      } else {
+        room.createObjects();
+      }
+    });
   }
 
   concatenateRooms(): number[][] {

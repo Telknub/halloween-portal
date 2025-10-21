@@ -1,17 +1,15 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
-import { BaseScene } from "features/world/scenes/BaseScene";
 import { MachineInterpreter } from "../lib/halloweenMachine";
 import { LifeBar } from "./LifeBar";
 import { EventBus } from "../lib/EventBus";
-import { Enemies, MUMMY_STATS, Tools, Damages } from "../HalloweenConstants";
+import { Tools } from "../HalloweenConstants";
 import { HalloweenScene } from "../HalloweenScene";
-import { RelicContainer } from "./RelicContainer";
-import { onAnimationComplete } from "../lib/HalloweenUtils";
 
 interface Props {
   x: number;
   y: number;
   scene: HalloweenScene;
+  wallsLayer?: Phaser.Tilemaps.TilemapLayer;
   defeat: (x: number, y: number) => void;
   player?: BumpkinContainer;
 }
@@ -28,16 +26,18 @@ export class MummyContainer extends Phaser.GameObjects.Container {
   private spriteSmash!: Phaser.GameObjects.Sprite;
   private hasDealtDamage = false;
   private defeat: (x: number, y: number) => void;
+  private wallsLayer?: Phaser.Tilemaps.TilemapLayer;
 
   private lastAttackTime = 0;
   private attackCooldown = 2000;
   private chanceToAttack = 2000;
 
-  constructor({ x, y, scene, defeat, player }: Props) {
+  constructor({ x, y, scene, wallsLayer, defeat, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
     this.player = player;
     this.defeat = defeat;
+    this.wallsLayer = wallsLayer;
 
     this.spriteName = "dungeonMummy";
 
@@ -264,9 +264,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       () => {
         if (this.hasDealtDamage) return;
         this.hasDealtDamage = true;
-
-        // console.log("-1 Health");
-        // TODO: Actually subtract health from player here
+        this.player?.takeDamage("mummy");
       },
       undefined,
       this,
@@ -276,6 +274,10 @@ export class MummyContainer extends Phaser.GameObjects.Container {
   private createOverlaps() {
     if (!this.player) return;
     this.scene.physics.add.collider(this.player, this);
+    this.scene.physics.add.collider(
+      this.wallsLayer as Phaser.Tilemaps.TilemapLayer,
+      this,
+    );
     this.scene.physics.add.overlap(this, this.player.sword, () =>
       this.hit("sword"),
     );

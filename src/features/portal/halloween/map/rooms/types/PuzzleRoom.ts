@@ -30,8 +30,6 @@ export class PuzzleRoom extends BaseRoom {
     this.id === 3 &&
       this.spawnObjectRandomly((x, y) => this.createPickaxe(x, y), true);
     this.createGate();
-
-    this.spawnObjectRandomly((x, y) => this.createRelic(x, y));
   }
 
   private createOwl() {

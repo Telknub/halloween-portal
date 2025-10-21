@@ -10,6 +10,7 @@ interface Props {
   y: number;
   scene: HalloweenScene;
   id: number;
+  wallsLayer?: Phaser.Tilemaps.TilemapLayer;
   defeat: (id: number) => void;
   player?: BumpkinContainer;
 }
@@ -18,6 +19,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   scene: HalloweenScene;
   private spriteName: string;
+  private wallsLayer?: Phaser.Tilemaps.TilemapLayer;
   private lifeBar: LifeBar;
   public spriteBody: Phaser.GameObjects.Sprite;
   private spriteAttack!: Phaser.GameObjects.Sprite;
@@ -31,12 +33,13 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
   private lastAttackTime = 0;
   private attackCooldown = 2000; // milliseconds
 
-  constructor({ x, y, scene, id, defeat, player }: Props) {
+  constructor({ x, y, scene, id, wallsLayer, defeat, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
     this.player = player;
     this.id = id;
     this.defeat = defeat;
+    this.wallsLayer = wallsLayer;
 
     const enemyType = ["ghoul", "ghost"];
     const ranNum = Math.floor(Math.random() * enemyType.length);
@@ -242,6 +245,12 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
   private createOverlaps() {
     if (!this.player) return;
     this.scene.physics.add.collider(this.player, this.spriteBody);
+    if (this.spriteName === "ghoul") {
+      this.scene.physics.add.collider(
+        this.wallsLayer as Phaser.Tilemaps.TilemapLayer,
+        this,
+      );
+    }
     this.scene.physics.add.overlap(this, this.player.sword, () =>
       this.hit("sword"),
     );

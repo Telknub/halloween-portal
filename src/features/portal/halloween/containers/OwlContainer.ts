@@ -27,7 +27,7 @@ export class OwlContainer extends Phaser.GameObjects.Container {
     this.spriteName = "owl";
     const scale = 0.7;
     this.sprite = scene.add.sprite(0, 0, this.spriteName).setScale(scale);
-    this.alert = this.scene.add.sprite(-12, -16, "alert").setSize(4, 10);
+    this.alert = this.scene.add.sprite(-4, -31, "alert").setSize(4, 10);
 
     // Animation
     this.createAnimation();
@@ -51,15 +51,18 @@ export class OwlContainer extends Phaser.GameObjects.Container {
   }
 
   private createAnimation() {
-    this.scene.anims.create({
-      key: `${this.spriteName}_action`,
-      frames: this.scene.anims.generateFrameNumbers(this.spriteName, {
-        start: 0,
-        end: 13,
-      }),
-      repeat: -1,
-      frameRate: 10,
-    });
+    const animationKey = `${this.spriteName}_action`;
+    if (!this.scene.anims.exists(animationKey)) {
+      this.scene.anims.create({
+        key: `${this.spriteName}_action`,
+        frames: this.scene.anims.generateFrameNumbers(this.spriteName, {
+          start: 0,
+          end: 13,
+        }),
+        repeat: -1,
+        frameRate: 10,
+      });
+    }
     this.sprite.play(`${this.spriteName}_action`, true);
   }
 

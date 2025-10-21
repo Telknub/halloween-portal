@@ -288,40 +288,6 @@ export class HalloweenScene extends BaseScene {
       frameHeight: 15,
     });
 
-    // Mummy
-    this.load.spritesheet(
-      "dungeonMummy_idle",
-      "world/halloween/dungeonMummy_idle.webp",
-      {
-        frameWidth: 64,
-        frameHeight: 64,
-      },
-    );
-    this.load.spritesheet(
-      "dungeonMummy_walk",
-      "world/halloween/dungeonMummy_walk.webp",
-      {
-        frameWidth: 64,
-        frameHeight: 64,
-      },
-    );
-    this.load.spritesheet(
-      "dungeonMummy_attack",
-      "world/halloween/dungeonMummy_attack.webp",
-      {
-        frameWidth: 64,
-        frameHeight: 64,
-      },
-    );
-    this.load.spritesheet(
-      "dungeonMummy_defeat",
-      "world/halloween/dungeonMummy_defeat.webp",
-      {
-        frameWidth: 64,
-        frameHeight: 64,
-      },
-    );
-
     // Doors
     // Green door
     this.load.image(
@@ -485,6 +451,96 @@ export class HalloweenScene extends BaseScene {
       {
         frameWidth: 21,
         frameHeight: 30,
+      },
+    );
+    this.load.image(
+      "banner_red_front",
+      "world/halloween/decorations/banner_red_front.png",
+    );
+    this.load.image(
+      "banner_red_right",
+      "world/halloween/decorations/banner_red_right.png",
+    );
+    this.load.image(
+      "banner_red_left",
+      "world/halloween/decorations/banner_red_left.png",
+    );
+    this.load.image(
+      "banner_grey_front",
+      "world/halloween/decorations/banner_grey_front.png",
+    );
+    this.load.image(
+      "banner_grey_right",
+      "world/halloween/decorations/banner_grey_right.png",
+    );
+    this.load.image(
+      "banner_grey_left",
+      "world/halloween/decorations/banner_grey_left.png",
+    );
+    this.load.image(
+      "banner_darkgrey_front",
+      "world/halloween/decorations/banner_darkgrey_front.png",
+    );
+    this.load.image(
+      "banner_darkgrey_right",
+      "world/halloween/decorations/banner_darkgrey_right.png",
+    );
+    this.load.image(
+      "banner_darkgrey_left",
+      "world/halloween/decorations/banner_darkgrey_left.png",
+    );
+    this.load.image(
+      "ancient_artifact1",
+      "world/halloween/decorations/ancient_artifact1.png",
+    );
+    this.load.image(
+      "ancient_artifact2",
+      "world/halloween/decorations/ancient_artifact2.png",
+    );
+    this.load.image(
+      "ancient_artifact3",
+      "world/halloween/decorations/ancient_artifact3.png",
+    );
+    this.load.image(
+      "barrel_normal",
+      "world/halloween/decorations/barrel-normal.png",
+    );
+    this.load.image(
+      "barrel_broken",
+      "world/halloween/decorations/barrel-broken.png",
+    );
+
+    // Mummy
+    this.load.spritesheet(
+      "dungeonMummy_idle",
+      "world/halloween/dungeonMummy_idle.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      },
+    );
+    this.load.spritesheet(
+      "dungeonMummy_walk",
+      "world/halloween/dungeonMummy_walk.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      },
+    );
+    this.load.spritesheet(
+      "dungeonMummy_attack",
+      "world/halloween/dungeonMummy_attack.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
+      },
+    );
+    this.load.spritesheet(
+      "dungeonMummy_defeat",
+      "world/halloween/dungeonMummy_defeat.webp",
+      {
+        frameWidth: 64,
+        frameHeight: 64,
       },
     );
     this.load.spritesheet(

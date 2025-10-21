@@ -32,6 +32,7 @@ export const SlidingPuzzle: React.FC<Props> = ({ onClose, onAction }) => {
       const isSolved = checkIfSolved(tiles);
       setIsSolved(isSolved);
       if (isSolved) {
+        setIsVisibleCloseButton(false);
         setTimeout(() => {
           onAction();
         }, 1000);

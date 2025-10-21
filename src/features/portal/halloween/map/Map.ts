@@ -33,7 +33,7 @@ export class Map {
     this.createMap();
     this.initialiseCamera();
     this.initialiseLayers();
-    // this.initialiseCollisions();
+    this.initialiseCollisions();
     this.initialiseObjects();
   }
 
@@ -172,14 +172,14 @@ export class Map {
   private initialiseCollisions() {
     this.wallsLayer.setCollisionByExclusion([-1]);
     this.wallsLayer.setCollisionByProperty({ collides: true });
-    this.scene.physics.add.collider(
-      this.player as BumpkinContainer,
-      this.wallsLayer,
-    );
+    // this.scene.physics.add.collider(
+    //   this.player as BumpkinContainer,
+    //   this.wallsLayer,
+    // );
   }
 
   private initialiseObjects() {
-    this.rooms.setupObjects();
+    this.rooms.setupObjects(this.wallsLayer);
   }
 
   private getRandomRoom(
@@ -201,7 +201,7 @@ export class Map {
   }
 
   private createRooms() {
-    this.rooms = new RoomList(this.scene, this.player, this.wallsLayer);
+    this.rooms = new RoomList(this.scene, this.player);
     const roomTypes: RoomType[] = ["enemy", "puzzle"];
     const maxRepeats = 2;
     const counts = {

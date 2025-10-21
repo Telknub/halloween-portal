@@ -10,6 +10,7 @@ import eye from "public/world/halloween/Eye.webp";
 import brain from "public/world/halloween/Brain.webp";
 import skull from "public/world/halloween/Skull.webp";
 import bone from "public/world/halloween/Bone.webp";
+import classNames from "classnames";
 
 const shovel = SUNNYSIDE.tools.rusty_shovel;
 
@@ -120,6 +121,7 @@ export const SudokuHalloween: React.FC<Props> = ({ onClose, onAction }) => {
     col: number;
   } | null>(null);
   const [isSolved, setIsSolved] = useState(false);
+  const [isVisibleCloseButton, setIsVisibleCloseButton] = useState(true);
 
   const ItemIDs: ItemID[] = ITEM;
 
@@ -146,6 +148,7 @@ export const SudokuHalloween: React.FC<Props> = ({ onClose, onAction }) => {
       // Check for solution immediately after move
       if (isPuzzleSolved(newPuzzle, solution)) {
         setIsSolved(true);
+        setIsVisibleCloseButton(false);
         setTimeout(() => {
           onAction();
         }, 1000);
@@ -168,7 +171,11 @@ export const SudokuHalloween: React.FC<Props> = ({ onClose, onAction }) => {
     <>
       <div className="fixed inset-0 flex flex-row justify-center items-center z-5 w-full h-full bg-black/50 backdrop-blur-md">
         <div className="absolute">
-          <div className="flex justify-end">
+          <div
+            className={classNames("flex justify-end", {
+              hidden: !isVisibleCloseButton,
+            })}
+          >
             <img
               src={SUNNYSIDE.icons.close}
               className="cursor-pointer"

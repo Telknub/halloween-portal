@@ -15,7 +15,6 @@ import { RelicContainer } from "features/portal/halloween/containers/RelicContai
 
 interface Props {
   scene: HalloweenScene;
-  wallsLayer?: Phaser.Tilemaps.TilemapLayer;
   hasEntry?: boolean;
   hasExit?: boolean;
   matrix?: number[][];
@@ -26,17 +25,10 @@ export class EnemyRoom extends BaseRoom {
   private enemyIds: number[] = [];
   private wallsLayer?: Phaser.Tilemaps.TilemapLayer;
 
-  constructor({
-    scene,
-    hasEntry = true,
-    hasExit = true,
-    wallsLayer,
-    player,
-  }: Props) {
+  constructor({ scene, hasEntry = true, hasExit = true, player }: Props) {
     const matrix = createRandomRoom();
     super({ scene, hasEntry, hasExit, matrix, type: "enemy", player });
 
-    this.wallsLayer = wallsLayer;
     this.createEvents();
   }
 
@@ -46,7 +38,8 @@ export class EnemyRoom extends BaseRoom {
     });
   }
 
-  createObjects() {
+  createObjects(wallsLayer?: Phaser.Tilemaps.TilemapLayer) {
+    this.wallsLayer = wallsLayer;
     this.createDecorationRandomly();
     this.spawnObjectRandomly((x, y) => this.createStatues(x, y));
     this.spawnObjectRandomly((x, y) => this.createBones(x, y));
@@ -86,6 +79,7 @@ export class EnemyRoom extends BaseRoom {
       y,
       scene: this.scene,
       id,
+      wallsLayer: this.wallsLayer,
       defeat: (id: number) => this.defeatEnemy(id),
       player: this.player,
     });
@@ -100,6 +94,7 @@ export class EnemyRoom extends BaseRoom {
       x,
       y,
       scene: this.scene,
+      wallsLayer: this.wallsLayer,
       defeat: (x: number, y: number) => this.defeatMiniBoss(x, y),
       player: this.player,
     });
@@ -114,6 +109,7 @@ export class EnemyRoom extends BaseRoom {
       x,
       y,
       scene: this.scene,
+      wallsLayer: this.wallsLayer,
       defeat: (x: number, y: number) => this.defeatMiniBoss(x, y),
       player: this.player,
     });
