@@ -6,14 +6,22 @@ import {
   SLIDING_PUZZLE_MOVESTOSOLVE,
   VICTORY_TEXT,
 } from "features/portal/halloween/HalloweenConstants";
+import { SUNNYSIDE } from "assets/sunnyside";
+import classNames from "classnames";
 
 const SIZE_X = 3; // Columns
 const SIZE_Y = 3; // Rows
 const TOTAL_TILES = SIZE_X * SIZE_Y;
 
-export const SlidingPuzzle: React.FC = () => {
+interface Props {
+  onClose: () => void;
+  onAction: () => void;
+}
+
+export const SlidingPuzzle: React.FC<Props> = ({ onClose, onAction }) => {
   const [tiles, setTiles] = useState<(number | null)[]>([]);
   const [isSolved, setIsSolved] = useState(false);
+  const [isVisibleCloseButton, setIsVisibleCloseButton] = useState(true);
 
   useEffect(() => {
     generatePuzzleAtLeast4MovesAway();
@@ -21,7 +29,13 @@ export const SlidingPuzzle: React.FC = () => {
 
   useEffect(() => {
     if (tiles.length === TOTAL_TILES) {
-      setIsSolved(checkIfSolved(tiles));
+      const isSolved = checkIfSolved(tiles);
+      setIsSolved(isSolved);
+      if (isSolved) {
+        setTimeout(() => {
+          onAction();
+        }, 1000);
+      }
     }
   }, [tiles]);
 
@@ -109,33 +123,49 @@ export const SlidingPuzzle: React.FC = () => {
 
   return (
     <div className="fixed top-0 left-0 w-full h-screen bg-black/20 backdrop-blur-md flex items-center justify-center flex-col gap-4">
-      <div
-        style={{
-          width: "min(500px, 90vw)",
-          height: "min(500px, 90vw)",
-          gridTemplateColumns: `repeat(${SIZE_X}, 1fr)`,
-          aspectRatio: "1 / 1", // Ensures it stays square
-        }}
-        className="grid gap-1"
-      >
-        {tiles.map((tile, index) => (
-          <div
-            key={index}
-            onClick={() => handleTileClick(index)}
-            style={
-              tile !== null
-                ? {
-                    backgroundImage: `url(${SLIDING_PUZZLE_IMG})`,
-                    backgroundSize: `${SIZE_X * 100}% ${SIZE_Y * 100}%`,
-                    backgroundPosition: getBackgroundPosition(tile),
-                  }
-                : {}
-            }
-            className={`w-full h-full rounded cursor-pointer transition-all duration-200 ${
-              tile === null ? "bg-black opacity-50" : "bg-cover bg-center"
-            }`}
+      <div>
+        <div
+          className={classNames("flex justify-end", {
+            hidden: !isVisibleCloseButton,
+          })}
+        >
+          <img
+            src={SUNNYSIDE.icons.close}
+            className="cursor-pointer"
+            onClick={onClose}
+            style={{
+              width: `${PIXEL_SCALE * 11}px`,
+            }}
           />
-        ))}
+        </div>
+        <div
+          style={{
+            width: "min(500px, 90vw)",
+            height: "min(500px, 90vw)",
+            gridTemplateColumns: `repeat(${SIZE_X}, 1fr)`,
+            aspectRatio: "1 / 1", // Ensures it stays square
+          }}
+          className="grid gap-1"
+        >
+          {tiles.map((tile, index) => (
+            <div
+              key={index}
+              onClick={() => handleTileClick(index)}
+              style={
+                tile !== null
+                  ? {
+                      backgroundImage: `url(${SLIDING_PUZZLE_IMG})`,
+                      backgroundSize: `${SIZE_X * 100}% ${SIZE_Y * 100}%`,
+                      backgroundPosition: getBackgroundPosition(tile),
+                    }
+                  : {}
+              }
+              className={`w-full h-full rounded cursor-pointer transition-all duration-200 ${
+                tile === null ? "bg-black opacity-50" : "bg-cover bg-center"
+              }`}
+            />
+          ))}
+        </div>
       </div>
 
       {isSolved && (

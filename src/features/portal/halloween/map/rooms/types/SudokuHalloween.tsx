@@ -3,7 +3,7 @@ import { SUNNYSIDE } from "assets/sunnyside";
 import { pixelGrayBorderStyle } from "features/game/lib/style";
 import {
   SUDOKU_COMPLEXITY,
-  TEXT,
+  VICTORY_TEXT,
 } from "features/portal/halloween/HalloweenConstants";
 import { PIXEL_SCALE } from "features/game/lib/constants";
 import eye from "public/world/halloween/Eye.webp";
@@ -100,7 +100,12 @@ function generateSudokuPuzzle() {
   return { puzzle, solution };
 }
 
-export const SudokuHalloween: React.FC = () => {
+interface Props {
+  onClose: () => void;
+  onAction: () => void;
+}
+
+export const SudokuHalloween: React.FC<Props> = ({ onClose, onAction }) => {
   const { puzzle: initialPuzzle, solution } = React.useMemo(
     () => generateSudokuPuzzle(),
     [],
@@ -141,14 +146,18 @@ export const SudokuHalloween: React.FC = () => {
       // Check for solution immediately after move
       if (isPuzzleSolved(newPuzzle, solution)) {
         setIsSolved(true);
+        setTimeout(() => {
+          onAction();
+        }, 1000);
       }
     }
   };
 
   function isPuzzleSolved(puzzle: PuzzleGrid, solution: PuzzleGrid): boolean {
-    return puzzle.every((row, rowIndex) =>
+    const result = puzzle.every((row, rowIndex) =>
       row.every((cell, colIndex) => cell === solution[rowIndex][colIndex]),
     );
+    return result;
   }
 
   const isCellChangeable = (rowIndex: number, colIndex: number) => {
@@ -157,51 +166,63 @@ export const SudokuHalloween: React.FC = () => {
 
   return (
     <>
-      <div className="fixed inset-0 flex flex-row justify-center items-center z-5 w-full h-full bg-black">
-        <div className="absolute grid grid-cols-4 gap-2">
-          {puzzle.map((row, rowIndex) =>
-            row.map((item, colIndex) => (
-              <div
-                key={`${rowIndex}-${colIndex}`}
-                className={`
+      <div className="fixed inset-0 flex flex-row justify-center items-center z-5 w-full h-full bg-black/50 backdrop-blur-md">
+        <div className="absolute">
+          <div className="flex justify-end">
+            <img
+              src={SUNNYSIDE.icons.close}
+              className="cursor-pointer"
+              onClick={onClose}
+              style={{
+                width: `${PIXEL_SCALE * 11}px`,
+              }}
+            />
+          </div>
+          <div className="grid grid-cols-4 gap-2">
+            {puzzle.map((row, rowIndex) =>
+              row.map((item, colIndex) => (
+                <div
+                  key={`${rowIndex}-${colIndex}`}
+                  className={`
           relative flex justify-center items-center
           ${selectedCell?.row === rowIndex && selectedCell?.col === colIndex ? "ring-0 ring-blue-500" : ""}
           ${!isCellChangeable(rowIndex, colIndex) ? "opacity-70" : "cursor-pointer hover:img-highlight"}
           w-20 h-20 sm:w-24 sm:h-24 md:w-28 md:h-28
         `}
-                onClick={() => {
-                  if (!isSolved && isCellChangeable(rowIndex, colIndex)) {
-                    setSelectedCell({ row: rowIndex, col: colIndex });
-                  }
-                }}
-              >
-                <img
-                  src={SUNNYSIDE.ui.grayBorder}
-                  alt="border"
-                  className="absolute inset-0 w-full h-full object-contain pointer-events-none"
-                />
-                {item && (
+                  onClick={() => {
+                    if (!isSolved && isCellChangeable(rowIndex, colIndex)) {
+                      setSelectedCell({ row: rowIndex, col: colIndex });
+                    }
+                  }}
+                >
                   <img
-                    src={ITEM_IMAGES[item]}
-                    alt={item}
-                    className="w-10 h-10 sm:w-12 sm:h-12 object-contain z-10"
+                    src={SUNNYSIDE.ui.grayBorder}
+                    alt="border"
+                    className="absolute inset-0 w-full h-full object-contain pointer-events-none"
                   />
-                )}
-              </div>
-            )),
-          )}
+                  {item && (
+                    <img
+                      src={ITEM_IMAGES[item]}
+                      alt={item}
+                      className="w-10 h-10 sm:w-12 sm:h-12 object-contain z-10"
+                    />
+                  )}
+                </div>
+              )),
+            )}
+          </div>
+          {/* <img src={item_box} className="relevant w-[27rem] z-11" alt="box"/> */}
+
+          {/* VERTICAL Divider */}
+          {/* <div className="absolute top-1/3 bottom-0 h-1/3 left-1/2 w-1 border-black-300 bg-black z-10" /> */}
+
+          {/* HORIZONTAL Divider */}
+          {/* <div className="absolute left-1/3 right-0 w-1/3 top-1/2 h-1 border-black-300 bg-black z-10" /> */}
         </div>
-        {/* <img src={item_box} className="relevant w-[27rem] z-11" alt="box"/> */}
-
-        {/* VERTICAL Divider */}
-        {/* <div className="absolute top-1/3 bottom-0 h-1/3 left-1/2 w-1 border-black-300 bg-black z-10" /> */}
-
-        {/* HORIZONTAL Divider */}
-        {/* <div className="absolute left-1/3 right-0 w-1/3 top-1/2 h-1 border-black-300 bg-black z-10" /> */}
       </div>
 
       {selectedCell && !isSolved && (
-        <div className="fixed top-[10rem] md:top-[15rem] left-1/2 z-50 sm:px-6 md:px-10 transform -translate-x-1/2 -translate-y-[0rem] flex shadow-lg">
+        <div className="fixed top-[10rem] md:top-[9rem] left-1/2 z-50 sm:px-6 md:px-10 transform -translate-x-1/2 -translate-y-[0rem] flex shadow-lg">
           {ItemIDs.map((id) => (
             <div
               key={id}
@@ -215,7 +236,7 @@ export const SudokuHalloween: React.FC = () => {
               <img
                 src={ITEM_IMAGES[id]}
                 alt={`select-${id}`}
-                className="absolute w-1/2 h-full cursor-pointer object-contain transition hover:scale-110 absolute top-0"
+                className="absolute w-1/2 h-full cursor-pointer object-contain transition hover:scale-110 top-0"
                 onClick={() => handleItemSelect(id)}
               />
             </div>
@@ -256,7 +277,7 @@ export const SudokuHalloween: React.FC = () => {
               background: "#c0cbdc",
             }}
           >
-            <div className="pr-3">{TEXT}</div>
+            <div className="pr-3">{VICTORY_TEXT.Sudoku}</div>
           </div>
         </div>
       )}

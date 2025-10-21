@@ -27,7 +27,8 @@ export type ToolActions = "attack" | "mining" | "enableFire";
 export type HalloweenNpcNames =
   | "initial_skeleton"
   | "final_skeleton"
-  | "blacksmith";
+  | "blacksmith"
+  | "owl";
 export type Bones = "femur" | "mandible" | "spine" | "clavicles" | "scapula";
 export type statueEffects =
   | "speedBuff"
@@ -96,11 +97,6 @@ export const MAP_OFFSET_Y_RULES: Partial<Record<Direction, number>> = {
 
 export const OUTER_WALL_THICKNESS = 3;
 
-export const BLACKSMITH_CONFIGURATION = {
-  x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
-  y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 2 + 5,
-};
-
 export const TOOL_ACTION_MAP: Partial<Record<Tools, ToolActions>> = {
   sword: "attack",
   lamp: "enableFire",
@@ -110,6 +106,7 @@ export const TOOL_ACTION_MAP: Partial<Record<Tools, ToolActions>> = {
 export const INITIAL_SKELETON_NPC_NAME: HalloweenNpcNames = "initial_skeleton";
 export const FINAL_SKELETON_NPC_NAME: HalloweenNpcNames = "final_skeleton";
 export const BLACKSMITH_NPC_NAME: HalloweenNpcNames = "blacksmith";
+export const OWL_NPC_NAME: HalloweenNpcNames = "owl";
 export const INITIAL_SKELETON_KEY = "initial_skeleton_flow_complete";
 export const FINAL_SKELETON_KEY = "final_skeleton_flow_complete";
 export const BLACKSMITH_KEY = "blacksmith_flow_complete";
@@ -139,6 +136,14 @@ export const SKELETON_FINAL_ROOM_CONFIG = {
   x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
   y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 2,
   direction: "right",
+};
+export const BLACKSMITH_CONFIG = {
+  x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
+  y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 2 + 5,
+};
+export const OWL_CONFIG = {
+  x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
+  y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 2,
 };
 
 export const GROUND_DECORATION_CHANCE = 0.3;
@@ -534,6 +539,7 @@ export const ACTIVATE_FLAMETHROWER = {
 // Puzzle mini_game
 export const SLIDING_PUZZLE_MOVESTOSOLVE = 4;
 export const SLIDING_PUZZLE_IMG = slidingPuzzleImg;
+export const SUDOKU_COMPLEXITY = 4;
 export const VICTORY_TEXT = {
   Sudoku: "You got it!",
   SlidinpPuzzle: "Puzzle Solved!",

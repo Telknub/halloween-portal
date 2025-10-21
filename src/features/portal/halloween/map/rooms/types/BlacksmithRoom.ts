@@ -1,10 +1,7 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseRoom } from "../BaseRoom";
 import { createSmallRoom } from "../../Utils";
-import {
-  BLACKSMITH_CONFIGURATION,
-  BLACKSMITH_GATE_CONFIG,
-} from "features/portal/halloween/HalloweenConstants";
+import { BLACKSMITH_CONFIG } from "features/portal/halloween/HalloweenConstants";
 import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
 import { BlacksmithContainer } from "features/portal/halloween/containers/BlacksmithContainer";
 
@@ -35,8 +32,8 @@ export class BlacksmithRoom extends BaseRoom {
 
   private createBlacksmith() {
     const { x, y } = this.getRelativePosition(
-      BLACKSMITH_CONFIGURATION.x,
-      BLACKSMITH_CONFIGURATION.y,
+      BLACKSMITH_CONFIG.x,
+      BLACKSMITH_CONFIG.y,
     );
     new BlacksmithContainer({
       x,

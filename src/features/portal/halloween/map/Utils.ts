@@ -7,6 +7,7 @@ import {
   ROOM_INNER_WIDTH,
   ROOM_WALLS,
   smallRoom,
+  smallRoom2,
   TILES,
 } from "./rooms/RoomTileMap";
 
@@ -120,4 +121,18 @@ export const createSmallRoom = (): number[][] => {
   }
 
   return matrix;
+};
+
+export const createSmallRoom2 = (matrix: number[][]): number[][] => {
+  const newMatrix = JSON.parse(JSON.stringify(matrix));
+  const offsetX = OUTER_WALL_THICKNESS + 3;
+  const offsetY = OUTER_WALL_THICKNESS + 2;
+
+  for (let y = 0; y < smallRoom2.length; y++) {
+    for (let x = 0; x < smallRoom2[0].length; x++) {
+      newMatrix[y + offsetY][x + offsetX] = smallRoom2[y][x];
+    }
+  }
+
+  return newMatrix;
 };

@@ -1,7 +1,9 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseRoom } from "../BaseRoom";
-import { createCenterRoom } from "../../Utils";
+import { createCenterRoom, createSmallRoom2 } from "../../Utils";
 import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
+import { OwlContainer } from "features/portal/halloween/containers/OwlContainer";
+import { OWL_CONFIG } from "features/portal/halloween/HalloweenConstants";
 
 interface Props {
   scene: HalloweenScene;
@@ -13,19 +15,32 @@ interface Props {
 
 export class PuzzleRoom extends BaseRoom {
   constructor({ scene, hasEntry = true, hasExit = true, player }: Props) {
-    const matrix = createCenterRoom();
+    const matrixCenterRoom = createCenterRoom();
+    const matrix = createSmallRoom2(matrixCenterRoom);
     super({ scene, hasEntry, hasExit, matrix, type: "puzzle", player });
   }
 
   createObjects() {
     this.createDecorationRandomly({ excludeSmallRoom: true });
+    this.createOwl();
     this.spawnObjectRandomly((x, y) => this.createStatues(x, y), true);
     this.spawnObjectRandomly((x, y) => this.createBones(x, y), true);
-    this.id === 2 && this.spawnObjectRandomly((x, y) => this.createLamp(x, y));
+    this.id === 2 &&
+      this.spawnObjectRandomly((x, y) => this.createLamp(x, y), true);
     this.id === 3 &&
-      this.spawnObjectRandomly((x, y) => this.createPickaxe(x, y));
+      this.spawnObjectRandomly((x, y) => this.createPickaxe(x, y), true);
     this.createGate();
 
     this.spawnObjectRandomly((x, y) => this.createRelic(x, y));
+  }
+
+  private createOwl() {
+    const { x, y } = this.getRelativePosition(OWL_CONFIG.x, OWL_CONFIG.y);
+    new OwlContainer({
+      x,
+      y,
+      scene: this.scene,
+      player: this.player,
+    });
   }
 }

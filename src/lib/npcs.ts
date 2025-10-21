@@ -107,7 +107,8 @@ export type NPCName =
   | "worried pete"
   | "initial_skeleton"
   | "final_skeleton"
-  | "player";
+  | "player"
+  | "owl";
 
 export const NPC_WEARABLES: Partial<Record<NPCName, Equipped>> = {
   richie: {

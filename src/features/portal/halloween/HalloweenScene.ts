@@ -579,6 +579,12 @@ export class HalloweenScene extends BaseScene {
       frameWidth: 74,
       frameHeight: 42,
     });
+
+    // Puzzle NPC
+    this.load.spritesheet("owl", "world/owl.png", {
+      frameWidth: 65,
+      frameHeight: 71,
+    });
   }
 
   // init(data: any) {
