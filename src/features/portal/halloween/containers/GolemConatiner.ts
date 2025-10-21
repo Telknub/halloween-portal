@@ -60,6 +60,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
       .setImmovable(true);
 
     this.setSize(this.spriteBody.width, this.spriteBody.height);
+    this.setDepth(10000000);
     this.add([this.spriteBody, this.lifeBar]);
 
     // Overlap
@@ -266,7 +267,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
       () => {
         if (this.hasDealtDamage) return;
         this.hasDealtDamage = true;
-        this.player?.takeDamage("golem");
+        // this.player?.takeDamage("golem");
       },
       undefined,
       this,

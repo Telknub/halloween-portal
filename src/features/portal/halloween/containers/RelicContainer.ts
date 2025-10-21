@@ -1,13 +1,14 @@
 import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { HalloweenScene } from "../HalloweenScene";
 import { MachineInterpreter } from "../lib/halloweenMachine";
-import { Relics } from "../HalloweenConstants";
+import { Relics, TILE_SIZE } from "../HalloweenConstants";
 import { interactableModalManager } from "features/world/ui/InteractableModals";
 
 interface Props {
   x: number;
   y: number;
   scene: HalloweenScene;
+  isCentered?: boolean;
   player?: BumpkinContainer;
 }
 
@@ -17,7 +18,7 @@ export class RelicContainer extends Phaser.GameObjects.Container {
   private sprite: Phaser.GameObjects.Sprite;
   scene: HalloweenScene;
 
-  constructor({ x, y, scene, player }: Props) {
+  constructor({ x, y, scene, isCentered = false, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
     this.player = player;
@@ -26,19 +27,32 @@ export class RelicContainer extends Phaser.GameObjects.Container {
     this.spriteName =
       scene.relics[Math.floor(Math.random() * scene.relics.length)];
     scene.relics = scene.relics.filter((relic) => relic !== this.spriteName);
-    this.sprite = scene.add.sprite(0, 0, this.spriteName).setScale(0.7);
+    const scale = 0.7;
+    this.sprite = scene.add.sprite(0, 0, this.spriteName).setScale(scale);
 
     // Overlaps
     this.createOverlaps();
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
-      .setSize(this.sprite.width, this.sprite.height)
+      .setSize(this.sprite.width * scale, this.sprite.height * scale)
       .setImmovable(true)
       .setCollideWorldBounds(true);
 
-    this.setSize(this.sprite.width, this.sprite.height);
+    this.setSize(this.sprite.width * scale, this.sprite.height * scale);
     this.add(this.sprite);
+
+    if (isCentered) {
+      this.sprite.setOrigin(0);
+      (this.body as Phaser.Physics.Arcade.Body).setOffset(
+        (this.sprite.width * scale) / 2,
+        (this.sprite.height * scale) / 2,
+      );
+      this.setPosition(
+        this.x + TILE_SIZE / 2 - (this.sprite.width * scale) / 2,
+        this.y + TILE_SIZE / 2 - (this.sprite.height * scale) / 2,
+      );
+    }
 
     scene.add.existing(this);
   }

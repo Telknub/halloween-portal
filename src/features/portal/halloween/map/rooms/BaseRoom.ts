@@ -31,6 +31,7 @@ import { PickaxeContainer } from "../../containers/PickaxeContainer";
 import { RelicContainer } from "../../containers/RelicContainer";
 import { GateContainer } from "../../containers/GateContainer";
 import { DecorationContainer } from "../../containers/DecorationContainer";
+import { HoleContainer } from "../../containers/HoleContainer";
 
 interface Props {
   scene: HalloweenScene;
@@ -284,11 +285,24 @@ export class BaseRoom {
     });
   }
 
-  protected createRelic(x: number, y: number) {
+  protected createRelic(x: number, y: number, isCentered = false) {
     new RelicContainer({
       x,
       y,
       scene: this.scene,
+      isCentered,
+      player: this.player,
+    });
+  }
+
+  protected createHole(x: number, y: number, maxScale = 1, isCentered = false) {
+    new HoleContainer({
+      x,
+      y,
+      scene: this.scene,
+      id: this.id,
+      maxScale,
+      isCentered,
       player: this.player,
     });
   }

@@ -58,12 +58,8 @@ export class EnemyRoom extends BaseRoom {
   }
 
   private defeatMiniBoss(x: number, y: number) {
-    new RelicContainer({
-      x,
-      y,
-      scene: this.scene,
-      player: this.player,
-    });
+    this.createRelic(x, y);
+    this.spawnObjectRandomly((x, y) => this.createHole(x, y, 0.5, true));
   }
 
   private createEnemies() {

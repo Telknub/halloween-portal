@@ -65,6 +65,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       .setImmovable(true);
 
     this.setSize(this.spriteBody.width, this.spriteBody.height);
+    this.setDepth(10000000);
     this.add([this.spriteBody, this.lifeBar]);
 
     this.createOverlaps();

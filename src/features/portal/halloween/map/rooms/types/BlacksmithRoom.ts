@@ -24,10 +24,11 @@ export class BlacksmithRoom extends BaseRoom {
     this.createBlacksmith();
     this.spawnObjectRandomly((x, y) => this.createStatues(x, y), true);
     this.spawnObjectRandomly((x, y) => this.createBones(x, y), true);
+    this.spawnObjectRandomly((x, y) => this.createHole(x, y, 0.5, true));
     this.createGate();
     this.createGate("blacksmith");
 
-    this.spawnObjectRandomly((x, y) => this.createRelic(x, y));
+    this.spawnObjectRandomly((x, y) => this.createRelic(x, y, true));
   }
 
   private createBlacksmith() {
