@@ -2,7 +2,7 @@ import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { MachineInterpreter } from "../lib/halloweenMachine";
 import { LifeBar } from "./LifeBar";
 import { EventBus } from "../lib/EventBus";
-import { Enemies, Tools } from "../HalloweenConstants";
+import { Enemies, ENEMY_STATS, Tools } from "../HalloweenConstants";
 import { HalloweenScene } from "../HalloweenScene";
 
 interface Props {
@@ -51,7 +51,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       y: -30,
       scene: this.scene,
       width: 50,
-      maxHealth: 10,
+      maxHealth: ENEMY_STATS.health,
     });
 
     this.spriteBody = this.scene.add

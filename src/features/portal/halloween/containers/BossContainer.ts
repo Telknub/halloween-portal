@@ -51,7 +51,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
       y: -50,
       scene: this.scene,
       width: 100,
-      maxHealth: 10,
+      maxHealth: BOSS_STATS.health,
     });
 
     this.xGuide = room.getmapOffsetMultiplierX();
