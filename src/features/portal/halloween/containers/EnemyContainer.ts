@@ -2,7 +2,7 @@ import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { MachineInterpreter } from "../lib/halloweenMachine";
 import { LifeBar } from "./LifeBar";
 import { EventBus } from "../lib/EventBus";
-import { Enemies, ENEMY_STATS, Tools } from "../HalloweenConstants";
+import { Enemies, Tools } from "../HalloweenConstants";
 import { HalloweenScene } from "../HalloweenScene";
 
 interface Props {
@@ -60,8 +60,8 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
-      .setSize(this.spriteBody.width, this.spriteBody.height)
-      .setOffset(0, 0);
+      .setSize(this.spriteBody.width / 2, this.spriteBody.height / 2)
+      .setOffset(9, 9);
 
     this.setSize(this.spriteBody.width, this.spriteBody.height);
     this.setDepth(10);
@@ -128,6 +128,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
     const followDistance = 100;
 
     if (distance < attackDistance) {
+      this.stopMovement();
       this.attackPlayer();
     } else if (distance < followDistance) {
       this.followPlayer();
