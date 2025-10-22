@@ -1,30 +1,9 @@
-import mapJson from "assets/map/halloween.json";
 import tilesetConfig from "assets/map/halloween-tileset.json";
 import { SceneId } from "features/world/mmoMachine";
 import { BaseScene, WALKING_SPEED } from "features/world/scenes/BaseScene";
 import { MachineInterpreter } from "./lib/halloweenMachine";
-import { DarknessPipeline } from "./shaders/DarknessShader";
 import { VisibilityPolygon } from "./lib/visibilityPolygon";
 import {
-  INITIAL_LAMPS_LIGHT_RADIUS,
-  MIN_PLAYER_LIGHT_RADIUS,
-  JOYSTICK_LIGHT_RADIUS,
-  LAMP_SPAWN_BASE_INTERVAL,
-  MAX_LAMPS_IN_MAP,
-  LAMP_SPAWN_INCREASE_PERCENTAGE,
-  LAST_SPAWN_TIME_GHOST,
-  LAST_SPAWN_TIME_ZOMBIE,
-  DELAY_SPAWN_TIME,
-  UPDATE_INTERVAL,
-  MIN_GHOST_PER_MIN,
-  MAX_GHOST_PER_MIN,
-  MIN_ZOMBIE_PER_MIN,
-  MAX_ZOMBIE_PER_MIN,
-  ACCUMULATED_SLOWDOWN,
-  SET_SLOW_DOWN,
-  SET_SLOW_DOWN_DURATION,
-  SET_VISION_RANGE,
-  LAMP_USAGE_MULTIPLIER_INTERVAL,
   TOOL_ACTION_MAP,
   Tools,
   AnimationKeys,
@@ -40,11 +19,7 @@ import {
   WRATH_BUFF_PERCENTAGE,
   DECEIT_BUFF_PERCENTAGE,
 } from "./HalloweenConstants";
-import { LampContainer } from "./containers/LampContainer";
 import { EventObject } from "xstate";
-import { SPAWNS } from "features/world/lib/spawn";
-import { createLightPolygon } from "./lib/HalloweenUtils";
-import { Physics } from "phaser";
 import { isTouchDevice } from "features/world/lib/device";
 import { Map } from "./map/Map";
 import { EventBus } from "./lib/EventBus";
@@ -146,6 +121,25 @@ export class HalloweenScene extends BaseScene {
     this.load.audio("ghostDeathSound", "/world/ghost-death.wav");
     this.load.audio("shadows", "/world/shadows.mp3");
     this.load.audio("tension", "/world/tension.mp3");
+    // Tools
+    this.load.audio("lamp", "/world/halloween/burn.mp3");
+    this.load.audio("pickaxe", "/world/halloween/pickaxe.wav");
+    this.load.audio("sword", "/world/halloween/sword.wav");
+
+    // Collect
+    this.load.audio("collect", "/world/halloween/collect.mp3");
+
+    // Mini-boss, ghoul, ghost
+    this.load.audio("ghost_attack", "/world/halloween/ghost_attack.mp3");
+    this.load.audio("ghoul_attack", "/world/halloween/ghoul_attack.mp3");
+    this.load.audio("smash", "/world/halloween/smash.mp3");
+    this.load.audio("mummy", "/world/halloween/mummy.mp3");
+    this.load.audio("death", "/world/halloween/death.mp3");
+
+    // Final Boss
+    this.load.audio("boss_spawn", "/world/halloween/boss_spawn.mp3");
+    this.load.audio("boss_walk", "/world/halloween/boss_walk.mp3");
+    this.load.audio("flamethrower", "/world/halloween/flamethrower.wav");
 
     this.load.spritesheet("ghost_enemy_1", "world/ghost_enemy_1.png", {
       frameWidth: 22,
@@ -716,7 +710,7 @@ export class HalloweenScene extends BaseScene {
 
     // this.AnimationEnemy_2();  // Create zombie animations
 
-    this.physics.world.drawDebug = false;
+    // this.physics.world.drawDebug = true;
 
     // Important to first save the player and then the lamps
     // this.currentPlayer && (this.lightedItems[0] = this.currentPlayer);

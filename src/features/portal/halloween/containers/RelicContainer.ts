@@ -70,6 +70,7 @@ export class RelicContainer extends Phaser.GameObjects.Container {
   }
 
   private collect() {
+    this.scene.sound.add("collect", { loop: false, volume: 0.2 }).play();
     this.portalService?.send("GAIN_POINTS");
     this.scene?.applyRelicBuff(this.spriteName as Relics);
     interactableModalManager?.open("relic", { relicName: this.spriteName });

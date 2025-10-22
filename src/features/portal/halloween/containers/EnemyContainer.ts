@@ -29,6 +29,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
   private hasDealtDamage = false;
   private id: number;
   private defeat: (id: number) => void;
+  private ranEnemy!: number;
 
   private lastAttackTime = 0;
   private attackCooldown = 2000; // milliseconds
@@ -42,9 +43,9 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
     this.wallsGroup = wallsGroup;
 
     const enemyType = ["ghoul", "ghost"];
-    const ranNum = Math.floor(Math.random() * enemyType.length);
+    this.ranEnemy = Math.floor(Math.random() * enemyType.length);
 
-    this.spriteName = enemyType[ranNum];
+    this.spriteName = enemyType[this.ranEnemy];
 
     this.lifeBar = new LifeBar({
       x: 0,
@@ -56,7 +57,8 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
 
     this.spriteBody = this.scene.add
       .sprite(0, 0, `${this.spriteName}_idle`)
-      .setDepth(10);
+      .setDepth(10)
+      .setScale(0.9);
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
@@ -85,6 +87,14 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
     return this.scene.registry.get("portalService") as
       | MachineInterpreter
       | undefined;
+  }
+
+  private addSound(
+    key: string,
+    loop = false,
+    volume = 0.2,
+  ): Phaser.Sound.BaseSound {
+    return this.scene.sound.add(key, { loop, volume });
   }
 
   private createAnimation(
@@ -124,11 +134,11 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const attackDistance = 20;
-    const followDistance = 100;
+    const attackDistance = 30;
+    const followDistance = 70;
 
     if (distance < attackDistance) {
-      this.stopMovement();
+      // this.stopMovement();
       this.attackPlayer();
     } else if (distance < followDistance) {
       this.followPlayer();
@@ -151,10 +161,13 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const speed = 50;
+    const speed = 40;
 
     if (body.velocity.x > 0) this.spriteBody.setFlipX(false);
     else if (body.velocity.x < 0) this.spriteBody.setFlipX(true);
+
+    if (body.velocity.x > 0) this.spriteAttack.setFlipX(false);
+    else if (body.velocity.x < 0) this.spriteAttack.setFlipX(true);
 
     this.scene.physics.velocityFromRotation(angle, speed, body.velocity);
 
@@ -190,6 +203,9 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
     if (now - this.lastAttackTime < this.attackCooldown) {
       return;
     }
+
+    const enemySound = this.ranEnemy == 0 ? "ghoul_attack" : "ghost_attack";
+    this.addSound(enemySound).play();
 
     this.spriteBody.setVisible(false);
     this.spriteAttack.setVisible(true);
@@ -249,7 +265,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       () => {
         if (this.hasDealtDamage) return;
         this.hasDealtDamage = true;
-        this.player?.takeDamage(this.spriteName as Enemies);
+        // this.player?.takeDamage(this.spriteName as Enemies);
       },
       undefined,
       this,
@@ -301,6 +317,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
 
   private createDefeat() {
     this.scene.tweens.killTweensOf(this);
+    this.addSound("death").play();
 
     if (this.overlapHandler) {
       this.scene.physics.world.removeCollider(this.overlapHandler);

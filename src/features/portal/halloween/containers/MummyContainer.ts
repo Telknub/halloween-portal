@@ -51,12 +51,13 @@ export class MummyContainer extends Phaser.GameObjects.Container {
 
     this.spriteBody = this.scene.add
       .sprite(0, 0, `${this.spriteName}_idle`)
-      .setDepth(10);
+      .setDepth(10)
+      .setScale(0.7);
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
-      .setSize(this.spriteBody.width / 2, this.spriteBody.height)
-      .setOffset(16, 0);
+      .setSize(this.spriteBody.width / 2, this.spriteBody.height / 2)
+      .setOffset(16, 16);
 
     this.setSize(this.spriteBody.width, this.spriteBody.height);
     this.setDepth(10);
@@ -81,6 +82,14 @@ export class MummyContainer extends Phaser.GameObjects.Container {
     return this.scene.registry.get("portalService") as
       | MachineInterpreter
       | undefined;
+  }
+
+  private addSound(
+    key: string,
+    loop = false,
+    volume = 0.2,
+  ): Phaser.Sound.BaseSound {
+    return this.scene.sound.add(key, { loop, volume });
   }
 
   private createAnimation(
@@ -120,8 +129,8 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const attackDistance = 50;
-    const followDistance = 100;
+    const attackDistance = 30;
+    const followDistance = 150;
 
     if (distance < attackDistance) {
       this.attackPlayer();
@@ -134,6 +143,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
 
   private followPlayer() {
     if (!this.player) return;
+    this.addSound("mummy").play();
 
     const body = this.body as Phaser.Physics.Arcade.Body;
 
@@ -144,7 +154,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const speed = 50;
+    const speed = 40;
 
     if (body.velocity.x > 0) this.spriteBody.setFlipX(false);
     else if (body.velocity.x < 0) this.spriteBody.setFlipX(true);
@@ -168,6 +178,8 @@ export class MummyContainer extends Phaser.GameObjects.Container {
     if (now - this.lastAttackTime < this.attackCooldown) {
       return;
     }
+
+    this.addSound("smash").play();
 
     this.createAnimation(
       this.spriteBody,
@@ -209,7 +221,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this.spriteSmash = this.scene.add
         .sprite(0, 10, `${this.spriteName}_smash`)
         .setDepth(10)
-        .setScale(1.5);
+        .setScale(1.2);
 
       this.add(this.spriteSmash);
 
@@ -283,16 +295,16 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this,
     );
 
-    this.scene.physics.add.overlap(
-      this.player,
-      this,
-      () => {
-        if (this.player?.isHurting) return;
-        this.player?.takeDamage("mummy");
-      },
-      undefined,
-      this,
-    );
+    // this.scene.physics.add.overlap(
+    //   this.player,
+    //   this,
+    //   () => {
+    //     if (this.player?.isHurting) return;
+    //     this.player?.takeDamage("mummy");
+    //   },
+    //   undefined,
+    //   this,
+    // );
   }
 
   private createOverlaps() {
@@ -337,6 +349,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
 
   private createDefeat() {
     this.scene.tweens.killTweensOf(this);
+    this.addSound("death").play();
 
     if (this.overlapHandler) {
       this.scene.physics.world.removeCollider(this.overlapHandler);

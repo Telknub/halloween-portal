@@ -84,6 +84,14 @@ export class BossContainer extends Phaser.GameObjects.Container {
       | undefined;
   }
 
+  private addSound(
+    key: string,
+    loop = false,
+    volume = 0.2,
+  ): Phaser.Sound.BaseSound {
+    return this.scene.sound.add(key, { loop, volume });
+  }
+
   private createAnimation(
     sprite: Phaser.GameObjects.Sprite,
     spriteName: string,
@@ -126,6 +134,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
       duration: 1000,
       ease: "Linear",
       onComplete: () => {
+        this.addSound("boss_spawn").play();
         this.scene.cameras.main.shake(400, 0.001);
         this.startMove();
       },
@@ -134,7 +143,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
 
   private startMove() {
     if (!this.player) return;
-
+    this.addSound("boss_walk").play();
     const xPositions = BASICROOM_X_GUIDE.map(
       (x) => x - ACTIVATE_FLAMETHROWER.position_1,
     );
@@ -154,6 +163,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
             this.secondMove();
           });
         } else {
+          this.addSound("boss_walk").play();
           this.secondMove();
         }
       },
@@ -208,6 +218,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
             this.endMove();
           });
         } else {
+          this.addSound("boss_walk").play();
           this.endMove();
         }
       },
@@ -226,11 +237,15 @@ export class BossContainer extends Phaser.GameObjects.Container {
       alpha: 1,
       duration: 1000,
       ease: "Linear",
-      onComplete: () => this.startMove(),
+      onComplete: () => {
+        this.addSound("boss_walk").play();
+        this.startMove();
+      },
     });
   }
 
   private createAttack() {
+    this.addSound("flamethrower").play();
     this.createAnimation(
       this.spriteBody,
       `${this.spriteName}_attack`,
@@ -320,16 +335,16 @@ export class BossContainer extends Phaser.GameObjects.Container {
       this,
     );
 
-    this.scene.physics.add.overlap(
-      this.player,
-      this,
-      () => {
-        if (this.player?.isHurting) return;
-        this.player?.takeDamage("finalBoss");
-      },
-      undefined,
-      this,
-    );
+    // this.scene.physics.add.overlap(
+    //   this.player,
+    //   this,
+    //   () => {
+    //     if (this.player?.isHurting) return;
+    //     this.player?.takeDamage("finalBoss");
+    //   },
+    //   undefined,
+    //   this,
+    // );
   }
 
   private createOverlaps() {

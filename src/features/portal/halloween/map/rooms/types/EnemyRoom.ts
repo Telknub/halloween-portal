@@ -2,11 +2,7 @@ import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { BaseRoom } from "../BaseRoom";
 import { createRandomRoom } from "../../Utils";
 import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
-import {
-  AMOUNT_ENEMIES,
-  GOLEM_STATS,
-  MUMMY_STATS,
-} from "features/portal/halloween/HalloweenConstants";
+import { AMOUNT_ENEMIES } from "features/portal/halloween/HalloweenConstants";
 import { MummyContainer } from "features/portal/halloween/containers/MummyContainer";
 import { EnemyContainer } from "features/portal/halloween/containers/EnemyContainer";
 import { GolemContainer } from "features/portal/halloween/containers/GolemConatiner";
@@ -52,7 +48,9 @@ export class EnemyRoom extends BaseRoom {
     this.enemyIds = this.enemyIds.filter((enemyId) => enemyId !== id);
 
     if (!this.enemyIds.length) {
-      Math.random() <= 0.5 ? this.createGolemEnemy() : this.createMummyEnemy();
+      Math.random() <= 0.5
+        ? this.spawnObjectRandomly((x, y) => this.createGolemEnemy(x, y))
+        : this.spawnObjectRandomly((x, y) => this.createMummyEnemy(x, y));
     }
   }
 
@@ -80,11 +78,7 @@ export class EnemyRoom extends BaseRoom {
     });
   }
 
-  private createMummyEnemy() {
-    const { x, y } = this.getRelativePosition(
-      MUMMY_STATS.config.x,
-      MUMMY_STATS.config.y,
-    );
+  private createMummyEnemy(x: number, y: number) {
     new MummyContainer({
       x,
       y,
@@ -95,11 +89,7 @@ export class EnemyRoom extends BaseRoom {
     });
   }
 
-  private createGolemEnemy() {
-    const { x, y } = this.getRelativePosition(
-      GOLEM_STATS.config.x,
-      GOLEM_STATS.config.y,
-    );
+  private createGolemEnemy(x: number, y: number) {
     new GolemContainer({
       x,
       y,

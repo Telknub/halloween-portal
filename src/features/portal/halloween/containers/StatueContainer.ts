@@ -14,7 +14,6 @@ import {
   TILE_SIZE,
 } from "../HalloweenConstants";
 import { interactableModalManager } from "features/world/ui/InteractableModals";
-import { EnemyContainer } from "./EnemyContainer";
 import { MachineInterpreter } from "../lib/halloweenMachine";
 
 interface Props {
@@ -144,6 +143,7 @@ export class StatueContainer extends Phaser.GameObjects.Container {
       const effect = effects[Math.floor(Math.random() * effects.length)];
       const data = { statueName: this.spriteName, effect: effect };
       this.portalService?.send("COLLECT_STATUE_EFFECT", data);
+      this.scene.sound.add("collect", { loop: false, volume: 0.2 }).play();
       if (effect !== "spawnEnemy")
         interactableModalManager.open("statue", data);
       this.applyStatueEffect(effect);
@@ -194,12 +194,13 @@ export class StatueContainer extends Phaser.GameObjects.Container {
     this.player.setDoubleDamageChance(doubleDamageChange);
   }
 
+  // Bug
   private applySpawnEnemy() {
-    new EnemyContainer({
-      x: this.x,
-      y: this.y,
-      scene: this.scene,
-      player: this.player,
-    });
+    // new EnemyContainer({
+    //   x: this.x,
+    //   y: this.y,
+    //   scene: this.scene,
+    //   player: this.player,
+    // });
   }
 }
