@@ -9,7 +9,7 @@ interface Props {
   x: number;
   y: number;
   scene: HalloweenScene;
-  wallsLayer?: Phaser.Tilemaps.TilemapLayer;
+  wallsGroup?: Phaser.Physics.Arcade.StaticGroup;
   defeat: (x: number, y: number) => void;
   player?: BumpkinContainer;
 }
@@ -26,18 +26,18 @@ export class GolemContainer extends Phaser.GameObjects.Container {
   private spriteSmash!: Phaser.GameObjects.Sprite;
   private hasDealtDamage = false;
   private defeat: (x: number, y: number) => void;
-  private wallsLayer?: Phaser.Tilemaps.TilemapLayer;
+  private wallsGroup?: Phaser.Physics.Arcade.StaticGroup;
 
   private lastAttackTime = 0;
   private attackCooldown = 2000;
   private chanceToAttack = 2000;
 
-  constructor({ x, y, scene, wallsLayer, defeat, player }: Props) {
+  constructor({ x, y, scene, wallsGroup, defeat, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
     this.player = player;
     this.defeat = defeat;
-    this.wallsLayer = wallsLayer;
+    this.wallsGroup = wallsGroup;
 
     this.spriteName = "dungeonGolem";
 
@@ -51,16 +51,15 @@ export class GolemContainer extends Phaser.GameObjects.Container {
 
     this.spriteBody = this.scene.add
       .sprite(0, 0, `${this.spriteName}_idle`)
-      .setDepth(1000000);
+      .setDepth(10);
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
       .setSize(this.spriteBody.width / 2, this.spriteBody.height)
-      .setOffset(16, 0)
-      .setImmovable(true);
+      .setOffset(16, 0);
 
     this.setSize(this.spriteBody.width, this.spriteBody.height);
-    this.setDepth(10000000);
+    this.setDepth(10);
     this.add([this.spriteBody, this.lifeBar]);
 
     // Overlap
@@ -211,7 +210,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
 
       this.spriteSmash = this.scene.add
         .sprite(0, 10, `${this.spriteName}_smash`)
-        .setDepth(1000000000)
+        .setDepth(10)
         .setScale(1.5);
 
       this.add(this.spriteSmash);
@@ -278,7 +277,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
     if (!this.player) return;
     this.scene.physics.add.collider(this.player, this);
     this.scene.physics.add.collider(
-      this.wallsLayer as Phaser.Tilemaps.TilemapLayer,
+      this.wallsGroup as Phaser.Physics.Arcade.StaticGroup,
       this,
     );
     this.scene.physics.add.overlap(this, this.player.sword, () =>

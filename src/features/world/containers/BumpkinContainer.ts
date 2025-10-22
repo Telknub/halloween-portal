@@ -1317,7 +1317,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       x: ITEM_BUMPKIN.x,
       y: ITEM_BUMPKIN.y,
       id: -1,
-      scene: this.scene as BaseScene,
+      scene: this.scene as HalloweenScene,
     });
     this.lamp.setVisible(false);
     this.add(this.lamp);
@@ -1327,13 +1327,13 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     this.isBurning = true;
     const fireBody = this.fire.body as Phaser.Physics.Arcade.Body;
     fireBody.setEnable(true);
-    this.fire.setVisible(true);
     this.fire.activate(() => {
       fireBody.setEnable(false);
       this.fire.setVisible(false);
       this.isBurning = false;
       EventBus.emit("animation-fire-completed");
     });
+    this.fire.setVisible(true);
   }
 
   private createFire() {

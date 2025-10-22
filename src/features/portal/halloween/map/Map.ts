@@ -26,6 +26,7 @@ export class Map {
   private decorationWallsLayer!: Phaser.Tilemaps.TilemapLayer;
   private mapData!: number[][];
   private rooms!: RoomList;
+  private wallsGroup!: Phaser.Physics.Arcade.StaticGroup;
 
   constructor({ scene, player }: Props) {
     this.scene = scene;
@@ -169,17 +170,120 @@ export class Map {
     );
   }
 
+  private createWallsColliders() {
+    this.wallsGroup = this.scene.physics.add.staticGroup();
+
+    this.wallsLayer.forEachTile((tile) => {
+      if (!tile.index) return;
+
+      let wallConfigs = {
+        [TILES.T_IN]: [
+          {
+            width: TILE_SIZE,
+            height: (TILE_SIZE * 3) / 4,
+            offsetX: TILE_SIZE / 2,
+            offsetY: -TILE_SIZE / 8,
+          },
+        ],
+        [TILES.B_IN]: [
+          {
+            width: TILE_SIZE,
+            height: (TILE_SIZE * 2) / 3,
+            offsetX: TILE_SIZE / 2,
+            offsetY: TILE_SIZE / 6,
+          },
+        ],
+        [TILES.L_IN]: [
+          {
+            width: TILE_SIZE / 2,
+            height: TILE_SIZE,
+            offsetX: TILE_SIZE / 4,
+            offsetY: 0,
+          },
+        ],
+        [TILES.R_IN]: [
+          {
+            width: TILE_SIZE / 2,
+            height: TILE_SIZE,
+            offsetX: (TILE_SIZE * 3) / 4,
+            offsetY: 0,
+          },
+        ],
+        [TILES.TL_OUT]: [
+          {
+            width: TILE_SIZE / 2,
+            height: (TILE_SIZE * 2) / 3,
+            offsetX: (TILE_SIZE * 3) / 4,
+            offsetY: TILE_SIZE / 6,
+          },
+        ],
+        [TILES.TR_OUT]: [
+          {
+            width: TILE_SIZE / 2,
+            height: (TILE_SIZE * 2) / 3,
+            offsetX: TILE_SIZE / 4,
+            offsetY: TILE_SIZE / 6,
+          },
+        ],
+        [TILES.BL_OUT]: [
+          {
+            width: TILE_SIZE / 2,
+            height: (TILE_SIZE * 3) / 4,
+            offsetX: (TILE_SIZE * 3) / 4,
+            offsetY: -TILE_SIZE / 8,
+          },
+        ],
+        [TILES.BR_OUT]: [
+          {
+            width: TILE_SIZE / 2,
+            height: (TILE_SIZE * 3) / 4,
+            offsetX: TILE_SIZE / 4,
+            offsetY: -TILE_SIZE / 8,
+          },
+        ],
+      };
+
+      wallConfigs = {
+        ...wallConfigs,
+        [TILES.TL_IN]: [wallConfigs[TILES.L_IN][0], wallConfigs[TILES.T_IN][0]],
+        [TILES.TR_IN]: [wallConfigs[TILES.R_IN][0], wallConfigs[TILES.T_IN][0]],
+        [TILES.BL_IN]: [wallConfigs[TILES.L_IN][0], wallConfigs[TILES.B_IN][0]],
+        [TILES.BR_IN]: [wallConfigs[TILES.R_IN][0], wallConfigs[TILES.B_IN][0]],
+      };
+
+      const configs = wallConfigs[tile.index];
+      configs?.forEach((config) => {
+        if (config) {
+          const centerX = tile.getLeft() + config.offsetX;
+          const centerY = tile.getCenterY() + config.offsetY;
+
+          const rect = this.scene.add.rectangle(
+            centerX,
+            centerY,
+            config.width,
+            config.height,
+          );
+
+          this.scene.physics.add.existing(rect, true);
+          this.wallsGroup.add(rect);
+        }
+      });
+    });
+
+    this.scene.physics.add.collider(
+      this.player as BumpkinContainer,
+      this.wallsGroup,
+    );
+  }
+
   private initialiseCollisions() {
     this.wallsLayer.setCollisionByExclusion([-1]);
     this.wallsLayer.setCollisionByProperty({ collides: true });
-    // this.scene.physics.add.collider(
-    //   this.player as BumpkinContainer,
-    //   this.wallsLayer,
-    // );
+    this.createWallsColliders();
   }
 
   private initialiseObjects() {
-    this.rooms.setupObjects(this.wallsLayer);
+    this.rooms.setupObjects(this.wallsGroup);
   }
 
   private getRandomRoom(
@@ -210,7 +314,9 @@ export class Map {
     };
 
     this.rooms.append("initial");
-    this.getRandomRoom(roomTypes, maxRepeats, counts, 2);
+    this.rooms.append("enemy");
+    this.rooms.append("enemy");
+    // this.getRandomRoom(roomTypes, maxRepeats, counts, 2);
     this.rooms.append("blacksmith");
     this.getRandomRoom(roomTypes, maxRepeats, counts, 2);
     this.rooms.append("skeleton");

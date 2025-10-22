@@ -22,7 +22,7 @@ interface Props {
 
 export class EnemyRoom extends BaseRoom {
   private enemyIds: number[] = [];
-  private wallsLayer?: Phaser.Tilemaps.TilemapLayer;
+  private wallsGroup!: Phaser.Physics.Arcade.StaticGroup;
 
   constructor({ scene, hasEntry = true, hasExit = true, player }: Props) {
     const matrix = createRandomRoom();
@@ -37,8 +37,8 @@ export class EnemyRoom extends BaseRoom {
     });
   }
 
-  createObjects(wallsLayer?: Phaser.Tilemaps.TilemapLayer) {
-    this.wallsLayer = wallsLayer;
+  createObjects(wallsGroup?: Phaser.Physics.Arcade.StaticGroup) {
+    this.wallsGroup = wallsGroup as Phaser.Physics.Arcade.StaticGroup;
     this.createDecorationRandomly();
     this.spawnObjectRandomly((x, y) => this.createStatues(x, y));
     this.spawnObjectRandomly((x, y) => this.createBones(x, y));
@@ -74,7 +74,7 @@ export class EnemyRoom extends BaseRoom {
       y,
       scene: this.scene,
       id,
-      wallsLayer: this.wallsLayer,
+      wallsGroup: this.wallsGroup,
       defeat: (id: number) => this.defeatEnemy(id),
       player: this.player,
     });
@@ -89,7 +89,7 @@ export class EnemyRoom extends BaseRoom {
       x,
       y,
       scene: this.scene,
-      wallsLayer: this.wallsLayer,
+      wallsGroup: this.wallsGroup,
       defeat: (x: number, y: number) => this.defeatMiniBoss(x, y),
       player: this.player,
     });
@@ -104,7 +104,7 @@ export class EnemyRoom extends BaseRoom {
       x,
       y,
       scene: this.scene,
-      wallsLayer: this.wallsLayer,
+      wallsGroup: this.wallsGroup,
       defeat: (x: number, y: number) => this.defeatMiniBoss(x, y),
       player: this.player,
     });

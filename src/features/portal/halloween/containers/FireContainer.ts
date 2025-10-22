@@ -39,7 +39,7 @@ export class FireContainer extends Phaser.GameObjects.Container {
       this.spriteName = "fire";
       const fire = this.scene.add.sprite(x, y, this.spriteName);
       fire.setOrigin(0.5, 1);
-      fire.setScale(0);
+      fire.setScale(0.8);
       this.createAnimation(fire, i);
       this.sprites.push(fire);
     }

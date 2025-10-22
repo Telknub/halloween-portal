@@ -10,7 +10,7 @@ interface Props {
   y: number;
   scene: HalloweenScene;
   id: number;
-  wallsLayer?: Phaser.Tilemaps.TilemapLayer;
+  wallsGroup: Phaser.Physics.Arcade.StaticGroup;
   defeat: (id: number) => void;
   player?: BumpkinContainer;
 }
@@ -19,7 +19,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   scene: HalloweenScene;
   private spriteName: string;
-  private wallsLayer?: Phaser.Tilemaps.TilemapLayer;
+  private wallsGroup: Phaser.Physics.Arcade.StaticGroup;
   private lifeBar: LifeBar;
   public spriteBody: Phaser.GameObjects.Sprite;
   private spriteAttack!: Phaser.GameObjects.Sprite;
@@ -33,13 +33,13 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
   private lastAttackTime = 0;
   private attackCooldown = 2000; // milliseconds
 
-  constructor({ x, y, scene, id, wallsLayer, defeat, player }: Props) {
+  constructor({ x, y, scene, id, wallsGroup, defeat, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
     this.player = player;
     this.id = id;
     this.defeat = defeat;
-    this.wallsLayer = wallsLayer;
+    this.wallsGroup = wallsGroup;
 
     const enemyType = ["ghoul", "ghost"];
     const ranNum = Math.floor(Math.random() * enemyType.length);
@@ -56,16 +56,15 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
 
     this.spriteBody = this.scene.add
       .sprite(0, 0, `${this.spriteName}_idle`)
-      .setDepth(1000000);
+      .setDepth(10);
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
       .setSize(this.spriteBody.width, this.spriteBody.height)
-      .setOffset(0, 0)
-      .setImmovable(true);
+      .setOffset(0, 0);
 
     this.setSize(this.spriteBody.width, this.spriteBody.height);
-    this.setDepth(10000000);
+    this.setDepth(10);
     this.add([this.spriteBody, this.lifeBar]);
 
     this.createOverlaps();
@@ -247,10 +246,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
     if (!this.player) return;
     this.scene.physics.add.collider(this.player, this.spriteBody);
     if (this.spriteName === "ghoul") {
-      this.scene.physics.add.collider(
-        this.wallsLayer as Phaser.Tilemaps.TilemapLayer,
-        this,
-      );
+      this.scene.physics.add.collider(this.wallsGroup, this);
     }
     this.scene.physics.add.overlap(this, this.player.sword, () =>
       this.hit("sword"),

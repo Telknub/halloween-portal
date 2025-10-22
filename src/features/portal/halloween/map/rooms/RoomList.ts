@@ -97,10 +97,10 @@ export class RoomList {
     );
   }
 
-  setupObjects(wallsLayer: Phaser.Tilemaps.TilemapLayer) {
+  setupObjects(wallsGroup: Phaser.Physics.Arcade.StaticGroup) {
     this.iterateRooms((room) => {
       if (room.type === "enemy") {
-        (room as EnemyRoom).createObjects(wallsLayer);
+        (room as EnemyRoom).createObjects(wallsGroup);
       } else {
         room.createObjects();
       }
