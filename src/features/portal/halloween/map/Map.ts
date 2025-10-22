@@ -314,9 +314,7 @@ export class Map {
     };
 
     this.rooms.append("initial");
-    this.rooms.append("enemy");
-    this.rooms.append("enemy");
-    // this.getRandomRoom(roomTypes, maxRepeats, counts, 2);
+    this.getRandomRoom(roomTypes, maxRepeats, counts, 2);
     this.rooms.append("blacksmith");
     this.getRandomRoom(roomTypes, maxRepeats, counts, 2);
     this.rooms.append("skeleton");
