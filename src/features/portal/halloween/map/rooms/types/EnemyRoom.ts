@@ -11,7 +11,6 @@ import { MummyContainer } from "features/portal/halloween/containers/MummyContai
 import { EnemyContainer } from "features/portal/halloween/containers/EnemyContainer";
 import { GolemContainer } from "features/portal/halloween/containers/GolemConatiner";
 import { EventBus } from "features/portal/halloween/lib/EventBus";
-import { RelicContainer } from "features/portal/halloween/containers/RelicContainer";
 
 interface Props {
   scene: HalloweenScene;

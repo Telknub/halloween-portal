@@ -33,7 +33,7 @@ export class OwlContainer extends Phaser.GameObjects.Container {
     this.createAnimation();
 
     // Overlaps
-    this.createOverlaps();
+    this.createOverlaps(x, y);
 
     // Events
     this.createEvents();
@@ -66,8 +66,9 @@ export class OwlContainer extends Phaser.GameObjects.Container {
     this.sprite.play(`${this.spriteName}_action`, true);
   }
 
-  private createOverlaps() {
+  private createOverlaps(x: number, y: number) {
     if (!this.player) return;
+    this.scene.objectsWithCollider.push({ x, y });
     this.scene.physics.add.collider(this.player, this);
   }
 

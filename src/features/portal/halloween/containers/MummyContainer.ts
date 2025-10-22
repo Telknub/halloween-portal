@@ -265,7 +265,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       () => {
         if (this.hasDealtDamage) return;
         this.hasDealtDamage = true;
-        // this.player?.takeDamage("mummy");
+        this.player?.takeDamage("mummy");
       },
       undefined,
       this,

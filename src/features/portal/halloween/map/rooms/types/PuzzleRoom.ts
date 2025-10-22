@@ -29,6 +29,7 @@ export class PuzzleRoom extends BaseRoom {
       this.spawnObjectRandomly((x, y) => this.createLamp(x, y), true);
     this.id === 3 &&
       this.spawnObjectRandomly((x, y) => this.createPickaxe(x, y), true);
+    this.spawnObjectRandomly((x, y) => this.createHole(x, y, 0.5, true), true);
     this.createGate();
   }
 

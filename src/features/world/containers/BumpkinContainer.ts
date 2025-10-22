@@ -740,7 +740,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       //Back-Aura
       if (container.scene.textures.exists(this.backAuraKey)) {
         const backaura = container.scene.add
-          .sprite(0, -3, this.backAuraKey)
+          .sprite(0, -5, this.backAuraKey)
           .setOrigin(0.5);
         this.add(backaura);
         this.moveTo(backaura, 1);
@@ -766,7 +766,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
             return;
           }
           const backaura = container.scene.add
-            .sprite(0, -3, this.backAuraKey as string)
+            .sprite(0, -5, this.backAuraKey as string)
             .setOrigin(0.5);
           this.add(backaura);
           this.moveTo(backaura, 1);
@@ -780,7 +780,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       //Front-Aura
       if (container.scene.textures.exists(this.frontAuraKey)) {
         const frontaura = container.scene.add
-          .sprite(0, 2, this.frontAuraKey)
+          .sprite(0, -2, this.frontAuraKey)
           .setOrigin(0.5);
         this.add(frontaura);
         this.moveTo(frontaura, 3);
@@ -806,7 +806,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
             return;
           }
           const frontaura = container.scene.add
-            .sprite(0, 2, this.frontAuraKey as string)
+            .sprite(0, -2, this.frontAuraKey as string)
             .setOrigin(0.5);
           this.add(frontaura);
           this.moveTo(frontaura, 3);
@@ -840,6 +840,8 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
 
     this.direction = "right";
     this.sprite?.setScale(1, 1);
+    this.frontfx?.setScale(1, 1);
+    this.backfx?.setScale(1, 1);
 
     if (this.speech) {
       this.speech.setScale(1, 1);
@@ -852,6 +854,8 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
 
     this.direction = "left";
     this.sprite?.setScale(-1, 1);
+    this.frontfx?.setScale(-1, 1);
+    this.backfx?.setScale(-1, 1);
 
     if (this.speech) {
       this.speech.changeDirection("left");
@@ -1338,9 +1342,6 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       y: 0,
       scene: this.scene as BaseScene,
     });
-    this.fire.setVisible(false);
-    const fireBody = this.fire.body as Phaser.Physics.Arcade.Body;
-    fireBody.setEnable(false);
     this.add(this.fire);
     this.moveTo(this.fire, 0);
   }

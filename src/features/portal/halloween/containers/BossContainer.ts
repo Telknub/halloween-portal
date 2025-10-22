@@ -15,6 +15,7 @@ interface Props {
   x: number;
   y: number;
   scene: HalloweenScene;
+  defeat: (x: number, y: number) => void;
   player?: BumpkinContainer;
   room: BaseRoom;
 }
@@ -34,13 +35,15 @@ export class BossContainer extends Phaser.GameObjects.Container {
   private xGuide: number;
   private isHurting = false;
   private posY: number;
+  private defeat: (x: number, y: number) => void;
 
-  constructor({ x, y, scene, player, room }: Props) {
+  constructor({ x, y, scene, defeat, player, room }: Props) {
     super(scene, x, y - BOSS_ENEMY_SPAWN_Y_DISTANCE);
     this.scene = scene;
     this.player = player;
     this.room = room;
     this.posY = y;
+    this.defeat = defeat;
 
     this.lifeBar = new LifeBar({
       x: 0,
@@ -296,8 +299,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
       () => {
         if (!hasDealtDamage) {
           hasDealtDamage = true;
-          // console.log("-1 Health");
-          // TODO: Actually subtract health from player here
+          this.player?.takeDamage("finalBoss");
         }
       },
       undefined,
@@ -349,10 +351,8 @@ export class BossContainer extends Phaser.GameObjects.Container {
     );
 
     this.spriteBody.on("animationcomplete", () => {
+      this.defeat(this.x, this.y);
       this.destroy();
-      // this.openPortal()
     });
   }
-
-  // private openPortal() {}
 }

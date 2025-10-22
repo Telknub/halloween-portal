@@ -39,7 +39,7 @@ export class FireContainer extends Phaser.GameObjects.Container {
       this.spriteName = "fire";
       const fire = this.scene.add.sprite(x, y, this.spriteName);
       fire.setOrigin(0.5, 1);
-      fire.setScale(0.8);
+      fire.setScale(0);
       this.createAnimation(fire, i);
       this.sprites.push(fire);
     }
@@ -49,9 +49,11 @@ export class FireContainer extends Phaser.GameObjects.Container {
 
     this.scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
+      .setEnable(false)
       .setSize(bounds.width, bounds.height)
       .setImmovable(true)
       .setCollideWorldBounds(true);
+    this.setVisible(false);
     this.setSize(bounds.width, bounds.height);
   }
 

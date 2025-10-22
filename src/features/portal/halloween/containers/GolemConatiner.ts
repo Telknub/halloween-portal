@@ -267,7 +267,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
       () => {
         if (this.hasDealtDamage) return;
         this.hasDealtDamage = true;
-        // this.player?.takeDamage("golem");
+        this.player?.takeDamage("golem");
       },
       undefined,
       this,

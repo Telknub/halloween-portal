@@ -55,6 +55,7 @@ export const BlacksmithNPC: React.FC<Props> = ({ onClose, data }) => {
         onClose={() => {
           localStorage.setItem(BLACKSMITH_KEY, "true");
           EventBus.emit("apply-relic-buff", data?.relicName);
+          EventBus.emit("get-aura");
           portalService.send("GAIN_POINTS");
           setShowFirstDialogue(false);
         }}

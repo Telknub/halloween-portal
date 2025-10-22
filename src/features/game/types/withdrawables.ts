@@ -1653,6 +1653,7 @@ export const BUMPKIN_WITHDRAWABLES: Record<
   "Water Gourd": () => true,
   "Rocket Onesie": () => false,
   "Coin Aura": () => false,
+  "Halloween Aura": () => false,
   "Ankh Shirt": () => canWithdrawTimebasedItem(new Date("2024-10-01")),
   "Ancient Shovel": (state) =>
     canWithdrawTimebasedItem(new Date("2024-10-24")) &&

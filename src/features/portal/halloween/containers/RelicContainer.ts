@@ -31,7 +31,7 @@ export class RelicContainer extends Phaser.GameObjects.Container {
     this.sprite = scene.add.sprite(0, 0, this.spriteName).setScale(scale);
 
     // Overlaps
-    this.createOverlaps();
+    this.createOverlaps(x, y);
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
@@ -63,8 +63,9 @@ export class RelicContainer extends Phaser.GameObjects.Container {
       | undefined;
   }
 
-  private createOverlaps() {
+  private createOverlaps(x: number, y: number) {
     if (!this.player) return;
+    this.scene.objectsWithCollider.push({ x, y });
     this.scene.physics.add.overlap(this.player, this, () => this.collect());
   }
 

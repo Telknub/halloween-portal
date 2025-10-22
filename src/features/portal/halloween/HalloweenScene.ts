@@ -48,6 +48,7 @@ import { Physics } from "phaser";
 import { isTouchDevice } from "features/world/lib/device";
 import { Map } from "./map/Map";
 import { EventBus } from "./lib/EventBus";
+import { ITEM_IDS } from "features/game/types/bumpkin";
 // import { EnemyRoom } from "./map/rooms/types/EnemyRoom";
 
 // export const NPCS: NPCBumpkin[] = [
@@ -641,6 +642,24 @@ export class HalloweenScene extends BaseScene {
       frameWidth: 65,
       frameHeight: 71,
     });
+
+    // Aura
+    this.load.spritesheet(
+      `${ITEM_IDS["Halloween Aura"]}-bumpkin-aura-front-sheet`,
+      "world/halloween_aura_front.webp",
+      {
+        frameWidth: 20,
+        frameHeight: 19,
+      },
+    );
+    this.load.spritesheet(
+      `${ITEM_IDS["Halloween Aura"]}-bumpkin-aura-back-sheet`,
+      "world/halloween_aura_back.webp",
+      {
+        frameWidth: 20,
+        frameHeight: 19,
+      },
+    );
   }
 
   // init(data: any) {
@@ -697,7 +716,7 @@ export class HalloweenScene extends BaseScene {
 
     // this.AnimationEnemy_2();  // Create zombie animations
 
-    this.physics.world.drawDebug = true;
+    this.physics.world.drawDebug = false;
 
     // Important to first save the player and then the lamps
     // this.currentPlayer && (this.lightedItems[0] = this.currentPlayer);
@@ -818,6 +837,7 @@ export class HalloweenScene extends BaseScene {
     EventBus.on("apply-relic-buff", (name: Relics) => {
       this.applyRelicBuff(name);
     });
+    EventBus.on("get-aura", () => this.applyAura());
 
     // reload scene when player hit retry
     const onRetry = (event: EventObject) => {
@@ -848,6 +868,16 @@ export class HalloweenScene extends BaseScene {
         color: "#000000",
       })
       .setAlpha(0);
+  }
+
+  private applyAura() {
+    const now = new Date();
+    this.currentPlayer?.changeClothing({
+      ...this.currentPlayer?.clothing,
+      aura: "Halloween Aura",
+      updatedAt: now.getTime(),
+    });
+    this.currentPlayer?.showAura();
   }
 
   applyRelicBuff(name: Relics) {

@@ -457,7 +457,7 @@ export type BumpkinWings =
 
 export type BumpkinBeard = "Wise Beard" | "Hoary Chin" | "Santa Beard";
 
-export type BumpkinAura = "Coin Aura";
+export type BumpkinAura = "Coin Aura" | "Halloween Aura";
 
 export type BumpkinItem =
   | BumpkinBody
@@ -843,6 +843,7 @@ export const ITEM_IDS: Record<BumpkinItem, number> = {
   "Water Gourd": 365,
   "Rocket Onesie": 366,
   "Coin Aura": 367,
+  "Halloween Aura": 10000,
   "Ankh Shirt": 368,
   "Ancient Shovel": 369,
   "Infernal Drill": 370,
@@ -1348,6 +1349,7 @@ export const BUMPKIN_ITEM_PART: Record<BumpkinItem, keyof Wallet> = {
   "Water Gourd": "tool",
   "Rocket Onesie": "onesie",
   "Coin Aura": "aura",
+  "Halloween Aura": "aura",
   "Ankh Shirt": "shirt",
   "Ancient Shovel": "tool",
   "Infernal Drill": "secondaryTool",

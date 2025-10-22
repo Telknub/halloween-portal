@@ -6,10 +6,12 @@ import {
   DECORATION_BOSS_CONFIG,
   TILE_SIZE,
   BOSS_STATS,
+  HOLE_CONFIG,
 } from "features/portal/halloween/HalloweenConstants";
 import { BossContainer } from "features/portal/halloween/containers/BossContainer";
 import { GateContainer } from "features/portal/halloween/containers/GateContainer";
 import { DecorationContainer } from "features/portal/halloween/containers/DecorationContainer";
+import { HoleContainer } from "features/portal/halloween/containers/HoleContainer";
 
 interface Props {
   scene: HalloweenScene;
@@ -40,6 +42,21 @@ export class BossRoom extends BaseRoom {
     this.gate = this.createGate();
   }
 
+  private defeatBoss(x: number, y: number) {
+    this.createRelic(x, y);
+    const { x: posX, y: posY } = this.getRelativePosition(
+      HOLE_CONFIG.x,
+      HOLE_CONFIG.y,
+    );
+    new HoleContainer({
+      x: posX,
+      y: posY,
+      scene: this.scene,
+      id: this.id,
+      player: this.player,
+    });
+  }
+
   private createBossEnemy() {
     const { x, y } = this.getRelativePosition(
       BOSS_STATS.config.x,
@@ -49,6 +66,7 @@ export class BossRoom extends BaseRoom {
       x,
       y,
       scene: this.scene,
+      defeat: (x, y) => this.defeatBoss(x, y),
       player: this.player,
       room: this,
     });

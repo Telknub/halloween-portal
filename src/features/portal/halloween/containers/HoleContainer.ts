@@ -45,7 +45,7 @@ export class HoleContainer extends Phaser.GameObjects.Container {
     this.createAnimation();
 
     // Overlaps
-    this.createOverlaps();
+    this.createOverlaps(x, y);
 
     // Events
     this.createEvents();
@@ -95,9 +95,10 @@ export class HoleContainer extends Phaser.GameObjects.Container {
     });
   }
 
-  private createOverlaps() {
+  private createOverlaps(x: number, y: number) {
     if (!this.player) return;
     this.scene.physics.add.collider(this.player, this);
+    this.scene.objectsWithCollider.push({ x, y });
   }
 
   private createEvents() {
