@@ -257,6 +257,19 @@ export class GolemContainer extends Phaser.GameObjects.Container {
     }
   }
 
+  private flashSprite() {
+    this.scene.tweens.add({
+      targets: this.spriteBody,
+      alpha: { from: 1, to: 0.5 },
+      duration: 200,
+      yoyo: true,
+      repeat: 2,
+      onStart: () => this.spriteBody.setTintFill(0xffffff),
+      onYoyo: () => this.spriteBody.clearTint(),
+      onComplete: () => this.spriteBody.clearTint(),
+    });
+  }
+
   private createDamage() {
     if (!this.player || !this.spriteSmash || this.hasDealtDamage) return;
 
@@ -307,6 +320,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
 
       if (newHealth > 0) {
         this.lifeBar.setHealth(newHealth);
+        this.flashSprite();
       } else {
         this.createDefeat();
       }

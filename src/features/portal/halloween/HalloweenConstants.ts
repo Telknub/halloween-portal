@@ -530,7 +530,7 @@ export const HALLOWEEN_NPC_WEARABLES: Equipped = {
 
 // Enemy statistics
 export const BOSS_STATS = {
-  health: 40,
+  health: 80,
   damage: 10,
   attackRemove: 1000,
   config: {
@@ -540,7 +540,7 @@ export const BOSS_STATS = {
 };
 
 export const MUMMY_STATS = {
-  health: 20,
+  health: 30,
   damage: 10,
   attackDelay: 1000,
   config: {
@@ -550,7 +550,7 @@ export const MUMMY_STATS = {
 };
 
 export const GOLEM_STATS = {
-  health: 20,
+  health: 30,
   damage: 5,
   config: {
     x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
@@ -566,7 +566,7 @@ export interface Position {
 }
 
 export const ENEMY_STATS = {
-  health: 8,
+  health: 16,
   damage: 10,
   attackDelay: 1000,
 };

@@ -59,7 +59,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
     this.spriteName = "dungeonBoss";
     this.spriteBody = this.scene.add
       .sprite(0, 0, `${this.spriteName}_walk`)
-      .setDepth(1000000);
+      .setDepth(10);
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
@@ -68,7 +68,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
       .setImmovable(true);
 
     this.setSize(this.spriteBody.width / 2, this.spriteBody.height / 2);
-    this.setDepth(10000000);
+    this.setDepth(10);
     this.add([this.spriteBody, this.lifeBar]);
 
     this.createOverlaps();
@@ -269,7 +269,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
         `${this.spriteName}_fire`,
       )
       .setOrigin(0, 0)
-      .setDepth(1000000000)
+      .setDepth(10)
       .setScale(1.2);
     this.createAnimation(
       this.spritePower,
@@ -288,6 +288,19 @@ export class BossContainer extends Phaser.GameObjects.Container {
     body.setSize(this.spritePower.width, this.spritePower.height);
     body.setOffset(this.spriteBody.x, this.spriteBody.y);
     body.enable = false;
+  }
+
+  private flashSprite() {
+    this.scene.tweens.add({
+      targets: this.spriteBody,
+      alpha: { from: 1, to: 0.5 },
+      duration: 200,
+      yoyo: true,
+      repeat: 2,
+      onStart: () => this.spriteBody.setTintFill(0xffffff),
+      onYoyo: () => this.spriteBody.clearTint(),
+      onComplete: () => this.spriteBody.clearTint(),
+    });
   }
 
   private createDamage() {
@@ -311,10 +324,6 @@ export class BossContainer extends Phaser.GameObjects.Container {
   private createOverlaps() {
     if (!this.player) return;
     this.scene.physics.add.collider(this.player, this);
-    // this.scene.physics.add.collider(
-    //   this.wallsLayer as Phaser.Tilemaps.TilemapLayer,
-    //   this,
-    // );
     this.scene.physics.add.overlap(this, this.player.sword, () =>
       this.hit("sword"),
     );
@@ -342,6 +351,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
 
       if (newHealth > 0) {
         this.lifeBar.setHealth(newHealth);
+        this.flashSprite();
       } else {
         this.createDefeat();
       }
