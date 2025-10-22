@@ -1295,7 +1295,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         this.isHurting = true;
         this.isAttacking = false;
         this.isMining = false;
-        this.sprite.anims.play(this.hurtAnimationKey as string, true);
+        this.sprite.anims.play(this.hurtAnimationKey as string, false);
         onAnimationComplete(
           this.sprite,
           this.hurtAnimationKey as string,

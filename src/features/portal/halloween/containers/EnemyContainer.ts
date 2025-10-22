@@ -171,7 +171,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
   private attackBody() {
     this.spriteAttack = this.scene.add
       .sprite(0, 0, `${this.spriteName}_attack`)
-      .setDepth(1000000000)
+      .setDepth(10)
       .setScale(1)
       .setVisible(false);
 
@@ -258,7 +258,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
 
   private createOverlaps() {
     if (!this.player) return;
-    this.scene.physics.add.collider(this.player, this.spriteBody);
+    // this.scene.physics.add.collider(this.player, this.spriteBody);
     if (this.spriteName === "ghoul") {
       this.scene.physics.add.collider(this.wallsGroup, this);
     }

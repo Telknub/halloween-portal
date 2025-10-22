@@ -282,11 +282,21 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       undefined,
       this,
     );
+
+    this.scene.physics.add.overlap(
+      this.player,
+      this,
+      () => {
+        if (this.player?.isHurting) return;
+        this.player?.takeDamage("mummy");
+      },
+      undefined,
+      this,
+    );
   }
 
   private createOverlaps() {
     if (!this.player) return;
-    this.scene.physics.add.collider(this.player, this);
     this.scene.physics.add.collider(
       this.wallsGroup as Phaser.Physics.Arcade.StaticGroup,
       this,

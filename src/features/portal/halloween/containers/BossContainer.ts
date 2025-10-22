@@ -319,6 +319,17 @@ export class BossContainer extends Phaser.GameObjects.Container {
       undefined,
       this,
     );
+
+    this.scene.physics.add.overlap(
+      this.player,
+      this,
+      () => {
+        if (this.player?.isHurting) return;
+        this.player?.takeDamage("finalBoss");
+      },
+      undefined,
+      this,
+    );
   }
 
   private createOverlaps() {

@@ -123,7 +123,8 @@ export class GateContainer extends Phaser.GameObjects.Container {
       this.sprite.setTexture(`${this.spriteName}_open`),
     );
     (this.body as Phaser.Physics.Arcade.Body).setEnable(false);
-    EventBus.emit("create-enemies", { id: this.id });
+    if (this.roomName !== "blacksmith")
+      EventBus.emit("create-enemies", { id: this.id });
   }
 
   close() {
