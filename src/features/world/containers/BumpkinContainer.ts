@@ -1174,6 +1174,16 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     );
   }
 
+  // Halloween Sound effects
+
+  private addSound(
+    key: string,
+    loop = false,
+    volume = 0.2,
+  ): Phaser.Sound.BaseSound {
+    return this.scene.sound.add(key, { loop, volume });
+  }
+
   // Halloween
   public carry() {
     if (
@@ -1234,6 +1244,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   }
 
   public attack() {
+    this.addSound("sword").play();
     if (
       this.sprite?.anims &&
       this.scene?.anims.exists(this.attackAnimationKey as string) &&
@@ -1260,6 +1271,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   }
 
   public mining() {
+    this.addSound("pickaxe").play();
     if (
       this.sprite?.anims &&
       this.scene?.anims.exists(this.miningAnimationKey as string) &&
@@ -1324,6 +1336,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   }
 
   public enableFire() {
+    this.addSound("lamp").play();
     this.isBurning = true;
     const fireBody = this.fire.body as Phaser.Physics.Arcade.Body;
     fireBody.setEnable(true);

@@ -84,6 +84,7 @@ export class LampContainer extends Phaser.GameObjects.Container {
   }
 
   private collect() {
+    this.scene.sound.add("collect", { loop: false, volume: 0.2 }).play();
     this.portalService?.send("COLLECT_TOOL", { tool: "lamp" });
     this.player?.lampVisibility(true);
     this.destroy();
