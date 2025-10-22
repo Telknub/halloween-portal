@@ -2,12 +2,13 @@ import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { MachineInterpreter } from "../lib/halloweenMachine";
 import { TILE_SIZE } from "../HalloweenConstants";
 import { HalloweenScene } from "../HalloweenScene";
+import { BaseScene } from "features/world/scenes/BaseScene";
 
 interface Props {
   x: number;
   y: number;
   id: number;
-  scene: HalloweenScene;
+  scene: BaseScene;
   player?: BumpkinContainer;
 }
 
@@ -16,7 +17,7 @@ export class LampContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   private spriteName: string;
   private sprite: Phaser.GameObjects.Sprite;
-  scene: HalloweenScene;
+  scene: BaseScene;
 
   constructor({ x, y, id, scene, player }: Props) {
     super(scene, x, y);
@@ -79,7 +80,7 @@ export class LampContainer extends Phaser.GameObjects.Container {
 
   private createOverlaps(x: number, y: number) {
     if (!this.player) return;
-    this.scene.objectsWithCollider.push({ x, y });
+    (this.scene as HalloweenScene).objectsWithCollider.push({ x, y });
     this.scene.physics.add.overlap(this.player, this, () => this.collect());
   }
 

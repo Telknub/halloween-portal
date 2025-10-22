@@ -2,7 +2,7 @@ import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { HalloweenScene } from "../HalloweenScene";
 import { translate } from "lib/i18n/translate";
 import { npcModalManager } from "features/world/ui/NPCModals";
-import { BLACKSMITH_KEY, BLACKSMITH_NPC_NAME } from "../HalloweenConstants";
+import { BLACKSMITH_KEY } from "../HalloweenConstants";
 
 interface Props {
   x: number;
@@ -86,7 +86,7 @@ export class BlacksmithContainer extends Phaser.GameObjects.Container {
         return;
       }
 
-      npcModalManager.open(BLACKSMITH_NPC_NAME, { relicName });
+      npcModalManager.open("blacksmith", { relicName });
 
       if (this.alert?.active) {
         this.alert?.destroy();

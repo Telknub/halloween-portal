@@ -20,7 +20,8 @@ export class PuzzleRoom extends BaseRoom {
     super({ scene, hasEntry, hasExit, matrix, type: "puzzle", player });
   }
 
-  createObjects() {
+  createObjects(wallsGroup: Phaser.Physics.Arcade.StaticGroup) {
+    super.createObjects(wallsGroup);
     this.createDecorationRandomly({ excludeSmallRoom: true });
     this.createOwl();
     this.spawnObjectRandomly((x, y) => this.createStatues(x, y), true);
@@ -39,6 +40,7 @@ export class PuzzleRoom extends BaseRoom {
       x,
       y,
       scene: this.scene,
+      id: this.id,
       player: this.player,
     });
   }

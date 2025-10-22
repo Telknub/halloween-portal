@@ -99,11 +99,7 @@ export class RoomList {
 
   setupObjects(wallsGroup: Phaser.Physics.Arcade.StaticGroup) {
     this.iterateRooms((room) => {
-      if (room.type === "enemy") {
-        (room as EnemyRoom).createObjects(wallsGroup);
-      } else {
-        room.createObjects();
-      }
+      room.createObjects(wallsGroup);
     });
   }
 

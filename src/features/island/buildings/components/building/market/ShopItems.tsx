@@ -47,7 +47,7 @@ export const ShopItems: React.FC<Props> = ({
   const [showIntro, setShowIntro] = React.useState(!hasReadIntro());
   const { t } = useAppTranslation();
 
-  const bumpkinParts: Partial<Equipped> = NPC_WEARABLES.betty;
+  const bumpkinParts = NPC_WEARABLES.betty;
 
   if (showIntro) {
     return (

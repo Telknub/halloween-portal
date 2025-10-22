@@ -8,6 +8,7 @@ import {
   BumpkinShoe,
   BumpkinTool,
   BumpkinAura,
+  Equipped,
 } from "features/game/types/bumpkin";
 import { PIXEL_SCALE } from "features/game/lib/constants";
 import { BumpkinParts } from "lib/utils/tokenUriBuilder";
@@ -27,17 +28,11 @@ const AURA_STEPS = 8;
 export type NPCParts = Omit<
   BumpkinParts,
   "background" | "hair" | "body" | "shoes" | "tool" | "aura"
-> & {
-  background: BumpkinBackground;
-  hair: BumpkinHair;
-  body: BumpkinBody;
-  shoes: BumpkinShoe;
-  tool: BumpkinTool;
-  aura?: BumpkinAura;
-};
+> &
+  Equipped;
 
 export interface NPCProps {
-  parts: Partial<NPCParts>;
+  parts: Partial<NPCParts> | undefined;
   flip?: boolean;
   hideShadow?: boolean;
   preventZoom?: boolean;
@@ -59,13 +54,15 @@ export const NPC: React.FC<NPCProps & { onClick?: () => void }> = ({
     setShow(true);
   }, []);
 
-  const idle = getAnimationUrl(parts, "idle_small");
+  const NPCparts = parts as Partial<NPCParts>;
+
+  const idle = getAnimationUrl(NPCparts, "idle_small");
   const auraBack =
-    parts.aura &&
-    `${CONFIG.PROTECTED_IMAGE_URL}/aura/back/${ITEM_IDS[parts.aura]}.png`;
+    NPCparts.aura &&
+    `${CONFIG.PROTECTED_IMAGE_URL}/aura/back/${ITEM_IDS[NPCparts.aura]}.png`;
   const auraFront =
-    parts.aura &&
-    `${CONFIG.PROTECTED_IMAGE_URL}/aura/front/${ITEM_IDS[parts.aura]}.png`;
+    NPCparts.aura &&
+    `${CONFIG.PROTECTED_IMAGE_URL}/aura/front/${ITEM_IDS[NPCparts.aura]}.png`;
 
   if (!show) {
     return null;
@@ -164,13 +161,15 @@ export const NPCIcon: React.FC<NPCProps> = ({ parts, hideShadow }) => {
     setShow(true);
   }, []);
 
-  const idle = getAnimationUrl(parts, "idle_small");
+  const NPCparts = parts as Partial<NPCParts>;
+
+  const idle = getAnimationUrl(NPCparts, "idle_small");
   const auraBack =
-    parts.aura &&
-    `${CONFIG.PROTECTED_IMAGE_URL}/aura/back/${ITEM_IDS[parts.aura]}.png`;
+    NPCparts.aura &&
+    `${CONFIG.PROTECTED_IMAGE_URL}/aura/back/${ITEM_IDS[NPCparts.aura]}.png`;
   const auraFront =
-    parts.aura &&
-    `${CONFIG.PROTECTED_IMAGE_URL}/aura/front/${ITEM_IDS[parts.aura]}.png`;
+    NPCparts.aura &&
+    `${CONFIG.PROTECTED_IMAGE_URL}/aura/front/${ITEM_IDS[NPCparts.aura]}.png`;
 
   if (!show) {
     return null;
@@ -252,13 +251,14 @@ export const NPCFixed: React.FC<NPCProps & { width: number }> = ({
   parts,
   width,
 }) => {
-  const idle = getAnimationUrl(parts, "idle_small");
+  const NPCparts = parts as Partial<NPCParts>;
+  const idle = getAnimationUrl(NPCparts, "idle_small");
   const auraBack =
-    parts.aura &&
-    `${CONFIG.PROTECTED_IMAGE_URL}/aura/back/${ITEM_IDS[parts.aura]}.png`;
+    NPCparts.aura &&
+    `${CONFIG.PROTECTED_IMAGE_URL}/aura/back/${ITEM_IDS[NPCparts.aura]}.png`;
   const auraFront =
-    parts.aura &&
-    `${CONFIG.PROTECTED_IMAGE_URL}/aura/front/${ITEM_IDS[parts.aura]}.png`;
+    NPCparts.aura &&
+    `${CONFIG.PROTECTED_IMAGE_URL}/aura/front/${ITEM_IDS[NPCparts.aura]}.png`;
 
   return (
     <div

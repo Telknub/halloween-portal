@@ -13,11 +13,16 @@ import { PortalContext } from "../../lib/PortalProvider";
 
 import skeleton from "public/world/skeletonPortrait.png";
 import lightning from "assets/icons/lightning.png";
+import { PortalMachineState } from "../../lib/halloweenMachine";
+import { useSelector } from "@xstate/react";
 
 interface Props {
   onClose: () => void;
   data?: any;
 }
+
+const _firstDialogueNPCs = (state: PortalMachineState) =>
+  state.context.firstDialogueNPCs;
 
 export const FinalSkeletonNPC: React.FC<Props> = ({ onClose, data }) => {
   const { portalService } = useContext(PortalContext);
@@ -25,12 +30,12 @@ export const FinalSkeletonNPC: React.FC<Props> = ({ onClose, data }) => {
   const [showRepeatDialogue, setShowRepeatDialogue] = useState(false);
   const { t } = useAppTranslation();
   const relic = RELIC_CODEX?.[data?.relicName as Relics];
+  const npcName = "final_skeleton";
+
+  const firstDialogueNPCs = useSelector(portalService, _firstDialogueNPCs);
 
   useEffect(() => {
-    const alreadyCompleted =
-      localStorage.getItem(FINAL_SKELETON_KEY) === "true";
-
-    if (alreadyCompleted) {
+    if (firstDialogueNPCs[npcName]) {
       setShowRepeatDialogue(true);
     }
   }, []);
@@ -78,7 +83,7 @@ export const FinalSkeletonNPC: React.FC<Props> = ({ onClose, data }) => {
           },
         ]}
         onClose={() => {
-          localStorage.setItem(FINAL_SKELETON_KEY, "true");
+          portalService.send("SET_FIRST_DIALOGUE_NPCS", { npcName });
           EventBus.emit("apply-relic-buff", data?.relicName);
           portalService.send("GAIN_POINTS");
           setShowFirstDialogue(false);

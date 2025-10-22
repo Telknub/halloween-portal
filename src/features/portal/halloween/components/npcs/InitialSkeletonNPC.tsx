@@ -8,22 +8,27 @@ import { PortalContext } from "../../lib/PortalProvider";
 import skeleton from "public/world/skeletonPortrait.png";
 import sword from "public/world/sword.webp";
 import { EventBus } from "../../lib/EventBus";
+import { useSelector } from "@xstate/react";
+import { PortalMachineState } from "../../lib/halloweenMachine";
 
 interface Props {
   onClose: () => void;
 }
+
+const _firstDialogueNPCs = (state: PortalMachineState) =>
+  state.context.firstDialogueNPCs;
 
 export const InitialSkeletonNPC: React.FC<Props> = ({ onClose }) => {
   const { portalService } = useContext(PortalContext);
   const [showFirstDialogue, setShowFirstDialogue] = useState(true);
   const [showRepeatDialogue, setShowRepeatDialogue] = useState(false);
   const { t } = useAppTranslation();
+  const npcName = "initial_skeleton";
+
+  const firstDialogueNPCs = useSelector(portalService, _firstDialogueNPCs);
 
   useEffect(() => {
-    const alreadyCompleted =
-      localStorage.getItem(INITIAL_SKELETON_KEY) === "true";
-
-    if (alreadyCompleted) {
+    if (firstDialogueNPCs[npcName]) {
       setShowRepeatDialogue(true);
     }
   }, []);
@@ -57,7 +62,7 @@ export const InitialSkeletonNPC: React.FC<Props> = ({ onClose }) => {
           },
         ]}
         onClose={() => {
-          localStorage.setItem(INITIAL_SKELETON_KEY, "true");
+          portalService.send("SET_FIRST_DIALOGUE_NPCS", { npcName });
           setShowFirstDialogue(false);
           portalService.send("COLLECT_TOOL", { tool: "sword" });
           EventBus.emit("open-gate");

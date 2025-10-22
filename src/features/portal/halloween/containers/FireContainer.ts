@@ -9,6 +9,7 @@ interface Props {
 export class FireContainer extends Phaser.GameObjects.Container {
   private spriteName!: string;
   private sprites: Phaser.GameObjects.Sprite[] = [];
+  scene: BaseScene;
   radius!: number;
   numFires!: number;
 

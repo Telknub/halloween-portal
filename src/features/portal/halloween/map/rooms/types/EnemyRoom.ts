@@ -18,7 +18,6 @@ interface Props {
 
 export class EnemyRoom extends BaseRoom {
   private enemyIds: number[] = [];
-  private wallsGroup!: Phaser.Physics.Arcade.StaticGroup;
 
   constructor({ scene, hasEntry = true, hasExit = true, player }: Props) {
     const matrix = createRandomRoom();
@@ -33,8 +32,8 @@ export class EnemyRoom extends BaseRoom {
     });
   }
 
-  createObjects(wallsGroup?: Phaser.Physics.Arcade.StaticGroup) {
-    this.wallsGroup = wallsGroup as Phaser.Physics.Arcade.StaticGroup;
+  createObjects(wallsGroup: Phaser.Physics.Arcade.StaticGroup) {
+    super.createObjects(wallsGroup);
     this.createDecorationRandomly();
     this.spawnObjectRandomly((x, y) => this.createStatues(x, y));
     this.spawnObjectRandomly((x, y) => this.createBones(x, y));

@@ -74,7 +74,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   private backAuraAnimationKey: string | undefined;
   private direction: "left" | "right" = "right";
 
-  scene: HalloweenScene;
+  scene: BaseScene;
 
   // Halloween
   private carryingSpriteKey: string | undefined;
@@ -113,7 +113,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     direction,
     faction,
   }: {
-    scene: HalloweenScene;
+    scene: BaseScene;
     x: number;
     y: number;
     clothing: Player["clothing"];
@@ -200,7 +200,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     return this.direction;
   }
 
-  private async loadSprites(scene: HalloweenScene) {
+  private async loadSprites(scene: BaseScene) {
     const keyName = tokenUriBuilder(this.clothing);
     this.idleSpriteKey = `${keyName}-bumpkin-idle-sheet`;
     this.walkingSpriteKey = `${keyName}-bumpkin-walking-sheet`;
@@ -1329,7 +1329,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       x: ITEM_BUMPKIN.x,
       y: ITEM_BUMPKIN.y,
       id: -1,
-      scene: this.scene as HalloweenScene,
+      scene: this.scene as BaseScene,
     });
     this.lamp.setVisible(false);
     this.add(this.lamp);

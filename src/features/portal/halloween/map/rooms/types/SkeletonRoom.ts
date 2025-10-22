@@ -4,7 +4,6 @@ import { createCenterRoom } from "../../Utils";
 import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
 import {
   DECORATION_SKELETON_CONFIG,
-  FINAL_SKELETON_KEY,
   FINAL_SKELETON_NPC_NAME,
   SKELETON_FINAL_ROOM_CONFIG,
   TILE_SIZE,
@@ -27,7 +26,8 @@ export class SkeletonRoom extends BaseRoom {
     super({ scene, hasEntry, hasExit, matrix, type: "skeleton", player });
   }
 
-  createObjects() {
+  createObjects(wallsGroup: Phaser.Physics.Arcade.StaticGroup) {
+    super.createObjects(wallsGroup);
     this.createDecorationRandomly({ excludeSmallRoom: true });
     this.createStaticDecoration();
     this.createSkeleton();
@@ -44,7 +44,6 @@ export class SkeletonRoom extends BaseRoom {
       scene: this.scene,
       id: this.id,
       direction: SKELETON_FINAL_ROOM_CONFIG.direction,
-      flowCompleteKey: FINAL_SKELETON_KEY,
       npcName: FINAL_SKELETON_NPC_NAME,
       player: this.player,
     });

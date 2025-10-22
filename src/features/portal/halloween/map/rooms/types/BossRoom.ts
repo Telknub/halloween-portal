@@ -35,7 +35,8 @@ export class BossRoom extends BaseRoom {
     });
   }
 
-  createObjects() {
+  createObjects(wallsGroup: Phaser.Physics.Arcade.StaticGroup) {
+    super.createObjects(wallsGroup);
     this.createDecorationRandomly({ hasDecorationGround: false });
     this.createStaticDecoration();
     this.createZone();

@@ -9678,6 +9678,13 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
 };
 
 export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
+  "Halloween Aura": {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "",
+  },
   "Maple Dumbo": {
     description:
       "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",

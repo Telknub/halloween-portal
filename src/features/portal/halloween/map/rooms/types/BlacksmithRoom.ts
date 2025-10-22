@@ -19,7 +19,8 @@ export class BlacksmithRoom extends BaseRoom {
     super({ scene, hasEntry, hasExit, matrix, type: "blacksmith", player });
   }
 
-  createObjects() {
+  createObjects(wallsGroup: Phaser.Physics.Arcade.StaticGroup) {
+    super.createObjects(wallsGroup);
     this.createDecorationRandomly({ excludeSmallRoom: true });
     this.createBlacksmith();
     this.spawnObjectRandomly((x, y) => this.createStatues(x, y), true);

@@ -9,11 +9,16 @@ import { PortalContext } from "../../lib/PortalProvider";
 
 import blacksmith from "public/world/blacksmithPortrait.png";
 import lightning from "assets/icons/lightning.png";
+import { useSelector } from "@xstate/react";
+import { PortalMachineState } from "../../lib/halloweenMachine";
 
 interface Props {
   onClose: () => void;
   data?: any;
 }
+
+const _firstDialogueNPCs = (state: PortalMachineState) =>
+  state.context.firstDialogueNPCs;
 
 export const BlacksmithNPC: React.FC<Props> = ({ onClose, data }) => {
   const { portalService } = useContext(PortalContext);
@@ -21,11 +26,12 @@ export const BlacksmithNPC: React.FC<Props> = ({ onClose, data }) => {
   const [showRepeatDialogue, setShowRepeatDialogue] = useState(false);
   const { t } = useAppTranslation();
   const relic = RELIC_CODEX?.[data?.relicName as Relics];
+  const npcName = "blacksmith";
+
+  const firstDialogueNPCs = useSelector(portalService, _firstDialogueNPCs);
 
   useEffect(() => {
-    const alreadyCompleted = localStorage.getItem(BLACKSMITH_KEY) === "true";
-
-    if (alreadyCompleted) {
+    if (firstDialogueNPCs[npcName]) {
       setShowRepeatDialogue(true);
     }
   }, []);
@@ -53,7 +59,7 @@ export const BlacksmithNPC: React.FC<Props> = ({ onClose, data }) => {
           },
         ]}
         onClose={() => {
-          localStorage.setItem(BLACKSMITH_KEY, "true");
+          portalService.send("SET_FIRST_DIALOGUE_NPCS", { npcName });
           EventBus.emit("apply-relic-buff", data?.relicName);
           EventBus.emit("get-aura");
           portalService.send("GAIN_POINTS");

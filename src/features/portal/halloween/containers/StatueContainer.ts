@@ -15,12 +15,14 @@ import {
 } from "../HalloweenConstants";
 import { interactableModalManager } from "features/world/ui/InteractableModals";
 import { MachineInterpreter } from "../lib/halloweenMachine";
+import { EnemyContainer } from "./EnemyContainer";
 
 interface Props {
   x: number;
   y: number;
   id: number;
   scene: HalloweenScene;
+  wallsGroup?: Phaser.Physics.Arcade.StaticGroup;
   player?: BumpkinContainer;
 }
 
@@ -31,13 +33,15 @@ export class StatueContainer extends Phaser.GameObjects.Container {
   private sprite: Phaser.GameObjects.Sprite;
   private lifeBar: LifeBar;
   private isHurting = false;
+  private wallsGroup?: Phaser.Physics.Arcade.StaticGroup;
   scene: HalloweenScene;
 
-  constructor({ x, y, id, scene, player }: Props) {
+  constructor({ x, y, id, scene, wallsGroup, player }: Props) {
     super(scene, x, y);
     this.id = id;
     this.scene = scene;
     this.player = player;
+    this.wallsGroup = wallsGroup;
 
     // Sprite
     const statues = ["statue1", "statue2", "statue3", "statue4"];
@@ -194,13 +198,13 @@ export class StatueContainer extends Phaser.GameObjects.Container {
     this.player.setDoubleDamageChance(doubleDamageChange);
   }
 
-  // Bug
   private applySpawnEnemy() {
-    // new EnemyContainer({
-    //   x: this.x,
-    //   y: this.y,
-    //   scene: this.scene,
-    //   player: this.player,
-    // });
+    new EnemyContainer({
+      x: this.x,
+      y: this.y,
+      scene: this.scene,
+      wallsGroup: this.wallsGroup,
+      player: this.player,
+    });
   }
 }
