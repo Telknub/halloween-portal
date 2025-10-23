@@ -134,7 +134,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const attackDistance = 30;
+    const attackDistance = 20;
     const followDistance = 70;
 
     if (distance < attackDistance) {
@@ -265,7 +265,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       () => {
         if (this.hasDealtDamage) return;
         this.hasDealtDamage = true;
-        // this.player?.takeDamage(this.spriteName as Enemies);
+        this.player?.takeDamage(this.spriteName as Enemies);
       },
       undefined,
       this,

@@ -132,7 +132,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
     );
 
     const attackDistance = 30;
-    const followDistance = 150;
+    const followDistance = 200;
 
     if (distance < attackDistance) {
       this.attackPlayer();
@@ -221,7 +221,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
       this.spriteSmash = this.scene.add
         .sprite(0, 10, `${this.spriteName}_smash`)
         .setDepth(10)
-        .setScale(1.2);
+        .setScale(1.4);
 
       this.add(this.spriteSmash);
 
@@ -295,16 +295,16 @@ export class GolemContainer extends Phaser.GameObjects.Container {
       this,
     );
 
-    // this.scene.physics.add.overlap(
-    //   this.player,
-    //   this,
-    //   () => {
-    //     if (this.player?.isHurting) return;
-    //     this.player?.takeDamage("golem");
-    //   },
-    //   undefined,
-    //   this,
-    // );
+    this.scene.physics.add.overlap(
+      this.player,
+      this,
+      () => {
+        if (this.player?.isHurting) return;
+        this.player?.takeDamage("golem");
+      },
+      undefined,
+      this,
+    );
   }
 
   private createOverlaps() {
