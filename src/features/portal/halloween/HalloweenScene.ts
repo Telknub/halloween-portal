@@ -115,12 +115,47 @@ export class HalloweenScene extends BaseScene {
   preload() {
     super.preload();
 
-    this.load.audio("backgroundMusic", "/world/background-music.mp3");
-    this.load.audio("ghostSound", "/world/ghost-sound.wav");
-    this.load.audio("zombieSound", "/world/zombie-sound.wav");
-    this.load.audio("ghostDeathSound", "/world/ghost-death.wav");
-    this.load.audio("shadows", "/world/shadows.mp3");
-    this.load.audio("tension", "/world/tension.mp3");
+    // this.load.audio("ghostSound", "/world/ghost-sound.wav");
+    // this.load.audio("zombieSound", "/world/zombie-sound.wav");
+    // this.load.audio("ghostDeathSound", "/world/ghost-death.wav");
+    // this.load.audio("shadows", "/world/shadows.mp3");
+    // this.load.audio("tension", "/world/tension.mp3");
+
+    // this.load.spritesheet("ghost_enemy_1", "world/ghost_enemy_1.png", {
+    //   frameWidth: 22,
+    //   frameHeight: 23,
+    // });
+
+    // this.load.spritesheet("ghost_enemy_2", "world/ghost_enemy_2.png", {
+    //   frameWidth: 22,
+    //   frameHeight: 23,
+    // });
+
+    // this.load.spritesheet("poof_1", "world/poof_1.webp", {
+    //   frameWidth: 36,
+    //   frameHeight: 36,
+    // });
+
+    // this.load.spritesheet("zombie_enemy_1", "world/zombie_enemy_1.png", {
+    //   frameWidth: 15.875,
+    //   frameHeight: 17,
+    // });
+
+    // this.load.spritesheet("zombie_enemy_2", "world/zombie_enemy_2.png", {
+    //   frameWidth: 15.875,
+    //   frameHeight: 17,
+    // });
+
+    // this.load.spritesheet("zombie_death", "world/zombie_death.png", {
+    //   frameWidth: 96,
+    //   frameHeight: 21,
+    // });
+
+    // Halloween 2025 ----------------------------------------------
+    //Music
+    // Background
+    this.load.audio("backgroundMusic", "/world/halloween/background-music.mp3");
+
     // Tools
     this.load.audio("lamp", "/world/halloween/burn.mp3");
     this.load.audio("pickaxe", "/world/halloween/pickaxe.wav");
@@ -141,37 +176,6 @@ export class HalloweenScene extends BaseScene {
     this.load.audio("boss_walk", "/world/halloween/boss_walk.mp3");
     this.load.audio("flamethrower", "/world/halloween/flamethrower.wav");
 
-    this.load.spritesheet("ghost_enemy_1", "world/ghost_enemy_1.png", {
-      frameWidth: 22,
-      frameHeight: 23,
-    });
-
-    this.load.spritesheet("ghost_enemy_2", "world/ghost_enemy_2.png", {
-      frameWidth: 22,
-      frameHeight: 23,
-    });
-
-    this.load.spritesheet("poof_1", "world/poof_1.webp", {
-      frameWidth: 36,
-      frameHeight: 36,
-    });
-
-    this.load.spritesheet("zombie_enemy_1", "world/zombie_enemy_1.png", {
-      frameWidth: 15.875,
-      frameHeight: 17,
-    });
-
-    this.load.spritesheet("zombie_enemy_2", "world/zombie_enemy_2.png", {
-      frameWidth: 15.875,
-      frameHeight: 17,
-    });
-
-    this.load.spritesheet("zombie_death", "world/zombie_death.png", {
-      frameWidth: 96,
-      frameHeight: 21,
-    });
-
-    // Halloween 2025
     // Blacksmith
     this.load.spritesheet("blacksmith", "world/blacksmith.webp", {
       frameWidth: 45,
@@ -676,6 +680,12 @@ export class HalloweenScene extends BaseScene {
       player: this.currentPlayer,
     });
 
+    this.backgroundMusic = this.sound.add("backgroundMusic", {
+      loop: true,
+      volume: 0.5,
+    });
+    this.backgroundMusic.play();
+
     // this.enemyRoom = new EnemyRoom({
     //   scene: this,
     //   player: this.currentPlayer,
@@ -692,11 +702,6 @@ export class HalloweenScene extends BaseScene {
 
     // this.initShaders();
 
-    // this.backgroundMusic = this.sound.add("backgroundMusic", {
-    //   loop: true,
-    //   volume: 0.02,
-    // });
-    // this.backgroundMusic.play();
     // this.ghostSound = this.sound.add("ghostSound", {
     //   loop: true,
     //   volume: 0.0,
