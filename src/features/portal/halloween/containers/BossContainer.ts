@@ -68,7 +68,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
       .setImmovable(true);
 
     this.setSize(this.spriteBody.width / 2, this.spriteBody.height / 2);
-    this.setDepth(10);
+    this.setDepth(100);
     this.add([this.spriteBody, this.lifeBar]);
 
     this.createOverlaps();
@@ -245,7 +245,6 @@ export class BossContainer extends Phaser.GameObjects.Container {
   }
 
   private createAttack() {
-    this.addSound("flamethrower").play();
     this.createAnimation(
       this.spriteBody,
       `${this.spriteName}_attack`,
@@ -321,6 +320,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
   private createDamage() {
     if (!this.player || !this.spritePower) return;
     let hasDealtDamage = false;
+    this.addSound("flamethrower").play();
 
     this.scene.physics.add.overlap(
       this.player,
@@ -335,16 +335,16 @@ export class BossContainer extends Phaser.GameObjects.Container {
       this,
     );
 
-    // this.scene.physics.add.overlap(
-    //   this.player,
-    //   this,
-    //   () => {
-    //     if (this.player?.isHurting) return;
-    //     this.player?.takeDamage("finalBoss");
-    //   },
-    //   undefined,
-    //   this,
-    // );
+    this.scene.physics.add.overlap(
+      this.player,
+      this,
+      () => {
+        if (this.player?.isHurting) return;
+        this.player?.takeDamage("finalBoss");
+      },
+      undefined,
+      this,
+    );
   }
 
   private createOverlaps() {
