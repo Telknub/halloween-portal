@@ -112,7 +112,7 @@ export class BaseRoom {
       this.mapOffsetMultiplier = offsetMultiplier;
     }
 
-    console.log(`Room ${this.id}:`, this.mapOffsetMultiplier);
+    // console.log(`Room ${this.id}:`, this.mapOffsetMultiplier);
   }
 
   get getOffset() {
