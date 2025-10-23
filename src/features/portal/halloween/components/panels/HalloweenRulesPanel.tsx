@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-
-import { SUNNYSIDE } from "assets/sunnyside";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 import { CloseButtonPanel } from "features/game/components/CloseablePanel";
 import { HalloweenMission } from "./HalloweenMission";
-import { HALLOWEEN_NPC_WEARABLES } from "../../HalloweenConstants";
-import { HalloweenDonations } from "./HalloweenDonations";
+import { PANEL_NPC_WEARABLES } from "../../HalloweenConstants";
+import { HalloweenGuide } from "./HalloweenGuide";
+
+import page from "public/world/page.png";
+import envy from "public/world/relic1.png";
 
 interface Props {
   mode: "introduction" | "success" | "failed";
@@ -13,6 +14,8 @@ interface Props {
   showExitButton: boolean;
   confirmButtonText: string;
   onConfirm: () => void;
+  trainingButtonText?: string;
+  onTraining?: () => void;
 }
 export const HalloweenRulesPanel: React.FC<Props> = ({
   mode,
@@ -20,6 +23,8 @@ export const HalloweenRulesPanel: React.FC<Props> = ({
   showExitButton,
   confirmButtonText,
   onConfirm,
+  trainingButtonText,
+  onTraining,
 }) => {
   const { t } = useAppTranslation();
   const [tab, setTab] = useState(0);
@@ -27,18 +32,18 @@ export const HalloweenRulesPanel: React.FC<Props> = ({
   return (
     <CloseButtonPanel
       className="overflow-y-hidden"
-      bumpkinParts={HALLOWEEN_NPC_WEARABLES}
+      bumpkinParts={PANEL_NPC_WEARABLES}
       currentTab={tab}
       setCurrentTab={setTab}
       tabs={[
         {
-          icon: SUNNYSIDE.icons.plant,
+          icon: envy,
           name: t("halloween.mission"),
         },
-        // {
-        //   icon: SUNNYSIDE.icons.heart,
-        //   name: t("donate"),
-        // },
+        {
+          icon: page,
+          name: t("guide"),
+        },
       ]}
     >
       <>
@@ -49,9 +54,11 @@ export const HalloweenRulesPanel: React.FC<Props> = ({
             showExitButton={showExitButton}
             confirmButtonText={confirmButtonText}
             onConfirm={onConfirm}
+            trainingButtonText={trainingButtonText}
+            onTraining={onTraining}
           />
         )}
-        {/* {tab === 1 && <HalloweenDonations />} */}
+        {tab === 1 && <HalloweenGuide />}
       </>
     </CloseButtonPanel>
   );

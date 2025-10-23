@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useInterpret } from "@xstate/react";
 import { MachineInterpreter, portalMachine } from "./halloweenMachine";
 import {
-  RESTOCK_ATTEMPTS_SFL,
+  RESTOCK_ATTEMPTS,
   UNLIMITED_ATTEMPTS_SFL,
 } from "../HalloweenConstants";
 
@@ -24,11 +24,11 @@ export const PortalProvider: React.FC = ({ children }) => {
    */
   useEffect(() => {
     const handleMessage = (event: MessageEvent) => {
-      if (
-        event.data.event === "purchased" &&
-        event.data.sfl === RESTOCK_ATTEMPTS_SFL
-      ) {
-        portalService.send("PURCHASED_RESTOCK");
+      const option = RESTOCK_ATTEMPTS.find(
+        (option) => option.sfl === event.data.sfl,
+      );
+      if (event.data.event === "purchased" && option) {
+        portalService.send("PURCHASED_RESTOCK", { sfl: option.sfl });
       } else if (
         event.data.event === "purchased" &&
         event.data.sfl === UNLIMITED_ATTEMPTS_SFL

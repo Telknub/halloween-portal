@@ -3,9 +3,7 @@ import { assign, createMachine, Interpreter, State } from "xstate";
 import { CONFIG } from "lib/config";
 import { decodeToken } from "features/auth/actions/login";
 import {
-  RESTOCK_ATTEMPTS_SFL,
   UNLIMITED_ATTEMPTS_SFL,
-  DAILY_ATTEMPTS,
   BONE_CODEX,
   RELIC_CODEX,
   Tools,
@@ -15,6 +13,7 @@ import {
   GAME_LIVES,
   HalloweenNpcNames,
   FIRST_DIALOGUE_NPCS,
+  FREE_DAILY_ATTEMPTS,
 } from "../HalloweenConstants";
 import { GameState } from "features/game/types/game";
 import { purchaseMinigameItem } from "features/game/events/minigames/purchaseMinigameItem";
@@ -50,6 +49,7 @@ export interface Context {
   maxLives: number;
   statueEffects: Record<string, string>[];
   firstDialogueNPCs: Record<HalloweenNpcNames, boolean>;
+  isTraining: boolean;
   startedAt: number;
   attemptsLeft: number;
 }
@@ -113,17 +113,23 @@ type SetFirstDialogueNPCs = {
   npcName: HalloweenNpcNames;
 };
 
+type PurchaseRestockEvent = {
+  type: "PURCHASED_RESTOCK";
+  sfl: number;
+};
+
 export type PortalEvent =
   | SetJoystickActiveEvent
   | { type: "START" }
   | { type: "CLAIM" }
   | { type: "CANCEL_PURCHASE" }
-  | { type: "PURCHASED_RESTOCK" }
   | { type: "PURCHASED_UNLIMITED" }
   | { type: "RETRY" }
   | { type: "CONTINUE" }
+  | { type: "CONTINUE_TRAINING" }
   | { type: "END_GAME_EARLY" }
   | { type: "GAME_OVER" }
+  | PurchaseRestockEvent
   | GainPointsEvent
   | CollectToolEvent
   | SelectToolEvent
@@ -196,6 +202,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
     lastScore: 0,
     attemptsLeft: 0,
     startedAt: 0,
+    isTraining: false,
 
     // Halloween
     selectedTool: null,
@@ -249,7 +256,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
       invoke: {
         src: async (context) => {
           if (!getUrl()) {
-            return { game: OFFLINE_FARM, attemptsLeft: DAILY_ATTEMPTS };
+            return { game: OFFLINE_FARM, attemptsLeft: FREE_DAILY_ATTEMPTS };
           }
 
           const { farmId } = decodeToken(context.jwt as string);
@@ -261,7 +268,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
           });
 
           const minigame = game.minigames.games["halloween"];
-          const attemptsLeft = getAttemptsLeft(minigame);
+          const attemptsLeft = getAttemptsLeft(minigame, farmId);
 
           return { game, farmId, attemptsLeft };
         },
@@ -289,12 +296,12 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
         PURCHASED_RESTOCK: {
           target: "introduction",
           actions: assign({
-            state: (context: Context) =>
+            state: (context: Context, event: PurchaseRestockEvent) =>
               purchaseMinigameItem({
                 state: context.state as GameState,
                 action: {
                   id: "halloween",
-                  sfl: RESTOCK_ATTEMPTS_SFL,
+                  sfl: event.sfl,
                   type: "minigame.itemPurchased",
                   items: {},
                 },
@@ -324,8 +331,12 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
         {
           target: "noAttempts",
           cond: (context) => {
+            if (context.isTraining) return false;
+            const farmId = !getUrl()
+              ? 0
+              : decodeToken(context.jwt as string).farmId;
             const minigame = context.state?.minigames.games["halloween"];
-            const attemptsLeft = getAttemptsLeft(minigame);
+            const attemptsLeft = getAttemptsLeft(minigame, farmId);
             return attemptsLeft <= 0;
           },
         },
@@ -339,6 +350,17 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
       on: {
         CONTINUE: {
           target: "starting",
+          actions: assign({
+            isTraining: false,
+            state: (context: Context) => context.state,
+          }),
+        },
+        CONTINUE_TRAINING: {
+          target: "starting",
+          actions: assign({
+            isTraining: true,
+            state: (context: Context) => context.state,
+          }),
         },
       },
     },
@@ -359,6 +381,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
             statueEffects: [],
             firstDialogueNPCs: structuredClone(FIRST_DIALOGUE_NPCS),
             state: (context: Context) => {
+              if (context.isTraining) return context.state;
               startAttempt();
               return startMinigameAttempt({
                 state: context.state as GameState,
@@ -368,7 +391,10 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                 },
               });
             },
-            attemptsLeft: (context: Context) => context.attemptsLeft - 1,
+            attemptsLeft: (context: Context) => {
+              if (context.isTraining) return context.attemptsLeft;
+              return context.attemptsLeft - 1;
+            },
           }),
         },
       },
@@ -488,9 +514,11 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
           actions: assign({
             startedAt: () => 0,
             lastScore: (context: Context) => {
+              if (context.isTraining) return context.lastScore;
               return context.score;
             },
             state: (context: Context) => {
+              if (context.isTraining) return context.state;
               submitScore({ score: Math.round(context.score) });
               return submitMinigameScore({
                 state: context.state as GameState,
@@ -508,10 +536,12 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
           target: "gameOver",
           actions: assign({
             lastScore: (context: Context) => {
+              if (context.isTraining) return context.lastScore;
               return context.score;
             },
             state: (context: Context) => {
-              submitScore({ score: context.score });
+              if (context.isTraining) return context.state;
+              submitScore({ score: Math.round(context.score) });
               return submitMinigameScore({
                 state: context.state as GameState,
                 action: {
@@ -529,18 +559,24 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
     gameOver: {
       always: [
         {
-          // they have already completed the mission before
-          target: "complete",
+          target: "introduction",
           cond: (context) => {
-            const dateKey = new Date().toISOString().slice(0, 10);
-
-            const minigame = context.state?.minigames.games["halloween"];
-            const history = minigame?.history ?? {};
-
-            return !!history[dateKey]?.prizeClaimedAt;
+            return context.isTraining;
           },
         },
+        {
+          // they have already completed the mission before
+          target: "complete",
+          cond: () => {
+            // const dateKey = new Date().toISOString().slice(0, 10);
 
+            // const minigame = context.state?.minigames.games["halloween"];
+            // const history = minigame?.history ?? {};
+
+            // return !!history[dateKey]?.prizeClaimedAt;
+            return false;
+          },
+        },
         {
           target: "winner",
           cond: (context) => {

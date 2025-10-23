@@ -4,19 +4,20 @@ import { Button } from "components/ui/Button";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 import { useSelector } from "@xstate/react";
 import { PortalContext } from "../../lib/PortalProvider";
-import { Label } from "components/ui/Label";
 import { HalloweenAttempts } from "./HalloweenAttempts";
-import factions from "assets/icons/factions.webp";
 import { getAttemptsLeft } from "../../lib/HalloweenUtils";
 import { goHome } from "features/portal/lib/portalUtil";
 import { PortalMachineState } from "../../lib/halloweenMachine";
-import { SUNNYSIDE } from "assets/sunnyside";
-import { HalloweenGuide } from "./HalloweenGuide";
-import { SquareIcon } from "components/ui/SquareIcon";
-import { PIXEL_SCALE } from "features/game/lib/constants";
-import { hasFeatureAccess } from "lib/flags";
-import { millisecondsToString } from "lib/utils/time";
+import { Controls } from "./HalloweenControls";
+// import { isWithinRange } from "../../lib/HalloweenUtils";
+// import { OuterPanel, Label } from "../../../../../components/ui/Panel";
+
+import key from "public/world/key.png";
+import { decodeToken } from "features/auth/actions/login";
+import { getUrl } from "features/portal/actions/loadPortal";
 import { HalloweenPrize } from "./HalloweenPrize";
+
+const PORTAL_NAME = "halloween";
 
 interface Props {
   mode: "introduction" | "success" | "failed";
@@ -24,12 +25,17 @@ interface Props {
   showExitButton: boolean;
   confirmButtonText: string;
   onConfirm: () => void;
+  trainingButtonText?: string;
+  onTraining?: () => void;
 }
 
+// const _isJoystickActive = (state: PortalMachineState) =>
+//   state.context.isJoystickActive;
+// const _lastScore = (state: PortalMachineState) => state.context.lastScore;
+// const _state = (state: PortalMachineState) => state.context.state;
 const _minigame = (state: PortalMachineState) =>
-  state.context.state?.minigames.games["halloween"];
-const _lastScore = (state: PortalMachineState) => state.context.lastScore;
-const _state = (state: PortalMachineState) => state.context.state;
+  state.context.state?.minigames.games[PORTAL_NAME];
+const _jwt = (state: PortalMachineState) => state.context.jwt;
 
 export const HalloweenMission: React.FC<Props> = ({
   mode,
@@ -37,137 +43,138 @@ export const HalloweenMission: React.FC<Props> = ({
   showExitButton,
   confirmButtonText,
   onConfirm,
+  trainingButtonText,
+  onTraining,
 }) => {
   const { t } = useAppTranslation();
 
   const { portalService } = useContext(PortalContext);
 
+  // const isJoystickActive = useSelector(portalService, _isJoystickActive);
+  // const lastScore = useSelector(portalService, _lastScore);
+  // const state = useSelector(portalService, _state);
   const minigame = useSelector(portalService, _minigame);
-  const attemptsLeft = getAttemptsLeft(minigame);
-  const lastScore = useSelector(portalService, _lastScore);
-  const state = useSelector(portalService, _state);
+  const jwt = useSelector(portalService, _jwt);
 
-  const hasBetaAccess = state ? hasFeatureAccess(state, "HALLOWEEN") : false;
+  const farmId = !getUrl() ? 0 : decodeToken(jwt as string).farmId;
+  const attemptsLeft = getAttemptsLeft(minigame, farmId);
 
-  const dateKey = new Date().toISOString().slice(0, 10);
+  // const dateKey = new Date().toISOString().slice(0, 10);
 
-  const [page, setPage] = React.useState<"main" | "achievements" | "guide">(
-    "main",
-  );
+  const [page, setPage] = React.useState<
+    "main" | "achievements" | "guide" | "controls"
+  >("main");
+
+  // const hasBetaAccess = state
+  //   ? hasFeatureAccess(state, "")
+  //   : false;
 
   return (
     <>
       {page === "main" && (
-        <>
+        <div className="px-2">
           <div>
-            <div className="w-full relative flex justify-between gap-1 items-center mb-1 py-1 pl-2">
-              {mode === "introduction" && (
-                <Label type="default" icon={factions}>
-                  {t("halloween.portal.title")}
-                </Label>
-              )}
-              {mode === "success" && (
-                <Label type="success" icon={SUNNYSIDE.icons.confirm}>
-                  {t("halloween.missionComplete")}
-                </Label>
-              )}
-              {mode === "failed" && (
-                <Label type="danger" icon={SUNNYSIDE.icons.death}>
-                  {t("halloween.missionFailed")}
-                </Label>
-              )}
+            <div className="w-full relative flex justify-between gap-1 items-center pt-1">
               <HalloweenAttempts attemptsLeft={attemptsLeft} />
-            </div>
-
-            <div
-              className="flex flex-row"
-              style={{
-                marginBottom: `${PIXEL_SCALE * 1}px`,
-              }}
-            >
-              <div className="flex justify-between flex-col space-y-1 px-1 mb-3 text-sm flex-grow">
-                {showScore && (
-                  <span>
-                    {t("halloween.score", {
-                      score: millisecondsToString(lastScore, {
-                        length: "full",
-                      }),
-                    })}
-                  </span>
-                )}
-                <span>
-                  {t("halloween.bestToday", {
-                    score: minigame?.history[dateKey]?.highscore
-                      ? millisecondsToString(
-                          minigame?.history[dateKey]?.highscore,
-                          {
-                            length: "full",
-                          },
-                        )
-                      : 0,
-                  })}
-                </span>
-                <span>
-                  {t("halloween.bestAllTime", {
-                    score: millisecondsToString(
-                      Object.values(minigame?.history ?? {}).reduce(
-                        (acc, { highscore }) => Math.max(acc, highscore),
-                        0,
-                      ),
-                      {
-                        length: "full",
-                      },
-                    ),
-                  })}
-                </span>
-              </div>
-              <div className="flex mt-1 space-x-1">
-                {/* {hasBetaAccess && (
-                  <Button
-                    className="whitespace-nowrap capitalize w-12"
-                    onClick={() => setPage("achievements")}
-                  >
-                    <div className="flex flex-row items-center gap-1">
-                      <SquareIcon icon={trophy} width={9} />
-                    </div>
-                  </Button>
-                )} */}
+              <div className="gap-1">
                 <Button
-                  className="whitespace-nowrap capitalize w-12"
-                  onClick={() => setPage("guide")}
+                  className="whitespace-nowrap capitalize w-32 p-0"
+                  onClick={() => setPage("controls")}
                 >
-                  <div className="flex flex-row items-center gap-1">
-                    <SquareIcon
-                      icon={SUNNYSIDE.icons.expression_confused}
-                      width={7}
-                    />
+                  <div className="flex flex-row gap-1 justify-center items-center">
+                    <img src={key} className="h-5 mt-1" />
+                    {t(`${PORTAL_NAME}.controls`)}
                   </div>
                 </Button>
               </div>
             </div>
 
-            <HalloweenPrize />
+            <div className="w-full mt-1 mb-3 flex flex-col gap-2">
+              <p>{t(`${PORTAL_NAME}.intro.description1`)}</p>
+              <p>{t(`${PORTAL_NAME}.intro.description2`)}</p>
+            </div>
+
+            {/* <div className="w-full flex flex-row gap-1 mb-3">
+              {showScore && (
+                <OuterPanel className="w-full flex flex-col items-center">
+                  <Label type="info">{t(`leaderboard.score`)}</Label>
+                  <div>{lastScore}</div>
+                </OuterPanel>
+              )}
+              <OuterPanel className="w-full flex flex-col items-center">
+                <Label type="default">{t(`${PORTAL_NAME}.bestToday`)}</Label>
+                <div>{minigame?.history[dateKey]?.highscore || 0}</div>
+              </OuterPanel>
+              <OuterPanel className="w-full flex flex-col items-center">
+                <Label type="default">{t(`${PORTAL_NAME}.bestAllTime`)}</Label>
+                <div>
+                  {Object.entries(minigame?.history ?? {}).reduce(
+                    (acc, [date, entry]) => {
+                      if (!isWithinRange(date)) return acc;
+                      return Math.max(acc, entry.highscore);
+                    },
+                    0,
+                  )}
+                </div>
+              </OuterPanel>
+            </div> */}
           </div>
 
-          <div className="flex mt-1 space-x-1">
-            {showExitButton && (
-              <Button className="whitespace-nowrap capitalize" onClick={goHome}>
-                {t("exit")}
-              </Button>
-            )}
-            <Button
-              className="whitespace-nowrap capitalize"
-              onClick={onConfirm}
-            >
-              {confirmButtonText}
-            </Button>
-          </div>
-        </>
+          <HalloweenPrize />
+
+          {trainingButtonText ? (
+            <div className="flex flex-col gap-1 mt-1">
+              <div className="flex gap-1">
+                <Button
+                  className="whitespace-nowrap capitalize"
+                  onClick={onTraining}
+                >
+                  {trainingButtonText}
+                </Button>
+                {confirmButtonText && (
+                  <Button
+                    className="whitespace-nowrap capitalize"
+                    onClick={onConfirm}
+                  >
+                    {confirmButtonText}
+                  </Button>
+                )}
+              </div>
+              {showExitButton && (
+                <Button
+                  className="whitespace-nowrap capitalize"
+                  onClick={goHome}
+                >
+                  {t("exit")}
+                </Button>
+              )}
+            </div>
+          ) : (
+            <div className="flex mt-1 space-x-1">
+              {showExitButton && (
+                <Button
+                  className="whitespace-nowrap capitalize"
+                  onClick={goHome}
+                >
+                  {t("exit")}
+                </Button>
+              )}
+              {confirmButtonText && (
+                <Button
+                  className="whitespace-nowrap capitalize"
+                  onClick={onConfirm}
+                >
+                  {confirmButtonText}
+                </Button>
+              )}
+            </div>
+          )}
+        </div>
       )}
       {/* {page === "achievements" && (
-        <HalloweenAchievementsList onBack={() => setPage("main")} />
+        <AchievementsList onBack={() => setPage("main")} />
       )} */}
-      {page === "guide" && <HalloweenGuide onBack={() => setPage("main")} />}
+      {page === "controls" && <Controls onBack={() => setPage("main")} />}
     </>
   );
 };

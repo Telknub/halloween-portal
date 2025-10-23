@@ -22,6 +22,32 @@ import sloth from "public/world/relic6.png";
 import wrath from "public/world/relic7.png";
 import deceit from "public/world/relic8.webp";
 
+// Game Config
+export const GAME_LIVES = 5;
+
+// Attempts
+export const INITIAL_DATE = "2025-10-28"; // YYYY-MM-DD
+export const ATTEMPTS_BETA_TESTERS = 100;
+export const UNLIMITED_ATTEMPTS_SFL = 150; // If this value is less than 0, the option disappears
+export const FREE_DAILY_ATTEMPTS = 1;
+export const RESTOCK_ATTEMPTS = [
+  { attempts: 1, sfl: 3 },
+  { attempts: 3, sfl: 7 },
+  { attempts: 7, sfl: 14 },
+  { attempts: 20, sfl: 30 },
+];
+
+export const RESTOCK_ATTEMPTS_SFL = 1;
+export const DAILY_ATTEMPTS = 5;
+
+// Beta testers
+// export const BETA_TESTERS = [
+//   29, 9609, 49035, 155026, 1181, 151471, 49035, 86, 79871, 2299, 21303, 206876,
+//   9239, 36214, 55626, 3249, 128122,
+// ];
+export const BETA_TESTERS = [];
+
+// Types and Interfaces
 export type Tools = "sword" | "lamp" | "pickaxe";
 export type ToolActions = "attack" | "mining" | "enableFire";
 export type HalloweenNpcNames =
@@ -71,22 +97,29 @@ export type RoomType =
   | "boss"
   | "blacksmith"
   | "skeleton";
-
 export interface CodexData {
   image: string;
   description?: string;
   isFound: boolean;
 }
+export interface Decoration {
+  name: string;
+  hasCollider?: boolean;
+  hasAnimation?: boolean;
+  scale?: number;
+  offsetX?: number;
+  offsetY?: number;
+}
+export interface Position {
+  x: number;
+  y: number;
+  direction?: "horizontal" | "vertical";
+}
 
-export const OPPOSITE_DIRECTIONS: Record<Direction, Direction> = {
-  top: "bottom",
-  bottom: "top",
-  left: "right",
-  right: "left",
-};
-
+// Map Config
 export const TILE_SIZE = 32;
 export const MAP_OFFSET = TILE_SIZE * 3;
+export const OUTER_WALL_THICKNESS = 3;
 export const MAP_OFFSET_X_RULES: Partial<Record<Direction, number>> = {
   left: 1,
   right: -1,
@@ -95,15 +128,21 @@ export const MAP_OFFSET_Y_RULES: Partial<Record<Direction, number>> = {
   top: 1,
   bottom: -1,
 };
+export const OPPOSITE_DIRECTIONS: Record<Direction, Direction> = {
+  top: "bottom",
+  bottom: "top",
+  left: "right",
+  right: "left",
+};
 
-export const OUTER_WALL_THICKNESS = 3;
-
+// Tool Action Map
 export const TOOL_ACTION_MAP: Partial<Record<Tools, ToolActions>> = {
   sword: "attack",
   lamp: "enableFire",
   pickaxe: "mining",
 };
 
+// NPC Config
 export const INITIAL_SKELETON_NPC_NAME: HalloweenNpcNames = "initial_skeleton";
 export const FINAL_SKELETON_NPC_NAME: HalloweenNpcNames = "final_skeleton";
 export const INITIAL_SKELETON_KEY = "initial_skeleton_flow_complete";
@@ -145,10 +184,7 @@ export const OWL_CONFIG = {
   y: (ROOM_INNER_HEIGHT * TILE_SIZE) / 2,
 };
 
-export const GROUND_DECORATION_CHANCE = 0.3;
-export const WALL_DECORATION_CHANCE = 0.3;
-export const DEFAULT_GROUND_DECORATION_CHANCE = 0.9;
-
+// Codex
 export const BONE_CODEX: Record<Bones, CodexData> = {
   femur: { image: femur, isFound: false },
   mandible: { image: mandible, isFound: false },
@@ -201,6 +237,7 @@ export const RELIC_CODEX: Record<Relics, CodexData> = {
 export const BONES = Object.keys(BONE_CODEX);
 export const RELICS = Object.keys(RELIC_CODEX);
 
+// Player and Enemy damage
 export const PLAYER_DAMAGE: Record<Tools, Damages> = {
   sword: {
     all: 5,
@@ -222,8 +259,7 @@ export const PLAYER_DAMAGE_TAKEN: Partial<Record<Enemies, number>> = {
   finalBoss: 3,
 };
 
-export const GAME_LIVES = 5;
-
+// Gate Config
 export const GATE_CONFIG = {
   top: {
     x: (TILE_SIZE * ROOM_INNER_WIDTH) / 2,
@@ -252,6 +288,7 @@ export const GATE_CONFIG = {
   },
 };
 
+// Room required relics
 export const ROOM_ID_REQUIRED_RELICS: Partial<
   Record<number | RoomType, number>
 > = {
@@ -265,6 +302,7 @@ export const ROOM_ID_REQUIRED_RELICS: Partial<
   blacksmith: 6,
 };
 
+// Relic Buffs
 export const ENVY_BUFF_DAMAGE = 3;
 export const GLUTTONY_BUFF_PERCENTAGE = 0.25;
 export const GREED_BUFF_RANGE = 0.3;
@@ -277,14 +315,12 @@ export const SLOTH_BUFF_LIVES = 1;
 export const WRATH_BUFF_PERCENTAGE = 0.3;
 export const DECEIT_BUFF_PERCENTAGE = 0.2;
 
-export interface Decoration {
-  name: string;
-  hasCollider?: boolean;
-  hasAnimation?: boolean;
-  scale?: number;
-  offsetX?: number;
-  offsetY?: number;
-}
+// Decorations tiles
+export const GROUND_DECORATION_CHANCE = 0.3;
+export const WALL_DECORATION_CHANCE = 0.3;
+export const DEFAULT_GROUND_DECORATION_CHANCE = 0.9;
+
+// Decorations
 export const DECORATION_BORDER_CHACE = 0.5;
 export const DECORATION_BORDER_CONFIG: Record<number, Decoration[]> = {
   [TILES.T_IN]: [
@@ -392,6 +428,7 @@ export const DECORATION_BOSS_CONFIG: Position[] = [
   { x: 5 * TILE_SIZE, y: 6 * TILE_SIZE },
 ];
 
+// Statue Effects
 export const STATUE_SPEED_BUFF_PERCENTAGE = 0.25;
 export const STATUE_SPEED_DEBUFF_PERCENTAGE = -0.25;
 export const STATUE_DAMAGE_BUFF = 3;
@@ -406,11 +443,13 @@ export const STATUE_EFFECTS: Record<statueEffects, string> = {
   spawnEnemy: "",
 };
 
+// Hole config
 export const HOLE_CONFIG: Position = {
   x: (TILE_SIZE * ROOM_INNER_WIDTH) / 2,
   y: (TILE_SIZE * ROOM_INNER_HEIGHT) / 2,
 };
 
+// NPC Dialogues
 export const FIRST_DIALOGUE_NPCS: Record<HalloweenNpcNames, boolean> = {
   initial_skeleton: false,
   final_skeleton: false,
@@ -442,90 +481,109 @@ export const FIRST_DIALOGUE_NPCS: Record<HalloweenNpcNames, boolean> = {
 //   { x: 1308, y: 1144 },
 // ];
 
-export const MAX_LAMPS_IN_MAP = 50;
+// export const MAX_LAMPS_IN_MAP = 50;
 
-export const INITIAL_LAMPS_LIGHT_RADIUS = 0.3;
-export const JOYSTICK_LIGHT_RADIUS = 0.08;
-export const MIN_PLAYER_LIGHT_RADIUS = 0.1;
-export const MAX_PLAYER_LIGHT_RADIUS = 0.7;
-export const MAX_PLAYER_LAMPS = 10;
-export const STEP_PLAYER_LIGHT_RADIUS =
-  (MAX_PLAYER_LIGHT_RADIUS - MIN_PLAYER_LIGHT_RADIUS) / MAX_PLAYER_LAMPS;
+// export const INITIAL_LAMPS_LIGHT_RADIUS = 0.3;
+// export const JOYSTICK_LIGHT_RADIUS = 0.08;
+// export const MIN_PLAYER_LIGHT_RADIUS = 0.1;
+// export const MAX_PLAYER_LIGHT_RADIUS = 0.7;
+// export const MAX_PLAYER_LAMPS = 10;
+// export const STEP_PLAYER_LIGHT_RADIUS =
+//   (MAX_PLAYER_LIGHT_RADIUS - MIN_PLAYER_LIGHT_RADIUS) / MAX_PLAYER_LAMPS;
 
-export const DURATION_GAME_OVER_WITHOUT_LAMPS_SECONDS = 10; // 10 seconds
-export const DURATION_LAMP_SECONDS = 20; // 20 seconds
-export const LAMP_USAGE_MULTIPLIER_INTERVAL = 45 * 1000; // 1 minute each multiplier
-export const MAX_LAMP_USAGE_MULTIPLIER = 5;
+// export const DURATION_GAME_OVER_WITHOUT_LAMPS_SECONDS = 10; // 10 seconds
+// export const DURATION_LAMP_SECONDS = 20; // 20 seconds
+// export const LAMP_USAGE_MULTIPLIER_INTERVAL = 45 * 1000; // 1 minute each multiplier
+// export const MAX_LAMP_USAGE_MULTIPLIER = 5;
 
-export const LAMP_SPAWN_BASE_INTERVAL = 3 * 1000; // 1 seconds
-export const LAMP_SPAWN_INCREASE_PERCENTAGE = 0.01;
-
-export const UNLIMITED_ATTEMPTS_SFL = 3;
-export const RESTOCK_ATTEMPTS_SFL = 1;
-export const DAILY_ATTEMPTS = 5;
-export const RESTOCK_ATTEMPTS = 5;
+// export const LAMP_SPAWN_BASE_INTERVAL = 3 * 1000; // 1 seconds
+// export const LAMP_SPAWN_INCREASE_PERCENTAGE = 0.01;
 
 // Enemies
-export const LAST_SPAWN_TIME_GHOST = 0;
-export const LAST_SPAWN_TIME_ZOMBIE = 0;
-export const DELAY_SPAWN_TIME = 20000; // 10 seconds dalay spawn time of the enemies in the beginning
-export const UPDATE_INTERVAL = 45000; // 90 seconds time reset spawn count
-export const MIN_GHOST_PER_MIN = 0; // Minimum number of ghost enemies spawned
-export const MAX_GHOST_PER_MIN = 20; // Maximum ghost enemies to spawn
-export const MIN_ZOMBIE_PER_MIN = 0; // Minimun number of zombie enemies spawned
-export const MAX_ZOMBIE_PER_MIN = 10; // Maximum zombie enemies to spawn
-export const SET_SLOW_DOWN = 0.5; // Reduce player's velocity to 50%
-export const SET_SLOW_DOWN_DURATION = 5000; // Slow down for 5 seconds (5000 milliseconds)
-export const ACCUMULATED_SLOWDOWN = 0; // Track total accumulated slowdown time
-export const SET_VISION_RANGE = 200; // Set the vision zombies
-export const AMOUNT_ENEMIES = 5;
+// export const LAST_SPAWN_TIME_GHOST = 0;
+// export const LAST_SPAWN_TIME_ZOMBIE = 0;
+// export const DELAY_SPAWN_TIME = 20000; // 10 seconds dalay spawn time of the enemies in the beginning
+// export const UPDATE_INTERVAL = 45000; // 90 seconds time reset spawn count
+// export const MIN_GHOST_PER_MIN = 0; // Minimum number of ghost enemies spawned
+// export const MAX_GHOST_PER_MIN = 20; // Maximum ghost enemies to spawn
+// export const MIN_ZOMBIE_PER_MIN = 0; // Minimun number of zombie enemies spawned
+// export const MAX_ZOMBIE_PER_MIN = 10; // Maximum zombie enemies to spawn
+// export const SET_SLOW_DOWN = 0.5; // Reduce player's velocity to 50%
+// export const SET_SLOW_DOWN_DURATION = 5000; // Slow down for 5 seconds (5000 milliseconds)
+// export const ACCUMULATED_SLOWDOWN = 0; // Track total accumulated slowdown time
+// export const SET_VISION_RANGE = 200; // Set the vision zombies
 
 export const ITEM_BUMPKIN = {
   x: 0,
   y: -14,
 };
 
+// Guide
+export const INSTRUCTIONS: {
+  image: string;
+  description: string;
+  width?: number;
+}[] = [
+  {
+    image: ITEM_DETAILS["Lamp Front"].image,
+    description: translate("halloween.instructions1"),
+  },
+  {
+    image: ITEM_DETAILS["Lamp Front"].image,
+    description: translate("halloween.instructions2"),
+  },
+  {
+    image: ITEM_DETAILS["Lamp Front"].image,
+    description: translate("halloween.instructions3"),
+  },
+  {
+    image: ITEM_DETAILS["Lamp Front"].image,
+    description: translate("halloween.instructions4"),
+  },
+  {
+    image: ITEM_DETAILS["Lamp Front"].image,
+    description: translate("halloween.instructions5"),
+  },
+];
+
 export const RESOURCES_TABLE: {
-  [key: number]: {
-    item: string;
-    description: string;
-  };
-} = {
-  0: {
-    item: ITEM_DETAILS["Lamp Front"].image,
+  image: string;
+  description: string;
+  width?: number;
+}[] = [
+  {
+    image: ITEM_DETAILS["Lamp Front"].image,
     description: translate("halloween.torchDescription"),
   },
-};
+];
 
 export const ENEMIES_TABLE: {
-  [key: number]: {
-    item: string;
-    description: string;
-  };
-} = {
-  0: {
-    item: ITEM_DETAILS["Ghost"].image,
+  image: string;
+  description: string;
+  width?: number;
+}[] = [
+  {
+    image: ITEM_DETAILS["Ghost"].image,
     description: translate("halloween.ghostEnemyDescription"),
   },
-  1: {
-    item: ITEM_DETAILS["Zombie"].image,
+  {
+    image: ITEM_DETAILS["Zombie"].image,
     description: translate("halloween.zombieEnemyDescription"),
   },
-};
+];
 
 export const SIGNS_TABLE: {
-  [key: number]: {
-    item: string;
-    description: string;
-  };
-} = {
-  0: {
-    item: ITEM_DETAILS["Wear Sign"].image,
+  image: string;
+  description: string;
+  width?: number;
+}[] = [
+  {
+    image: ITEM_DETAILS["Wear Sign"].image,
     description: translate("halloween.wearSignDescription"),
   },
-};
+];
 
-export const HALLOWEEN_NPC_WEARABLES: Equipped = {
+export const PANEL_NPC_WEARABLES: Equipped = {
   body: "Light Brown Farmer Potion",
   hair: "White Long Hair",
   hat: "Luna's Hat",
@@ -566,18 +624,14 @@ export const GOLEM_STATS = {
 };
 
 // Enemies Configuration
-export interface Position {
-  x: number;
-  y: number;
-  direction?: "horizontal" | "vertical";
-}
-
 export const ENEMY_STATS = {
   health: 16,
   damage: 10,
   attackDelay: 1000,
 };
 export const BOSS_ENEMY_SPAWN_Y_DISTANCE = 200;
+
+export const AMOUNT_ENEMIES = 5;
 
 const limitX = 230;
 const stop_position = [

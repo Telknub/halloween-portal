@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { PortalContext } from "../../lib/PortalProvider";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 import { ConfirmationModal } from "components/ui/ConfirmationModal";
-import { HALLOWEEN_NPC_WEARABLES } from "../../HalloweenConstants";
+import { PANEL_NPC_WEARABLES } from "../../HalloweenConstants";
 
 class TravelModalManager {
   private listener?: (isOpen: boolean) => void;
@@ -35,7 +35,7 @@ export const HalloweenTravel: React.FC = () => {
   return (
     <>
       <ConfirmationModal
-        bumpkinParts={HALLOWEEN_NPC_WEARABLES}
+        bumpkinParts={PANEL_NPC_WEARABLES}
         show={showExitConfirmation}
         onHide={() => setShowExitConfirmation(false)}
         messages={[t("halloween.endGameConfirmation")]}

@@ -272,27 +272,36 @@ export const STATIC_OFFLINE_FARM: GameState = {
             attempts: 1,
             highscore: 76709,
           },
+          "2025-10-23": {
+            attempts: 1,
+            highscore: 76709,
+          },
         },
         highscore: 76709,
         purchases: [
           {
             purchasedAt: 1730404371937,
-            sfl: 25,
+            sfl: 30,
             items: {},
           },
           {
             purchasedAt: 1730456882476,
-            sfl: 25,
+            sfl: 30,
             items: {},
           },
           {
             purchasedAt: 1730537352097,
-            sfl: 25,
+            sfl: 30,
             items: {},
           },
           {
             purchasedAt: 1730628549755,
-            sfl: 25,
+            sfl: 30,
+            items: {},
+          },
+          {
+            purchasedAt: 1761247801755,
+            sfl: 30,
             items: {},
           },
         ],

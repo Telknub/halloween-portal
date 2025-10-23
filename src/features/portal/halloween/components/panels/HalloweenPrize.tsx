@@ -3,20 +3,13 @@ import React, { useContext } from "react";
 import { SUNNYSIDE } from "assets/sunnyside";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 import { OuterPanel } from "components/ui/Panel";
-import { millisecondsToString, secondsToString } from "lib/utils/time";
+import { secondsToString } from "lib/utils/time";
 import coins from "assets/icons/coins.webp";
 import { Label } from "components/ui/Label";
 import { PortalMachineState } from "../../lib/halloweenMachine";
 import { useSelector } from "@xstate/react";
 import { PortalContext } from "../../lib/PortalProvider";
 
-const _dailyHighscore = (state: PortalMachineState) => {
-  const dateKey = new Date().toISOString().slice(0, 10);
-  const minigame = state.context.state?.minigames.games["halloween"];
-  const history = minigame?.history ?? {};
-
-  return history[dateKey]?.highscore ?? 0;
-};
 const _prize = (state: PortalMachineState) => {
   return state.context.state?.minigames.prizes["halloween"];
 };
@@ -30,7 +23,6 @@ export const HalloweenPrize: React.FC = () => {
     _prize,
     (prev, next) => JSON.stringify(prev) === JSON.stringify(next),
   );
-  const dailyHighscore = useSelector(portalService, _dailyHighscore);
 
   if (!prize) {
     return (
@@ -44,7 +36,6 @@ export const HalloweenPrize: React.FC = () => {
     );
   }
 
-  const isComplete = dailyHighscore > prize.score;
   const secondsLeft = (prize.endAt - Date.now()) / 1000;
 
   return (
@@ -52,21 +43,13 @@ export const HalloweenPrize: React.FC = () => {
       <div className="px-1">
         <span className="text-xs mb-2">
           {t("halloween.portal.missionObjectives", {
-            targetScore: millisecondsToString(prize.score, {
-              length: "full",
-            }),
+            targetScore: prize.score,
           })}
         </span>
         <div className="flex justify-between mt-2 flex-wrap">
-          {isComplete ? (
-            <Label type="success" icon={SUNNYSIDE.icons.confirm}>
-              {t("halloween.completed")}
-            </Label>
-          ) : (
-            <Label type="info" icon={SUNNYSIDE.icons.stopwatch}>
-              {secondsToString(secondsLeft, { length: "medium" })}
-            </Label>
-          )}
+          <Label type="info" icon={SUNNYSIDE.icons.stopwatch}>
+            {secondsToString(secondsLeft, { length: "medium" })}
+          </Label>
           <div className="flex items-center space-x-2">
             {!!prize.coins && (
               <Label icon={coins} type="warning">

@@ -121,6 +121,8 @@ export const Halloween: React.FC = () => {
             showExitButton={true}
             confirmButtonText={t("start")}
             onConfirm={() => portalService.send("CONTINUE")}
+            trainingButtonText={t("start.training")}
+            onTraining={() => portalService.send("CONTINUE_TRAINING")}
           />
         </Modal>
       )}
@@ -131,7 +133,7 @@ export const Halloween: React.FC = () => {
             mode={"failed"}
             showScore={true}
             showExitButton={true}
-            confirmButtonText={t("play.again")}
+            confirmButtonText={""}
             onConfirm={() => portalService.send("RETRY")}
           />
         </Modal>
@@ -155,7 +157,7 @@ export const Halloween: React.FC = () => {
             mode={"introduction"}
             showScore={true}
             showExitButton={true}
-            confirmButtonText={t("play.again")}
+            confirmButtonText={""}
             onConfirm={() => portalService.send("RETRY")}
           />
         </Modal>

@@ -5,8 +5,6 @@ import { PIXEL_SCALE } from "features/game/lib/constants";
 import { HudContainer } from "components/ui/HudContainer";
 import { PortalMachineState } from "../../lib/halloweenMachine";
 import { HalloweenScore } from "./HalloweenScore";
-import { HalloweenSettings } from "./HalloweenSettings";
-import { HalloweenTravel } from "./HalloweenTravel";
 import { HalloweenInventory } from "./HalloweenInventory";
 import { useAchievementToast } from "../../providers/AchievementToastProvider";
 import { HalloweenTarget } from "./HalloweenTarget";
@@ -65,8 +63,8 @@ export const HalloweenHud: React.FC = () => {
           )}
         </div>
 
-        <HalloweenTravel />
-        <HalloweenSettings />
+        {/* <HalloweenTravel /> */}
+        {/* <HalloweenSettings /> */}
         {isPlaying && (
           <>
             <HalloweenInventory />
