@@ -75,6 +75,8 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       callback: () => this.checkAndFollowPlayer(),
     });
 
+    this.addSound("mummy").play();
+
     scene.add.existing(this);
   }
 
@@ -130,7 +132,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
     );
 
     const attackDistance = 30;
-    const followDistance = 150;
+    const followDistance = 200;
 
     if (distance < attackDistance) {
       this.attackPlayer();
@@ -143,7 +145,6 @@ export class MummyContainer extends Phaser.GameObjects.Container {
 
   private followPlayer() {
     if (!this.player) return;
-    this.addSound("mummy").play();
 
     const body = this.body as Phaser.Physics.Arcade.Body;
 
@@ -221,7 +222,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this.spriteSmash = this.scene.add
         .sprite(0, 10, `${this.spriteName}_smash`)
         .setDepth(10)
-        .setScale(1.2);
+        .setScale(1.4);
 
       this.add(this.spriteSmash);
 
@@ -295,16 +296,16 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this,
     );
 
-    // this.scene.physics.add.overlap(
-    //   this.player,
-    //   this,
-    //   () => {
-    //     if (this.player?.isHurting) return;
-    //     this.player?.takeDamage("mummy");
-    //   },
-    //   undefined,
-    //   this,
-    // );
+    this.scene.physics.add.overlap(
+      this.player,
+      this,
+      () => {
+        if (this.player?.isHurting) return;
+        this.player?.takeDamage("mummy");
+      },
+      undefined,
+      this,
+    );
   }
 
   private createOverlaps() {
