@@ -134,7 +134,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const attackDistance = 30;
+    const attackDistance = 20;
     const followDistance = 70;
 
     if (distance < attackDistance) {

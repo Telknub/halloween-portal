@@ -623,6 +623,17 @@ export const GOLEM_STATS = {
   },
 };
 
+export const FIRE_STATS = {
+  config1: {
+    x: (ROOM_INNER_WIDTH * TILE_SIZE) / 6,
+    y: TILE_SIZE,
+  },
+  config2: {
+    x: ROOM_INNER_WIDTH * TILE_SIZE - 58,
+    y: TILE_SIZE,
+  },
+};
+
 // Enemies Configuration
 export const ENEMY_STATS = {
   health: 16,

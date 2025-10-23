@@ -7,11 +7,13 @@ import {
   TILE_SIZE,
   BOSS_STATS,
   HOLE_CONFIG,
+  FIRE_STATS,
 } from "features/portal/halloween/HalloweenConstants";
 import { BossContainer } from "features/portal/halloween/containers/BossContainer";
 import { GateContainer } from "features/portal/halloween/containers/GateContainer";
 import { DecorationContainer } from "features/portal/halloween/containers/DecorationContainer";
 import { HoleContainer } from "features/portal/halloween/containers/HoleContainer";
+import { FireChaserContainer } from "features/portal/halloween/containers/FireChaserContainer";
 
 interface Props {
   scene: HalloweenScene;
@@ -73,6 +75,19 @@ export class BossRoom extends BaseRoom {
     });
   }
 
+  private createFireChasers() {
+    Object.keys(FIRE_STATS).forEach((key) => {
+      const config = FIRE_STATS[key as keyof typeof FIRE_STATS];
+      const { x, y } = this.getRelativePosition(config.x, config.y);
+      new FireChaserContainer({
+        x,
+        y,
+        scene: this.scene,
+        player: this.player,
+      });
+    });
+  }
+
   private createZone() {
     if (!this.player) return;
 
@@ -96,6 +111,7 @@ export class BossRoom extends BaseRoom {
       zoneBody.setEnable(false);
       this.gate.close();
       this.createBossEnemy();
+      this.createFireChasers();
     });
   }
 
