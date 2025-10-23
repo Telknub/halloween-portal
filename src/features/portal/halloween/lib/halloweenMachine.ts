@@ -13,6 +13,8 @@ import {
   CodexData,
   Relics,
   GAME_LIVES,
+  HalloweenNpcNames,
+  FIRST_DIALOGUE_NPCS,
 } from "../HalloweenConstants";
 import { GameState } from "features/game/types/game";
 import { purchaseMinigameItem } from "features/game/events/minigames/purchaseMinigameItem";
@@ -47,6 +49,7 @@ export interface Context {
   lives: number;
   maxLives: number;
   statueEffects: Record<string, string>[];
+  firstDialogueNPCs: Record<HalloweenNpcNames, boolean>;
   startedAt: number;
   attemptsLeft: number;
 }
@@ -105,6 +108,11 @@ type CollectStatueEffectEvent = {
   effect: string;
 };
 
+type SetFirstDialogueNPCs = {
+  type: "SET_FIRST_DIALOGUE_NPCS";
+  npcName: HalloweenNpcNames;
+};
+
 export type PortalEvent =
   | SetJoystickActiveEvent
   | { type: "START" }
@@ -125,6 +133,7 @@ export type PortalEvent =
   | RestoreLivesEvent
   | IncreaseMaxLivesEvent
   | CollectStatueEffectEvent
+  | SetFirstDialogueNPCs
   | UnlockAchievementsEvent;
 
 export type PortalState = {
@@ -161,11 +170,12 @@ const resetGameTransition = {
       score: () => 0,
       selectedTool: () => null,
       tools: () => [],
-      boneCodex: () => BONE_CODEX,
-      relicCodex: () => RELIC_CODEX,
+      boneCodex: () => structuredClone(BONE_CODEX),
+      relicCodex: () => structuredClone(RELIC_CODEX),
       lives: () => GAME_LIVES,
       maxLives: () => GAME_LIVES,
       statueEffects: () => [],
+      firstDialogueNPCs: () => structuredClone(FIRST_DIALOGUE_NPCS),
       startedAt: () => 0,
     }) as any,
   },
@@ -190,11 +200,12 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
     // Halloween
     selectedTool: null,
     tools: [],
-    boneCodex: BONE_CODEX,
-    relicCodex: RELIC_CODEX,
+    boneCodex: structuredClone(BONE_CODEX),
+    relicCodex: structuredClone(RELIC_CODEX),
     lives: GAME_LIVES,
     maxLives: GAME_LIVES,
     statueEffects: [],
+    firstDialogueNPCs: structuredClone(FIRST_DIALOGUE_NPCS),
   },
   on: {
     SET_JOYSTICK_ACTIVE: {
@@ -341,11 +352,12 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
             score: 0,
             selectedTool: null,
             tools: [],
-            boneCodex: BONE_CODEX,
-            relicCodex: RELIC_CODEX,
+            boneCodex: structuredClone(BONE_CODEX),
+            relicCodex: structuredClone(RELIC_CODEX),
             lives: GAME_LIVES,
             maxLives: GAME_LIVES,
             statueEffects: [],
+            firstDialogueNPCs: structuredClone(FIRST_DIALOGUE_NPCS),
             state: (context: Context) => {
               startAttempt();
               return startMinigameAttempt({
@@ -456,6 +468,19 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                 ...context.statueEffects,
                 { statueName: event.statueName, effect: event.effect },
               ];
+            },
+          }),
+        },
+        SET_FIRST_DIALOGUE_NPCS: {
+          actions: assign({
+            firstDialogueNPCs: (
+              context: Context,
+              event: SetFirstDialogueNPCs,
+            ) => {
+              return {
+                ...context.firstDialogueNPCs,
+                [event.npcName]: true,
+              };
             },
           }),
         },

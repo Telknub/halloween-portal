@@ -16,7 +16,6 @@ interface Props {
   scene: HalloweenScene;
   id: number;
   direction: string;
-  flowCompleteKey: string;
   npcName: HalloweenNpcNames;
   player?: BumpkinContainer;
 }
@@ -30,22 +29,12 @@ export class SkeletonContainer extends Phaser.GameObjects.Container {
   private alert: Phaser.GameObjects.Sprite;
   scene: HalloweenScene;
 
-  constructor({
-    x,
-    y,
-    scene,
-    id,
-    direction,
-    flowCompleteKey,
-    npcName,
-    player,
-  }: Props) {
+  constructor({ x, y, scene, id, direction, npcName, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
     this.id = id;
     this.npcName = npcName;
     this.player = player;
-    localStorage.setItem(flowCompleteKey, "false");
 
     // Sprite
     this.spriteName = "skeleton";

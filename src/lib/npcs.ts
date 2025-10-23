@@ -108,9 +108,71 @@ export type NPCName =
   | "initial_skeleton"
   | "final_skeleton"
   | "player"
-  | "owl";
+  | "owl"
+  | "owl1"
+  | "owl2";
 
-export const NPC_WEARABLES: Partial<Record<NPCName, Equipped>> = {
+export const NPC_WEARABLES: Record<NPCName, Equipped> = {
+  initial_skeleton: {
+    body: "Beige Farmer Potion",
+    background: "Dawn Breaker Background",
+    hair: "Basic Hair",
+    shirt: "Bidder's Brocade",
+    pants: "Auctioneer Slacks",
+    shoes: "Leather Shoes",
+    tool: "Farmer Pitchfork",
+    hat: "Harry's Hat",
+  },
+  final_skeleton: {
+    body: "Beige Farmer Potion",
+    background: "Dawn Breaker Background",
+    hair: "Basic Hair",
+    shirt: "Bidder's Brocade",
+    pants: "Auctioneer Slacks",
+    shoes: "Leather Shoes",
+    tool: "Farmer Pitchfork",
+    hat: "Harry's Hat",
+  },
+  player: {
+    body: "Beige Farmer Potion",
+    background: "Dawn Breaker Background",
+    hair: "Basic Hair",
+    shirt: "Bidder's Brocade",
+    pants: "Auctioneer Slacks",
+    shoes: "Leather Shoes",
+    tool: "Farmer Pitchfork",
+    hat: "Harry's Hat",
+  },
+  owl: {
+    body: "Beige Farmer Potion",
+    background: "Dawn Breaker Background",
+    hair: "Basic Hair",
+    shirt: "Bidder's Brocade",
+    pants: "Auctioneer Slacks",
+    shoes: "Leather Shoes",
+    tool: "Farmer Pitchfork",
+    hat: "Harry's Hat",
+  },
+  owl1: {
+    body: "Beige Farmer Potion",
+    background: "Dawn Breaker Background",
+    hair: "Basic Hair",
+    shirt: "Bidder's Brocade",
+    pants: "Auctioneer Slacks",
+    shoes: "Leather Shoes",
+    tool: "Farmer Pitchfork",
+    hat: "Harry's Hat",
+  },
+  owl2: {
+    body: "Beige Farmer Potion",
+    background: "Dawn Breaker Background",
+    hair: "Basic Hair",
+    shirt: "Bidder's Brocade",
+    pants: "Auctioneer Slacks",
+    shoes: "Leather Shoes",
+    tool: "Farmer Pitchfork",
+    hat: "Harry's Hat",
+  },
   richie: {
     body: "Beige Farmer Potion",
     background: "Dawn Breaker Background",

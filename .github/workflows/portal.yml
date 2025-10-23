@@ -23,6 +23,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
       - name: Install Dependencies
         run: yarn install
 
@@ -39,10 +44,9 @@ jobs:
           VITE_API_URL: "https://api-dev.sunflower-land.com"
           VITE_PORTAL_GAME_URL: "https://sunflower-land.com/testnet/"
           VITE_ANIMATION_URL: "https://animations-dev.sunflower-land.com"
-          VITE_PORTAL_DONATION_ADDRESS: "0x45803db63eaF8E82F258f1F8997DBBA64ca99EaF"
 
       - name: Configure AWS Credentials
-        uses: aws-actions/configure-aws-credentials@v1.5.9
+        uses: aws-actions/configure-aws-credentials@v4
         with:
           aws-access-key-id: ${{ secrets.DEPLOY_KEY_ID }}
           aws-secret-access-key: ${{ secrets.DEPLOY_ACCESS_KEY }}

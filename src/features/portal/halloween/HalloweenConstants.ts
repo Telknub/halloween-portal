@@ -28,7 +28,8 @@ export type HalloweenNpcNames =
   | "initial_skeleton"
   | "final_skeleton"
   | "blacksmith"
-  | "owl";
+  | "owl1"
+  | "owl2";
 export type Bones = "femur" | "mandible" | "spine" | "clavicles" | "scapula";
 export type statueEffects =
   | "speedBuff"
@@ -105,8 +106,6 @@ export const TOOL_ACTION_MAP: Partial<Record<Tools, ToolActions>> = {
 
 export const INITIAL_SKELETON_NPC_NAME: HalloweenNpcNames = "initial_skeleton";
 export const FINAL_SKELETON_NPC_NAME: HalloweenNpcNames = "final_skeleton";
-export const BLACKSMITH_NPC_NAME: HalloweenNpcNames = "blacksmith";
-export const OWL_NPC_NAME: HalloweenNpcNames = "owl";
 export const INITIAL_SKELETON_KEY = "initial_skeleton_flow_complete";
 export const FINAL_SKELETON_KEY = "final_skeleton_flow_complete";
 export const BLACKSMITH_KEY = "blacksmith_flow_complete";
@@ -410,6 +409,14 @@ export const STATUE_EFFECTS: Record<statueEffects, string> = {
 export const HOLE_CONFIG: Position = {
   x: (TILE_SIZE * ROOM_INNER_WIDTH) / 2,
   y: (TILE_SIZE * ROOM_INNER_HEIGHT) / 2,
+};
+
+export const FIRST_DIALOGUE_NPCS: Record<HalloweenNpcNames, boolean> = {
+  initial_skeleton: false,
+  final_skeleton: false,
+  blacksmith: false,
+  owl1: false,
+  owl2: false,
 };
 
 // export const LAMPS_CONFIGURATION: { x: number; y: number }[] = [

@@ -32,7 +32,8 @@ export class InitialRoom extends BaseRoom {
     });
   }
 
-  createObjects() {
+  createObjects(wallsGroup: Phaser.Physics.Arcade.StaticGroup) {
+    super.createObjects(wallsGroup);
     this.createDecorationRandomly({
       hasDecorationGround: true,
       excludeSmallRoom: true,
@@ -55,13 +56,12 @@ export class InitialRoom extends BaseRoom {
       scene: this.scene,
       id: this.id,
       direction: SKELETON_INITIAL_ROOM_CONFIG[this.exit].direction,
-      flowCompleteKey: INITIAL_SKELETON_KEY,
       npcName: INITIAL_SKELETON_NPC_NAME,
       player: this.player,
     });
   }
 
-  private createHole() {
+  createHole() {
     const { x, y } = this.getRelativePosition(HOLE_CONFIG.x, HOLE_CONFIG.y);
     new HoleContainer({
       x,

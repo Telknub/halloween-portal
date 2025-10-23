@@ -2,12 +2,12 @@ import { BumpkinContainer } from "features/world/containers/BumpkinContainer";
 import { HalloweenScene } from "../HalloweenScene";
 import { translate } from "lib/i18n/translate";
 import { npcModalManager } from "features/world/ui/NPCModals";
-import { BLACKSMITH_NPC_NAME, OWL_NPC_NAME } from "../HalloweenConstants";
 
 interface Props {
   x: number;
   y: number;
   scene: HalloweenScene;
+  id: number;
   player?: BumpkinContainer;
 }
 
@@ -16,12 +16,14 @@ export class OwlContainer extends Phaser.GameObjects.Container {
   private spriteName: string;
   private sprite: Phaser.GameObjects.Sprite;
   private alert: Phaser.GameObjects.Sprite;
+  private id: number;
   scene: HalloweenScene;
 
-  constructor({ x, y, scene, player }: Props) {
+  constructor({ x, y, scene, id, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
     this.player = player;
+    this.id = id;
 
     // Sprite
     this.spriteName = "owl";
@@ -89,7 +91,7 @@ export class OwlContainer extends Phaser.GameObjects.Container {
         return;
       }
 
-      npcModalManager.open(OWL_NPC_NAME, { relicName });
+      npcModalManager.open("owl", { relicName, npcName: `owl${this.id}` });
 
       if (this.alert?.active) {
         this.alert?.destroy();

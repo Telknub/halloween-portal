@@ -9,9 +9,9 @@ interface Props {
   x: number;
   y: number;
   scene: HalloweenScene;
-  id: number;
-  wallsGroup: Phaser.Physics.Arcade.StaticGroup;
-  defeat: (id: number) => void;
+  wallsGroup?: Phaser.Physics.Arcade.StaticGroup;
+  id?: number;
+  defeat?: (id: number) => void;
   player?: BumpkinContainer;
 }
 
@@ -19,7 +19,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   scene: HalloweenScene;
   private spriteName: string;
-  private wallsGroup: Phaser.Physics.Arcade.StaticGroup;
+  private wallsGroup?: Phaser.Physics.Arcade.StaticGroup;
   private lifeBar: LifeBar;
   public spriteBody: Phaser.GameObjects.Sprite;
   private spriteAttack!: Phaser.GameObjects.Sprite;
@@ -27,8 +27,8 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
   private followEvent?: Phaser.Time.TimerEvent;
   private isHurting = false;
   private hasDealtDamage = false;
-  private id: number;
-  private defeat: (id: number) => void;
+  private id?: number;
+  private defeat?: (id: number) => void;
   private ranEnemy!: number;
 
   private lastAttackTime = 0;
@@ -274,9 +274,11 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
 
   private createOverlaps() {
     if (!this.player) return;
-    // this.scene.physics.add.collider(this.player, this.spriteBody);
     if (this.spriteName === "ghoul") {
-      this.scene.physics.add.collider(this.wallsGroup, this);
+      this.scene.physics.add.collider(
+        this.wallsGroup as Phaser.Physics.Arcade.StaticGroup,
+        this,
+      );
     }
     this.scene.physics.add.overlap(this, this.player.sword, () =>
       this.hit("sword"),
@@ -339,7 +341,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
     );
 
     this.spriteBody.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
-      this.defeat(this.id);
+      this.defeat?.(this.id || 0);
       this.destroy();
     });
   }

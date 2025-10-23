@@ -51,6 +51,7 @@ export class BaseRoom {
   protected hasEntry: boolean;
   protected hasExit: boolean;
   protected scene: HalloweenScene;
+  protected wallsGroup!: Phaser.Physics.Arcade.StaticGroup;
   type: RoomType;
   player?: BumpkinContainer;
   id!: number;
@@ -78,8 +79,8 @@ export class BaseRoom {
     this.player = player;
   }
 
-  createObjects(): void {
-    throw new Error("Method 'createObjects' must be implemented by subclass");
+  createObjects(wallsGroup?: Phaser.Physics.Arcade.StaticGroup) {
+    this.wallsGroup = wallsGroup as Phaser.Physics.Arcade.StaticGroup;
   }
 
   getmapOffsetMultiplierX() {
@@ -252,6 +253,7 @@ export class BaseRoom {
       x,
       y,
       id: this.id,
+      wallsGroup: this.wallsGroup,
       scene: this.scene,
       player: this.player,
     });
