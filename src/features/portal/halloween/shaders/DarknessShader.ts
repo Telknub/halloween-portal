@@ -1,6 +1,6 @@
-import { MAX_LAMPS_IN_MAP } from "../HalloweenConstants";
+// import { MAX_LAMPS_IN_MAP } from "../HalloweenConstants";
 
-const TOTAL_LIGHTS = MAX_LAMPS_IN_MAP + 2;
+const TOTAL_LIGHTS = 1; // MAX_LAMPS_IN_MAP + 2
 
 const fragShader = `
 #define SHADER_NAME DARKNESS_SHADER

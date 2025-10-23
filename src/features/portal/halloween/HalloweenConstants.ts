@@ -41,11 +41,11 @@ export const RESTOCK_ATTEMPTS_SFL = 1;
 export const DAILY_ATTEMPTS = 5;
 
 // Beta testers
-// export const BETA_TESTERS = [
+// export const BETA_TESTERS: number[] = [
 //   29, 9609, 49035, 155026, 1181, 151471, 49035, 86, 79871, 2299, 21303, 206876,
 //   9239, 36214, 55626, 3249, 128122,
 // ];
-export const BETA_TESTERS = [];
+export const BETA_TESTERS: number[] = [];
 
 // Types and Interfaces
 export type Tools = "sword" | "lamp" | "pickaxe";
