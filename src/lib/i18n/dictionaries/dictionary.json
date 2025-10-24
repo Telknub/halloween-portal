@@ -817,7 +817,7 @@
   "halloween.youHaveRunOutOfAttempts": "You have run out of attempts for today.",
   "halloween.wouldYouLikeToUnlock": "Would you like to buy more attempts?",
   "halloween.buyAttempts": "Buy {{attempts}} attempts ({{sfl}} FLOWER)",
-  "halloween.unlockAttempts": "Unlock unlimited attempts for today ({{sfl}} FLOWER)",
+  "halloween.unlockAttempts": "Unlock unlimited attempts ({{sfl}} FLOWER)",
   "halloween.endGameConfirmation": "Are you sure you want to end the game early?",
   "halloween.endGame": "End game",
   "halloween.targetScore": "Target Score: {{target}}",
