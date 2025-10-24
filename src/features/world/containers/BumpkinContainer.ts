@@ -28,7 +28,6 @@ import { EventBus } from "features/portal/halloween/lib/EventBus";
 import { FireContainer } from "features/portal/halloween/containers/FireContainer";
 import { MachineInterpreter } from "features/portal/halloween/lib/halloweenMachine";
 import { translate } from "lib/i18n/translate";
-import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
 
 const NAME_ALIASES: Partial<Record<NPCName, string>> = {
   "pumpkin' pete": "pete",
@@ -1175,7 +1174,6 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   }
 
   // Halloween Sound effects
-
   private addSound(
     key: string,
     loop = false,
@@ -1219,6 +1217,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   }
 
   public dead() {
+    this.addSound("deathPlayer").play();
     if (
       this.sprite?.anims &&
       this.scene?.anims.exists(this.deathAnimationKey as string) &&
@@ -1298,6 +1297,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   }
 
   public hurt() {
+    this.addSound("hurt").play();
     if (
       this.sprite?.anims &&
       this.scene?.anims.exists(this.hurtAnimationKey as string) &&

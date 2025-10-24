@@ -701,13 +701,26 @@ import pettingHand from "assets/animals/petting_hand.webp";
 import brush from "assets/animals/brush.webp";
 import musicBox from "assets/animals/music_box.webp";
 
-// Halloween
+// Halloween 2024
 import lampFront from "assets/halloween/lamp_front.gif";
 import lampSide from "assets/halloween/lamp_side.gif";
 import lampBack from "assets/halloween/lamp_back.gif";
 import ghost from "assets/halloween/ghost.gif";
 import zombie from "assets/halloween/zombie.gif";
 import wearSign from "assets/halloween/wearSign.webp";
+// Halloween 2025
+import relic from "assets/halloween/relic1.png";
+import ghost2 from "assets/halloween/ghost2.webp";
+import statue from "assets/halloween/statue.webp";
+import skeleton from "assets/halloween/skeleton.webp";
+import owl from "assets/halloween/owl.png";
+import bone from "assets/halloween/bone.webp";
+import sword from "assets/halloween/sword.webp";
+import golem from "assets/halloween/Golem.webp";
+import ghoul from "assets/halloween/Ghoul.webp";
+import mummy from "assets/halloween/mummy.png";
+import boss from "assets/halloween/dungeonBoss.webp";
+import fire from "assets/halloween/fire.webp";
 
 import { COUPONS, EASTER_EGG, FERTILISERS, InventoryItemName } from "./game";
 
@@ -4130,6 +4143,54 @@ export const ITEM_DETAILS: Items = {
   },
   "Wear Sign": {
     image: wearSign,
+    description: "",
+  },
+  Relic: {
+    image: relic,
+    description: "",
+  },
+  Ghost2: {
+    image: ghost2,
+    description: "",
+  },
+  Statue: {
+    image: statue,
+    description: "",
+  },
+  Skeleton: {
+    image: skeleton,
+    description: "",
+  },
+  Owl: {
+    image: owl,
+    description: "",
+  },
+  Sword: {
+    image: sword,
+    description: "",
+  },
+  Bone: {
+    image: bone,
+    description: "",
+  },
+  Ghoul: {
+    image: ghoul,
+    description: "",
+  },
+  Golem: {
+    image: golem,
+    description: "",
+  },
+  Mummy: {
+    image: mummy,
+    description: "",
+  },
+  FinalBoss: {
+    image: boss,
+    description: "",
+  },
+  Fire: {
+    image: fire,
     description: "",
   },
   Gem: {

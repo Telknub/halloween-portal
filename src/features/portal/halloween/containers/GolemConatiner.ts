@@ -67,6 +67,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
     this.createEvents();
 
     this.scene.addToUpdate("golem", () => this.addGolemUpdate());
+    this.addSound("golem").play();
 
     // Periodically check distance to player and follow/attack
     this.followEvent = this.scene.time.addEvent({

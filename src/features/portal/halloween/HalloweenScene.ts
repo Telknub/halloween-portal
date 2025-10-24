@@ -172,12 +172,15 @@ export class HalloweenScene extends BaseScene {
 
     // Collect
     this.load.audio("collect", "/world/halloween/collect.mp3");
+    this.load.audio("hurt", "/world/halloween/lose.wav");
+    this.load.audio("deathPlayer", "/world/halloween/death.wav");
 
     // Mini-boss, ghoul, ghost
     this.load.audio("ghost_attack", "/world/halloween/ghost_attack.mp3");
     this.load.audio("ghoul_attack", "/world/halloween/ghoul_attack.mp3");
     this.load.audio("smash", "/world/halloween/smash.mp3");
     this.load.audio("mummy", "/world/halloween/mummy.mp3");
+    this.load.audio("golem", "/world/halloween/golem.wav");
     this.load.audio("death", "/world/halloween/death.mp3");
 
     // Final Boss

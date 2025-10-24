@@ -7,7 +7,9 @@ import {
   INSTRUCTIONS,
   RESOURCES_TABLE,
   ENEMIES_TABLE,
-  SIGNS_TABLE,
+  STATUE_TABLE,
+  RELICS_TABLE,
+  BONE_TALBLE,
 } from "../../HalloweenConstants";
 import { useSound } from "lib/utils/hooks/useSound";
 
@@ -101,11 +103,11 @@ export const HalloweenGuide: React.FC<Props> = ({ onBack }) => {
             ))}
           </tbody>
         </table>
-        {/* Hard Mode */}
-        <Label type="default">{t(`${PORTAL_NAME}.signs`)}</Label>
+        {/* List of relics */}
+        <Label type="default">{t(`${PORTAL_NAME}.relicsDescription`)}</Label>
         <table className="w-full text-xs table-fixed border-collapse">
           <tbody>
-            {SIGNS_TABLE.map(({ image, description, width = 13 }, index) => (
+            {RELICS_TABLE.map(({ image, description, width = 13 }, index) => (
               <tr key={index}>
                 <td
                   style={{ border: "1px solid #b96f50" }}
@@ -126,6 +128,52 @@ export const HalloweenGuide: React.FC<Props> = ({ onBack }) => {
               </tr>
             ))}
           </tbody>
+        </table>
+        {/* Statue buffs and debuffs */}
+        <Label type="default">{t(`${PORTAL_NAME}.statueDescription`)}</Label>
+        <table className="w-full text-xs table-fixed border-collapse">
+          <tbody>
+            {STATUE_TABLE.map(({ image, description, width = 13 }, index) => (
+              <tr key={index}>
+                <td
+                  style={{ border: "1px solid #b96f50" }}
+                  className="p-1.5 w-1/6"
+                >
+                  <div className="flex items-center justify-center">
+                    {<SquareIcon icon={image} width={width} />}
+                  </div>
+                </td>
+                <td
+                  style={{ border: "1px solid #b96f50" }}
+                  className="p-1.5 w-5/6"
+                >
+                  {t(`${PORTAL_NAME}.guideDescription`, {
+                    description: description,
+                  })}
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <Label type="default">{t(`${PORTAL_NAME}.bones`)}</Label>
+        <table className="w-full text-xs table-fixed border-collapse">
+          <table className="w-full text-xs table-fixed border-collapse">
+            <tbody>
+              <tr>
+                {BONE_TALBLE.map(({ image, width = 13 }, index) => (
+                  <td
+                    key={index}
+                    style={{ border: "1px solid #b96f50" }}
+                    className="p-1.5"
+                  >
+                    <div className="flex items-center justify-center">
+                      <SquareIcon icon={image} width={width} />
+                    </div>
+                  </td>
+                ))}
+              </tr>
+            </tbody>
+          </table>
         </table>
       </div>
     </div>
