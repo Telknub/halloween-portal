@@ -246,11 +246,11 @@ export const PLAYER_DAMAGE: Record<Tools, Damages> = {
   },
   pickaxe: {
     all: 2,
-    golem: 10,
+    golem: 15,
   },
   lamp: {
     all: 3,
-    mummy: 10,
+    mummy: 15,
   },
 };
 export const PLAYER_DAMAGE_TAKEN: Partial<Record<Enemies, number>> = {
@@ -328,12 +328,12 @@ export const DECORATION_BORDER_CHACE = 0.5;
 export const DECORATION_BORDER_CONFIG: Record<number, Decoration[]> = {
   [TILES.T_IN]: [
     { name: "pile_of_bones", offsetY: 0.25 * TILE_SIZE },
-    { name: "bookshelves2", scale: 2 },
-    { name: "bookshelves3", scale: 2 },
-    { name: "bookshelves4", scale: 2 },
-    { name: "bookshelves7", scale: 2 },
-    { name: "bookshelves8", scale: 2 },
-    { name: "bookshelves9", scale: 2 },
+    { name: "bookshelves2", scale: 1 },
+    { name: "bookshelves3", scale: 1 },
+    { name: "bookshelves4", scale: 1 },
+    { name: "bookshelves7", scale: 1 },
+    { name: "bookshelves8", scale: 1 },
+    { name: "bookshelves9", scale: 1 },
     {
       name: "banner_red_front",
       offsetY: 0.25 * TILE_SIZE,
@@ -376,31 +376,31 @@ export const DECORATION_BORDER_CONFIG: Record<number, Decoration[]> = {
     },
   ],
   [TILES.TL_IN]: [
-    { name: "bookshelves1", scale: 2 },
-    { name: "bookshelves5", scale: 2 },
-    { name: "bookshelves6", scale: 2 },
-    { name: "bookshelves10", scale: 2 },
+    { name: "bookshelves1", scale: 1, offsetY: 3 },
+    { name: "bookshelves5", scale: 1, offsetY: 3 },
+    { name: "bookshelves6", scale: 1, offsetY: 3 },
+    { name: "bookshelves10", scale: 1, offsetY: 3 },
   ],
   [TILES.TR_IN]: [
-    { name: "bookshelves1", scale: 2 },
-    { name: "bookshelves5", scale: 2 },
-    { name: "bookshelves6", scale: 2 },
-    { name: "bookshelves10", scale: 2 },
+    { name: "bookshelves1", scale: 1, offsetX: 4, offsetY: 3 },
+    { name: "bookshelves5", scale: 1, offsetX: 4, offsetY: 3 },
+    { name: "bookshelves6", scale: 1, offsetX: 4, offsetY: 3 },
+    { name: "bookshelves10", scale: 1, offsetX: 4, offsetY: 3 },
   ],
   [TILES.L_IN]: [
-    { name: "bookshelves1", scale: 2 },
-    { name: "bookshelves5", scale: 2 },
-    { name: "bookshelves6", scale: 2 },
-    { name: "bookshelves10", scale: 2 },
+    { name: "bookshelves1", scale: 1, offsetX: 4 },
+    { name: "bookshelves5", scale: 1, offsetX: 4 },
+    { name: "bookshelves6", scale: 1, offsetX: 4 },
+    { name: "bookshelves10", scale: 1, offsetX: 4 },
     { name: "banner_red_left" },
     { name: "banner_grey_left" },
     { name: "banner_darkgrey_left" },
   ],
   [TILES.R_IN]: [
-    { name: "bookshelves1", scale: 2 },
-    { name: "bookshelves5", scale: 2 },
-    { name: "bookshelves6", scale: 2 },
-    { name: "bookshelves10", scale: 2 },
+    { name: "bookshelves1", scale: 1, offsetX: 4 },
+    { name: "bookshelves5", scale: 1, offsetX: 4 },
+    { name: "bookshelves6", scale: 1, offsetX: 4 },
+    { name: "bookshelves10", scale: 1, offsetX: 4 },
     { name: "banner_red_right" },
     { name: "banner_grey_right" },
     { name: "banner_darkgrey_right" },
@@ -432,8 +432,8 @@ export const DECORATION_BOSS_CONFIG: Position[] = [
 ];
 
 // Statue Effects
-export const STATUE_SPEED_BUFF_PERCENTAGE = 0.25;
-export const STATUE_SPEED_DEBUFF_PERCENTAGE = -0.25;
+export const STATUE_SPEED_BUFF_PERCENTAGE = 0.2;
+export const STATUE_SPEED_DEBUFF_PERCENTAGE = -0.15;
 export const STATUE_DAMAGE_BUFF = 3;
 export const STATUE_DAMAGE_DEBUFF = -3;
 export const STATUE_CRITICAL_BUFF_PERCENTAGE = 0.2;
@@ -710,7 +710,7 @@ export const BOSS_STATS = {
 };
 
 export const MUMMY_STATS = {
-  health: 30,
+  health: 45,
   damage: 10,
   attackDelay: 1000,
   config: {
@@ -720,7 +720,7 @@ export const MUMMY_STATS = {
 };
 
 export const GOLEM_STATS = {
-  health: 30,
+  health: 45,
   damage: 5,
   config: {
     x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,

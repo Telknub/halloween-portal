@@ -25,7 +25,7 @@ import { isTouchDevice } from "features/world/lib/device";
 import { Map } from "./map/Map";
 import { EventBus } from "./lib/EventBus";
 import { ITEM_IDS } from "features/game/types/bumpkin";
-import { translate } from "lib/i18n/translate";
+//import { translate } from "lib/i18n/translate";
 // import { EnemyRoom } from "./map/rooms/types/EnemyRoom";
 
 // export const NPCS: NPCBumpkin[] = [
@@ -1469,6 +1469,12 @@ export class HalloweenScene extends BaseScene {
     // Use tool
     if (
       (Phaser.Input.Keyboard.JustDown(this.cursorKeys.space) ||
+        Phaser.Input.Keyboard.JustDown(
+          this.cursorKeys.e as Phaser.Input.Keyboard.Key,
+        ) ||
+        Phaser.Input.Keyboard.JustDown(
+          this.cursorKeys.v as Phaser.Input.Keyboard.Key,
+        ) ||
         this.mobileKeys.useTool) &&
       !this.currentPlayer.isHurting &&
       !this.currentPlayer.isAttacking &&

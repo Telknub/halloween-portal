@@ -140,6 +140,8 @@ export abstract class BaseScene extends Phaser.Scene {
         a?: Phaser.Input.Keyboard.Key;
         d?: Phaser.Input.Keyboard.Key;
         q?: Phaser.Input.Keyboard.Key;
+        e?: Phaser.Input.Keyboard.Key;
+        v?: Phaser.Input.Keyboard.Key;
         space: Phaser.Input.Keyboard.Key;
       }
     | undefined;
@@ -627,6 +629,8 @@ export abstract class BaseScene extends Phaser.Scene {
         layout === "QWERTY" ? "Q" : "E",
         false,
       );
+      this.cursorKeys.e = this.input.keyboard?.addKey("E", false);
+      this.cursorKeys.v = this.input.keyboard?.addKey("V", false);
 
       this.input.keyboard?.removeCapture("SPACE");
     }

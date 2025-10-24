@@ -401,8 +401,8 @@ export class BossContainer extends Phaser.GameObjects.Container {
       `${this.spriteName}_defeat`,
       "defeat",
       0,
-      7,
-      10,
+      20,
+      8,
       0,
     );
 
