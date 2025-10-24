@@ -175,7 +175,7 @@ export const SlidingPuzzle: React.FC<Props> = ({
             background: "#546395",
           }}
         >
-          {VICTORY_TEXT.SlidinpPuzzle}
+          {VICTORY_TEXT.SlidingPuzzle}
         </div>
       )}
     </div>

@@ -368,7 +368,19 @@ export type HalloweenItems =
   | "Lamp Back"
   | "Ghost"
   | "Zombie"
-  | "Wear Sign";
+  | "Wear Sign"
+  | "Relic"
+  | "Ghost2"
+  | "Statue"
+  | "Skeleton"
+  | "Owl"
+  | "Sword"
+  | "Bone"
+  | "Ghoul"
+  | "Golem"
+  | "Mummy"
+  | "FinalBoss"
+  | "Fire";
 
 export type InventoryItemName =
   | AnimalResource

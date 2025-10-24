@@ -528,7 +528,7 @@ export const INSTRUCTIONS: {
   width?: number;
 }[] = [
   {
-    image: ITEM_DETAILS["Lamp Front"].image,
+    image: ITEM_DETAILS["Relic"].image,
     description: translate("halloween.instructions1"),
   },
   {
@@ -536,16 +536,20 @@ export const INSTRUCTIONS: {
     description: translate("halloween.instructions2"),
   },
   {
-    image: ITEM_DETAILS["Lamp Front"].image,
+    image: ITEM_DETAILS["Ghost2"].image,
     description: translate("halloween.instructions3"),
   },
   {
-    image: ITEM_DETAILS["Lamp Front"].image,
+    image: ITEM_DETAILS["Statue"].image,
     description: translate("halloween.instructions4"),
   },
   {
-    image: ITEM_DETAILS["Lamp Front"].image,
+    image: ITEM_DETAILS["Owl"].image,
     description: translate("halloween.instructions5"),
+  },
+  {
+    image: ITEM_DETAILS["Skeleton"].image,
+    description: translate("halloween.instructions6"),
   },
 ];
 
@@ -555,8 +559,24 @@ export const RESOURCES_TABLE: {
   width?: number;
 }[] = [
   {
+    image: ITEM_DETAILS["Relic"].image,
+    description: translate("halloween.relicDescription"),
+  },
+  {
+    image: ITEM_DETAILS["Bone"].image,
+    description: translate("halloween.bonesDescription"),
+  },
+  {
+    image: ITEM_DETAILS["Stone Pickaxe"].image,
+    description: translate("halloween.axeDescription"),
+  },
+  {
     image: ITEM_DETAILS["Lamp Front"].image,
-    description: translate("halloween.torchDescription"),
+    description: translate("halloween.lampDescription"),
+  },
+  {
+    image: ITEM_DETAILS["Sword"].image,
+    description: translate("halloween.swordDescription"),
   },
 ];
 
@@ -566,24 +586,106 @@ export const ENEMIES_TABLE: {
   width?: number;
 }[] = [
   {
-    image: ITEM_DETAILS["Ghost"].image,
+    image: ITEM_DETAILS["Ghost2"].image,
     description: translate("halloween.ghostEnemyDescription"),
   },
   {
-    image: ITEM_DETAILS["Zombie"].image,
-    description: translate("halloween.zombieEnemyDescription"),
+    image: ITEM_DETAILS["Ghoul"].image,
+    description: translate("halloween.ghoulEnemyDescription"),
+  },
+  {
+    image: ITEM_DETAILS["Golem"].image,
+    description: translate("halloween.golemEnemyDescription"),
+  },
+  {
+    image: ITEM_DETAILS["Mummy"].image,
+    description: translate("halloween.mummyEnemyDescription"),
+  },
+  {
+    image: ITEM_DETAILS["FinalBoss"].image,
+    description: translate("halloween.bossEnemyDescription"),
+  },
+  {
+    image: ITEM_DETAILS["Fire"].image,
+    description: translate("halloween.fireEnemyDescription"),
   },
 ];
 
-export const SIGNS_TABLE: {
+export const RELICS_TABLE: {
   image: string;
   description: string;
   width?: number;
 }[] = [
   {
-    image: ITEM_DETAILS["Wear Sign"].image,
-    description: translate("halloween.wearSignDescription"),
+    image: envy,
+    description: translate("halloween.envyBuff"),
   },
+  {
+    image: gluttony,
+    description: translate("halloween.gluttonyBuff"),
+  },
+  {
+    image: greed,
+    description: translate("halloween.greedBuff"),
+  },
+  {
+    image: lust,
+    description: translate("halloween.lustBuff"),
+  },
+  {
+    image: pride,
+    description: translate("halloween.prideBuff"),
+  },
+  {
+    image: sloth,
+    description: translate("halloween.slothBuff"),
+  },
+  {
+    image: wrath,
+    description: translate("halloween.wrathBuff"),
+  },
+  {
+    image: deceit,
+    description: translate("halloween.deceitBuff"),
+  },
+];
+
+export const STATUE_TABLE: {
+  image: string;
+  description: string;
+  width?: number;
+}[] = [
+  {
+    image: ITEM_DETAILS["Statue"].image,
+    description: translate("halloween.speedBuff"),
+  },
+  {
+    image: ITEM_DETAILS["Statue"].image,
+    description: translate("halloween.speedDebuff"),
+  },
+  {
+    image: ITEM_DETAILS["Statue"].image,
+    description: translate("halloween.damageBuff"),
+  },
+  {
+    image: ITEM_DETAILS["Statue"].image,
+    description: translate("halloween.damageDebuff"),
+  },
+  {
+    image: ITEM_DETAILS["Statue"].image,
+    description: translate("halloween.criticalBuff"),
+  },
+];
+
+export const BONE_TALBLE: {
+  image: string;
+  width?: number;
+}[] = [
+  { image: femur },
+  { image: mandible },
+  { image: spine },
+  { image: clavicles },
+  { image: scapula },
 ];
 
 export const PANEL_NPC_WEARABLES: Equipped = {
@@ -672,5 +774,5 @@ export const SLIDING_PUZZLE_IMG = slidingPuzzleImg;
 export const SUDOKU_COMPLEXITY = 4;
 export const VICTORY_TEXT = {
   Sudoku: "You got it!",
-  SlidinpPuzzle: "Puzzle Solved!",
+  SlidingPuzzle: "Puzzle Solved!",
 };
