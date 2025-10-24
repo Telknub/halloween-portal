@@ -55,6 +55,7 @@ export class LampContainer extends Phaser.GameObjects.Container {
       this.sprite.setOrigin(0.5);
       this.setPosition(x, y);
     }
+    this.setDepth(this.y);
 
     scene.add.existing(this);
   }

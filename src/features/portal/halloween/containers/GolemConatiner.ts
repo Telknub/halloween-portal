@@ -51,7 +51,6 @@ export class GolemContainer extends Phaser.GameObjects.Container {
 
     this.spriteBody = this.scene.add
       .sprite(0, 0, `${this.spriteName}_idle`)
-      .setDepth(10)
       .setScale(0.7);
 
     scene.physics.add.existing(this);
@@ -60,13 +59,14 @@ export class GolemContainer extends Phaser.GameObjects.Container {
       .setOffset(16, 16);
 
     this.setSize(this.spriteBody.width, this.spriteBody.height);
-    this.setDepth(10);
     this.add([this.spriteBody, this.lifeBar]);
 
     // Overlap
     this.createOverlaps();
     // Event
     this.createEvents();
+
+    this.scene.addToUpdate("golem", () => this.addGolemUpdate());
 
     // Periodically check distance to player and follow/attack
     this.followEvent = this.scene.time.addEvent({
@@ -82,6 +82,11 @@ export class GolemContainer extends Phaser.GameObjects.Container {
     return this.scene.registry.get("portalService") as
       | MachineInterpreter
       | undefined;
+  }
+
+  private addGolemUpdate() {
+    this.setDepth(Math.floor(this.y));
+    this.spriteSmash?.setDepth?.(Math.floor(this.y));
   }
 
   private addSound(
@@ -220,7 +225,6 @@ export class GolemContainer extends Phaser.GameObjects.Container {
 
       this.spriteSmash = this.scene.add
         .sprite(0, 10, `${this.spriteName}_smash`)
-        .setDepth(10)
         .setScale(1.4);
 
       this.add(this.spriteSmash);
@@ -369,6 +373,8 @@ export class GolemContainer extends Phaser.GameObjects.Container {
       6,
       0,
     );
+
+    this.scene.removeFromUpdate("golem");
 
     this.spriteBody.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
       this.defeat(this.x, this.y);

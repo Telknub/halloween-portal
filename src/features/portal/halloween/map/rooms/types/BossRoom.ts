@@ -25,6 +25,7 @@ interface Props {
 
 export class BossRoom extends BaseRoom {
   private gate!: GateContainer;
+  private fireChasers: FireChaserContainer[] = [];
 
   constructor({ scene, hasEntry = true, hasExit = true, player }: Props) {
     super({
@@ -46,6 +47,9 @@ export class BossRoom extends BaseRoom {
   }
 
   private defeatBoss(x: number, y: number) {
+    this.fireChasers.forEach((fireChaser) => {
+      fireChaser.destroy();
+    });
     this.createRelic(x, y);
     const { x: posX, y: posY } = this.getRelativePosition(
       HOLE_CONFIG.x,
@@ -79,12 +83,13 @@ export class BossRoom extends BaseRoom {
     Object.keys(FIRE_STATS).forEach((key) => {
       const config = FIRE_STATS[key as keyof typeof FIRE_STATS];
       const { x, y } = this.getRelativePosition(config.x, config.y);
-      new FireChaserContainer({
+      const fireChaser = new FireChaserContainer({
         x,
         y,
         scene: this.scene,
         player: this.player,
       });
+      this.fireChasers.push(fireChaser);
     });
   }
 

@@ -42,6 +42,7 @@ export class BoneContainer extends Phaser.GameObjects.Container {
       this.x + TILE_SIZE / 2 - this.sprite.width / 2,
       this.y + TILE_SIZE / 2 - this.sprite.height / 2,
     );
+    this.setDepth(1);
     this.add(this.sprite);
 
     scene.add.existing(this);

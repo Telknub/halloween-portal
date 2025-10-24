@@ -57,7 +57,6 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
 
     this.spriteBody = this.scene.add
       .sprite(0, 0, `${this.spriteName}_idle`)
-      .setDepth(10)
       .setScale(0.9);
 
     scene.physics.add.existing(this);
@@ -66,12 +65,12 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       .setOffset(9, 9);
 
     this.setSize(this.spriteBody.width, this.spriteBody.height);
-    this.setDepth(10);
     this.add([this.spriteBody, this.lifeBar]);
 
     this.createOverlaps();
     this.createEvents();
     this.attackBody();
+    this.scene.addToUpdate(`enemy${this.id}`, () => this.addEnemyUpdate());
 
     // Periodically check distance to player and follow/attack
     this.followEvent = this.scene.time.addEvent({
@@ -87,6 +86,11 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
     return this.scene.registry.get("portalService") as
       | MachineInterpreter
       | undefined;
+  }
+
+  private addEnemyUpdate() {
+    this.setDepth(Math.floor(this.y));
+    this.spriteAttack.setDepth(Math.floor(this.y));
   }
 
   private addSound(
@@ -184,7 +188,6 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
   private attackBody() {
     this.spriteAttack = this.scene.add
       .sprite(0, 0, `${this.spriteName}_attack`)
-      .setDepth(10)
       .setScale(1)
       .setVisible(false);
 
@@ -339,6 +342,8 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       6,
       0,
     );
+
+    this.scene.removeFromUpdate(`enemy${this.id}`);
 
     this.spriteBody.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
       this.defeat?.(this.id || 0);

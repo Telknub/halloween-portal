@@ -256,7 +256,7 @@ export const PLAYER_DAMAGE_TAKEN: Partial<Record<Enemies, number>> = {
   ghost: 1,
   mummy: 2,
   golem: 2,
-  finalBoss: 3,
+  finalBoss: 2,
 };
 
 // Gate Config
@@ -630,6 +630,10 @@ export const FIRE_STATS = {
   },
   config2: {
     x: ROOM_INNER_WIDTH * TILE_SIZE - 58,
+    y: TILE_SIZE,
+  },
+  config3: {
+    x: (ROOM_INNER_WIDTH * TILE_SIZE) / 2,
     y: TILE_SIZE,
   },
 };

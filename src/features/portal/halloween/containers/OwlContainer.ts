@@ -47,6 +47,7 @@ export class OwlContainer extends Phaser.GameObjects.Container {
       .setCollideWorldBounds(true);
 
     this.setSize(this.sprite.width * scale, this.sprite.height * scale);
+    this.setDepth(this.y);
     this.add([this.sprite, this.alert]);
 
     scene.add.existing(this);

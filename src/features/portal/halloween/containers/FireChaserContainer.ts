@@ -39,14 +39,12 @@ export class FireChaserContainer extends Phaser.GameObjects.Container {
 
     this.spriteBody = this.scene.add
       .sprite(0, 0, `${this.spriteName}`)
-      .setDepth(1000)
       .setScale(1);
 
     this.add(this.spriteBody);
 
     this.fireGlow = this.scene.add
       .sprite(x, y, `${this.spriteName}`)
-      .setDepth(10)
       .setScale(1.2);
 
     this.createAnimation(this.fireGlow, this.spriteName, 0, 4, -1);
@@ -65,6 +63,8 @@ export class FireChaserContainer extends Phaser.GameObjects.Container {
       loop: true,
       callback: () => this.checkAndFollowPlayer(),
     });
+
+    this.setDepth(this.y);
 
     scene.add.existing(this);
   }
@@ -187,7 +187,7 @@ export class FireChaserContainer extends Phaser.GameObjects.Container {
       () => {
         if (this.hasDealtDamage) return;
         this.hasDealtDamage = true;
-        this.player?.takeDamage("golem");
+        this.player?.takeDamage("ghoul");
         this.stopMovement();
       },
       undefined,

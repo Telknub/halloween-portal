@@ -76,6 +76,7 @@ export class StatueContainer extends Phaser.GameObjects.Container {
       width: 10,
       maxHealth: 10,
     });
+    this.setDepth(this.y);
     this.add([this.sprite, this.lifeBar]);
 
     scene.add.existing(this);
@@ -182,7 +183,11 @@ export class StatueContainer extends Phaser.GameObjects.Container {
 
   private applyDamageDebuff() {
     const currentSwordDamage = this.player?.getDamage("sword", "all") ?? 0;
-    this.player?.setDamage("sword", currentSwordDamage + STATUE_DAMAGE_DEBUFF);
+    const newDamage =
+      currentSwordDamage + STATUE_DAMAGE_DEBUFF >= 1
+        ? currentSwordDamage + STATUE_DAMAGE_DEBUFF
+        : 1;
+    this.player?.setDamage("sword", newDamage);
   }
 
   private applyCriticalBuff() {

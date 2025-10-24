@@ -54,6 +54,8 @@ export class RelicContainer extends Phaser.GameObjects.Container {
       );
     }
 
+    this.setDepth(this.y);
+
     scene.add.existing(this);
   }
 

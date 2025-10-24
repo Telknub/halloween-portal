@@ -62,8 +62,8 @@ export class DecorationContainer extends Phaser.GameObjects.Container {
       .setCollideWorldBounds(true);
 
     this.setSize(this.sprite.width * scale, this.sprite.height * scale);
-    this.setDepth(y);
     this.setPosition(posX, posY);
+    this.setDepth(this.y);
     this.add(this.sprite);
 
     if (!tile) {

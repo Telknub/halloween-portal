@@ -68,6 +68,8 @@ export class MummyContainer extends Phaser.GameObjects.Container {
     // Event
     this.createEvents();
 
+    this.scene.addToUpdate("mummy", () => this.addMummyUpdate());
+
     // Periodically check distance to player and follow/attack
     this.followEvent = this.scene.time.addEvent({
       delay: 100,
@@ -84,6 +86,11 @@ export class MummyContainer extends Phaser.GameObjects.Container {
     return this.scene.registry.get("portalService") as
       | MachineInterpreter
       | undefined;
+  }
+
+  private addMummyUpdate() {
+    this.setDepth(Math.floor(this.y));
+    this.spriteSmash?.setDepth?.(Math.floor(this.y));
   }
 
   private addSound(
@@ -370,6 +377,8 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       6,
       0,
     );
+
+    this.scene.removeFromUpdate("mummy");
 
     this.spriteBody.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
       this.defeat(this.x, this.y);

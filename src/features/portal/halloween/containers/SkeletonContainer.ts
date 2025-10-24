@@ -59,6 +59,7 @@ export class SkeletonContainer extends Phaser.GameObjects.Container {
       .setCollideWorldBounds(true);
 
     this.setSize(this.sprite.width, this.sprite.height);
+    this.setDepth(this.y);
     this.add([this.sprite, this.alert]);
 
     scene.add.existing(this);

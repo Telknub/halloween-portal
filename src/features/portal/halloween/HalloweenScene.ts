@@ -74,6 +74,7 @@ export class HalloweenScene extends BaseScene {
   private gameOverNoMove!: number;
   private gameOverNoMoveTime!: number;
   private isGameOver = false;
+  private updateCallbacks!: { key: string; fn: () => void }[];
   objectsWithCollider!: { x: number; y: number }[];
   bones!: string[];
   relics!: string[];
@@ -110,6 +111,14 @@ export class HalloweenScene extends BaseScene {
 
   public get portalService() {
     return this.registry.get("portalService") as MachineInterpreter | undefined;
+  }
+
+  addToUpdate(key: string, fn: () => void) {
+    this.updateCallbacks.push({ key, fn });
+  }
+
+  removeFromUpdate(key: string) {
+    this.updateCallbacks = this.updateCallbacks.filter((cb) => cb.key !== key);
   }
 
   preload() {
@@ -752,6 +761,9 @@ export class HalloweenScene extends BaseScene {
       // }
 
       if (this.isGamePlaying) {
+        for (const cb of this.updateCallbacks) {
+          cb.fn();
+        }
         // this.updateAmountLamps();
         // this.enemy_1();
         // this.faceDirectionEnemy_1();
@@ -801,9 +813,10 @@ export class HalloweenScene extends BaseScene {
   }
 
   private initialiseProperties() {
+    this.updateCallbacks = [];
     this.objectsWithCollider = [];
-    this.bones = BONES;
-    this.relics = RELICS;
+    this.bones = structuredClone(BONES);
+    this.relics = structuredClone(RELICS);
   }
 
   private initializeControls() {
@@ -897,10 +910,11 @@ export class HalloweenScene extends BaseScene {
   applyEnvyBuff() {
     const currentSwordDamage =
       this.currentPlayer?.getDamage("sword", "all") ?? 0;
-    this.currentPlayer?.setDamage(
-      "sword",
-      currentSwordDamage + ENVY_BUFF_DAMAGE,
-    );
+    const newDamage =
+      currentSwordDamage + ENVY_BUFF_DAMAGE >= 1
+        ? currentSwordDamage + ENVY_BUFF_DAMAGE
+        : 1;
+    this.currentPlayer?.setDamage("sword", newDamage);
   }
 
   applyGluttonyBuff() {

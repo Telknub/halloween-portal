@@ -57,9 +57,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
     this.xGuide = room.getmapOffsetMultiplierX();
 
     this.spriteName = "dungeonBoss";
-    this.spriteBody = this.scene.add
-      .sprite(0, 0, `${this.spriteName}_walk`)
-      .setDepth(10);
+    this.spriteBody = this.scene.add.sprite(0, 0, `${this.spriteName}_walk`);
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
@@ -68,12 +66,12 @@ export class BossContainer extends Phaser.GameObjects.Container {
       .setImmovable(true);
 
     this.setSize(this.spriteBody.width / 2, this.spriteBody.height / 2);
-    this.setDepth(100);
     this.add([this.spriteBody, this.lifeBar]);
 
     this.createOverlaps();
     this.createEvents();
     this.spawn();
+    this.scene.addToUpdate("boss", () => this.addBossUpdate());
 
     scene.add.existing(this);
   }
@@ -115,6 +113,11 @@ export class BossContainer extends Phaser.GameObjects.Container {
       });
     }
     sprite.play(animationKey, true);
+  }
+
+  private addBossUpdate() {
+    this.setDepth(Math.floor(this.y));
+    this.spritePower?.setDepth?.(Math.floor(this.y));
   }
 
   private spawn() {
@@ -283,7 +286,6 @@ export class BossContainer extends Phaser.GameObjects.Container {
         `${this.spriteName}_fire`,
       )
       .setOrigin(0, 0)
-      .setDepth(10)
       .setScale(1.2);
     this.createAnimation(
       this.spritePower,
@@ -335,16 +337,16 @@ export class BossContainer extends Phaser.GameObjects.Container {
       this,
     );
 
-    this.scene.physics.add.overlap(
-      this.player,
-      this,
-      () => {
-        if (this.player?.isHurting) return;
-        this.player?.takeDamage("finalBoss");
-      },
-      undefined,
-      this,
-    );
+    // this.scene.physics.add.overlap(
+    //   this.player,
+    //   this,
+    //   () => {
+    //     if (this.player?.isHurting) return;
+    //     this.player?.takeDamage("finalBoss");
+    //   },
+    //   undefined,
+    //   this,
+    // );
   }
 
   private createOverlaps() {
@@ -401,6 +403,8 @@ export class BossContainer extends Phaser.GameObjects.Container {
       10,
       0,
     );
+
+    this.scene.removeFromUpdate("boss");
 
     this.spriteBody.on("animationcomplete", () => {
       this.defeat(this.x, this.y);
