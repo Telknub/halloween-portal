@@ -48,11 +48,12 @@ export class BossContainer extends Phaser.GameObjects.Container {
 
     this.lifeBar = new LifeBar({
       x: 0,
-      y: -50,
+      y: 70,
       scene: this.scene,
       width: 100,
       maxHealth: BOSS_STATS.health,
     });
+    this.lifeBar.setDepth(1);
 
     this.xGuide = room.getmapOffsetMultiplierX();
 
@@ -286,6 +287,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
         `${this.spriteName}_fire`,
       )
       .setOrigin(0, 0)
+      .setDepth(2)
       .setScale(1.2);
     this.createAnimation(
       this.spritePower,

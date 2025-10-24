@@ -104,9 +104,14 @@ function generateSudokuPuzzle() {
 interface Props {
   onClose: () => void;
   onAction: () => void;
+  seconds: number;
 }
 
-export const SudokuHalloween: React.FC<Props> = ({ onClose, onAction }) => {
+export const SudokuHalloween: React.FC<Props> = ({
+  onClose,
+  onAction,
+  seconds,
+}) => {
   const { puzzle: initialPuzzle, solution } = React.useMemo(
     () => generateSudokuPuzzle(),
     [],
@@ -121,7 +126,7 @@ export const SudokuHalloween: React.FC<Props> = ({ onClose, onAction }) => {
     col: number;
   } | null>(null);
   const [isSolved, setIsSolved] = useState(false);
-  const [isVisibleCloseButton, setIsVisibleCloseButton] = useState(true);
+  const [isVisibleSeconds, setIsVisibleSeconds] = useState(true);
 
   const ItemIDs: ItemID[] = ITEM;
 
@@ -148,10 +153,8 @@ export const SudokuHalloween: React.FC<Props> = ({ onClose, onAction }) => {
       // Check for solution immediately after move
       if (isPuzzleSolved(newPuzzle, solution)) {
         setIsSolved(true);
-        setIsVisibleCloseButton(false);
-        setTimeout(() => {
-          onAction();
-        }, 1000);
+        setIsVisibleSeconds(false);
+        onAction();
       }
     }
   };
@@ -170,21 +173,15 @@ export const SudokuHalloween: React.FC<Props> = ({ onClose, onAction }) => {
   return (
     <>
       <div className="fixed inset-0 flex flex-row justify-center items-center z-5 w-full h-full bg-black/50 backdrop-blur-md">
+        <span
+          className={classNames("absolute top-[6rem] text-[4rem] mb-7", {
+            "text-red-500": seconds <= 5,
+            hidden: !isVisibleSeconds,
+          })}
+        >
+          {seconds}
+        </span>
         <div className="absolute">
-          <div
-            className={classNames("flex justify-end", {
-              hidden: !isVisibleCloseButton,
-            })}
-          >
-            <img
-              src={SUNNYSIDE.icons.close}
-              className="cursor-pointer"
-              onClick={onClose}
-              style={{
-                width: `${PIXEL_SCALE * 11}px`,
-              }}
-            />
-          </div>
           <div className="grid grid-cols-4 gap-2">
             {puzzle.map((row, rowIndex) =>
               row.map((item, colIndex) => (

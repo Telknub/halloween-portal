@@ -48,7 +48,7 @@ export class BossRoom extends BaseRoom {
 
   private defeatBoss(x: number, y: number) {
     this.fireChasers.forEach((fireChaser) => {
-      fireChaser.destroy();
+      fireChaser.delete();
     });
     this.createRelic(x, y);
     const { x: posX, y: posY } = this.getRelativePosition(

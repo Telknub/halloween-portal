@@ -1401,7 +1401,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
 
     const label = this.scene.add
       .text(x, y, value, {
-        fontSize: "3px",
+        fontSize: "4px",
         fontFamily: "Teeny",
         color: "#FFFFFF",
         resolution: 10,
@@ -1479,7 +1479,9 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
 
   getDamage(tool: Tools, enemy: Enemies) {
     const damage = this.damage?.[tool]?.[enemy] || this.damage?.[tool].all;
-    if (Math.random() < this.doubleDamageChance && tool === "sword") {
+    const random = Math.random();
+    if (random < this.doubleDamageChance && tool === "sword") {
+      this.addLabel(translate("halloween.x2"), { x: 0, y: 0 });
       return damage * 2;
     }
     return damage;

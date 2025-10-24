@@ -197,8 +197,17 @@ export class FireChaserContainer extends Phaser.GameObjects.Container {
 
   private stopMovement() {
     const body = this.body as Phaser.Physics.Arcade.Body;
-    body.setVelocity(0, 0);
+    body?.setVelocity(0, 0);
     this.spriteBody.setVisible(false);
     this.setPosition(this.initialPosition.x, this.initialPosition.y);
+  }
+
+  delete() {
+    if (this.followEvent) {
+      this.followEvent.remove();
+      this.followEvent = undefined;
+    }
+
+    this.destroy();
   }
 }

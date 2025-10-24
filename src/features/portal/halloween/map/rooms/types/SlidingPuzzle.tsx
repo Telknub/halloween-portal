@@ -16,12 +16,17 @@ const TOTAL_TILES = SIZE_X * SIZE_Y;
 interface Props {
   onClose: () => void;
   onAction: () => void;
+  seconds: number;
 }
 
-export const SlidingPuzzle: React.FC<Props> = ({ onClose, onAction }) => {
+export const SlidingPuzzle: React.FC<Props> = ({
+  onClose,
+  onAction,
+  seconds,
+}) => {
   const [tiles, setTiles] = useState<(number | null)[]>([]);
   const [isSolved, setIsSolved] = useState(false);
-  const [isVisibleCloseButton, setIsVisibleCloseButton] = useState(true);
+  const [isVisibleSeconds, setIsVisibleSeconds] = useState(true);
 
   useEffect(() => {
     generatePuzzleAtLeast4MovesAway();
@@ -32,10 +37,8 @@ export const SlidingPuzzle: React.FC<Props> = ({ onClose, onAction }) => {
       const isSolved = checkIfSolved(tiles);
       setIsSolved(isSolved);
       if (isSolved) {
-        setIsVisibleCloseButton(false);
-        setTimeout(() => {
-          onAction();
-        }, 1000);
+        setIsVisibleSeconds(false);
+        onAction();
       }
     }
   }, [tiles]);
@@ -124,21 +127,15 @@ export const SlidingPuzzle: React.FC<Props> = ({ onClose, onAction }) => {
 
   return (
     <div className="fixed top-0 left-0 w-full h-screen bg-black/20 backdrop-blur-md flex items-center justify-center flex-col gap-4">
+      <span
+        className={classNames("text-[4rem] mb-7", {
+          "text-red-500": seconds <= 5,
+          hidden: !isVisibleSeconds,
+        })}
+      >
+        {seconds}
+      </span>
       <div>
-        <div
-          className={classNames("flex justify-end", {
-            hidden: !isVisibleCloseButton,
-          })}
-        >
-          <img
-            src={SUNNYSIDE.icons.close}
-            className="cursor-pointer"
-            onClick={onClose}
-            style={{
-              width: `${PIXEL_SCALE * 11}px`,
-            }}
-          />
-        </div>
         <div
           style={{
             width: "min(500px, 90vw)",

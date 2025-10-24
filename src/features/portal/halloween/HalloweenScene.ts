@@ -18,12 +18,14 @@ import {
   PRIDE_BUFF_PERCENTAGE,
   WRATH_BUFF_PERCENTAGE,
   DECEIT_BUFF_PERCENTAGE,
+  Enemies,
 } from "./HalloweenConstants";
 import { EventObject } from "xstate";
 import { isTouchDevice } from "features/world/lib/device";
 import { Map } from "./map/Map";
 import { EventBus } from "./lib/EventBus";
 import { ITEM_IDS } from "features/game/types/bumpkin";
+import { translate } from "lib/i18n/translate";
 // import { EnemyRoom } from "./map/rooms/types/EnemyRoom";
 
 // export const NPCS: NPCBumpkin[] = [
@@ -691,7 +693,7 @@ export class HalloweenScene extends BaseScene {
 
     this.backgroundMusic = this.sound.add("backgroundMusic", {
       loop: true,
-      volume: 0.5,
+      volume: 0.1,
     });
     this.backgroundMusic.play();
 
@@ -850,6 +852,9 @@ export class HalloweenScene extends BaseScene {
       this.applyRelicBuff(name);
     });
     EventBus.on("get-aura", () => this.applyAura());
+    EventBus.on("hurt-player", (enemy: Enemies) =>
+      this.currentPlayer?.takeDamage(enemy),
+    );
 
     // reload scene when player hit retry
     const onRetry = (event: EventObject) => {
@@ -935,14 +940,13 @@ export class HalloweenScene extends BaseScene {
   applyPrideBuff() {
     if (!this.currentPlayer) return;
 
-    const { doubleDamageChance = 0 } = this.currentPlayer;
-    const prideBonus = PRIDE_BUFF_PERCENTAGE;
+    const chance = this.currentPlayer.doubleDamageChance;
 
-    const doubleDamageChange = doubleDamageChance
-      ? prideBonus
-      : doubleDamageChance * (1 + prideBonus);
+    const doubleDamageChance = chance
+      ? chance * (1 + PRIDE_BUFF_PERCENTAGE)
+      : PRIDE_BUFF_PERCENTAGE;
 
-    this.currentPlayer.setDoubleDamageChance(doubleDamageChange);
+    this.currentPlayer.setDoubleDamageChance(doubleDamageChance);
   }
 
   applySlothBuff() {
@@ -1459,6 +1463,7 @@ export class HalloweenScene extends BaseScene {
           : "idle";
     }
 
+    // Use tool
     if (
       (Phaser.Input.Keyboard.JustDown(this.cursorKeys.space) ||
         this.mobileKeys.useTool) &&
@@ -1470,6 +1475,7 @@ export class HalloweenScene extends BaseScene {
       animation = TOOL_ACTION_MAP[selectedTool] as ToolActions;
     }
 
+    // Change tool
     if (
       (Phaser.Input.Keyboard.JustDown(
         this.cursorKeys.q as Phaser.Input.Keyboard.Key,

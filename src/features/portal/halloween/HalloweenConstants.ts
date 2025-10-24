@@ -71,6 +71,7 @@ export type Enemies =
   | "mummy"
   | "golem"
   | "finalBoss"
+  | "owl"
   | "all";
 export type Relics =
   | "envy"
@@ -238,6 +239,7 @@ export const BONES = Object.keys(BONE_CODEX);
 export const RELICS = Object.keys(RELIC_CODEX);
 
 // Player and Enemy damage
+export const TIME_PUZZLE = 15; // seconds
 export const PLAYER_DAMAGE: Record<Tools, Damages> = {
   sword: {
     all: 5,
@@ -257,6 +259,7 @@ export const PLAYER_DAMAGE_TAKEN: Partial<Record<Enemies, number>> = {
   mummy: 2,
   golem: 2,
   finalBoss: 2,
+  owl: 1,
 };
 
 // Gate Config
