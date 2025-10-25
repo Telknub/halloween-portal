@@ -675,6 +675,10 @@ export const STATUE_TABLE: {
     image: ITEM_DETAILS["Statue"].image,
     description: translate("halloween.criticalBuff"),
   },
+  {
+    image: ITEM_DETAILS["Statue"].image,
+    description: translate("halloween.enemySpawn"),
+  },
 ];
 
 export const BONE_TALBLE: {

@@ -56,8 +56,8 @@ export class MummyContainer extends Phaser.GameObjects.Container {
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
-      .setSize(this.spriteBody.width / 2, this.spriteBody.height / 2)
-      .setOffset(16, 16);
+      .setSize(this.spriteBody.width / 3, this.spriteBody.height / 3)
+      .setOffset(22, 16);
 
     this.setSize(this.spriteBody.width, this.spriteBody.height);
     this.setDepth(10);
@@ -138,7 +138,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const attackDistance = 30;
+    const attackDistance = 40;
     const followDistance = 200;
 
     if (distance < attackDistance) {
@@ -162,7 +162,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const speed = 40;
+    const speed = 50;
 
     if (body.velocity.x > 0) this.spriteBody.setFlipX(false);
     else if (body.velocity.x < 0) this.spriteBody.setFlipX(true);

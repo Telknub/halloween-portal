@@ -856,6 +856,7 @@
   "halloween.damageBuff": "+3 Sword damage",
   "halloween.damageDebuff": "-3 Sword damage",
   "halloween.criticalBuff": "+20% Chance to deal double damage with the sword",
+  "halloween.enemySpawn": "Or maybe another Ghost or a Ghoul will emerge from the shadows.",
   "halloween.playerBlockedDoor": "The path is sealed... it seems these magical vines will only yield if I possess {{amount}} relics. Something tells me I'll need fire to get through.",
   "halloween.statueEffects": "Statue effects",
   "halloween.dodged": "Dodged",

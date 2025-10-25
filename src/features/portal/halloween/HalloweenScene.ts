@@ -172,10 +172,12 @@ export class HalloweenScene extends BaseScene {
     this.load.audio("pickaxe", "/world/halloween/pickaxe.wav");
     this.load.audio("sword", "/world/halloween/sword.wav");
 
-    // Collect
+    // Player
     this.load.audio("collect", "/world/halloween/collect.mp3");
     this.load.audio("hurt", "/world/halloween/lose.wav");
     this.load.audio("deathPlayer", "/world/halloween/death.wav");
+    this.load.audio("dodge", "/world/halloween/dodge.wav");
+    this.load.audio("doubleDamage", "/world/halloween/doubleDamage.wav");
 
     // Mini-boss, ghoul, ghost
     this.load.audio("ghost_attack", "/world/halloween/ghost_attack.mp3");
@@ -189,6 +191,7 @@ export class HalloweenScene extends BaseScene {
     this.load.audio("boss_spawn", "/world/halloween/boss_spawn.mp3");
     this.load.audio("boss_walk", "/world/halloween/boss_walk.mp3");
     this.load.audio("flamethrower", "/world/halloween/flamethrower.wav");
+    this.load.audio("explosion", "/world/halloween/explosion.wav");
 
     // Blacksmith
     this.load.spritesheet("blacksmith", "world/blacksmith.webp", {
