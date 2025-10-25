@@ -19,12 +19,14 @@ import {
   WRATH_BUFF_PERCENTAGE,
   DECEIT_BUFF_PERCENTAGE,
   Enemies,
+  TILE_SIZE,
 } from "./HalloweenConstants";
 import { EventObject } from "xstate";
 import { isTouchDevice } from "features/world/lib/device";
 import { Map } from "./map/Map";
 import { EventBus } from "./lib/EventBus";
 import { ITEM_IDS } from "features/game/types/bumpkin";
+import VirtualJoyStick from "phaser3-rex-plugins/plugins/virtualjoystick";
 //import { translate } from "lib/i18n/translate";
 // import { EnemyRoom } from "./map/rooms/types/EnemyRoom";
 
@@ -76,6 +78,8 @@ export class HalloweenScene extends BaseScene {
   private gameOverNoMove!: number;
   private gameOverNoMoveTime!: number;
   private isGameOver = false;
+  private isUseToolButtonPressed!: boolean;
+  private isChangeToolButtonPressed!: boolean;
   private updateCallbacks!: { key: string; fn: () => void }[];
   objectsWithCollider!: { x: number; y: number }[];
   bones!: string[];
@@ -177,7 +181,7 @@ export class HalloweenScene extends BaseScene {
     this.load.audio("hurt", "/world/halloween/lose.wav");
     this.load.audio("deathPlayer", "/world/halloween/death.wav");
     this.load.audio("dodge", "/world/halloween/dodge.wav");
-    this.load.audio("doubleDamage", "/world/halloween/doubleDamage.wav");
+    this.load.audio("doubleDamage", "/world/halloween/doubleDamage.mp3");
 
     // Mini-boss, ghoul, ghost
     this.load.audio("ghost_attack", "/world/halloween/ghost_attack.mp3");
@@ -675,6 +679,18 @@ export class HalloweenScene extends BaseScene {
         frameHeight: 19,
       },
     );
+
+    // Controls
+    this.load.image("use_tool_button", "world/use_tool_button.webp");
+    this.load.image(
+      "use_tool_button_pressed",
+      "world/use_tool_button_pressed.webp",
+    );
+    this.load.image("change_tool_button", "world/change_tool_button.webp");
+    this.load.image(
+      "change_tool_button_pressed",
+      "world/change_tool_button_pressed.webp",
+    );
   }
 
   // init(data: any) {
@@ -821,6 +837,8 @@ export class HalloweenScene extends BaseScene {
   }
 
   private initialiseProperties() {
+    this.isUseToolButtonPressed = false;
+    this.isChangeToolButtonPressed = false;
     this.updateCallbacks = [];
     this.objectsWithCollider = [];
     this.bones = structuredClone(BONES);
@@ -829,23 +847,74 @@ export class HalloweenScene extends BaseScene {
 
   private initializeControls() {
     if (isTouchDevice()) {
-      // const leftButton = this.add
-      //   .image(leftButtonX, buttonY, "left_button")
-      //   .setAlpha(0.8)
-      //   .setInteractive()
-      //   .setDepth(1000)
-      //   .on("pointerdown", () => {
-      //     if (!this.mobileKeys.left) {
-      //       this.mobileKeys.left = true;
-      //       this.portalService?.send("CHANGE_TOOL");
-      //       leftButton.setTexture("left_button_pressed");
+      const baseX = this.cameras.main.width / 2;
+      const baseY = this.cameras.main.height / 2;
+      const offsetX = window.innerWidth / (2 * this.zoom) - TILE_SIZE;
+      const offsetY = window.innerHeight / (2 * this.zoom) - TILE_SIZE;
 
-      //       this.scene.time.delayedCall(200, () => {
-      //         this.mobileKeys.left = false;
-      //         leftButton.setTexture("left_button");
-      //       });
-      //     }
-      //   });
+      // Joystick
+      this.joystick = new VirtualJoyStick(this, {
+        x: baseX - offsetX,
+        y: baseY + offsetY,
+        radius: 15,
+        base: this.add.circle(0, 0, 20, 0x000000, 0.5).setDepth(1000000000),
+        thumb: this.add.circle(0, 0, 8, 0xffffff, 0.5).setDepth(1000000000),
+        forceMin: 2,
+      });
+
+      // Use tool button
+      const useToolButton = this.add
+        .image(
+          baseX + offsetX - TILE_SIZE / 6,
+          baseY + offsetY,
+          "use_tool_button",
+        )
+        .setInteractive()
+        .setScrollFactor(0)
+        .setScale(1.5)
+        .setAlpha(0.8)
+        .setDepth(1000000000000)
+        .on("pointerdown", () => {
+          if (this.isUseToolButtonPressed) return;
+          this.isUseToolButtonPressed = true;
+          this.mobileKeys.useTool = true;
+          useToolButton.setTexture("use_tool_button_pressed");
+        })
+        .on("pointerup", () => {
+          this.isUseToolButtonPressed = false;
+          useToolButton.setTexture("use_tool_button");
+        })
+        .on("pointerout", () => {
+          this.isUseToolButtonPressed = false;
+          useToolButton.setTexture("use_tool_button");
+        });
+
+      // Change tool button
+      const changeToolButton = this.add
+        .image(
+          baseX + offsetX + TILE_SIZE / 3,
+          baseY + offsetY - TILE_SIZE + TILE_SIZE / 8,
+          "change_tool_button",
+        )
+        .setInteractive()
+        .setScrollFactor(0)
+        .setScale(0.75)
+        .setAlpha(0.8)
+        .setDepth(1000000000000)
+        .on("pointerdown", () => {
+          if (this.isChangeToolButtonPressed) return;
+          this.isChangeToolButtonPressed = true;
+          this.mobileKeys.changeTool = true;
+          changeToolButton.setTexture("change_tool_button_pressed");
+        })
+        .on("pointerup", () => {
+          this.isChangeToolButtonPressed = false;
+          changeToolButton.setTexture("change_tool_button");
+        })
+        .on("pointerout", () => {
+          this.isChangeToolButtonPressed = false;
+          changeToolButton.setTexture("change_tool_button");
+        });
 
       this.portalService?.send("SET_JOYSTICK_ACTIVE", {
         isJoystickActive: true,
@@ -1485,6 +1554,7 @@ export class HalloweenScene extends BaseScene {
       !this.currentPlayer.isBurning
     ) {
       animation = TOOL_ACTION_MAP[selectedTool] as ToolActions;
+      this.mobileKeys.useTool = false;
     }
 
     // Change tool
@@ -1501,6 +1571,7 @@ export class HalloweenScene extends BaseScene {
           ? true
           : false;
       this.currentPlayer.lampVisibility(lampVisibility);
+      this.mobileKeys.changeTool = false;
     }
 
     this.currentPlayer.lamp?.setX(itemBumpkinX);

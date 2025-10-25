@@ -1481,7 +1481,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     const damage = this.damage?.[tool]?.[enemy] || this.damage?.[tool].all;
     if (Math.random() < this.doubleDamageChance && tool === "sword") {
       this.addLabel(translate("halloween.x2"), { x: 0, y: 0 });
-      // this.addSound("doubleDamage").play();
+      this.addSound("doubleDamage", false, 0.4).play();
       return damage * 2;
     }
     return damage;
@@ -1524,7 +1524,9 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     if (Math.random() < this.dodgeAttackChance) {
       damage = 0;
       this.addLabel(translate("halloween.dodged"), { x: 0, y: 0 });
-      // this.addSound("dodge").play();
+      this.addSound("dodge", false, 0.4).play();
+      this.isHurting = true;
+      this.scene.time.delayedCall(1000, () => (this.isHurting = false));
     } else {
       if (this.portalService?.state.context?.lives - damage <= 0) {
         this.scene.isCameraFading = true;
