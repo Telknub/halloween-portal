@@ -218,6 +218,7 @@ export class BaseRoom {
   protected spawnObjectRandomly(
     addContainer: (x: number, y: number) => void,
     excludeSmallRoom = false,
+    excludeTopSide = false,
   ) {
     let isGround = false;
 
@@ -234,13 +235,16 @@ export class BaseRoom {
         tileX <= 3 + smallRoom[0].length &&
         tileY >= 2 &&
         tileY <= 2 + smallRoom.length;
+      const isInsideTopSide =
+        tileX >= 0 && tileX <= width && tileY >= 0 && tileY <= height / 2 - 2;
 
       if (
         this.getContentMatrix[tileY][tileX] === TILES.GROUND &&
         !this.scene.objectsWithCollider.some(
           (pos) => pos.x === x && pos.y === y,
         ) &&
-        (!excludeSmallRoom || !isInsideSmallRoom)
+        (!excludeSmallRoom || !isInsideSmallRoom) &&
+        (!excludeTopSide || !isInsideTopSide)
       ) {
         addContainer(x, y);
         isGround = true;

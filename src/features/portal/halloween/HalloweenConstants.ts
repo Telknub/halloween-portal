@@ -238,7 +238,8 @@ export const RELIC_CODEX: Record<Relics, CodexData> = {
 export const BONES = Object.keys(BONE_CODEX);
 export const RELICS = Object.keys(RELIC_CODEX);
 
-// Player and Enemy damage
+// Enemies
+export const BOSS_ROOM_ENEMY_COUNT = 2;
 export const TIME_PUZZLE = 15; // seconds
 export const PLAYER_DAMAGE: Record<Tools, Damages> = {
   sword: {

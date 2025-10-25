@@ -8,12 +8,14 @@ import {
   BOSS_STATS,
   HOLE_CONFIG,
   FIRE_STATS,
+  BOSS_ROOM_ENEMY_COUNT,
 } from "features/portal/halloween/HalloweenConstants";
 import { BossContainer } from "features/portal/halloween/containers/BossContainer";
 import { GateContainer } from "features/portal/halloween/containers/GateContainer";
 import { DecorationContainer } from "features/portal/halloween/containers/DecorationContainer";
 import { HoleContainer } from "features/portal/halloween/containers/HoleContainer";
 import { FireChaserContainer } from "features/portal/halloween/containers/FireChaserContainer";
+import { EnemyContainer } from "features/portal/halloween/containers/EnemyContainer";
 
 interface Props {
   scene: HalloweenScene;
@@ -64,6 +66,27 @@ export class BossRoom extends BaseRoom {
     });
   }
 
+  private createEnemies() {
+    for (let i = 0; i < BOSS_ROOM_ENEMY_COUNT; i++) {
+      this.spawnObjectRandomly(
+        (x, y) => this.createEnemy(x, y, i),
+        false,
+        true,
+      );
+    }
+  }
+
+  private createEnemy(x: number, y: number, id: number) {
+    new EnemyContainer({
+      x,
+      y,
+      scene: this.scene,
+      id,
+      wallsGroup: this.wallsGroup,
+      player: this.player,
+    });
+  }
+
   private createBossEnemy() {
     const { x, y } = this.getRelativePosition(
       BOSS_STATS.config.x,
@@ -74,6 +97,7 @@ export class BossRoom extends BaseRoom {
       y,
       scene: this.scene,
       defeat: (x, y) => this.defeatBoss(x, y),
+      createEnemies: () => this.createEnemies(),
       player: this.player,
       room: this,
     });
