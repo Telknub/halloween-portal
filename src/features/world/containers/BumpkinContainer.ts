@@ -1479,8 +1479,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
 
   getDamage(tool: Tools, enemy: Enemies) {
     const damage = this.damage?.[tool]?.[enemy] || this.damage?.[tool].all;
-    const random = Math.random();
-    if (random < this.doubleDamageChance && tool === "sword") {
+    if (Math.random() < this.doubleDamageChance && tool === "sword") {
       this.addLabel(translate("halloween.x2"), { x: 0, y: 0 });
       return damage * 2;
     }

@@ -17,6 +17,7 @@ interface Props {
   y: number;
   scene: HalloweenScene;
   defeat: (x: number, y: number) => void;
+  createEnemies: () => void;
   player?: BumpkinContainer;
   room: BaseRoom;
 }
@@ -37,14 +38,16 @@ export class BossContainer extends Phaser.GameObjects.Container {
   private isHurting = false;
   private posY: number;
   private defeat: (x: number, y: number) => void;
+  private createEnemies: () => void;
 
-  constructor({ x, y, scene, defeat, player, room }: Props) {
+  constructor({ x, y, scene, defeat, createEnemies, player, room }: Props) {
     super(scene, x, y - BOSS_ENEMY_SPAWN_Y_DISTANCE);
     this.scene = scene;
     this.player = player;
     this.room = room;
     this.posY = y;
     this.defeat = defeat;
+    this.createEnemies = createEnemies;
 
     this.lifeBar = new LifeBar({
       x: 0,
@@ -378,6 +381,10 @@ export class BossContainer extends Phaser.GameObjects.Container {
       const playerDamage = this.player?.getDamage(tool, "finalBoss") as number;
 
       const newHealth = this.lifeBar.currentHealth - playerDamage;
+
+      if (newHealth <= this.lifeBar.maxHealth / 2) {
+        this.createEnemies();
+      }
 
       if (newHealth > 0) {
         this.lifeBar.setHealth(newHealth);
