@@ -55,7 +55,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
-      .setSize(this.spriteBody.width / 2, this.spriteBody.height / 2)
+      .setSize(this.spriteBody.width / 2, this.spriteBody.height / 3)
       .setOffset(16, 16);
 
     this.setSize(this.spriteBody.width, this.spriteBody.height);
@@ -137,7 +137,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const attackDistance = 30;
+    const attackDistance = 40;
     const followDistance = 200;
 
     if (distance < attackDistance) {
@@ -161,7 +161,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const speed = 40;
+    const speed = 50;
 
     if (body.velocity.x > 0) this.spriteBody.setFlipX(false);
     else if (body.velocity.x < 0) this.spriteBody.setFlipX(true);
@@ -185,6 +185,8 @@ export class GolemContainer extends Phaser.GameObjects.Container {
     if (now - this.lastAttackTime < this.attackCooldown) {
       return;
     }
+
+    this.addSound("smash").play();
 
     this.createAnimation(
       this.spriteBody,
@@ -222,7 +224,6 @@ export class GolemContainer extends Phaser.GameObjects.Container {
   private createSmash() {
     if (!this.spriteSmash) {
       this.hasDealtDamage = false;
-      this.addSound("smash").play();
 
       this.spriteSmash = this.scene.add
         .sprite(0, 10, `${this.spriteName}_smash`)

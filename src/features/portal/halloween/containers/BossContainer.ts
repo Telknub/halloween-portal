@@ -412,6 +412,7 @@ export class BossContainer extends Phaser.GameObjects.Container {
       8,
       0,
     );
+    this.addSound("explosion").play();
 
     this.scene.removeFromUpdate("boss");
 

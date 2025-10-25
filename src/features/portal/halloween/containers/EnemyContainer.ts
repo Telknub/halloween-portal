@@ -139,7 +139,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
     );
 
     const attackDistance = 20;
-    const followDistance = 70;
+    const followDistance = 100;
 
     if (distance < attackDistance) {
       // this.stopMovement();
@@ -165,7 +165,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const speed = 40;
+    const speed = 50;
 
     if (body.velocity.x > 0) this.spriteBody.setFlipX(false);
     else if (body.velocity.x < 0) this.spriteBody.setFlipX(true);
