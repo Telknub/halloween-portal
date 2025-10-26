@@ -1144,6 +1144,7 @@ const halloween: Record<HalloweenItems, () => boolean> = {
   Mummy: () => false,
   FinalBoss: () => false,
   Fire: () => false,
+  "Halloween Token 2025": () => false,
 };
 
 export const WITHDRAWABLES: Record<InventoryItemName, () => boolean> = {

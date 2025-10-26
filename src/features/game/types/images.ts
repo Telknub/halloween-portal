@@ -721,6 +721,7 @@ import ghoul from "assets/halloween/Ghoul.webp";
 import mummy from "assets/halloween/mummy.png";
 import boss from "assets/halloween/dungeonBoss.webp";
 import fire from "assets/halloween/fire.webp";
+import halloweenToken2025 from "public/world/halloween_token_2025.webp";
 
 import { COUPONS, EASTER_EGG, FERTILISERS, InventoryItemName } from "./game";
 
@@ -4191,6 +4192,10 @@ export const ITEM_DETAILS: Items = {
   },
   Fire: {
     image: fire,
+    description: "",
+  },
+  "Halloween Token 2025": {
+    image: halloweenToken2025,
     description: "",
   },
   Gem: {

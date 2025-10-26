@@ -380,7 +380,8 @@ export type HalloweenItems =
   | "Golem"
   | "Mummy"
   | "FinalBoss"
-  | "Fire";
+  | "Fire"
+  | "Halloween Token 2025";
 
 export type InventoryItemName =
   | AnimalResource
@@ -939,7 +940,7 @@ export type MinigamePrize = {
   endAt: number;
   score: number;
   coins: number;
-  items: Partial<Record<InventoryItemName | "Halloween Token 2025", number>>;
+  items: Partial<Record<InventoryItemName, number>>;
   wearables: Wardrobe;
 };
 

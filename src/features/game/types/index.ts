@@ -860,6 +860,7 @@ export const KNOWN_IDS: Record<InventoryItemName, number> = {
   Mummy: 100011,
   FinalBoss: 100010,
   Fire: 100011,
+  "Halloween Token 2025": 100012,
 };
 
 // The reverse of above

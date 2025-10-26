@@ -4,7 +4,6 @@ import { SUNNYSIDE } from "assets/sunnyside";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 import { OuterPanel } from "components/ui/Panel";
 import { secondsToString } from "lib/utils/time";
-import coins from "assets/icons/coins.webp";
 import { Label } from "components/ui/Label";
 import { PortalMachineState } from "../../lib/halloweenMachine";
 import { useSelector } from "@xstate/react";
