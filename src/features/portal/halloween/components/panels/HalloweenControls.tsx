@@ -12,6 +12,8 @@ import moveControls1 from "public/world/move_controls_1.png";
 import moveControls2 from "public/world/move_controls_2.png";
 import spaceKey from "public/world/space_key.png";
 import qKey from "public/world/q_key.png";
+import eKey from "public/world/e_key.png";
+import vKey from "public/world/v_key.png";
 import joystick from "public/world/joystick.png";
 import useToolButton from "public/world/use_tool_button.webp";
 import changeToolButton from "public/world/change_tool_button.webp";
@@ -88,7 +90,11 @@ export const Controls: React.FC<Props> = ({ onBack }) => {
               {isTouchDevice() ? (
                 <img src={useToolButton} className="h-10" />
               ) : (
-                <img src={spaceKey} className="h-10" />
+                <>
+                  <img src={spaceKey} className="h-10" />
+                  <img src={eKey} className="h-10" />
+                  <img src={vKey} className="h-10" />
+                </>
               )}
             </div>
             <Label type="default">

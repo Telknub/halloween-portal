@@ -848,25 +848,41 @@ export class HalloweenScene extends BaseScene {
       this.currentPlayer?.takeDamage(enemy),
     );
 
-    // reload scene when player hit retry
-    const onRetry = (event: EventObject) => {
-      if (event.type === "RETRY") {
-        this.isCameraFading = true;
-        this.cameras.main.fadeOut(500);
-        // this.reset();
+    // // reload scene when player hit retry
+    // const onRetry = (event: EventObject) => {
+    //   if (event.type === "RETRY") {
+    //     this.isCameraFading = true;
+    //     this.cameras.main.fadeOut(500);
+    //     // this.reset();
+    //     this.scene.restart();
+    //     this.cameras.main.on(
+    //       "camerafadeoutcomplete",
+    //       () => {
+    //         this.cameras.main.fadeIn(500);
+    //         this.velocity = WALKING_SPEED;
+    //         this.isCameraFading = false;
+    //       },
+    //       this,
+    //     );
+    //   }
+    // };
+    // this.portalService?.onEvent(onRetry);
+
+    // Restart scene when player hit start
+    const onContinue = (event: EventObject) => {
+      if (event.type === "CONTINUE") {
         this.scene.restart();
-        this.cameras.main.on(
-          "camerafadeoutcomplete",
-          () => {
-            this.cameras.main.fadeIn(500);
-            this.velocity = WALKING_SPEED;
-            this.isCameraFading = false;
-          },
-          this,
-        );
       }
     };
-    this.portalService?.onEvent(onRetry);
+    this.portalService?.onEvent(onContinue);
+
+    // Restart scene when player hit start training
+    const onContinueTraining = (event: EventObject) => {
+      if (event.type === "CONTINUE_TRAINING") {
+        this.scene.restart();
+      }
+    };
+    this.portalService?.onEvent(onContinueTraining);
   }
 
   private initialiseFontFamily() {
@@ -901,7 +917,7 @@ export class HalloweenScene extends BaseScene {
       deceit: () => this.applyDeceitBuff(),
     };
     this.portalService?.send("COLLECT_RELIC", { relicName: name });
-    effectAction[name]();
+    effectAction?.[name]?.();
   }
 
   applyEnvyBuff() {
