@@ -10,6 +10,8 @@ import { PortalMachineState } from "../../lib/halloweenMachine";
 import { useSelector } from "@xstate/react";
 import { PortalContext } from "../../lib/PortalProvider";
 
+import halloweenToken2025 from "public/world/halloween_token_2025.webp";
+
 const _prize = (state: PortalMachineState) => {
   return state.context.state?.minigames.prizes["halloween"];
 };
@@ -46,14 +48,16 @@ export const HalloweenPrize: React.FC = () => {
             targetScore: prize.score,
           })}
         </span>
-        <div className="flex justify-between mt-2 flex-wrap">
+        <div className="flex justify-between mt-2 flex-wrap gap-1">
           <Label type="info" icon={SUNNYSIDE.icons.stopwatch}>
             {secondsToString(secondsLeft, { length: "medium" })}
           </Label>
           <div className="flex items-center space-x-2">
-            {!!prize.coins && (
-              <Label icon={coins} type="warning">
-                {prize.coins}
+            {!!prize.items["Halloween Token 2025"] && (
+              <Label icon={halloweenToken2025} type="warning">
+                {t("halloween.eventToken", {
+                  token: prize.items["Halloween Token 2025"],
+                })}
               </Label>
             )}
           </div>

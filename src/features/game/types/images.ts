@@ -711,7 +711,7 @@ import wearSign from "assets/halloween/wearSign.webp";
 // Halloween 2025
 import relic from "assets/halloween/relic1.png";
 import ghost2 from "assets/halloween/ghost2.webp";
-import statue from "assets/halloween/statue.webp";
+import statue from "public/world/statue1_idle.webp";
 import skeleton from "assets/halloween/skeleton.webp";
 import owl from "assets/halloween/owl.png";
 import bone from "assets/halloween/bone.webp";

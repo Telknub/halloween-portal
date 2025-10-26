@@ -702,17 +702,26 @@ export class HalloweenScene extends BaseScene {
 
   async create() {
     super.create();
+
+    // Reset listeners
     EventBus.removeAllListeners();
+
+    // Initialise
     this.initialiseProperties();
     this.initializeControls();
     this.initialiseEvents();
     this.initialiseFontFamily();
 
+    // Config
+    this.input.addPointer(3);
+
+    // Create map
     new Map({
       scene: this,
       player: this.currentPlayer,
     });
 
+    // Background music
     this.backgroundMusic = this.sound.add("backgroundMusic", {
       loop: true,
       volume: 0.1,

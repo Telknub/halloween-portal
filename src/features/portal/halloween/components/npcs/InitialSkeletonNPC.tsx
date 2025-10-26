@@ -73,19 +73,8 @@ export const InitialSkeletonNPC: React.FC<Props> = ({ onClose }) => {
   }
 
   return (
-    <div
-      className="absolute pointer-events-none"
-      style={{
-        zIndex: -10,
-        top: `${PIXEL_SCALE * -61}px`,
-        left: `${PIXEL_SCALE * 50}px`,
-        width: "100%",
-
-        fontFamily: "Basic",
-        color: "white",
-      }}
-    >
-      <div className="absolute w-60 flex flex-col items-center justify-center gap-3">
+    <div className="pointer-events-none flex justify-center fixed top-0 left-0 w-full h-screen">
+      <div className="flex flex-col w-[200px] items-center justify-center text-center gap-3">
         <img src={sword} alt="fader" className="w-full pb-3" />
         <span>{t("halloween.gotSword")}</span>
         <span>{t("halloween.tapToContinue")}</span>

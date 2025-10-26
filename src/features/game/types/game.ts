@@ -939,7 +939,7 @@ export type MinigamePrize = {
   endAt: number;
   score: number;
   coins: number;
-  items: Partial<Record<InventoryItemName, number>>;
+  items: Partial<Record<InventoryItemName | "Halloween Token 2025", number>>;
   wearables: Wardrobe;
 };
 

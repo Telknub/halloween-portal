@@ -329,7 +329,7 @@ export const STATIC_OFFLINE_FARM: GameState = {
       halloween: {
         coins: 0,
         items: {
-          Mark: 45,
+          "Halloween Token 2025": 50,
         },
         wearables: {},
         score: 8,
