@@ -24,6 +24,8 @@ import deceit from "public/world/relic8.webp";
 
 // Game Config
 export const GAME_LIVES = 5;
+export const TIME_SCORE_BASE = 1000000000;
+export const RELIC_GOAL = 8;
 
 // Attempts
 export const INITIAL_DATE = "2025-10-27"; // YYYY-MM-DD

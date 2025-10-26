@@ -6,6 +6,7 @@ import {
   BETA_TESTERS,
   INITIAL_DATE,
   ATTEMPTS_BETA_TESTERS,
+  TIME_SCORE_BASE,
 } from "../HalloweenConstants";
 
 /**
@@ -170,4 +171,8 @@ export const onAnimationComplete = (
       }
     },
   );
+};
+
+export const getScoreTime = (milliseconds: number) => {
+  return TIME_SCORE_BASE - milliseconds;
 };

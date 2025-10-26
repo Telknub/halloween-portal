@@ -272,9 +272,9 @@ export const STATIC_OFFLINE_FARM: GameState = {
             attempts: 1,
             highscore: 76709,
           },
-          "2025-10-23": {
+          "2025-10-26": {
             attempts: 1,
-            highscore: 76709,
+            highscore: 999987655,
           },
         },
         highscore: 76709,

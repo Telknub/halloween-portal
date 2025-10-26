@@ -4,7 +4,6 @@ import { basicRoom } from "../RoomTileMap";
 import { HalloweenScene } from "features/portal/halloween/HalloweenScene";
 import {
   HOLE_CONFIG,
-  INITIAL_SKELETON_KEY,
   INITIAL_SKELETON_NPC_NAME,
   SKELETON_INITIAL_ROOM_CONFIG,
 } from "features/portal/halloween/HalloweenConstants";

@@ -1520,22 +1520,22 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   takeDamage(enemy: Enemies) {
     if (!this.portalService) return;
 
-    let damage = PLAYER_DAMAGE_TAKEN[enemy] as number;
     if (Math.random() < this.dodgeAttackChance) {
-      damage = 0;
       this.addLabel(translate("halloween.dodged"), { x: 0, y: 0 });
       this.addSound("dodge", false, 0.4).play();
       this.isHurting = true;
       this.scene.time.delayedCall(1000, () => (this.isHurting = false));
     } else {
+      const damage = PLAYER_DAMAGE_TAKEN[enemy] as number;
       if (this.portalService?.state.context?.lives - damage <= 0) {
         this.scene.isCameraFading = true;
         this.scene.velocity = 0;
+        this.portalService?.send("LOSE_LIVES", { lives: damage });
         this.dead();
       } else {
+        this.portalService?.send("LOSE_LIVES", { lives: damage });
         this.hurt();
       }
     }
-    this.portalService?.send("LOSE_LIVES", { lives: damage });
   }
 }

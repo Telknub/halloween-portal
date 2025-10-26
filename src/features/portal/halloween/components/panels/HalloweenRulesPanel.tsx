@@ -7,6 +7,8 @@ import { HalloweenGuide } from "./HalloweenGuide";
 
 import page from "public/world/page.png";
 import envy from "public/world/relic1.png";
+import trophy from "assets/icons/trophy.png";
+import { HalloweenLeaderboard } from "./HalloweenLeaderboard";
 
 interface Props {
   mode: "introduction" | "success" | "failed";
@@ -44,6 +46,10 @@ export const HalloweenRulesPanel: React.FC<Props> = ({
           icon: page,
           name: t("guide"),
         },
+        {
+          icon: trophy,
+          name: t("competition.leaderboard"),
+        },
       ]}
     >
       <>
@@ -59,6 +65,7 @@ export const HalloweenRulesPanel: React.FC<Props> = ({
           />
         )}
         {tab === 1 && <HalloweenGuide />}
+        {tab === 2 && <HalloweenLeaderboard />}
       </>
     </CloseButtonPanel>
   );

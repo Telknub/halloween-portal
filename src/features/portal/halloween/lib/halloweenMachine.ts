@@ -14,6 +14,8 @@ import {
   HalloweenNpcNames,
   FIRST_DIALOGUE_NPCS,
   FREE_DAILY_ATTEMPTS,
+  RELIC_GOAL,
+  TIME_SCORE_BASE,
 } from "../HalloweenConstants";
 import { GameState } from "features/game/types/game";
 import { purchaseMinigameItem } from "features/game/events/minigames/purchaseMinigameItem";
@@ -515,38 +517,70 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
             startedAt: () => 0,
             lastScore: (context: Context) => {
               if (context.isTraining) return context.lastScore;
-              return context.score;
+              let millisecondsPassed = 0;
+              if (context.score === RELIC_GOAL) {
+                const milliseconds = !context.startedAt
+                  ? 0
+                  : Math.max(Date.now() - context.startedAt, 0);
+                millisecondsPassed = TIME_SCORE_BASE - milliseconds;
+              }
+              return millisecondsPassed;
             },
             state: (context: Context) => {
               if (context.isTraining) return context.state;
-              submitScore({ score: Math.round(context.score) });
+
+              let millisecondsPassed = 0;
+              if (context.score === RELIC_GOAL) {
+                const milliseconds = !context.startedAt
+                  ? 0
+                  : Math.max(Date.now() - context.startedAt, 0);
+                millisecondsPassed = TIME_SCORE_BASE - milliseconds;
+              }
+
+              submitScore({ score: Math.round(millisecondsPassed) });
               return submitMinigameScore({
                 state: context.state as GameState,
                 action: {
                   type: "minigame.scoreSubmitted",
-                  score: Math.round(context.score),
+                  score: Math.round(millisecondsPassed),
                   id: "halloween",
                 },
               });
             },
           }),
-          target: "introduction",
+          target: "gameOver",
         },
         GAME_OVER: {
           target: "gameOver",
           actions: assign({
             lastScore: (context: Context) => {
               if (context.isTraining) return context.lastScore;
-              return context.score;
+              let millisecondsPassed = 0;
+              if (context.score === RELIC_GOAL) {
+                const milliseconds = !context.startedAt
+                  ? 0
+                  : Math.max(Date.now() - context.startedAt, 0);
+                millisecondsPassed = TIME_SCORE_BASE - milliseconds;
+              }
+              return millisecondsPassed;
             },
             state: (context: Context) => {
               if (context.isTraining) return context.state;
-              submitScore({ score: Math.round(context.score) });
+
+              let millisecondsPassed = 0;
+              if (context.score === RELIC_GOAL) {
+                const milliseconds = !context.startedAt
+                  ? 0
+                  : Math.max(Date.now() - context.startedAt, 0);
+                millisecondsPassed = TIME_SCORE_BASE - milliseconds;
+              }
+
+              submitScore({ score: Math.round(millisecondsPassed) });
               return submitMinigameScore({
                 state: context.state as GameState,
                 action: {
                   type: "minigame.scoreSubmitted",
-                  score: Math.round(context.score),
+                  score: Math.round(millisecondsPassed),
                   id: "halloween",
                 },
               });
