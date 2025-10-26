@@ -1,20 +1,31 @@
 import React, { useContext } from "react";
 import { PortalLeaderboard } from "features/world/ui/portals/PortalLeaderboard";
 import * as AuthProvider from "features/auth/lib/Provider";
-import { Context } from "features/game/GameProvider";
+// import { Context } from "features/game/GameProvider";
+import { PortalMachineState } from "../../lib/halloweenMachine";
+import { PortalContext } from "../../lib/PortalProvider";
+import { decodeToken } from "features/auth/actions/login";
+import { useSelector } from "@xstate/react";
 
 const PORTAL_NAME = "halloween";
 
+const _jwt = (state: PortalMachineState) => state.context.jwt;
+
 export const HalloweenLeaderboard: React.FC = () => {
-  const { gameService } = useContext(Context);
+  const { portalService } = useContext(PortalContext);
+  //   const { gameService } = useContext(Context);
   const { authService } = useContext(AuthProvider.Context);
+
+  const jwt = useSelector(portalService, _jwt);
+
+  const farmId = decodeToken(jwt as string);
 
   return (
     <PortalLeaderboard
       name={PORTAL_NAME}
       startDate={new Date(Date.UTC(2025, 5, 30))}
       endDate={new Date(Date.UTC(2025, 6, 6))}
-      farmId={gameService.getSnapshot().context.farmId}
+      farmId={Number(farmId)}
       jwt={authService.getSnapshot().context.user.rawToken as string}
     />
   );
