@@ -23,8 +23,8 @@ export const HalloweenLeaderboard: React.FC = () => {
   return (
     <PortalLeaderboard
       name={PORTAL_NAME}
-      startDate={new Date(Date.UTC(2025, 5, 30))}
-      endDate={new Date(Date.UTC(2025, 6, 6))}
+      startDate={new Date(Date.UTC(2025, 9, 28))}
+      endDate={new Date(Date.UTC(2025, 10, 3))}
       farmId={Number(farmId)}
       jwt={jwt as string}
     />
