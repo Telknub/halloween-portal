@@ -162,7 +162,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const speed = 50;
+    const speed = 45;
 
     if (body.velocity.x > 0) this.spriteBody.setFlipX(false);
     else if (body.velocity.x < 0) this.spriteBody.setFlipX(true);
