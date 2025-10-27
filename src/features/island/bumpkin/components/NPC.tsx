@@ -18,6 +18,7 @@ import { SpringValue } from "react-spring";
 import { ITEM_IDS } from "features/game/types/bumpkin";
 import { CONFIG } from "lib/config";
 import { getAnimationUrl } from "features/world/lib/animations";
+import silhouette from "assets/npcs/silhouette.webp";
 
 const FRAME_WIDTH = 180 / 9;
 const FRAME_HEIGHT = 19;
@@ -154,8 +155,13 @@ export const NPC: React.FC<NPCProps & { onClick?: () => void }> = ({
   );
 };
 
-export const NPCIcon: React.FC<NPCProps> = ({ parts, hideShadow }) => {
+export const NPCIcon: React.FC<NPCProps> = ({
+  parts,
+  hideShadow,
+  width = PIXEL_SCALE * 14,
+}) => {
   const [show, setShow] = useState(false);
+  const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
     setShow(true);
@@ -176,74 +182,132 @@ export const NPCIcon: React.FC<NPCProps> = ({ parts, hideShadow }) => {
   }
 
   return (
-    <>
-      <div>
-        <>
-          {!hideShadow && (
-            <img
-              src={shadow}
-              style={{
-                width: `${PIXEL_SCALE * 9}px`,
-                top: `${PIXEL_SCALE * 11}px`,
-                left: `${PIXEL_SCALE * 2.3}px`,
-              }}
-              className="absolute pointer-events-none"
-            />
-          )}
-          {auraBack && (
-            <Spritesheet
-              className="absolute w-full inset-0 pointer-events-none"
-              style={{
-                width: `${PIXEL_SCALE * 14}px`,
-                top: `${PIXEL_SCALE * -3}px`,
-                imageRendering: "pixelated" as const,
-              }}
-              image={auraBack}
-              widthFrame={AURA_WIDTH}
-              heightFrame={FRAME_HEIGHT}
-              zoomScale={new SpringValue(1)}
-              steps={AURA_STEPS}
-              fps={14}
-              autoplay={true}
-              loop={true}
-            />
-          )}
-          <Spritesheet
-            className="w-full inset-0 pointer-events-none"
-            style={{
-              width: `${PIXEL_SCALE * 14}px`,
-              imageRendering: "pixelated" as const,
-            }}
-            image={idle}
-            widthFrame={FRAME_WIDTH}
-            heightFrame={FRAME_HEIGHT}
-            zoomScale={new SpringValue(1)}
-            steps={STEPS}
-            fps={14}
-            autoplay={true}
-            loop={true}
+    <div>
+      {auraBack && (
+        <Spritesheet
+          className="absolute w-full inset-0 pointer-events-none"
+          style={{
+            width: `${width}px`,
+            top: `${width * -0.21}px`,
+            imageRendering: "pixelated" as const,
+          }}
+          image={auraBack}
+          widthFrame={AURA_WIDTH}
+          heightFrame={FRAME_HEIGHT}
+          zoomScale={new SpringValue(1)}
+          steps={AURA_STEPS}
+          fps={14}
+          autoplay={true}
+          loop={true}
+        />
+      )}
+      <div
+        className="w-full inset-0 pointer-events-none"
+        style={{
+          width: `${width}px`,
+          imageRendering: "pixelated" as const,
+        }}
+      >
+        <div
+          className="relative"
+          style={{ width: `${width}px`, height: `${width}px` }}
+        >
+          <img
+            id="idle"
+            src={idle}
+            style={{ width: `${width}px` }}
+            onLoad={() => setLoaded(true)}
           />
-          {auraFront && (
-            <Spritesheet
-              className="absolute w-full inset-0 pointer-events-none"
-              style={{
-                width: `${PIXEL_SCALE * 14}px`,
-                top: `${PIXEL_SCALE * 2}px`,
-                imageRendering: "pixelated" as const,
-              }}
-              image={auraFront}
-              widthFrame={AURA_WIDTH}
-              heightFrame={FRAME_HEIGHT}
-              zoomScale={new SpringValue(1)}
-              steps={AURA_STEPS}
-              fps={14}
-              autoplay={true}
-              loop={true}
+          {!loaded && (
+            <img
+              id="silhouette"
+              src={silhouette}
+              className="w-3/5 absolute top-1.5 left-1.5"
             />
           )}
-        </>
+        </div>
       </div>
-    </>
+      {auraFront && (
+        <Spritesheet
+          className="absolute w-full inset-0 pointer-events-none"
+          style={{
+            width: `${width}px`,
+            top: `${width * 0.14}px`,
+            imageRendering: "pixelated" as const,
+          }}
+          image={auraFront}
+          widthFrame={AURA_WIDTH}
+          heightFrame={FRAME_HEIGHT}
+          zoomScale={new SpringValue(1)}
+          steps={AURA_STEPS}
+          fps={14}
+          autoplay={true}
+          loop={true}
+        />
+      )}
+      {/* {!hideShadow && (
+        <img
+          src={shadow}
+          style={{
+            width: `${PIXEL_SCALE * 9}px`,
+            top: `${PIXEL_SCALE * 11}px`,
+            left: `${PIXEL_SCALE * 2.3}px`,
+          }}
+          className="absolute pointer-events-none"
+        />
+      )}
+      {auraBack && (
+        <Spritesheet
+          className="absolute w-full inset-0 pointer-events-none"
+          style={{
+            width: `${PIXEL_SCALE * 14}px`,
+            top: `${PIXEL_SCALE * -3}px`,
+            imageRendering: "pixelated" as const,
+          }}
+          image={auraBack}
+          widthFrame={AURA_WIDTH}
+          heightFrame={FRAME_HEIGHT}
+          zoomScale={new SpringValue(1)}
+          steps={AURA_STEPS}
+          fps={14}
+          autoplay={true}
+          loop={true}
+        />
+      )}
+      <Spritesheet
+        className="w-full inset-0 pointer-events-none"
+        style={{
+          width: `${PIXEL_SCALE * 14}px`,
+          imageRendering: "pixelated" as const,
+        }}
+        image={idle}
+        widthFrame={FRAME_WIDTH}
+        heightFrame={FRAME_HEIGHT}
+        zoomScale={new SpringValue(1)}
+        steps={STEPS}
+        fps={14}
+        autoplay={true}
+        loop={true}
+      />
+      {auraFront && (
+        <Spritesheet
+          className="absolute w-full inset-0 pointer-events-none"
+          style={{
+            width: `${PIXEL_SCALE * 14}px`,
+            top: `${PIXEL_SCALE * 2}px`,
+            imageRendering: "pixelated" as const,
+          }}
+          image={auraFront}
+          widthFrame={AURA_WIDTH}
+          heightFrame={FRAME_HEIGHT}
+          zoomScale={new SpringValue(1)}
+          steps={AURA_STEPS}
+          fps={14}
+          autoplay={true}
+          loop={true}
+        />
+      )} */}
+    </div>
   );
 };
 

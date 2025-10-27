@@ -6,6 +6,7 @@ import { PortalMachineState } from "../../lib/halloweenMachine";
 import { PortalContext } from "../../lib/PortalProvider";
 import { decodeToken } from "features/auth/actions/login";
 import { useSelector } from "@xstate/react";
+import { getScoreTime } from "../../lib/HalloweenUtils";
 
 const PORTAL_NAME = "halloween";
 
@@ -27,6 +28,7 @@ export const HalloweenLeaderboard: React.FC = () => {
       startDate={new Date(Date.UTC(2025, 9, 25))}
       endDate={new Date(Date.UTC(2025, 10, 3))}
       farmId={Number(farmId)}
+      formatPoints={(points) => getScoreTime(points).toString()}
       jwt={jwt as string}
     />
   );

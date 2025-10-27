@@ -127,17 +127,17 @@ export const CompetitionTable: React.FC<{
           <tr
             key={index}
             className={classNames("relative", {
-              "bg-[#ead4aa]": index % 2 === 0,
+              "bg-[#1d2233]": index % 2 === 0,
             })}
           >
             <td
-              style={{ border: "1px solid #b96f50" }}
+              style={{ border: "1px solid #fff" }}
               className="p-1.5 text-left w-12"
             >
               {toOrdinalSuffix(rank)}
             </td>
             <td
-              style={{ border: "1px solid #b96f50" }}
+              style={{ border: "1px solid #fff" }}
               className="p-1.5 text-left pl-8 relative"
             >
               <div className="absolute" style={{ left: "4px", top: "1px" }}>
@@ -146,7 +146,7 @@ export const CompetitionTable: React.FC<{
               {username}
             </td>
             <td
-              style={{ border: "1px solid #b96f50" }}
+              style={{ border: "1px solid #fff" }}
               className="p-1.5 truncate text-center"
             >
               {formatPoints?.(points) ?? points}
