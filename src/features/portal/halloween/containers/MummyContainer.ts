@@ -29,7 +29,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
   private wallsGroup?: Phaser.Physics.Arcade.StaticGroup;
 
   private lastAttackTime = 0;
-  private attackCooldown = 2000;
+  private attackCooldown = 2500;
   private chanceToAttack = 2000;
 
   constructor({ x, y, scene, wallsGroup, defeat, player }: Props) {
@@ -138,7 +138,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const attackDistance = 40;
+    const attackDistance = 35;
     const followDistance = 200;
 
     if (distance < attackDistance) {
@@ -162,7 +162,7 @@ export class MummyContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const speed = 50;
+    const speed = 45;
 
     if (body.velocity.x > 0) this.spriteBody.setFlipX(false);
     else if (body.velocity.x < 0) this.spriteBody.setFlipX(true);
