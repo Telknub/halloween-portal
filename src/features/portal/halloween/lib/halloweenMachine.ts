@@ -524,7 +524,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                   : Math.max(Date.now() - context.startedAt, 0);
                 millisecondsPassed = TIME_SCORE_BASE - milliseconds;
               }
-              return millisecondsPassed;
+              return Math.max(0, millisecondsPassed);
             },
             state: (context: Context) => {
               if (context.isTraining) return context.state;
@@ -537,12 +537,14 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                 millisecondsPassed = TIME_SCORE_BASE - milliseconds;
               }
 
-              submitScore({ score: Math.round(millisecondsPassed) });
+              const value = Math.max(0, millisecondsPassed);
+
+              submitScore({ score: Math.round(value) });
               return submitMinigameScore({
                 state: context.state as GameState,
                 action: {
                   type: "minigame.scoreSubmitted",
-                  score: Math.round(millisecondsPassed),
+                  score: Math.round(value),
                   id: "halloween",
                 },
               });
@@ -562,7 +564,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                   : Math.max(Date.now() - context.startedAt, 0);
                 millisecondsPassed = TIME_SCORE_BASE - milliseconds;
               }
-              return millisecondsPassed;
+              return Math.max(0, millisecondsPassed);
             },
             state: (context: Context) => {
               if (context.isTraining) return context.state;
@@ -575,12 +577,14 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                 millisecondsPassed = TIME_SCORE_BASE - milliseconds;
               }
 
-              submitScore({ score: Math.round(millisecondsPassed) });
+              const value = Math.max(0, millisecondsPassed);
+
+              submitScore({ score: Math.round(value) });
               return submitMinigameScore({
                 state: context.state as GameState,
                 action: {
                   type: "minigame.scoreSubmitted",
-                  score: Math.round(millisecondsPassed),
+                  score: Math.round(value),
                   id: "halloween",
                 },
               });
