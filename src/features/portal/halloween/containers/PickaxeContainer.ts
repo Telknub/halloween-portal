@@ -59,6 +59,7 @@ export class PickaxeContainer extends Phaser.GameObjects.Container {
   }
 
   private collect() {
+    this.scene.sound.add("collect", { loop: false, volume: 0.2 }).play();
     this.portalService?.send("COLLECT_TOOL", { tool: "pickaxe" });
     this.player?.lampVisibility(false);
     this.destroy();
