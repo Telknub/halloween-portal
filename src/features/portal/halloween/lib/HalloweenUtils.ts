@@ -174,5 +174,6 @@ export const onAnimationComplete = (
 };
 
 export const getScoreTime = (milliseconds: number) => {
-  return TIME_SCORE_BASE - milliseconds;
+  const value = TIME_SCORE_BASE - milliseconds;
+  return value > 0 ? value : 0;
 };
