@@ -29,7 +29,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
   private wallsGroup?: Phaser.Physics.Arcade.StaticGroup;
 
   private lastAttackTime = 0;
-  private attackCooldown = 2500;
+  private attackCooldown = 2000;
   private chanceToAttack = 2000;
 
   constructor({ x, y, scene, wallsGroup, defeat, player }: Props) {
@@ -137,7 +137,7 @@ export class GolemContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const attackDistance = 35;
+    const attackDistance = 40;
     const followDistance = 200;
 
     if (distance < attackDistance) {
