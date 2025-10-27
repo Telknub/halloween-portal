@@ -17,7 +17,10 @@ import { ZoomContext } from "components/ZoomProvider";
 import { SpringValue } from "react-spring";
 import { ITEM_IDS } from "features/game/types/bumpkin";
 import { CONFIG } from "lib/config";
-import { getAnimationUrl } from "features/world/lib/animations";
+import {
+  getAnimatedWebpUrl,
+  getAnimationUrl,
+} from "features/world/lib/animations";
 import silhouette from "assets/npcs/silhouette.webp";
 
 const FRAME_WIDTH = 180 / 9;
@@ -160,26 +163,17 @@ export const NPCIcon: React.FC<NPCProps> = ({
   hideShadow,
   width = PIXEL_SCALE * 14,
 }) => {
-  const [show, setShow] = useState(false);
   const [loaded, setLoaded] = useState(false);
-
-  useEffect(() => {
-    setShow(true);
-  }, []);
 
   const NPCparts = parts as Partial<NPCParts>;
 
-  const idle = getAnimationUrl(NPCparts, "idle_small");
+  const idle = getAnimatedWebpUrl(NPCparts, ["idle_small"]);
   const auraBack =
     NPCparts.aura &&
     `${CONFIG.PROTECTED_IMAGE_URL}/aura/back/${ITEM_IDS[NPCparts.aura]}.png`;
   const auraFront =
     NPCparts.aura &&
     `${CONFIG.PROTECTED_IMAGE_URL}/aura/front/${ITEM_IDS[NPCparts.aura]}.png`;
-
-  if (!show) {
-    return null;
-  }
 
   return (
     <div>
