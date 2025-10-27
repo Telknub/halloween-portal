@@ -8,6 +8,7 @@ import { decodeToken } from "features/auth/actions/login";
 import { useSelector } from "@xstate/react";
 import { getScoreTime } from "../../lib/HalloweenUtils";
 import { millisecondsToString } from "lib/utils/time";
+import { TIME_SCORE_BASE } from "../../HalloweenConstants";
 
 const PORTAL_NAME = "halloween";
 
@@ -29,9 +30,11 @@ export const HalloweenLeaderboard: React.FC = () => {
       startDate={new Date(Date.UTC(2025, 9, 25))}
       endDate={new Date(Date.UTC(2025, 10, 3))}
       farmId={Number(farmId)}
-      formatPoints={(points) =>
-        millisecondsToString(getScoreTime(points), { length: "full" })
-      }
+      formatPoints={(points) => {
+        const milliseconds = getScoreTime(points);
+        if (milliseconds === TIME_SCORE_BASE) return (0).toString();
+        return millisecondsToString(milliseconds, { length: "full" });
+      }}
       jwt={jwt as string}
     />
   );
