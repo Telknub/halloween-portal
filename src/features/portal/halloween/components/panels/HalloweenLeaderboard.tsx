@@ -18,7 +18,7 @@ export const HalloweenLeaderboard: React.FC = () => {
 
   const jwt = useSelector(portalService, _jwt);
 
-  const farmId = decodeToken(jwt as string);
+  const farmId = decodeToken(jwt as string).farmId;
 
   return (
     <PortalLeaderboard
