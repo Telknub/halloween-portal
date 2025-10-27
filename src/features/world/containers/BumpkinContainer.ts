@@ -1435,14 +1435,13 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
 
   enablePickaxe(state: boolean) {
     const pickaxeBody = this.pickaxe?.body as Phaser.Physics.Arcade.Body;
-    pickaxeBody.enable = state;
+    pickaxeBody.setEnable(state);
     if (!state) return;
 
     const x = 2;
     const y = -8;
     const width = 43;
     const height = 15;
-    // this.scene.sound.play("pickaxe", { volume: PORTAL_VOLUME });
     if (this.direction === "right") {
       pickaxeBody?.setSize(width, height);
       this.pickaxe?.setPosition(x, y);
@@ -1454,14 +1453,13 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
 
   enableSword(state: boolean) {
     const swordBody = this.sword?.body as Phaser.Physics.Arcade.Body;
-    swordBody.enable = state;
+    swordBody.setEnable(state);
     if (!state) return;
 
     const x = 2;
     const y = -9;
     const width = 45;
     const height = 25;
-    // this.scene.sound.play("sword", { volume: PORTAL_VOLUME });
     if (this.direction === "right") {
       swordBody?.setSize(width, height);
       this.sword?.setPosition(x, y);

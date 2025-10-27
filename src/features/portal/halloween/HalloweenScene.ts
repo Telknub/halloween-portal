@@ -714,6 +714,7 @@ export class HalloweenScene extends BaseScene {
 
     // Config
     this.input.addPointer(3);
+    this.physics.world.drawDebug = false;
 
     // Create map
     new Map({
