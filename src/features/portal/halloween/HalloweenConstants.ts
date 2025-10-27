@@ -787,6 +787,6 @@ export const SLIDING_PUZZLE_MOVESTOSOLVE = 4;
 export const SLIDING_PUZZLE_IMG = slidingPuzzleImg;
 export const SUDOKU_COMPLEXITY = 4;
 export const VICTORY_TEXT = {
-  Sudoku: "Yo've uncovered the Owl's secret!",
+  Sudoku: "You've uncovered the Owl's secret!",
   SlidingPuzzle: "The Owl watches, puzzle complete!",
 };
