@@ -165,7 +165,7 @@ export class StatueContainer extends Phaser.GameObjects.Container {
       criticalBuff: () => this.applyCriticalBuff(),
       spawnEnemy: () => this.applySpawnEnemy(),
     };
-    effects[effect]();
+    effects?.[effect]?.();
   }
 
   private applySpeedBuff() {

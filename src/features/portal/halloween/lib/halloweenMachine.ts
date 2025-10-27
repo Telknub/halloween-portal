@@ -524,7 +524,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                   : Math.max(Date.now() - context.startedAt, 0);
                 millisecondsPassed = TIME_SCORE_BASE - milliseconds;
               }
-              return Math.max(0, millisecondsPassed);
+              return Math.max(context.score, millisecondsPassed);
             },
             state: (context: Context) => {
               if (context.isTraining) return context.state;
@@ -537,7 +537,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                 millisecondsPassed = TIME_SCORE_BASE - milliseconds;
               }
 
-              const value = Math.max(0, millisecondsPassed);
+              const value = Math.max(context.score, millisecondsPassed);
 
               submitScore({ score: Math.round(value) });
               return submitMinigameScore({
@@ -564,7 +564,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                   : Math.max(Date.now() - context.startedAt, 0);
                 millisecondsPassed = TIME_SCORE_BASE - milliseconds;
               }
-              return Math.max(0, millisecondsPassed);
+              return Math.max(context.score, millisecondsPassed);
             },
             state: (context: Context) => {
               if (context.isTraining) return context.state;
@@ -577,7 +577,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
                 millisecondsPassed = TIME_SCORE_BASE - milliseconds;
               }
 
-              const value = Math.max(0, millisecondsPassed);
+              const value = Math.max(context.score, millisecondsPassed);
 
               submitScore({ score: Math.round(value) });
               return submitMinigameScore({

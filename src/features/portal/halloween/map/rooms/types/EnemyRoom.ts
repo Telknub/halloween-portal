@@ -18,6 +18,7 @@ interface Props {
 
 export class EnemyRoom extends BaseRoom {
   private enemyIds: number[] = [];
+  private isCreatedMiniBoss = false;
 
   constructor({ scene, hasEntry = true, hasExit = true, player }: Props) {
     const matrix = createRandomRoom();
@@ -46,10 +47,11 @@ export class EnemyRoom extends BaseRoom {
   private defeatEnemy(id: number) {
     this.enemyIds = this.enemyIds.filter((enemyId) => enemyId !== id);
 
-    if (!this.enemyIds.length) {
+    if (!this.enemyIds.length && !this.isCreatedMiniBoss) {
       Math.random() <= 0.5
         ? this.spawnObjectRandomly((x, y) => this.createGolemEnemy(x, y))
         : this.spawnObjectRandomly((x, y) => this.createMummyEnemy(x, y));
+      this.isCreatedMiniBoss = true;
     }
   }
 
