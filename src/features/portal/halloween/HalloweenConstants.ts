@@ -21,6 +21,8 @@ import pride from "public/world/relic5.png";
 import sloth from "public/world/relic6.png";
 import wrath from "public/world/relic7.png";
 import deceit from "public/world/relic8.webp";
+import trophy from "assets/icons/trophy.png";
+import hole from "public/world/halloween/hole.gif";
 
 // Game Config
 export const GAME_LIVES = 5;
@@ -551,6 +553,14 @@ export const INSTRUCTIONS: {
     image: ITEM_DETAILS["Skeleton"].image,
     description: translate("halloween.instructions6"),
   },
+  {
+    image: hole,
+    description: translate("halloween.instructions7"),
+  },
+  {
+    image: trophy,
+    description: translate("halloween.instructions8"),
+  },
 ];
 
 export const RESOURCES_TABLE: {
@@ -777,6 +787,6 @@ export const SLIDING_PUZZLE_MOVESTOSOLVE = 4;
 export const SLIDING_PUZZLE_IMG = slidingPuzzleImg;
 export const SUDOKU_COMPLEXITY = 4;
 export const VICTORY_TEXT = {
-  Sudoku: "You got it!",
-  SlidingPuzzle: "Puzzle Solved!",
+  Sudoku: "Yo've uncovered the Owl's secret!",
+  SlidingPuzzle: "The Owl watches, puzzle complete!",
 };
