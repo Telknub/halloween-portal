@@ -22,6 +22,7 @@ export const HalloweenLeaderboard: React.FC = () => {
 
   return (
     <PortalLeaderboard
+      isAccumulator
       name={PORTAL_NAME}
       startDate={new Date(Date.UTC(2025, 9, 25))}
       endDate={new Date(Date.UTC(2025, 10, 3))}
