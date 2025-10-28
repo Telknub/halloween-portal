@@ -9,12 +9,14 @@ import { useSelector } from "@xstate/react";
 import { getScoreTime } from "../../lib/HalloweenUtils";
 import { millisecondsToString } from "lib/utils/time";
 import { TIME_SCORE_BASE } from "../../HalloweenConstants";
+import { useAppTranslation } from "lib/i18n/useAppTranslations";
 
 const PORTAL_NAME = "halloween";
 
 const _jwt = (state: PortalMachineState) => state.context.jwt;
 
 export const HalloweenLeaderboard: React.FC = () => {
+  const { t } = useAppTranslation();
   const { portalService } = useContext(PortalContext);
   //   const { gameService } = useContext(Context);
   //   const { authService } = useContext(AuthProvider.Context);
@@ -24,19 +26,23 @@ export const HalloweenLeaderboard: React.FC = () => {
   const farmId = decodeToken(jwt as string).farmId;
 
   return (
-    <PortalLeaderboard
-      isAccumulator
-      name={PORTAL_NAME}
-      startDate={new Date(Date.UTC(2025, 9, 25))}
-      endDate={new Date(Date.UTC(2025, 10, 3))}
-      farmId={Number(farmId)}
-      formatPoints={(points) => {
-        if (points <= 10) return (0).toString();
-        const milliseconds = getScoreTime(points);
-        if (milliseconds === TIME_SCORE_BASE) return (0).toString();
-        return millisecondsToString(milliseconds, { length: "full" });
-      }}
-      jwt={jwt as string}
-    />
+    <div className="flex flex-col gap-2">
+      <p>{t("halloween.competition.description1")}</p>
+      <p>{t("halloween.competition.description2")}</p>
+      <PortalLeaderboard
+        isAccumulator
+        name={PORTAL_NAME}
+        startDate={new Date(Date.UTC(2025, 9, 25))}
+        endDate={new Date(Date.UTC(2025, 10, 3))}
+        farmId={Number(farmId)}
+        formatPoints={(points) => {
+          if (points <= 10) return (0).toString();
+          const milliseconds = getScoreTime(points);
+          if (milliseconds === TIME_SCORE_BASE) return (0).toString();
+          return millisecondsToString(milliseconds, { length: "full" });
+        }}
+        jwt={jwt as string}
+      />
+    </div>
   );
 };
