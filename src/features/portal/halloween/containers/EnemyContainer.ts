@@ -32,7 +32,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
   private ranEnemy!: number;
 
   private lastAttackTime = 0;
-  private attackCooldown = 2000; // milliseconds
+  private attackCooldown = 2500; // milliseconds
 
   constructor({ x, y, scene, id, wallsGroup, defeat, player }: Props) {
     super(scene, x, y);
@@ -165,7 +165,7 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
       this.player.y,
     );
 
-    const speed = 45;
+    const speed = 40;
 
     if (body.velocity.x > 0) this.spriteBody.setFlipX(false);
     else if (body.velocity.x < 0) this.spriteBody.setFlipX(true);
