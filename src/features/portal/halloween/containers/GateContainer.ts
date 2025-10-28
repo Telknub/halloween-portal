@@ -22,6 +22,7 @@ export class GateContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   private spriteName: string;
   private sprite: Phaser.GameObjects.Sprite;
+  private canOpen = true;
   scene: HalloweenScene;
 
   constructor({ x, y, scene, id, direction, roomName, player }: Props) {
@@ -116,6 +117,7 @@ export class GateContainer extends Phaser.GameObjects.Container {
   }
 
   private open() {
+    if (!this.canOpen) return;
     const roomNameOrId = this.roomName || this.id;
     const animationKey = `${this.spriteName}_${roomNameOrId}_open_action`;
     this.sprite.play(animationKey, true);
@@ -125,9 +127,15 @@ export class GateContainer extends Phaser.GameObjects.Container {
     (this.body as Phaser.Physics.Arcade.Body).setEnable(false);
     if (this.roomName !== "blacksmith")
       EventBus.emit("create-enemies", { id: this.id });
+    if (this.id === 8) {
+      this.portalService?.send("SET_VALIDATIONS", {
+        validation: "isGateOpen",
+      });
+    }
   }
 
   close() {
+    this.canOpen = false;
     const roomNameOrId = this.roomName || this.id;
     const animationKey = `${this.spriteName}_${roomNameOrId}_close_action`;
     this.sprite.play(animationKey, true);

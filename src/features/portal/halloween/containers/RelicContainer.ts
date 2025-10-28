@@ -35,7 +35,7 @@ export class RelicContainer extends Phaser.GameObjects.Container {
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
-      .setSize(this.sprite.width + 20, this.sprite.height + 20)
+      .setSize(this.sprite.width + 18, this.sprite.height + 18)
       .setOffset(
         -(this.sprite.width * (2 - scale)) / 2,
         -(this.sprite.height * (2 - scale)) / 2,

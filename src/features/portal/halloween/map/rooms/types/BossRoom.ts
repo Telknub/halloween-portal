@@ -28,6 +28,7 @@ interface Props {
 export class BossRoom extends BaseRoom {
   private gate!: GateContainer;
   private fireChasers: FireChaserContainer[] = [];
+  private isCreatedRelic = false;
 
   constructor({ scene, hasEntry = true, hasExit = true, player }: Props) {
     super({
@@ -49,21 +50,27 @@ export class BossRoom extends BaseRoom {
   }
 
   private defeatBoss(x: number, y: number) {
-    this.fireChasers.forEach((fireChaser) => {
-      fireChaser.delete();
-    });
-    this.createRelic(x, y);
-    const { x: posX, y: posY } = this.getRelativePosition(
-      HOLE_CONFIG.x,
-      HOLE_CONFIG.y,
-    );
-    new HoleContainer({
-      x: posX,
-      y: posY,
-      scene: this.scene,
-      id: this.id,
-      player: this.player,
-    });
+    if (!this.isCreatedRelic) {
+      this.fireChasers.forEach((fireChaser) => {
+        fireChaser?.delete();
+      });
+      this.createRelic(x, y);
+      this.scene.portalService?.send("SET_VALIDATIONS", {
+        validation: "isBossDead",
+      });
+      const { x: posX, y: posY } = this.getRelativePosition(
+        HOLE_CONFIG.x,
+        HOLE_CONFIG.y,
+      );
+      new HoleContainer({
+        x: posX,
+        y: posY,
+        scene: this.scene,
+        id: this.id,
+        player: this.player,
+      });
+      this.isCreatedRelic = true;
+    }
   }
 
   private createEnemies() {

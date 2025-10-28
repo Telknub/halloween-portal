@@ -51,6 +51,7 @@ export interface Context {
   maxLives: number;
   statueEffects: Record<string, string>[];
   firstDialogueNPCs: Record<HalloweenNpcNames, boolean>;
+  validations: Record<string, boolean>;
   isTraining: boolean;
   startedAt: number;
   attemptsLeft: number;
@@ -120,6 +121,11 @@ type PurchaseRestockEvent = {
   sfl: number;
 };
 
+type SetValidationsEvent = {
+  type: "SET_VALIDATIONS";
+  validation: string;
+};
+
 export type PortalEvent =
   | SetJoystickActiveEvent
   | { type: "START" }
@@ -142,6 +148,7 @@ export type PortalEvent =
   | IncreaseMaxLivesEvent
   | CollectStatueEffectEvent
   | SetFirstDialogueNPCs
+  | SetValidationsEvent
   | UnlockAchievementsEvent;
 
 export type PortalState = {
@@ -171,6 +178,12 @@ export type MachineInterpreter = Interpreter<
 
 export type PortalMachineState = State<Context, PortalEvent, PortalState>;
 
+const VALIDATIONS = {
+  isGateOpen: false,
+  isBossDead: false,
+  isHoleOpen: false,
+};
+
 const resetGameTransition = {
   RETRY: {
     target: "starting",
@@ -184,6 +197,7 @@ const resetGameTransition = {
       maxLives: () => GAME_LIVES,
       statueEffects: () => [],
       firstDialogueNPCs: () => structuredClone(FIRST_DIALOGUE_NPCS),
+      validations: () => structuredClone(VALIDATIONS),
       startedAt: () => 0,
     }) as any,
   },
@@ -215,6 +229,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
     maxLives: GAME_LIVES,
     statueEffects: [],
     firstDialogueNPCs: structuredClone(FIRST_DIALOGUE_NPCS),
+    validations: structuredClone(VALIDATIONS),
   },
   on: {
     SET_JOYSTICK_ACTIVE: {
@@ -382,6 +397,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
             maxLives: GAME_LIVES,
             statueEffects: [],
             firstDialogueNPCs: structuredClone(FIRST_DIALOGUE_NPCS),
+            validations: structuredClone(VALIDATIONS),
             state: (context: Context) => {
               if (context.isTraining) return context.state;
               startAttempt();
@@ -512,13 +528,26 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
             },
           }),
         },
+        SET_VALIDATIONS: {
+          actions: assign({
+            validations: (context: Context, event: SetValidationsEvent) => {
+              return {
+                ...context.validations,
+                [event.validation]: true,
+              };
+            },
+          }),
+        },
         END_GAME_EARLY: {
           actions: assign({
             startedAt: () => 0,
             lastScore: (context: Context) => {
               if (context.isTraining) return context.lastScore;
               let millisecondsPassed = 0;
-              if (context.score >= RELIC_GOAL) {
+              const isValidated = Object.values(context.validations).every(
+                (value) => value === true,
+              );
+              if (context.score >= RELIC_GOAL && isValidated) {
                 const milliseconds = !context.startedAt
                   ? 0
                   : Math.max(Date.now() - context.startedAt, 0);
@@ -530,7 +559,10 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
               if (context.isTraining) return context.state;
 
               let millisecondsPassed = 0;
-              if (context.score >= RELIC_GOAL) {
+              const isValidated = Object.values(context.validations).every(
+                (value) => value === true,
+              );
+              if (context.score >= RELIC_GOAL && isValidated) {
                 const milliseconds = !context.startedAt
                   ? 0
                   : Math.max(Date.now() - context.startedAt, 0);
@@ -558,7 +590,10 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
             lastScore: (context: Context) => {
               if (context.isTraining) return context.lastScore;
               let millisecondsPassed = 0;
-              if (context.score >= RELIC_GOAL) {
+              const isValidated = Object.values(context.validations).every(
+                (value) => value === true,
+              );
+              if (context.score >= RELIC_GOAL && isValidated) {
                 const milliseconds = !context.startedAt
                   ? 0
                   : Math.max(Date.now() - context.startedAt, 0);
@@ -570,7 +605,10 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
               if (context.isTraining) return context.state;
 
               let millisecondsPassed = 0;
-              if (context.score >= RELIC_GOAL) {
+              const isValidated = Object.values(context.validations).every(
+                (value) => value === true,
+              );
+              if (context.score >= RELIC_GOAL && isValidated) {
                 const milliseconds = !context.startedAt
                   ? 0
                   : Math.max(Date.now() - context.startedAt, 0);

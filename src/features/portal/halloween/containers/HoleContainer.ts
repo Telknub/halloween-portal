@@ -3,6 +3,7 @@ import { HalloweenScene } from "../HalloweenScene";
 import { translate } from "lib/i18n/translate";
 import { travelModalManager } from "../components/hud/HalloweenTravel";
 import { TILE_SIZE } from "../HalloweenConstants";
+import { MachineInterpreter } from "../lib/halloweenMachine";
 
 interface Props {
   x: number;
@@ -74,6 +75,12 @@ export class HoleContainer extends Phaser.GameObjects.Container {
     scene.add.existing(this);
   }
 
+  private get portalService() {
+    return this.scene.registry.get("portalService") as
+      | MachineInterpreter
+      | undefined;
+  }
+
   private createAnimation() {
     this.scene.anims.create({
       key: `${this.spriteName}_${this.id}_action`,
@@ -110,6 +117,12 @@ export class HoleContainer extends Phaser.GameObjects.Container {
       if (distance > 50) {
         this.player?.speak(translate("base.iam.far.away"));
         return;
+      }
+
+      if (this.id === 8) {
+        this.portalService?.send("SET_VALIDATIONS", {
+          validation: "isHoleOpen",
+        });
       }
 
       travelModalManager.open(true);

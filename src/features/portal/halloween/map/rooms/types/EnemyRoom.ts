@@ -19,6 +19,7 @@ interface Props {
 export class EnemyRoom extends BaseRoom {
   private enemyIds: number[] = [];
   private isCreatedMiniBoss = false;
+  private isCreatedRelic = false;
 
   constructor({ scene, hasEntry = true, hasExit = true, player }: Props) {
     const matrix = createRandomRoom();
@@ -48,16 +49,23 @@ export class EnemyRoom extends BaseRoom {
     this.enemyIds = this.enemyIds.filter((enemyId) => enemyId !== id);
 
     if (!this.enemyIds.length && !this.isCreatedMiniBoss) {
-      Math.random() <= 0.5
-        ? this.spawnObjectRandomly((x, y) => this.createGolemEnemy(x, y))
-        : this.spawnObjectRandomly((x, y) => this.createMummyEnemy(x, y));
+      if (this.id === 2) {
+        this.spawnObjectRandomly((x, y) => this.createMummyEnemy(x, y));
+      } else {
+        Math.random() <= 0.5
+          ? this.spawnObjectRandomly((x, y) => this.createGolemEnemy(x, y))
+          : this.spawnObjectRandomly((x, y) => this.createMummyEnemy(x, y));
+      }
       this.isCreatedMiniBoss = true;
     }
   }
 
   private defeatMiniBoss(x: number, y: number) {
-    this.createRelic(x, y);
-    this.spawnObjectRandomly((x, y) => this.createHole(x, y, 0.5, true));
+    if (!this.isCreatedRelic) {
+      this.spawnObjectRandomly((x, y) => this.createHole(x, y, 0.5, true));
+      this.createRelic(x, y);
+      this.isCreatedRelic = true;
+    }
   }
 
   private createEnemies() {

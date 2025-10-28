@@ -418,7 +418,10 @@ export class BossContainer extends Phaser.GameObjects.Container {
 
     this.spriteBody.on("animationcomplete", () => {
       this.defeat(this.x, this.y);
-      this.destroy();
+
+      this.setVisible(false);
+      (this.body as Phaser.Physics.Arcade.Body).setEnable(false);
+      this.scene.time.delayedCall(300, () => this.destroy());
     });
   }
 }

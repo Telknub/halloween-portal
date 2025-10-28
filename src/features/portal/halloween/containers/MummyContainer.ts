@@ -382,7 +382,9 @@ export class MummyContainer extends Phaser.GameObjects.Container {
 
     this.spriteBody.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
       this.defeat(this.x, this.y);
-      this.destroy();
+
+      (this.body as Phaser.Physics.Arcade.Body).setEnable(false);
+      this.scene.time.delayedCall(300, () => this.destroy());
     });
   }
 }

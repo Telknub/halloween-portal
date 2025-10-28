@@ -1250,6 +1250,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       this.sprite?.anims.getName() !== this.attackAnimationKey
     ) {
       try {
+        this.disableTools("sword");
         this.isAttacking = true;
         this.enableSword(true);
         this.sprite.anims.play(this.attackAnimationKey as string, true);
@@ -1277,6 +1278,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       this.sprite?.anims.getName() !== this.miningAnimationKey
     ) {
       try {
+        this.disableTools("pickaxe");
         this.isMining = true;
         this.enablePickaxe(true);
         this.sprite.anims.play(this.miningAnimationKey as string, true);
@@ -1336,6 +1338,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
   }
 
   public enableFire() {
+    this.disableTools("fire");
     this.addSound("lamp").play();
     this.isBurning = true;
     const fireBody = this.fire.body as Phaser.Physics.Arcade.Body;
@@ -1357,6 +1360,19 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
     });
     this.add(this.fire);
     this.moveTo(this.fire, 0);
+  }
+
+  private disableTools(excludedTool: "sword" | "pickaxe" | "fire") {
+    const tools: ("sword" | "pickaxe" | "fire")[] = [
+      "sword",
+      "pickaxe",
+      "fire",
+    ];
+    tools.forEach((tool) => {
+      if (tool !== excludedTool) {
+        (this[tool].body as Phaser.Physics.Arcade.Body).setEnable(false);
+      }
+    });
   }
 
   private get portalService() {

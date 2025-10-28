@@ -43,6 +43,7 @@ const _minigame = (state: PortalMachineState) =>
   state.context.state?.minigames.games[PORTAL_NAME];
 const _jwt = (state: PortalMachineState) => state.context.jwt;
 const _score = (state: PortalMachineState) => state.context.score;
+const _validations = (state: PortalMachineState) => state.context.validations;
 
 export const HalloweenMission: React.FC<Props> = ({
   mode,
@@ -63,6 +64,7 @@ export const HalloweenMission: React.FC<Props> = ({
   const minigame = useSelector(portalService, _minigame);
   const jwt = useSelector(portalService, _jwt);
   const score = useSelector(portalService, _score);
+  const validations = useSelector(portalService, _validations);
 
   const farmId = !getUrl() ? 0 : decodeToken(jwt as string).farmId;
   const attemptsLeft = getAttemptsLeft(minigame, farmId);
@@ -72,6 +74,10 @@ export const HalloweenMission: React.FC<Props> = ({
   const [page, setPage] = React.useState<
     "main" | "achievements" | "guide" | "controls"
   >("main");
+
+  const isValidated = Object.values(validations).every(
+    (value) => value === true,
+  );
 
   // const hasBetaAccess = state
   //   ? hasFeatureAccess(state, "")
@@ -103,7 +109,7 @@ export const HalloweenMission: React.FC<Props> = ({
             </div>
 
             <div className="w-full flex flex-col gap-1 mb-3">
-              {showScore && score === RELIC_GOAL ? (
+              {showScore && score >= RELIC_GOAL && isValidated ? (
                 <>
                   <OuterPanel className="w-full flex flex-col items-center">
                     <Label type="info">{t(`${PORTAL_NAME}.time`)}</Label>

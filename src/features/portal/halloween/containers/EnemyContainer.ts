@@ -347,7 +347,9 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
 
     this.spriteBody.once(Phaser.Animations.Events.ANIMATION_COMPLETE, () => {
       this.defeat?.(this.id || 0);
-      this.destroy();
+
+      (this.body as Phaser.Physics.Arcade.Body).setEnable(false);
+      this.scene.time.delayedCall(300, () => this.destroy());
     });
   }
 }
