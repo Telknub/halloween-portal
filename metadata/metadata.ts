@@ -18,6 +18,254 @@ type Metadata = {
 };
 
 export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
+  "Baby Cow": {
+    description:
+      "Who doesn't love a baby cow? +10 cow xp from animal affection tools.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2525.png",
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Boost", value: "XP" },
+      {
+        display_type: "boost_number",
+        trait_type: "+10 cow xp from animal affection tools",
+        value: 0.1,
+      },
+    ],
+  },
+  "Baby Sheep": {
+    description: "Wooly and fluffy little baby",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2526.png",
+    attributes: [{ trait_type: "Tradable", value: "Yes" }],
+  },
+  "Janitor Chicken": {
+    description:
+      "A busy little chicken always ready to work. Reduces chicken sleep time by 5%.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2527.png",
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Boost", value: "Resource" },
+      {
+        display_type: "boost_number",
+        trait_type: "-5% chicken sleep time",
+        value: 5,
+      },
+    ],
+  },
+  "Venus Bumpkin Trap": {
+    description: "Never turn your back on this snappy plant!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2528.png",
+    attributes: [{ trait_type: "Tradable", value: "Yes" }],
+  },
+  "Black Hole Flower": {
+    description:
+      "A cosmic blossom that warps light itself, best admired as a centrepiece.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2529.png",
+    attributes: [{ trait_type: "Tradable", value: "Yes" }],
+  },
+  "Sleepy Chicken": {
+    description:
+      "This drowsy chicken drifts off mid cluck but keeps the coop healthy through fall.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2530.png",
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_number",
+        trait_type: "Prevent chicken sickness during fall",
+        value: 0.1,
+      },
+    ],
+  },
+  "Astronaut Cow": {
+    description:
+      "A spacefaring cow who loves grazing among the stars and moon rocks.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2531.png",
+    attributes: [{ trait_type: "Tradable", value: "Yes" }],
+  },
+  "Astronaut Sheep": {
+    description:
+      "A woolly explorer equipped for zero-gravity strolls through space.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2532.png",
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Boost", value: "Resource" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Wool Yield",
+        value: 0.1,
+      },
+    ],
+  },
+  "Love Chicken": {
+    description: "A mutant chicken filled with love and affection",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2255.png",
+    attributes: [{ trait_type: "Tradable", value: "Yes" }],
+  },
+  "Dr Cow": {
+    description:
+      "A mutant cow dressed as a caring doctor, gives 5% less feeding cost for cows",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2256.png",
+    attributes: [{ trait_type: "Tradable", value: "Yes" }],
+  },
+  "Nurse Sheep": {
+    description:
+      "A mutant sheep dressed as a caring nurse, prevents sheep from getting sick during summer",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2257.png",
+    attributes: [{ trait_type: "Tradable", value: "Yes" }],
+  },
+  "Pink Dolphin": {
+    description:
+      "A rare dolphin with a beautiful pink hue, increases fish catch by 1 during spring",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2254.png",
+    attributes: [{ trait_type: "Tradable", value: "Yes" }],
+  },
+  Lunalist: {
+    description:
+      "A blooming artifact devoted to the moon. A decorative mutant flower found during the Great Bloom chapter",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2258.png",
+    attributes: [{ trait_type: "Tradable", value: "Yes" }],
+  },
+  "Rhubarb Tart": {
+    description: "A sweet and tangy tart featuring fresh rhubarb",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    attributes: [{ trait_type: "Tradable", value: "Yes" }],
+  },
+  "Frozen Cow": {
+    description:
+      "A frosty bovine mutation that prevents cows from getting sick during winter months!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2199.png",
+    attributes: [
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_number",
+        trait_type: "Prevent cow sickness during winter",
+        value: 0.1,
+      },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+  },
+  "Frozen Sheep": {
+    description:
+      "A frosty sheep mutation that prevents sheep from getting sick during winter months!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2200.png",
+    attributes: [
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_number",
+        trait_type: "Prevent sheep sickness during winter",
+        value: 0.1,
+      },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+  },
+  "Summer Chicken": {
+    description:
+      "A chicken mutation that prevents chickens from getting sick during summer months!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2201.png",
+    attributes: [
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_number",
+        trait_type: "Prevent chicken sickness during summer",
+        value: 0.1,
+      },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+  },
+  Jellyfish: {
+    description:
+      "A marine marvel from the Winds of Change chapter that grants +1 fish during summer months!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2203.png",
+    attributes: [
+      { trait_type: "Boost", value: "Fish" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase fish catch by 1 in summer",
+        value: 1,
+      },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+  },
+  Chamomile: {
+    description:
+      "A decorative mutant flower found during the Winds of Change chapter.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2202.png",
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+  },
+  "Bull Run Banner": {
+    name: "Bull Run Banner",
+    description: "A banner that celebrates the Bull Run season.",
+    decimals: 18,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/749.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Banner" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  Horseshoe: {
+    name: "Horseshoe",
+    description: "A valuable token to exchange for rewards!",
+    decimals: 18,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/750.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Coupon" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Cow Skull": {
+    name: "Cow Skull",
+    description: "An ancient skull.",
+    decimals: 18,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/101.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
   "Sunflower Seed": {
     name: "Sunflower Seed",
     description:
@@ -315,6 +563,55 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       { trait_type: "Tradable", value: "No" },
     ],
   },
+  "Edelweiss Seed": {
+    name: "Edelweiss Seed",
+    description:
+      "A seed used to grow flowers. Experiment to find all the variants.\n\nYou can buy Edelweiss seeds in game at the market.",
+    decimals: 18,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/142.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Gladiolus Seed": {
+    name: "Gladiolus Seed",
+    description:
+      "A seed used to grow flowers. Experiment to find all the variants.\n\nYou can buy Gladiolus seeds in game at the market.",
+    decimals: 18,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/143.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Lavender Seed": {
+    name: "Lavender Seed",
+    description:
+      "A seed used to grow lavender.\n\nYou can buy lavender seeds in game at the market.",
+    decimals: 18,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/144.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Clover Seed": {
+    name: "Clover Seed",
+    description:
+      "A seed used to grow clover.\n\nYou can buy clover seeds in game at the market.",
+    decimals: 18,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/145.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+
   Beetroot: {
     name: "Beetroot",
     description:
@@ -464,6 +761,28 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/question_mark.png",
     name: "Mixed Grain",
+  },
+  Omnifeed: {
+    name: "Omnifeed",
+    description: "Acts as the best feed for all animals.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Feed" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Barn Delight": {
+    name: "Barn Delight",
+    description: "A magical elixir that cures animal sickness.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Medicine" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
   Kale: {
     name: "Kale",
@@ -785,12 +1104,17 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   "Farm Dog": {
     name: "Farm Dog",
     description:
-      "Sheep are no longer lazy when this farm dog is around. Increases wool production. Currently used for decoration purposes.\n\n~~You can craft a dog at the Goblin Farmer in the game.~~ **Sold out!**",
+      "Sheep are no longer lazy when this farm dog is around.\n\n~~You can craft a dog at the Goblin Farmer in the game.~~ **Sold out!**",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/406.gif",
     attributes: [
-      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_percentage",
+        trait_type: "Sheep Produce Time",
+        value: -25,
+      },
       { trait_type: "Tradable", value: "Yes" },
     ],
   },
@@ -845,7 +1169,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   "Chicken Coop": {
     name: "Chicken Coop",
     description:
-      "A chicken coop that can be used to raise chickens. Increase egg production with this rare coop on your farm.\n\n~~You can craft a chicken coop at the Goblin Farmer in the game.~~ **Sold out!**",
+      "A chicken coop that can be used to raise chickens. Increase egg production with this rare coop.\n\n~~You can craft a chicken coop at the Goblin Farmer in the game.~~ **Sold out!**",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/408.png",
@@ -853,12 +1177,17 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       { trait_type: "Boost", value: "Animal" },
       {
         display_type: "boost_number",
-        trait_type: "Increase Egg Production",
+        trait_type: "Increase Egg Yield",
         value: 1,
       },
       {
         display_type: "boost_number",
-        trait_type: "Increase Max Chickens per Hen House",
+        trait_type: "Increase Base Chickens",
+        value: 5,
+      },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Max Chickens per Hen House Upgrade",
         value: 5,
       },
       { trait_type: "Tradable", value: "Yes" },
@@ -867,7 +1196,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   "Gold Egg": {
     name: "Gold Egg",
     description:
-      "A golden egg. What lays inside is known to be the bearer of good fortune.\n\n\n\nFeed chickens without wheat.",
+      "A golden egg. What lays inside is known to be the bearer of good fortune.\n\n\n\nFeed chickens for free.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/409.gif",
@@ -875,7 +1204,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       { trait_type: "Boost", value: "Animal" },
       {
         display_type: "boost_number",
-        trait_type: "Feed chickens without wheat",
+        trait_type: "Feed chickens without food",
         value: 1,
       },
       { trait_type: "Tradable", value: "Yes" },
@@ -1117,7 +1446,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   "Rock Golem": {
     name: "Rock Golem",
     description:
-      "The Rock Golem is the protector of Stone.\n\nMining stone causes the Golem to be become enraged giving a 10% chance to get 3x stone from stone mines.\n\n~~You can craft this item at the Goblin Blacksmith in the game.~~ **Sold out!**",
+      "The Rock Golem is the protector of Stone.\n\nMining stone causes the Golem to be become enraged giving a 10% chance to get +2 Stone from stone mines.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/427.gif",
@@ -1186,8 +1515,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   },
   "Tunnel Mole": {
     name: "Tunnel Mole",
-    description:
-      "The tunnel mole gives a 25% increase to stone mines.\n\n~~You can craft this item at the Goblin Blacksmith in the game.~~ **Sold out!**",
+    description: "The tunnel mole gives a 0.25 increase to stone mines' yield.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/428.gif",
@@ -1204,7 +1532,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   "Rocky the Mole": {
     name: "Rocky the Mole",
     description:
-      "\"Life's not about how much iron you can mine... it's about how much more you can mine, and still keep mining.\" - Rocky the Mole\n\nRocky the Mole gives a 25% increase to iron mines.\n\nYou can craft this item at the Goblin Blacksmith in the game.",
+      "\"Life's not about how much iron you can mine... it's about how much more you can mine, and still keep mining.\" - Rocky the Mole\n\nRocky the Mole gives a 0.25 increase to iron mines' yield.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/429.gif",
@@ -1238,7 +1566,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   Nugget: {
     name: "Nugget",
     description:
-      "Seldom seen above ground, this gold digger burrows day and night searching for the next gold rush.\n\nStrike gold with this little critter! Eureka!\n\nNugget gives a 25% increase to gold mines.\n\nYou can craft this item at the Goblin Blacksmith in the game.",
+      "Seldom seen above ground, this gold digger burrows day and night searching for the next gold rush.\n\nStrike gold with this little critter! Eureka!\n\nNugget gives a 0.25 increase to gold mines' yield.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/430.gif",
@@ -1640,14 +1968,14 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   "Fat Chicken": {
     name: "Fat Chicken",
     description:
-      "A mutant chicken that can be found by chance when collecting an egg.\n\nThis mutant reduces the wheat required to feed a chicken by 10%.\n\nThere is a 1/1000 chance of producing a mutant chicken.",
+      "A mutant chicken that can be found by chance when collecting an egg.\n\nThis mutant reduces the food required to feed a chicken by 10%.\n\nThere is a 1/1000 chance of producing a mutant chicken.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/611.gif",
     attributes: [
       {
         display_type: "boost_percentage",
-        trait_type: "Amount of Wheat to Feed Chickens",
+        trait_type: "Chicken Feed Reduction",
         value: -10,
       },
       { trait_type: "Boost", value: "Animal" },
@@ -1657,7 +1985,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   "Rich Chicken": {
     name: "Rich Chicken",
     description:
-      "A mutant chicken that can be found by chance when collecting an egg.\n\nThis mutant adds a boost of 10% higher egg yield.\n\nThere is a 1/1000 chance of producing a mutant chicken.",
+      "A mutant chicken that can be found by chance when collecting an egg.\n\nThis mutant adds a boost of +0.1 egg yield.\n\nThere is a 1/1000 chance of producing a mutant chicken.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/612.gif",
@@ -1733,6 +2061,18 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       { trait_type: "Tradable", value: "No" },
     ],
   },
+  Obsidian: {
+    name: "Obsidian",
+    description:
+      "A resource collected by mining obsidian mines.\n\nIt is used in a range of different crafting recipes.",
+    decimals: 18,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/663.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Resource" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
   "Green Thumb": {
     name: "Green Thumb",
     description:
@@ -1770,9 +2110,9 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       { trait_type: "Purpose", value: "Legacy" },
       { trait_type: "Tradable", value: "No" },
       {
-        display_type: "boost_percentage",
+        display_type: "boost_number",
         trait_type: "Increase Animal Yield",
-        value: 5,
+        value: 0.1,
       },
       {
         display_type: "boost_percentage",
@@ -2835,6 +3175,17 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       { trait_type: "Tradable", value: "No" },
     ],
   },
+  "Pet House": {
+    name: "Pet House",
+    description: "A pet house used to support pets.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/1024.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Building" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
   Workbench: {
     name: "Workbench",
     description:
@@ -3135,7 +3486,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   },
   "Undead Rooster": {
     name: "Undead Rooster",
-    description: "An unfortunate casualty of the war. 10% increased egg yield.",
+    description: "An unfortunate casualty of the war. +0.1 egg yield.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/1114.gif",
@@ -3336,7 +3687,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   },
   "Classy Bear": {
     description:
-      "More SFL than you know what to do with it! Mine 500 gold rocks to claim this bear",
+      "More FLOWER than you know what to do with it! Mine 500 gold rocks to claim this bear",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/1211.png",
@@ -4234,7 +4585,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   },
   "Genie Lamp": {
     description:
-      "A magical lamp that contains a genie who will grant you three wishes.",
+      "A magical lamp that contains a genie who will grant you three wishes and burn the lamp after the third wish. Wish list: Genie Bear, Pirate Bounty, Pearl, Bumpkin Roast, Goblin Brunch and Sand Drill x10",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/460.png",
@@ -4242,7 +4593,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       { trait_type: "Boost", value: "Other" },
       {
         display_type: "boost_number",
-        trait_type: "Grants Wishes",
+        trait_type: "Grants Wishes from the Wish list",
         value: 3,
       },
       { trait_type: "Tradable", value: "Yes" },
@@ -4670,6 +5021,26 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       { trait_type: "Tradable", value: "No" },
     ],
   },
+  "Fused Stone Rock": {
+    description: "An upgraded resource that can be used to mine stone",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2700.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Resource Node" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Reinforced Stone Rock": {
+    description: "An upgraded resource that can be used to mine stone",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2701.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Resource Node" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
   "Crimstone Rock": {
     description: "A rare resource used to mine crimstones",
     decimals: 0,
@@ -4695,6 +5066,16 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/640.gif",
+    attributes: [
+      { trait_type: "Purpose", value: "Resource Node" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Lava Pit": {
+    description: "A source of obsidian",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/664.png",
     attributes: [
       { trait_type: "Purpose", value: "Resource Node" },
       { trait_type: "Tradable", value: "No" },
@@ -5332,16 +5713,10 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
     image: "../public/erc1155/images/465.png",
     attributes: [
       { trait_type: "Boost", value: "Animal" },
-      { trait_type: "Boost", value: "Area of Effect" },
       {
         display_type: "boost_number",
         trait_type: "Increase Egg Yield",
-        value: 0.2,
-      },
-      {
-        display_type: "boost_number",
-        trait_type: "Chickens Affected",
-        value: 12,
+        value: 0.1,
       },
       { trait_type: "Tradable", value: "No" },
     ],
@@ -5491,7 +5866,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
     ],
   },
   "El Pollo Veloz": {
-    description: "Give me those eggs, fast! 4 hour speed boost on egg laying.",
+    description: "Give me those eggs, fast! Chickens sleep 2 hours shorter.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/470.gif",
@@ -5500,7 +5875,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       {
         display_type: "boost_number",
         trait_type: "Egg Production Time (hours)",
-        value: -4,
+        value: -2,
       },
       { trait_type: "Tradable", value: "Yes" },
     ],
@@ -6415,6 +6790,23 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       },
     ],
   },
+  "Longhorn Cowfish": {
+    description:
+      "A peculiar boxfish with horn-like spines, swimming through the seas with bovine grace.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/1540.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Fish" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Boost", value: "Milk" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Milk Yield",
+        value: 0.2,
+      },
+    ],
+  },
   Chowder: {
     description:
       "Sailor's delight in a bowl! Dive in, there's treasure inside!",
@@ -6531,7 +6923,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       "With his trusty tusks and love for the deep, he'll ensure you reel in an extra fish every time",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/erc1155/images/478.png",
+    image: "../public/erc1155/images/478.webp",
     attributes: [
       { trait_type: "Tradable", value: "Yes" },
       {
@@ -6547,7 +6939,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       "With her keen instincts, she ensures you get a little extra splash in your catch. 50% chance of +1 Basic Fish!",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/erc1155/images/479.png",
+    image: "../public/erc1155/images/479.webp",
     attributes: [
       { trait_type: "Tradable", value: "Yes" },
       {
@@ -6622,7 +7014,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
     description: "A chicken that boosts bananas. What a world we live in.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/erc1155/images/488.png",
+    image: "../public/erc1155/images/488.webp",
     attributes: [
       { trait_type: "Boost", value: "Fruit" },
       {
@@ -6644,6 +7036,54 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       {
         display_type: "boost_number",
         trait_type: "Increase Crimstone yield",
+        value: 0.1,
+      },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+  },
+  "Alien Chicken": {
+    description:
+      "A peculiar chicken from another galaxy, here to boost your feather production!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2162.png",
+    attributes: [
+      { trait_type: "Boost", value: "Resource" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Feather Yield",
+        value: 0.1,
+      },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+  },
+  Mootant: {
+    description:
+      "This genetically enhanced bovine here to boost your leather production!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2163.png",
+    attributes: [
+      { trait_type: "Boost", value: "Resource" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Leather Yield",
+        value: 0.1,
+      },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+  },
+  "Toxic Tuft": {
+    description:
+      "A mutated sheep whose toxic fleece produces the finest merino wool in the land!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2164.png",
+    attributes: [
+      { trait_type: "Boost", value: "Resource" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Merino Wool Yield",
         value: 0.1,
       },
       { trait_type: "Tradable", value: "Yes" },
@@ -6882,6 +7322,16 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
 
   // TODO feat/manor
   Manor: {
+    description: "?",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/1017.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Building" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  Mansion: {
     description: "?",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
@@ -7204,7 +7654,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       "A tiny jewel of the sky, the Humming Bird flits with colorful grace.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/erc1155/images/490.png",
+    image: "../public/erc1155/images/490.webp",
     attributes: [
       { trait_type: "Boost", value: "Flower" },
       {
@@ -7226,7 +7676,7 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       "Majestic ruler of the hive, the Queen Bee buzzes with regal authority.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/erc1155/images/491.png",
+    image: "../public/erc1155/images/491.webp",
     attributes: [
       { trait_type: "Boost", value: "Resource" },
       {
@@ -7449,6 +7899,24 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       },
     ],
   },
+  "Volcano Gnome": {
+    name: "Volcano Gnome",
+    description:
+      "A mineral obsessed gnome that can survive the harshest of conditions.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2018.png",
+    attributes: [
+      { trait_type: "Tradable", value: "No" },
+      { trait_type: "Boost", value: "Minerals" },
+      {
+        display_type: "boost_percentage",
+        trait_type: "Mineral Production",
+        value: 0.1,
+      },
+    ],
+  },
+
   "Red Daffodil": {
     name: "Red Daffodil",
     description: "A flower",
@@ -7573,7 +8041,8 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   },
   "Treasure Key": {
     name: "Treasure Key",
-    description: "A magic key that can unlock rewards in the plaza",
+    description:
+      "A magic key that can unlock the basic chest located in the plaza near Tywin.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/931.png",
@@ -7584,7 +8053,8 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
   },
   "Luxury Key": {
     name: "Luxury Key",
-    description: "A magic key that can unlock rewards in the plaza",
+    description:
+      "A magic key that can unlock the luxury chest located in the plaza near Bert.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/932.png",
@@ -7596,7 +8066,8 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
 
   "Rare Key": {
     name: "Rare Key",
-    description: "A magic key that can unlock rewards in the beach",
+    description:
+      "A magic key that can unlock the rare chest located in the south of the beach.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/erc1155/images/933.png",
@@ -9106,6 +9577,28 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
       { trait_type: "Tradable", value: "Yes" },
     ],
   },
+  Chicory: {
+    name: "Chicory",
+    description:
+      "A mutant flower that can be found during the Bull Run season.",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2159.png",
+    attributes: [
+      { trait_type: "Boost", value: "Flower" },
+      {
+        display_type: "boost_percentage",
+        trait_type: "Flower Critical Hit Chance",
+        value: 10,
+      },
+      {
+        display_type: "boost_number",
+        trait_type: "Critical Flower Amount",
+        value: 1,
+      },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+  },
 
   "Camel Bone": {
     description: "Bones of an ancient camel, rumoured to transport artefacts",
@@ -9633,653 +10126,3237 @@ export const OPEN_SEA_COLLECTIBLES: Record<InventoryItemName, Metadata> = {
     image: "../public/erc1155/images/2135.png",
     name: "Butterfly",
   },
-  "Lamp Back": {
-    description: "",
+  "Crafting Box": {
+    description: "A box that allows you to craft items",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/1022.png",
+    name: "Crafting Box",
+  },
+  "Basic Bed": {
+    description: "A basic bed for your Bumpkin to rest.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2140.png",
+    name: "Basic Bed",
+  },
+  "Fisher Bed": {
+    description: "A fisherman's bed for your Bumpkin to rest.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2143.png",
+    name: "Fisher Bed",
+  },
+  "Floral Bed": {
+    description: "A floral bed for your Bumpkin to rest.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2142.png",
+    name: "Floral Bed",
+  },
+  "Sturdy Bed": {
+    description: "A sturdy bed for your Bumpkin to rest.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2141.png",
+    name: "Sturdy Bed",
+  },
+  "Desert Bed": {
+    description: "A desert bed for your Bumpkin to rest.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2146.png",
+    name: "Desert Bed",
+  },
+  "Cow Bed": {
+    description: "A cow bed for your Bumpkin to rest.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2145.png",
+    name: "Cow Bed",
+  },
+  "Pirate Bed": {
+    description: "A pirate bed for your Bumpkin to rest.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2144.png",
+    name: "Pirate Bed",
+  },
+  "Royal Bed": {
+    description: "A royal bed for your Bumpkin to rest.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2147.png",
+    name: "Royal Bed",
+  },
+  Cushion: {
+    description: "A cushion.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/651.png",
+    name: "Cushion",
+  },
+  Timber: {
+    description: "A piece of timber.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/652.png",
+    name: "Timber",
+  },
+  "Bee Box": {
+    description: "A box for bees.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/653.png",
+    name: "Bee Box",
+  },
+  Crimsteel: {
+    description: "A piece of crimsteel.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/654.png",
+    name: "Crimsteel",
+  },
+  "Merino Cushion": {
+    description: "A cushion made of merino wool.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/655.png",
+    name: "Merino Cushion",
+  },
+  "Kelp Fibre": {
+    description: "A piece of kelp fibre.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/656.png",
+    name: "Kelp Fibre",
+  },
+  "Hardened Leather": {
+    description: "A piece of hardened leather.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/657.png",
+    name: "Hardened Leather",
+  },
+  "Synthetic Fabric": {
+    description: "A piece of synthetic fabric.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/658.png",
+    name: "Synthetic Fabric",
+  },
+  "Ocean's Treasure": {
+    description: "A treasure from the ocean.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/659.png",
+    name: "Ocean's Treasure",
+  },
+  "Royal Bedding": {
+    description: "A royal bedding.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/660.png",
+    name: "Royal Bedding",
+  },
+  "Royal Ornament": {
+    description: "A royal ornament.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/661.png",
+    name: "Royal Ornament",
+  },
+  "Cow Scratcher": {
+    description:
+      "A rustic yet effective tool, perfect for giving cows a satisfying scratch after a long day in the fields. Keep your cattle happy and content!",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2148.png",
+    name: "Cow Scratcher",
+  },
+  "Spinning Wheel": {
+    description:
+      "An elegant piece of craftsmanship, this spinning wheel turns raw wool into fine thread, essential for crafting quality textiles.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2149.gif",
+    name: "Spinning Wheel",
+  },
+  "Sleepy Rug": {
+    description:
+      "Cozy and inviting, this soft rug is perfect for an afternoon nap. It adds warmth and charm to any space.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2150.png",
+    name: "Sleepy Rug",
+  },
+  Meteorite: {
+    description:
+      "A rare and mysterious fragment from the stars, the meteorite is rumored to hold cosmic power.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2151.png",
+    name: "Meteorite",
+  },
+  "Sheaf of Plenty": {
+    description:
+      "A bundle of barley harvested at peak ripeness, symbolizing abundance and the hard work of the season. +2 Barley",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Crop" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Yield of Barley",
+        value: 2,
+      },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2152.gif",
+    name: "Sheaf of Plenty",
+  },
+  "Mechanical Bull": {
+    description:
+      "A lively attraction and test of endurance! Hop on the Mechanical Bull and see if you can hold on.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2153.gif",
+    name: "Mechanical Bull",
+  },
+  "Moo-ver": {
+    description:
+      "A unique contraption that keeps cows active and healthy. +0.25 Leather",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Yield of Leather",
+        value: 0.25,
+      },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2155.gif",
+    name: "Moo-ver",
+  },
+  "Swiss Whiskers": {
+    description:
+      "A culinary genius in miniature form, this skilled chef elevates every cheese recipe with his expert touch. +500 Cheese Recipe XP",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "XP" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Cheese Recipe XP",
+        value: 500,
+      },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2156.png",
+    name: "Swiss Whiskers",
+  },
+  Cluckulator: {
+    description:
+      "This specialized scale accurately weighs each chicken, ensuring they receive the ideal feed portion for balanced growth and health, making poultry care more efficient and sustainable. -25% Feed to Chicken",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_percentage",
+        trait_type: "Chicken Feed Reduction",
+        value: 25,
+      },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2157.gif",
+    name: "Cluckulator",
+  },
+  "Crop Circle": {
+    description:
+      "A mysterious circle that appears on your farm...what could it mean?",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "Yes" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2165.png",
+    name: "Crop Circle",
+  },
+  UFO: {
+    description:
+      "This extraterrestrial craft is said to emit a soft glow and hum, creating an aura of wonder and curiosity.  Keep your eyes on the skies—who knows what otherworldly secrets it might unveil!",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2158.gif",
+    name: "UFO",
+  },
+  Wagon: {
+    description: "A perfect wagon for your bears to rest and relax.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/2160.png",
+    name: "Wagon",
+  },
+  "Black Sheep": {
+    description: "A black sheep has taken up residence on your farm.",
+    decimals: 0,
+    attributes: [{ trait_type: "Tradable", value: "No" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2161.png",
+    name: "Black Sheep",
+  },
+  Cheese: {
+    name: "Cheese",
+    description: "A delicious dairy delight made from fresh milk",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/578.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Food" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  "Lamp Front": {
-    description: "",
+  "Pizza Margherita": {
+    name: "Pizza Margherita",
+    description: "A classic Italian pizza with tomatoes and cheese",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/579.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Food" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  "Lamp Side": {
-    description: "",
+  "Blue Cheese": {
+    name: "Blue Cheese",
+    description: "A strong flavored cheese with blue mold",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/580.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Food" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  Ghost: {
-    description: "",
+  "Honey Cheddar": {
+    name: "Honey Cheddar",
+    description: "A sweet and savory cheese infused with honey",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/581.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Food" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  Zombie: {
-    description: "",
+  "Caprese Salad": {
+    name: "Caprese Salad",
+    description: "A fresh salad with cheese, tomatoes and kale",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/582.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Food" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  "Wear Sign": {
-    description: "",
+  "Sour Shake": {
+    name: "Sour Shake",
+    description: "A tangy and refreshing lemon drink",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/583.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Food" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  Relic: {
-    description: "",
+  "Spaghetti al Limone": {
+    name: "Spaghetti al Limone",
+    description: "A zesty pasta dish with lemon and cheese",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/584.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Food" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  Ghost2: {
-    description: "",
+  "Lemon Cheesecake": {
+    name: "Lemon Cheesecake",
+    description: "A creamy cheesecake with a citrus twist",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/585.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Food" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  Statue: {
-    description: "",
+  "King of Bears": {
+    name: "King of Bears",
+    description:
+      "The king of all bears. It has the power to generate more honey for  its own consumption.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/images/2154.png",
+    attributes: [
+      { trait_type: "Boost", value: "Resource" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Honey Yield per full beehive",
+        value: 0.25,
+      },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  Skeleton: {
-    description: "",
+  "Halloween Scarecrow": {
+    name: "Halloween Scarecrow",
+    description: "A scary looking scarecrow",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/images/2166.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  Owl: {
-    description: "",
+  "Vampire Bear": {
+    name: "Vampire Bear",
+    description: "Don't put me under the sun!",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/images/2167.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  Sword: {
-    description: "",
+  "Super Totem": {
+    name: "Super Totem",
+    description:
+      "2x speed for crops, trees, fruits, cooking & minerals. Lasts for 7 days",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/images/2168.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Consumable" },
+      { trait_type: "Boost", value: "Other" },
+      {
+        display_type: "boost_percentage",
+        trait_type: "Cooking, Crop, Fruit, Tree and Mineral Time",
+        value: -50,
+      },
+      {
+        display_type: "boost_number",
+        trait_type: "Boost Duration (days)",
+        value: 7,
+      },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  Bone: {
-    description: "",
+  "Trade Point": {
+    description:
+      "Earned from trading collectibles and wearables in marketplace. Can be exchanged for in-game rewards",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Coupon" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Trade Point",
+  },
+  "Trade Cake": {
+    description: "Cake purchased at Trade Rewards Shop.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Consumable" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Trade Cake",
+  },
+  "Christmas Stocking": {
+    name: "Christmas Stocking",
+    description:
+      "A classic festive stocking, perfect for filling with holiday treats and surprises.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/images/2169.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  Ghoul: {
-    description: "",
+  "Golden Christmas Stocking": {
+    name: "Golden Christmas Stocking",
+    description:
+      "A luxurious stocking with golden accents, adding an elegant touch to your Christmas decor.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/images/2170.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  Golem: {
-    description: "",
+  "Cozy Fireplace": {
+    name: "Cozy Fireplace",
+    description:
+      "A warm and inviting fireplace that sets the perfect backdrop for holiday gatherings.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/images/2171.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  Mummy: {
-    description: "",
+  "Christmas Rug": {
+    name: "Christmas Rug",
+    description:
+      "A festive rug adorned with seasonal patterns to bring warmth and holiday spirit to your home.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/images/2172.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  FinalBoss: {
-    description: "",
+  "Christmas Candle": {
+    name: "Christmas Candle",
+    description:
+      "A glowing candle with a festive scent, ideal for creating a cozy and magical atmosphere.",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/images/2173.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  Fire: {
-    description: "",
+  "Santa Penguin": {
+    name: "Santa Penguin",
+    description: "A penguin thats always ready for the festive season!",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/images/2174.gif",
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-  "Halloween Token 2025": {
-    description: "",
+  "Penguin Pool": {
+    name: "Penguin Pool",
+    description:
+      "Keep your eyes on these penguins or they will cause chaos on your island!",
     decimals: 0,
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
-    attributes: [{ trait_type: "Tradable", value: "No" }],
+    image: "../public/erc1155/images/2175.gif",
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
   },
-};
+  Snowman: {
+    name: "Snowman",
+    description: "A special snowman that for some reason never melts!?",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2176.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Festive Toy Train": {
+    name: "Festive Toy Train",
+    description: "A special snowman that for some reason never melts!?",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2177.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Golden Cow": {
+    description: "Feed cows for free!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_percentage",
+        trait_type: "Feed Reduction",
+        value: 100,
+      },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2178.png",
+    name: "Golden Cow",
+  },
+  Kite: {
+    description: "Soar high with the winds and let your worries drift away.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2184.png",
+    name: "Kite",
+  },
+  "Acorn House": {
+    description:
+      "A cozy woodland retreat, perfect for squirrels and dreamers alike.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2185.png",
+    name: "Acorn House",
+  },
+  "Spring Duckling": {
+    description:
+      "Bright and chirpy, this little duckling welcomes the season with joy.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2186.png",
+    name: "Spring Duckling",
+  },
+  Igloo: {
+    description:
+      "Cold on the outside, cozy on the inside—home sweet frozen home.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2187.png",
+    name: "Igloo",
+  },
+  "Ugly Duckling": {
+    description:
+      "Born different, misunderstood, but destined to become something truly magnificent.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2188.png",
+    name: "Ugly Duckling",
+  },
+  "Lake Rug": {
+    description: "Bring the calm of a peaceful lake right into your home.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2189.png",
+    name: "Lake Rug",
+  },
+  Hammock: {
+    description: "Sway gently with the breeze and enjoy a well-earned rest.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2190.png",
+    name: "Hammock",
+  },
+  Mammoth: {
+    description: "An ancient giant, standing strong through the test of time.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_percentage",
+        trait_type: "Cow Produce Time",
+        value: -25,
+      },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2191.png",
+    name: "Mammoth",
+  },
+  "Cup of Chocolate": {
+    description: "Warm, rich, and the perfect companion for a chilly day.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2192.png",
+    name: "Cup of Chocolate",
+  },
+  "Golden Sheep": {
+    description:
+      "A dazzling wonder, worth more than its weight in wool. Feed Sheeps for free!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_percentage",
+        trait_type: "Feed Reduction",
+        value: 100,
+      },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2193.png",
+    name: "Golden Sheep",
+  },
+  "Barn Blueprint": {
+    description: "The foundation of every great farm begins with a solid plan.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Base Barn Animals",
+        value: 5,
+      },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Max Barn Animals per Upgrade",
+        value: 5,
+      },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2194.png",
+    name: "Barn Blueprint",
+  },
+  "Mama Duck": {
+    description: "Protective, loving, and always leading her little ones home.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2195.png",
+    name: "Mama Duck",
+  },
+  "Summer Duckling": {
+    description:
+      "Basking in the sun, this duckling knows how to enjoy the heat.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2196.png",
+    name: "Summer Duckling",
+  },
+  "Autumn Duckling": {
+    description:
+      "Crisp leaves and cozy feathers, ready for the harvest season.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2197.png",
+    name: "Summer Duckling",
+  },
+  "Winter Duckling": {
+    description:
+      "Bundled up in downy feathers, this little one waddles through the winter wonderland with cheer.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Purpose", value: "Decoration" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2198.png",
+    name: "Winter Duckling",
+  },
 
-export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
-  "Halloween Aura": {
+  "Rhubarb Seed": {
+    description: "A seed that grows into a tart, pink vegetable stalk.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/seeds/rhubarb_seed.png",
+    name: "Rhubarb Seed",
+  },
+  "Zucchini Seed": {
+    description: "A seed that grows into a versatile summer squash.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/seeds/Zucchini_seed.png",
+    name: "Zucchini Seed",
+  },
+  "Yam Seed": {
+    description: "A seed that grows into a nutritious root vegetable.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/seeds/yam_seed.png",
+    name: "Yam Seed",
+  },
+  "Broccoli Seed": {
+    description: "A seed that grows into a healthy green vegetable.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/seeds/Broccoli_seed.png",
+    name: "Broccoli Seed",
+  },
+  "Pepper Seed": {
+    description: "A seed that grows into a spicy capsicum.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/seeds/pepper_seed.png",
+    name: "Pepper Seed",
+  },
+  "Onion Seed": {
+    description: "A seed that grows into a flavorful bulb vegetable.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/seeds/onion_seed.png",
+    name: "Onion Seed",
+  },
+  "Turnip Seed": {
+    description: "A seed that grows into a hardy root vegetable.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/seeds/turnip_seed.png",
+    name: "Turnip Seed",
+  },
+  "Artichoke Seed": {
+    description: "A seed that grows into a unique edible flower bud.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/seeds/artichoke_seed.png",
+    name: "Artichoke Seed",
+  },
+  Rhubarb: {
+    description: "A tart, pink vegetable stalk perfect for pies and jams.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Crop" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/rhubarb.png",
+    name: "Rhubarb",
+  },
+  Zucchini: {
+    description: "A versatile summer squash that can be used in many dishes.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Crop" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/Zucchini.png",
+    name: "Zucchini",
+  },
+  Yam: {
+    description: "A nutritious root vegetable rich in vitamins and minerals.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Crop" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/yam.png",
+    name: "Yam",
+  },
+  Broccoli: {
+    description: "A healthy green vegetable packed with nutrients.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Crop" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/Broccoli.png",
+    name: "Broccoli",
+  },
+  Pepper: {
+    description: "A spicy capsicum that adds flavor to any dish.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Crop" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/pepper.png",
+    name: "Pepper",
+  },
+  Onion: {
+    description: "A flavorful bulb vegetable essential for cooking.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Crop" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/onion.png",
+    name: "Onion",
+  },
+  Turnip: {
+    description: "A hardy root vegetable perfect for soups and stews.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Crop" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/turnip.png",
+    name: "Turnip",
+  },
+  Artichoke: {
+    description: "A unique edible flower bud with a delicate flavor.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Crop" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/crops/artichoke.png",
+    name: "Artichoke",
+  },
+  "Duskberry Seed": {
+    description: "A duskberry seed.",
+    decimals: 18,
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/139.png",
+    name: "Duskberry Seed",
+  },
+  "Lunara Seed": {
+    description: "A Lunara seed.",
+    decimals: 18,
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/140.png",
+    name: "Lunara Seed",
+  },
+  "Celestine Seed": {
+    description: "A Celestine seed.",
+    decimals: 18,
+    attributes: [
+      { trait_type: "Purpose", value: "Seed" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/141.png",
+    name: "Celestine Seed",
+  },
+  Duskberry: {
+    description: "A rare berry that grows in the dark.",
+    decimals: 18,
+    attributes: [
+      { trait_type: "Purpose", value: "Crop" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/266.png",
+    name: "Duskberry",
+  },
+  Lunara: {
+    description: "A mysterious root that grows in the darkest of places.",
+    decimals: 18,
+    attributes: [
+      { trait_type: "Purpose", value: "Crop" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/267.png",
+    name: "Lunara",
+  },
+  Celestine: {
+    description: "A rare plant that grows in the darkest of places.",
+    decimals: 18,
+    attributes: [
+      { trait_type: "Purpose", value: "Crop" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/268.png",
+    name: "Celestine",
+  },
+  "Red Edelweiss": {
+    description: "A beautiful red edelweiss!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/269.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Yellow Edelweiss": {
+    description: "A beautiful yellow edelweiss!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/270.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Purple Edelweiss": {
+    description: "A beautiful purple edelweiss!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/271.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "White Edelweiss": {
+    description: "A beautiful white edelweiss!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/272.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Blue Edelweiss": {
+    description: "A beautiful blue edelweiss!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/273.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Red Gladiolus": {
+    description: "A beautiful red gladiolus!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/274.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Yellow Gladiolus": {
+    description: "A beautiful yellow gladiolus!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/275.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Purple Gladiolus": {
+    description: "A beautiful purple gladiolus!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/276.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "White Gladiolus": {
+    description: "A beautiful white gladiolus!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/277.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Blue Gladiolus": {
+    description: "A beautiful blue gladiolus!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/278.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Red Lavender": {
+    description: "A beautiful red lavender!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/279.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Fish" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Yellow Lavender": {
+    description: "A beautiful yellow lavender!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/280.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Purple Lavender": {
+    description: "A beautiful purple lavender!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/281.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "White Lavender": {
+    description: "A beautiful white lavender!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/282.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Blue Lavender": {
+    description: "A beautiful blue lavender!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/283.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Red Clover": {
+    description: "A beautiful red clover!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/284.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Yellow Clover": {
+    description: "A beautiful yellow clover!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/285.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Purple Clover": {
+    description: "A beautiful purple clover!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/286.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "White Clover": {
+    description: "A beautiful white clover!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/287.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Blue Clover": {
+    description: "A beautiful blue clover!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/288.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Flower" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  Porgy: {
+    description: "A beautiful porgy!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/1541.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Fish" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  Muskellunge: {
+    description: "A beautiful muskellunge!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/1542.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Fish" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  Trout: {
+    description: "A beautiful trout!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/1543.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Fish" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  Walleye: {
+    description: "A beautiful walleye!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/1544.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Fish" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  Weakfish: {
+    description: "A beautiful weakfish!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/1545.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Fish" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Rock Blackfish": {
+    description: "A beautiful rock blackfish!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/1546.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Fish" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  Cobia: {
+    description: "A beautiful cobia!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/1547.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Fish" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  Tilapia: {
+    description: "A beautiful tilapia!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/1548.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Fish" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  Timeshard: {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Coupon" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Timeshard",
+  },
+  "Ancient Clock": {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Bounty" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Ancient Clock",
+  },
+  "Broken Pillar": {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Bounty" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Broken Pillar",
+  },
+  "Winds of Change Banner": {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Banner" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Winds of Change Banner",
+  },
+  "Great Bloom Banner": {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Banner" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Great Bloom Banner",
+  },
+  Geniseed: {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Coupon" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Geniseed",
+  },
+  Jin: {
+    description:
+      "The Mythical Tiger of Ronin, embodies strength, resillence and adventurous spirit",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2205.png",
+    name: "Jin",
+  },
+  "Love Charm": {
+    description: "A spark of social interaction",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Coupon" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Love Charm",
+  },
+  "Floral Arch": {
+    description:
+      "A grand entrance made of nature’s finest, welcoming all who pass through.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Floral Arch",
+  },
+  "Flower Coin": {
+    description:
+      "A symbol of new beginnings, marking the bloom of a fresh era in Sunflower Land.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Flower Coin",
+  },
+  "Flower Statue": {
+    description:
+      "A monument to growth and transformation, standing tall as the world of Bumpkins flourishes in a new symbol.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Flower Statue",
+  },
+  "Heartstruck Tree": {
+    description:
+      "Legends say Cupid himself took aim at this tree, and now it grows love instead of leaves.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Heartstruck Tree",
+  },
+  "Mermaid Fountain": {
+    description:
+      "Whisper your wishes to the waters, and let the mermaid’s melody guide your heart.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Mermaid Fountain",
+  },
+  "Mysterious Entrance": {
+    description:
+      "Where does it lead? Only those who dare to step through will know.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Mysterious Entrance",
+  },
+  "Streamer's Statue": {
+    description:
+      "A tribute to those who amplify the community, earning rewards by sharing the stories and adventure in Sunflower Land.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Streamer's Statue",
+  },
+  Cetus: {
+    description:
+      "An ancient creature of the sea, watching over the waters with silent wisdom.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Cetus",
+  },
+  "Goldcrest Mosaic Rug": {
+    description:
+      "A masterful blend of tiles, reflecting the sun’s warm embrace.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Goldcrest Mosaic Rug",
+  },
+  "Sandy Mosaic Rug": {
+    description: "A pattern woven from desert winds and sun-kissed dreams.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Sandy Mosaic Rug",
+  },
+  "Twilight Rug": {
+    description:
+      "A deep, dark weave, capturing the beauty of the twilight and flowers.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Twilight Rug",
+  },
+  "Orchard Rug": {
+    description: "Woven with care, just like the trees in a well-tended grove.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Orchard Rug",
+  },
+  "Carrot Rug": {
+    description:
+      "Perfect for a cozy farmhouse, or a rabbit with expensive taste.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Carrot Rug",
+  },
+  "Beetroot Rug": {
+    description: "A rich, earthy hue that brings warmth to any home.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Beetroot Rug",
+  },
+  "Harlequin Rug": {
+    description: "A timeless pattern that never goes out of style.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Harlequin Rug",
+  },
+  "Large Rug": {
+    description: "Big, bold, and built for comfort.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Large Rug",
+  },
+  "Golden Fence": {
+    description: "Sturdy and shining, a fence built to last for ages.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Golden Fence",
+  },
+  "Golden Stone Fence": {
+    description: "Blending the strength of stone with a glimmer of fortune.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Golden Stone Fence",
+  },
+  "Golden Pine Tree": {
+    description: "Tall and proud, standing through every season.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Golden Pine Tree",
+  },
+  "Golden Tree": {
+    description: "A rare sight in nature, glowing under the sun’s rays.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Golden Tree",
+  },
+  "Golden Bush": {
+    description: "A small but majestic addition to any landscape.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Golden Bush",
+  },
+  "Black Tile": {
+    description: "",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Black Tile",
+  },
+  "Blue Tile": {
+    description: "",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Blue Tile",
+  },
+  "Green Tile": {
+    description: "",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Green Tile",
+  },
+  "Purple Tile": {
+    description: "",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Purple Tile",
+  },
+  "Red Tile": {
+    description: "",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Red Tile",
+  },
+  "Yellow Tile": {
+    description: "",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Yellow Tile",
+  },
+  "Easter Token 2025": {
+    name: "Easter Token 2025",
+    description: "Use this in the easter event shop before the event ends!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2233.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Coupon" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Easter Ticket 2025": {
+    name: "Easter Ticket 2025",
+    description:
+      "Hold this for a chance to win $FLOWER after the easter event ends!",
+    decimals: 0,
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2234.png",
+    attributes: [
+      { trait_type: "Purpose", value: "Coupon" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+  },
+  "Carrot House": {
+    description: "Is this a carrot or a house?",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2235.png",
+    name: "Carrot House",
+  },
+  "Orange Bunny Lantern": {
+    description: "A bunny lantern special to easter",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2236.png",
+    name: "Orange Bunny Lantern",
+  },
+  "White Bunny Lantern": {
+    description: "A rare bunny in lantern shape",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2237.png",
+    name: "White Bunny Lantern",
+  },
+  "Orange Tunnel Bunny": {
+    description: "Who let this dig in my garden!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2238.png",
+    name: "Orange Tunnel Bunny",
+  },
+  "White Tunnel Bunny": {
+    description: "A rare bunny digging through!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2239.png",
+    name: "White Tunnel Bunny",
+  },
+  "Easter Basket": {
+    description: "A basket filled with easter eggs!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2240.png",
+    name: "Easter Basket",
+  },
+  "Test Box": {
+    description: "A box filled with love!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Rarity", value: "Common" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2241.png",
+    name: "Test Box",
+  },
+  "Bronze Love Box": {
+    description: "A box filled with love!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Rarity", value: "Common" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2241.png",
+    name: "Bronze Love Box",
+  },
+  "Silver Love Box": {
+    description: "A box filled with love!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Rarity", value: "Uncommon" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2242.png",
+    name: "Silver Love Box",
+  },
+  "Gold Love Box": {
+    description: "A box filled with love!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Rarity", value: "Rare" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2243.png",
+    name: "Gold Love Box",
+  },
+  "Bronze Food Box": {
+    description: "A box filled with love!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Rarity", value: "Rare" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2243.png",
+    name: "Gold Love Box",
+  },
+  "Silver Food Box": {
+    description: "A box filled with love!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Rarity", value: "Rare" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2243.png",
+    name: "Gold Love Box",
+  },
+  "Gold Food Box": {
+    description: "A box filled with love!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Rarity", value: "Rare" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2243.png",
+    name: "Gold Love Box",
+  },
+  "Bronze Tool Box": {
+    description: "A box filled with love!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Rarity", value: "Rare" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2243.png",
+    name: "Gold Love Box",
+  },
+  "Silver Tool Box": {
+    description: "A box filled with love!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Rarity", value: "Rare" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2243.png",
+    name: "Gold Love Box",
+  },
+  "Gold Tool Box": {
+    description: "A box filled with love!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Rarity", value: "Rare" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2243.png",
+    name: "Gold Love Box",
+  },
+
+  "Bronze Flower Box": {
+    description: "A box filled with love!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Rarity", value: "Common" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2245.png",
+    name: "Bronze Flower Box",
+  },
+
+  "Silver Flower Box": {
+    description: "A box filled with love!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Rarity", value: "Uncommon" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2246.png",
+    name: "Silver Flower Box",
+  },
+  "Gold Flower Box": {
+    description: "A box filled with love!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Rarity", value: "Rare" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2247.png",
+    name: "Gold Flower Box",
+  },
+  Quarry: {
+    description:
+      "An age-old stone site that never runs dry—perfect for those seeking a steady supply of free stone.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2259.png",
+    name: "Quarry",
+  },
+  "Obsidian Turtle": {
+    description:
+      "Steady and silent, this ancient creature gathers traces of volcanic stone wherever it roams.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2260.png",
+    name: "Obsidian Turtle",
+  },
+  "Winter Guardian": {
+    description:
+      "Summoned from a land where snow never melts, this frostbound protector now watches over the skies—an honored guest in unfamiliar winds.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2261.png",
+    name: "Winter Guardian",
+  },
+  "Summer Guardian": {
+    description:
+      "A blazing figure born under endless sun, this Guardian brings the heat of its homeland to the cooler heights of Sky Island.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2262.png",
+    name: "Summer Guardian",
+  },
+  "Spring Guardian": {
+    description:
+      "Awakened from fertile fields far below, this gentle spirit now nurtures life among the drifting gardens of the sky.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2263.png",
+    name: "Spring Guardian",
+  },
+  "Autumn Guardian": {
+    description:
+      "With harvest hues and a wistful gaze, this Guardian carries the essence of changing seasons from distant lands into the realm above.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2264.png",
+    name: "Autumn Guardian",
+  },
+  "Sky Pillar": {
+    description:
+      "These ancient columns are said to predate the sky itself, pulsing with the energy that keeps Sky Island afloat and in balance.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2265.png",
+    name: "Sky Pillar",
+  },
+  "Flower-Scribed Statue": {
+    description:
+      "Carved from pale stone and etched with ancient floral verses, this statue hums with the quiet wisdom of Sunflower Land.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2266.png",
+    name: "Flower-Scribed Statue",
+  },
+
+  "Balloon Rug": {
+    description:
+      "A soft, whimsical rug that feels lighter than air—perfect for lounging in style.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2267.png",
+    name: "Balloon Rug",
+  },
+  "Giant Yam": {
+    description:
+      "A root so massive it could feed a village—or at least make one impressive stew.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2268.png",
+    name: "Giant Yam",
+  },
+  "Heart Air Balloon": {
+    description:
+      "A floating symbol of love, ready to lift spirits and hearts alike. +1 Geniseeds from deliveries, chores & bounties.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2269.png",
+    name: "Heart Air Balloon",
+  },
+  "Giant Zucchini": {
+    description:
+      "Impossibly large and suspiciously green, this veggie is a true garden marvel.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2270.png",
+    name: "Giant Zucchini",
+  },
+  "Giant Kale": {
+    description: "?",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2272.png",
+    name: "Giant Kale",
+  },
+  "Mini Floating Island": {
+    description:
+      "A small-sized patch of paradise that somehow stays afloat—perfect for peaceful moments.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2271.png",
+    name: "Mini Floating Island",
+  },
+  "Colors Token 2025": {
+    description:
+      "Use this in the festival of colors event shop before the event ends!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Coupon" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/757.webp",
+    name: "Colors Token 2025",
+  },
+  "Colors Ticket 2025": {
+    description:
+      "Hold this for a chance to win $FLOWER after the festival of colors event ends!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Coupon" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2273.webp",
+    name: "Colors Ticket 2025",
+  },
+  "Paint Buckets": {
+    description:
+      "These buckets hold the power to bring color to even the dullest day.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2274.webp",
+    name: "Paint Buckets",
+  },
+  "Rainbow Well": {
+    description:
+      "This enchanted well shimmers with every color of the rainbow, offering wishes as bright as its waters.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2275.webp",
+    name: "Rainbow Well",
+  },
+  "Floating Toy": {
+    description:
+      "This playful toy drifts through the air, spreading joy wherever the breeze takes it.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2276.webp",
+    name: "Floating Toy",
+  },
+  "Rainbow Flower": {
+    description:
+      "This rare flower radiates with vibrant magic and never fades.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2277.webp",
+    name: "Rainbow Flower",
+  },
+  "Pony Toy": {
+    description:
+      "Crafted with love and a sprinkle of magic, this tiny pony carries the spirit of every farmer’s dreams.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2278.webp",
+    name: "Pony Toy",
+  },
+  "Red Slime Balloon": {
+    description:
+      "Suspended in a ruby-red bubble, this mischievous slime squishes and squirms with excitement.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2279.webp",
+    name: "Red Slime Balloon",
+  },
+  "Blue Slime Balloon": {
+    description:
+      "Gently bobbing in a cool blue balloon, this playful slime seems to enjoy the ride.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2280.webp",
+    name: "Blue Slime Balloon",
+  },
+  "Basic Biome": {
+    description: "A basic biome that provides a basic income and a basic life.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2281.webp",
+    name: "Basic Biome",
+  },
+  "Spring Biome": {
+    description:
+      "A spring biome that provides a spring income and a spring life.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2282.webp",
+    name: "Spring Biome",
+  },
+  "Desert Biome": {
+    description:
+      "A desert biome that provides a desert income and a desert life.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2283.webp",
+    name: "Desert Biome",
+  },
+  "Volcano Biome": {
+    description:
+      "A volcano biome that provides a volcano income and a volcano life.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2284.webp",
+    name: "Volcano Biome",
+  },
+  "Better Together Banner": {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/762.webp",
+    name: "Better Together Banner",
+  },
+  Bracelet: {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/763.webp",
+    name: "Bracelet",
+  },
+  Coprolite: {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/764.webp",
+    name: "Coprolite",
+  },
+  "Big Orange": {
+    description: "A big orange",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2281.webp",
+    name: "Big Orange",
+  },
+  "Big Apple": {
+    description: "It's not the big apple, it's a big apple!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2282.webp",
+    name: "Big Apple",
+  },
+  "Big Banana": {
+    description: "A big banana",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2283.webp",
+    name: "Big Banana",
+  },
+  "Giant Orange": {
+    description: "A giant orange",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2281.webp",
+    name: "Giant Orange",
+  },
+  "Giant Apple": {
+    description: "A giant apple",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2282.webp",
+    name: "Giant Apple",
+  },
+  "Giant Banana": {
+    description: "A giant banana",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2283.webp",
+    name: "Giant Banana",
+  },
+  "Farmer's Monument": {
+    description: "A monument to the farmers of Sunflower Land",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2284.webp",
+    name: "Farmer's Monument",
+  },
+  "Miner's Monument": {
+    description: "A monument to the miners of Sunflower Land",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2285.webp",
+    name: "Miner's Monument",
+  },
+  "Woodcutter's Monument": {
+    description: "A monument to the woodcutters of Sunflower Land",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2286.webp",
+    name: "Woodcutter's Monument",
+  },
+  "Teamwork Monument": {
+    description: "A monument to the teamwork of Sunflower Land",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2287.webp",
+    name: "Teamwork Monument",
+  },
+  "Basic Cooking Pot": {
+    description: "A basic cooking pot",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2288.webp",
+    name: "Basic Cooking Pot",
+  },
+  "Expert Cooking Pot": {
+    description: "A expert cooking pot",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2289.webp",
+    name: "Expert Cooking Pot",
+  },
+  "Advanced Cooking Pot": {
+    description: "A master cooking pot",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2290.webp",
+    name: "Advanced Cooking Pot",
+  },
+  "Floor Mirror": {
+    description: "A tall mirror perfect for full-body reflections.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2294.webp",
+    name: "Floor Mirror",
+  },
+  "Long Rug": {
+    description: "A horizontally long patterned rug to warm up any floor.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2295.webp",
+    name: "Long Rug",
+  },
+  "Garbage Bin": {
+    description: "A sturdy bin used for collecting trash.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2296.webp",
+    name: "Garbage Bin",
+  },
+  Wheelbarrow: {
+    description: "A classic tool for moving heavy items around the farm.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2297.webp",
+    name: "Wheelbarrow",
+  },
+  "Snail King": {
+    description: "Royalty with a slime trail—slow but majestic.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2298.webp",
+    name: "Snail King",
+  },
+  "Reelmaster's Chair": {
+    description:
+      "A folding chair equipped for serious fishing. Comes with built-in rod holders and fish tales.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2299.webp",
+    name: "Reelmaster's Chair",
+  },
+  "Rat King": {
+    description: "A tangled tale of tails and questionable leadership.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2300.webp",
+    name: "Rat King",
+  },
+  "Fruit Tune Box": {
+    description: "Plays nothing but berry good music.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2301.webp",
+    name: "Fruit Tune Box",
+  },
+  "Double Bed": {
+    description: "A cozy bed that fits two comfortably.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2302.webp",
+    name: "Double Bed",
+  },
+  "Giant Artichoke": {
+    description: "The heart of the garden—literally huge Artichoke.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2303.webp",
+    name: "Giant Artichoke",
+  },
+  "Rocket Statue": {
+    description:
+      "A rocket ready for lift-off—with the whole world on its back!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2304.webp",
+    name: "Rocket Statue",
+  },
+  "Ant Queen": {
+    description: "She rules the dirt—and your crumbs.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2305.webp",
+    name: "Ant Queen",
+  },
+  "Jurassic Droplet": {
+    description: "Dino doo, polished and preserved—nature’s weirdest relic.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2306.webp",
+    name: "Jurassic Droplet",
+  },
+  "Giant Onion": {
+    description: "It’s big. It’s bold. It will make your whole field cry.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2307.webp",
+    name: "Giant Onion",
+  },
+  "Giant Turnip": {
+    description:
+      "A massive turnip that stands tall in the field—too big to harvest, but perfect for display.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2308.webp",
+    name: "Giant Turnip",
+  },
+  "Groovy Gramophone": {
+    description: "Spins vintage vibes and funky beats.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2309.webp",
+    name: "Groovy Gramophone",
+  },
+  "Wheat Whiskers": {
+    description: "A bundle of wheat playfully accompanied by curious mice.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2310.webp",
+    name: "Wheat Whiskers",
+  },
+  Cheer: {
+    description: "Give a cheer to your fellow farmers!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/765.webp",
+    name: "Cheer",
+  },
+  "Paw Prints Banner": {
+    description: "A banner for the Paw Prints chapter.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Purpose", value: "Banner" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/766.webp",
+    name: "Paw Prints Banner",
+  },
+  "Pet Cookie": {
+    description: "Collected during the Paw Prints chapter.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/767.webp",
+    name: "Pet Cookie",
+  },
+  "Moon Crystal": {
+    description: "Can be found at the digsite during the Paw Prints chapter.",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/768.webp",
+    name: "Moon Crystal",
+  },
+
+  Trash: {
+    description: "A piece of trash",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2291.webp",
+    name: "Trash",
+  },
+  Dung: {
+    description: "A piece of dung",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2292.webp",
+    name: "Dung",
+  },
+  Weed: {
+    description: "A weed",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2293.webp",
+    name: "Weed",
+  },
+  Anthill: {
+    description: "An anthill",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2314.webp",
+    name: "Anthill",
+  },
+  Rat: {
+    description: "A rat",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2315.webp",
+    name: "Rat",
+  },
+  Snail: {
+    description: "A snail",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2316.webp",
+    name: "Snail",
+  },
+  "Pest Net": {
+    description: "A pest net",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2317.webp",
+    name: "Pest Net",
+  },
+  Poseidon: {
+    description: "The mythical Poseidon, the god of the sea.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Fish" },
+      {
+        display_type: "boost_number",
+        trait_type: "+1 Fish during Autumn",
+        value: 1,
+      },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2318.webp",
+    name: "Poseidon",
+  },
+  Moonfur: {
+    description: "A fluffy moonfur",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Moonfur",
+  },
+  "Legendary Shrine": {
+    description: "A legendary shrine that buffs everything!",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Legendary Shrine",
+  },
+  "Fossil Shell": {
+    description: "A fossil shell",
+    decimals: 0,
+    attributes: [{ trait_type: "Purpose", value: "Decoration" }],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Fossil Shell",
+  },
+  "Fox Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Fox Shrine",
+  },
+  "Boar Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Boar Shrine",
+  },
+  "Hound Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Hound Shrine",
+  },
+  "Stag Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Stag Shrine",
+  },
+  "Pet Egg": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Pet Egg",
+  },
+  Ruffroot: {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Ruffroot",
+  },
+  "Chewed Bone": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Chewed Bone",
+  },
+  "Heart leaf": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Heart leaf",
+  },
+  Acorn: {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Acorn",
+  },
+  Meowchi: {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Meowchi",
+  },
+  Burro: {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Burro",
+  },
+  Twizzle: {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Twizzle",
+  },
+  Barkley: {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Barkley",
+  },
+  Mudhorn: {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Mudhorn",
+  },
+  Nibbles: {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Nibbles",
+  },
+  Waddles: {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Waddles",
+  },
+  Ramsey: {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Ramsey",
+  },
+  Dewberry: {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Dewberry",
+  },
+  "Wild Grass": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Wild Grass",
+  },
+  Ribbon: {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Ribbon",
+  },
+  "Frost Pebble": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Frost Pebble",
+  },
+  "Mole Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Mole Shrine",
+  },
+  "Badger Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Mole Shrine",
+  },
+  "Collie Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Mole Shrine",
+  },
+  "Toucan Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Mole Shrine",
+  },
+  "Sparrow Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Mole Shrine",
+  },
+  "Moth Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Moth Shrine",
+  },
+  "Bear Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Bear Shrine",
+  },
+  "Tortoise Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Tortoise Shrine",
+  },
+  "Obsidian Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Obsidian Shrine",
+  },
+  "Bantam Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Bantam Shrine",
+  },
+  "Trading Shrine": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Trading Shrine",
+  },
+  "Ancient Tree": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2702.png",
+    name: "Ancient Tree",
+  },
+  "Sacred Tree": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2703.png",
+    name: "Sacred Tree",
+  },
+  "Refined Iron Rock": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2704.png",
+    name: "Refined Iron Rock",
+  },
+  "Tempered Iron Rock": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2705.png",
+    name: "Tempered Iron Rock",
+  },
+  "Pure Gold Rock": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2706.png",
+    name: "Pure Gold Rock",
+  },
+  "Prime Gold Rock": {
+    decimals: 0,
+    description: "",
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/2707.png",
+    name: "Prime Gold Rock",
+  },
+  Biscuit: {
     description: "",
     decimals: 0,
     attributes: [],
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Biscuit",
   },
-  "Maple Dumbo": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+  Cloudy: {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Cloudy",
+  },
+  Butters: {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Butters",
+  },
+  Smokey: {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Smokey",
+  },
+  Flicker: {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Flicker",
+  },
+  Pippin: {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Pippin",
+  },
+  Pinto: {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Pinto",
+  },
+  Roan: {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Roan",
+  },
+  Stallion: {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Stallion",
+  },
+  Bison: {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Bison",
+  },
+  Oxen: {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Oxen",
+  },
+  Peanuts: {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Peanuts",
+  },
+  Pip: {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Pip",
+  },
+  Skipper: {
+    description: "",
+    decimals: 0,
+    attributes: [],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/erc1155/images/question_mark.png",
+    name: "Skipper",
+  },
+  "Halloween Token 2025": {
+    description: "Use this in the Halloween event shop before the event ends!",
     decimals: 0,
     attributes: [
-      { trait_type: "Part", value: "Body" },
+      { trait_type: "Purpose", value: "Coupon" },
       { trait_type: "Tradable", value: "No" },
     ],
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
+    image: "../public/erc1155/images/769.webp",
+    name: "Halloween Token 2025",
   },
-  "Radiant Dumbo": {
+  "Halloween Ticket 2025": {
     description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+      "Hold this for a chance to win $FLOWER after the Halloween event ends!",
     decimals: 0,
     attributes: [
-      { trait_type: "Part", value: "Body" },
+      { trait_type: "Purpose", value: "Coupon" },
       { trait_type: "Tradable", value: "No" },
     ],
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
+    image: "../public/erc1155/images/.webp",
+    name: "Halloween Ticket 2025",
   },
-  "Blossom Dumbo": {
+  Cerberus: {
     description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+      "Guarding the underworld and your crops. Just don’t throw three sticks at once.",
     decimals: 0,
     attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
     ],
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
+    image: "../public/erc1155/images/.webp",
+    name: "Cerberus",
   },
-  "Ladybug Suit": {
+  "Witch's Cauldron": {
     description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+      "Something’s bubbling… might be a potion, might be last week’s soup.",
     decimals: 0,
     attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
     ],
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
+    image: "../public/erc1155/images/.webp",
+    name: "Witch's Cauldron",
   },
-  "Acorn Hat": {
+  Raveyard: {
     description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+      "Graveyard? No, Raveyard! Even the dead can’t resist these beats.",
     decimals: 0,
     attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
     ],
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
+    image: "../public/erc1155/images/.webp",
+    name: "Raveyard",
   },
-  "Crab Hat": {
+  "Haunted House": {
     description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+      "Next time, check if the house you buy comes with keys… maybe it’s good this one didn’t.",
     decimals: 0,
     attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
     ],
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
+    image: "../public/erc1155/images/.webp",
+    name: "Haunted House",
   },
-  "Weather Hat": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+  "Mimic Egg": {
+    description: "It wiggles. You blink. Now it’s winking back.",
     decimals: 0,
     attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
     ],
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
+    image: "../public/erc1155/images/.webp",
+    name: "Mimic Egg",
   },
-  "Sakura Shirt": {
+  "Haunted Tomb": {
     description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+      "A ghostly wisp sits atop, probably judging your farming skills.",
     decimals: 0,
     attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
     ],
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
+    image: "../public/erc1155/images/.webp",
+    name: "Haunted Tomb",
   },
-  "Squirrel Onesie": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+  Guillotine: {
+    description: "The ultimate tool for a clean cut harvest.",
     decimals: 0,
     attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
     ],
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
+    image: "../public/erc1155/images/.webp",
+    name: "Guillotine",
   },
-  "Locust Onesie": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
+  "Vampire Coffin": {
+    description: "He only comes out for night farming. Garlic not included.",
     decimals: 0,
     attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
+      { trait_type: "Purpose", value: "Decoration" },
+      { trait_type: "Tradable", value: "Yes" },
     ],
     external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
+    image: "../public/erc1155/images/.webp",
+    name: "Vampire Coffin",
   },
-  "Locust King Onesie": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Glacial Plume": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Solflare Aegis": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Blossom Ward": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Autumn's Embrace": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Frozen Heart": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Cowboy Shirt": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Merino Jumper": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Cowboy Hat": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Cowboy Trouser": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Cowboy Boots": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Infernal Bullwhip": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "White Sheep Onesie": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Black Sheep Onesie": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Chicken Suit": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Cowgirl Skirt": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Dream Scarf": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Cowbell Necklace": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Milk Apron": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Shepherd Staff": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Sol & Luna": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Fossil Armor": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Fossil Pants": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Rice Shirt": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  Sickle: {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Speed Boots": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Tomato Apron": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Adventurer's Suit": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Adventurer's Torch": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Pumpkin Head": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "Gingerbread Onesie": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
-  "New Years Crown": {
-    description:
-      "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
-    decimals: 0,
-    attributes: [
-      { trait_type: "Part", value: "Body" },
-      { trait_type: "Tradable", value: "No" },
-    ],
-    external_url: "https://docs.sunflower-land.com/getting-started/about",
-    image: "../public/wearables/images/1.png",
-    name: "Beige Farmer Potion",
-  },
+};
+
+export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
   "Beige Farmer Potion": {
     description:
       "An ancient potion of beige goodness. Consuming this potion transforms your Bumpkin's colour.",
@@ -13308,6 +16385,18 @@ export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
     image: "../public/wearables/images/251.png",
     name: "Banana Onesie",
   },
+  "Blossom Dumbo": {
+    description:
+      "A cheerful, happy expression graces this dumbo, symbolizing the fresh energy of spring. Wear it to bring a bright, joyful spirit wherever you go.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/252.png",
+    name: "Blossom Dumbo",
+  },
   "Companion Cap": {
     description:
       "A trusty cap that keeps you company on your virtual adventures.",
@@ -13319,6 +16408,18 @@ export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/wearables/images/253.png",
     name: "Companion Cap",
+  },
+  "Radiant Dumbo": {
+    description:
+      "With a fiery, angry expression, this dumbo channels the intensity of the summer sun. It's perfect for those who want to wear their bold energy with pride.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/254.png",
+    name: "Radiant Dumbo",
   },
   "Deep Sea Helm": {
     description:
@@ -13338,9 +16439,9 @@ export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
     image: "../public/wearables/images/255.png",
     name: "Deep Sea Helm",
   },
-  "Gloomy Dumbo": {
+  "Maple Dumbo": {
     description:
-      "Express your emotions with this somber hat, featuring the iconic tentacles of a certain melancholy octopus.",
+      "This octopus features a straight, slightly stern expression, embodying the crisp, cool energy of autumn. With its calm yet resolute demeanor, it’s perfect for those who appreciate the quiet strength of the season.",
     decimals: 0,
     attributes: [
       { trait_type: "Part", value: "Hat" },
@@ -13348,7 +16449,7 @@ export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
     ],
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/wearables/images/256.png",
-    name: "Gloomy Dumbo",
+    name: "Maple Dumbo",
   },
   "Pickaxe Shark": {
     description:
@@ -13373,6 +16474,29 @@ export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/wearables/images/258.png",
     name: "Seedling Hat",
+  },
+  "Golden Seedling": {
+    description: "A celebration of the 2 year Bud NFT Anniversary!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/484.png",
+    name: "Seedling Hat",
+  },
+  "Gloomy Dumbo": {
+    description:
+      "This dumbo captures the melancholic stillness of winter. Perfect for those who resonate with the season's quiet, somber mood.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/259.png",
+    name: "Gloomy Dumbo",
   },
   "Ugly Christmas Sweater": {
     description: "A whimsical holiday wearable from Earn Alliance",
@@ -14955,14 +18079,14 @@ export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
   },
   "Bumpkin Crown": {
     description:
-      "A magestic crown with intricate design and eerie glowing games, fit for a Bumpkin Leader. Earn 25% more in SFL and Coin deliveries, and Earn +10% marks when pledged to this faction. Multiples of this item do not stack.",
+      "A magestic crown with intricate design and eerie glowing games, fit for a Bumpkin Leader. Earn 25% more in FLOWER and Coin deliveries, and Earn +10% marks when pledged to this faction. Multiples of this item do not stack.",
     decimals: 0,
     attributes: [
       { trait_type: "Part", value: "Hat" },
       { trait_type: "Tradable", value: "No" },
       {
         display_type: "boost_percentage",
-        trait_type: "Increase SFL gained from deliveries",
+        trait_type: "Increase FLOWER gained from deliveries",
         value: 25,
       },
       {
@@ -14983,14 +18107,14 @@ export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
   },
   "Goblin Crown": {
     description:
-      "A dark, jagged crown with glowing gems, ideal for the Goblin King. Earn 25% more in SFL and Coin deliveries, and Earn +10% marks when pledged to this faction. Multiples of this item do not stack.",
+      "A dark, jagged crown with glowing gems, ideal for the Goblin King. Earn 25% more in FLOWER and Coin deliveries, and Earn +10% marks when pledged to this faction. Multiples of this item do not stack.",
     decimals: 0,
     attributes: [
       { trait_type: "Part", value: "Hat" },
       { trait_type: "Tradable", value: "No" },
       {
         display_type: "boost_percentage",
-        trait_type: "Increase SFL gained from deliveries",
+        trait_type: "Increase FLOWER gained from deliveries",
         value: 25,
       },
       {
@@ -15011,14 +18135,14 @@ export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
   },
   "Nightshade Crown": {
     description:
-      "A midnight-black crown with deep purple and silver details, fitting for a leader whose presence commands respect and mystery. Earn 25% more in SFL and Coin deliveries, and Earn +10% marks when pledged to this faction. Multiples of this item do not stack.",
+      "A midnight-black crown with deep purple and silver details, fitting for a leader whose presence commands respect and mystery. Earn 25% more in FLOWER and Coin deliveries, and Earn +10% marks when pledged to this faction. Multiples of this item do not stack.",
     decimals: 0,
     attributes: [
       { trait_type: "Part", value: "Hat" },
       { trait_type: "Tradable", value: "No" },
       {
         display_type: "boost_percentage",
-        trait_type: "Increase SFL gained from deliveries",
+        trait_type: "Increase FLOWER gained from deliveries",
         value: 25,
       },
       {
@@ -15039,14 +18163,14 @@ export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
   },
   "Sunflorian Crown": {
     description:
-      "A majestic crown, adorned with a radiant ruby centerpiece and golden embellishments, it evokes the grandeur and authority of a leader. Earn 25% more in SFL and Coin deliveries, and Earn +10% marks when pledged to this faction. Multiples of this item do not stack.",
+      "A majestic crown, adorned with a radiant ruby centerpiece and golden embellishments, it evokes the grandeur and authority of a leader. Earn 25% more in FLOWER and Coin deliveries, and Earn +10% marks when pledged to this faction. Multiples of this item do not stack.",
     decimals: 0,
     attributes: [
       { trait_type: "Part", value: "Hat" },
       { trait_type: "Tradable", value: "No" },
       {
         display_type: "boost_percentage",
-        trait_type: "Increase SFL gained from deliveries",
+        trait_type: "Increase FLOWER gained from deliveries",
         value: 25,
       },
       {
@@ -15372,5 +18496,1282 @@ export const OPEN_SEA_WEARABLES: Record<BumpkinItem, Metadata> = {
     external_url: "https://docs.sunflower-land.com/getting-started/about",
     image: "../public/wearables/images/395.png",
     name: "Gam3s Cap",
+  },
+  "Cowboy Hat": {
+    description:
+      "A classic wide-brimmed hat with a rugged charm, perfect for life on the open plains. Protects from the sun while adding a touch of cowboy style.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/396.png",
+    name: "Cowboy Hat",
+  },
+  "Cowboy Shirt": {
+    description:
+      "This durable, checked shirt is made for the hardworking cowpoke.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Shirt" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/397.png",
+    name: "Cowboy Shirt",
+  },
+  "Cowboy Trouser": {
+    description:
+      "These sturdy trousers are built to withstand the wear and tear of ranch life, complete with a touch of style fit for a true cowboy.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Pants" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/398.png",
+    name: "Cowboy Trouser",
+  },
+  "Cowboy Boots": {
+    description:
+      "A tough, stylish pair of leather boots, complete with spurs. Ideal for long days in the saddle and showing off your cowboy flair.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Shoes" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/399.png",
+    name: "Cowboy Boots",
+  },
+  "Infernal Bullwhip": {
+    description:
+      "This menacing bullwhip is imbued with fiery power, making it as intimidating as it is effective. -50% Feed to Barn Animal",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_percentage",
+        trait_type: "Barn Animal Feed Reduction",
+        value: 50,
+      },
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/400.png",
+    name: "Infernal Bullwhip",
+  },
+  "White Sheep Onesie": {
+    description:
+      "Cozy up in this fluffy, woolly onesie—perfect for a snug night in or a playful day in the plaza! With its irresistible charm, you will be the cutest sheep in the herd. 0.25+ Wool",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Yield of Wool",
+        value: 0.25,
+      },
+      { trait_type: "Part", value: "Onesie" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/401.png",
+    name: "White Sheep Onesie",
+  },
+  "Black Sheep Onesie": {
+    description:
+      "Stand out in the flock with this soft, warm onesie. This charming black sheep outfit adds a fun twist to cozy wear. +2 Wool",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Yield of Wool",
+        value: 2,
+      },
+      { trait_type: "Part", value: "Onesie" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/402.png",
+    name: "Black Sheep Onesie",
+  },
+  "Chicken Suit": {
+    description:
+      "Cluck your way into any gathering with this playful Chicken Suit! +1 Feather",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Yield of Feather",
+        value: 1,
+      },
+      { trait_type: "Part", value: "Suit" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/403.png",
+    name: "Chicken Suit",
+  },
+  "Cowgirl Skirt": {
+    description:
+      "A stylish skirt with a Cowboy twist, perfect for those days spent in the sun or dancing around the bonfire.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Pants" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/404.png",
+    name: "Cowgirl Skirt",
+  },
+  "Merino Jumper": {
+    description:
+      "Crafted from the finest wool, this cozy jumper provides unparalleled warmth and comfort. +1 Merino Wool",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Yield of Merino Wool",
+        value: 1,
+      },
+      { trait_type: "Part", value: "Shirt" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/405.png",
+    name: "Merino Jumper",
+  },
+  "Dream Scarf": {
+    description:
+      "A soft, ethereal scarf that feels like a whisper in the wind. Wrap yourself in comfort and style with this dreamy accessory. 20% reduction in Sheep sleep time.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Necklace" },
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_percentage",
+        trait_type: "Sheep Produce Time",
+        value: -20,
+      },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/406.png",
+    name: "Dream Scarf",
+  },
+  "Cowbell Necklace": {
+    description:
+      "A charming necklace for any dairy enthusiast featuring a tiny, jingling cowbell that cows can’t resist! +2 Milk",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Yield of Milk",
+        value: 2,
+      },
+      { trait_type: "Part", value: "Necklace" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/407.png",
+    name: "Cowbell Necklace",
+  },
+  "Milk Apron": {
+    description:
+      "A sturdy, practical apron designed for those working with dairy. Handy, comfortable, and perfect for any farmhouse chores. +0.5 Milk",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Animal" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Yield of Milk",
+        value: 0.5,
+      },
+      { trait_type: "Part", value: "Coat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/408.png",
+    name: "Milk Apron",
+  },
+  "Shepherd Staff": {
+    description:
+      "A tall, rustic staff crafted for herding. It’s both a trusty tool and a symbol of a watchful, caring shepherd.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/409.png",
+    name: "Shepherd Staff",
+  },
+  "Sol & Luna": {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Wings" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/410.png",
+    name: "Sol & Luna",
+  },
+  "Fossil Armor": {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Shirt" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/411.png",
+    name: "Fossil Armor",
+  },
+  "Fossil Pants": {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Pants" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/412.png",
+    name: "Fossil Pants",
+  },
+  "Rice Shirt": {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Shirt" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/413.png",
+    name: "Rice Shirt",
+  },
+  Sickle: {
+    description:
+      "With each swing, golden wheat falls, paving the way for a bountiful harvest.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Crop" },
+      {
+        display_type: "boost_number",
+        trait_type: "Increase Wheat Yield",
+        value: 2,
+      },
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/414.png",
+    name: "Sickle",
+  },
+  "Speed Boots": {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Shoes" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/415.png",
+    name: "Speed Boots",
+  },
+  "Tomato Apron": {
+    description: "",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Coat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/416.png",
+    name: "Tomato Apron",
+  },
+  "Adventurer's Suit": {
+    description:
+      "The suit of an adventurer mysteriously found in the forest...",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Dress" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/417.png",
+    name: "Adventurer's Suit",
+  },
+  "Adventurer's Torch": {
+    description: "A torch of an adventurer mysteriously found in the forest.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/418.png",
+    name: "Adventurer's Torch",
+  },
+  "Pumpkin Head": {
+    description:
+      "A special hat for the bravest bumpkins that conquered the Halloween maze!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/419.png",
+    name: "Pumpkin Head",
+  },
+  "Gingerbread Onesie": {
+    description:
+      "Step into the holiday spirit with this cozy and charming Gingerbread Onesie! Designed to resemble a freshly baked gingerbread cookie, this onesie features a rich, golden-brown fabric adorned with frosting-like white trims and colorful gumdrop buttons.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Onesie" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/420.png",
+    name: "Gingerbread Onesie",
+  },
+  "New Years Crown": {
+    description: "Wow, it looks like someone started 2025 with a bang!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/421.png",
+    name: "New Years Crown",
+  },
+  "Ladybug Suit": {
+    description:
+      "A charming red-and-black polka-dotted suit that brings the playful energy of a ladybug to life.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Suit" },
+      { trait_type: "Boost", value: "Crop" },
+      { trait_type: "Tradable", value: "Yes" },
+      {
+        display_type: "boost_percentage",
+        trait_type: "Onion Coin Cost",
+        value: -25,
+      },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/422.png",
+    name: "Ladybug Suit",
+  },
+  "Acorn Hat": {
+    description:
+      "A cute, nature-inspired hat shaped like an acorn, perfect for woodland adventures. +1 Timeshard from Deliveries, Chores & Bounties during Winds of Change Chapter.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/423.png",
+    name: "Acorn Hat",
+  },
+  "Crab Hat": {
+    description:
+      "A cute, living crab perched atop your head, adding charm and a little extra personality. This friendly companion helps you catch more treasures when fishing!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Boost", value: "Other" },
+      {
+        display_type: "boost_number",
+        trait_type: "Bonus Fishing Bounty",
+        value: 1,
+      },
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/424.png",
+    name: "Crab Hat",
+  },
+  "Weather Hat": {
+    description:
+      "A stylish top hat with a unique device that gauges the season's temperature, indicating whether it's hot, cold, or neutral. Perfect for staying in tune with the weather while keeping your look sharp.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/425.png",
+    name: "Weather Hat",
+  },
+  "Sakura Shirt": {
+    description:
+      "A beautiful shirt adorned with delicate cherry blossom patterns, celebrating spring's beauty.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Shirt" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/426.png",
+    name: "Sakura Shirt",
+  },
+  "Squirrel Onesie": {
+    description:
+      "A cozy, full-body outfit that transforms you into an adorable, bushy-tailed squirrel.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Onesie" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/427.png",
+    name: "Squirrel Onesie",
+  },
+  "Locust Onesie": {
+    description:
+      "A striking onesie that represents the power and swarming nature of locusts. This outfit captures the essence of these formidable insects, perfect for anyone who wants to channel the energy of a locust swarm in their look.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Onesie" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/428.png",
+    name: "Locust Onesie",
+  },
+  "Locust King Onesie": {
+    description:
+      "A mystical body transformation onesie that grants the regal aura of a locust king.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Onesie" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/429.png",
+    name: "Locust King Onesie",
+  },
+  "Glacial Plume": {
+    description:
+      "Elegant, icy wings that shimmer with a frosty glow, embodying the beauty of winter.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Wings" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/430.png",
+    name: "Glacial Plume",
+  },
+  "Solflare Aegis": {
+    description:
+      "A radiant shield infused with the power of the sun, offering both warmth and protection.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "SecondaryTool" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Boost", value: "Crop" },
+      {
+        display_type: "boost_percentage",
+        trait_type: "Summer Crop Growth Time",
+        value: -50,
+      },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/431.png",
+    name: "Solflare Aegis",
+  },
+  "Blossom Ward": {
+    description:
+      "A beautifully crafted shield adorned with vibrant cherry blossom flowers, designed to enhance the health and vitality of your crops during the spring season.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "SecondaryTool" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Boost", value: "Crop" },
+      {
+        display_type: "boost_number",
+        trait_type: "Spring Crop Yield",
+        value: 1,
+      },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/432.png",
+    name: "Blossom Ward",
+  },
+  "Autumn's Embrace": {
+    description:
+      "A shield crafted in warm, earthy tones, inspired by the golden hues of autumn leaves.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "SecondaryTool" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Boost", value: "Crop" },
+      {
+        display_type: "boost_percentage",
+        trait_type: "Autumn Crop Growth Time",
+        value: -50,
+      },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/433.png",
+    name: "Autumn's Embrace",
+  },
+  "Frozen Heart": {
+    description:
+      "A shield forged from the essence of winter's chill, its crystal surface shimmers with frosty elegance. It pulses with the quiet strength of the cold, offering protection while ensuring that even in the harshest winter, life endures and thrives.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "SecondaryTool" },
+      { trait_type: "Tradable", value: "Yes" },
+      { trait_type: "Boost", value: "Crop" },
+      {
+        display_type: "boost_number",
+        trait_type: "Winter Crop Yield",
+        value: 1,
+      },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/434.png",
+    name: "Frozen Heart",
+  },
+  "Love Heart Onesie": {
+    description:
+      "A heart so big, you can wear it! Spread love and coziness wherever you go in this charming onesie.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Onesie" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/435.png",
+    name: "Love Heart Onesie",
+  },
+  "Love Bear Onesie": {
+    description:
+      "Soft, snuggly, and as huggable as a teddy bear, this onesie is a symbol of pure affection and comfort.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Onesie" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/436.png",
+    name: "Love Bear Onesie",
+  },
+  "Flower Bouquet": {
+    description:
+      "A fragrant bundle of fresh-picked blooms, ready to brighten someone's day with the language of flowers.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "Yes" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/437.png",
+    name: "Flower Bouquet",
+  },
+  "Streamer Hat": {
+    description:
+      "A stylish hat adorned with a microphone, perfect for those who want to make a statement. +1 Love Charm for everyone who interacts with you.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/438.png",
+    name: "Streamer Hat",
+  },
+  "Dino Onesie": {
+    description:
+      "Stomp around in prehistoric style! Cozy, cute, and just fierce enough to remind everyone who rules the jungle.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Onesie" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/439.png",
+    name: "Dino Onesie",
+  },
+  "Golden Wings": {
+    description:
+      "Radiate with celestial grace as you soar through the skies, leaving a trail of golden light in your wake.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Wings" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/440.png",
+    name: "Golden Wings",
+  },
+  "Flower Mask": {
+    description:
+      "A blooming masterpiece that frames your face in petals of charm. +1 Geniseeds from deliveries, chores & bounties.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/441.png",
+    name: "Flower Mask",
+  },
+  "Luvvy Head": {
+    description:
+      "Head over heels in love! This heart-filled headpiece is all about spreading joy, affection, and a little bit of blush.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/442.png",
+    name: "Luvvy Head",
+  },
+  "Grumpy Cat": {
+    description:
+      "Perched atop your head, this feline friend judges your every move… but secretly enjoys the ride.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/443.png",
+    name: "Grumpy Cat",
+  },
+  "Love Puff Aura": {
+    description:
+      "A gentle poof of floating hearts that follows you wherever you go, because love should always be in the air.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Aura" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/444.png",
+    name: "Love Puff Aura",
+  },
+  "Carrot Pitchfork": {
+    description: "Looks tasty, but it was not made for you to eat!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/445.png",
+    name: "Carrot Pitchfork",
+  },
+  "Handheld Bunny": {
+    description: "Now all that's missing is the top hat!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/446.png",
+    name: "Handheld Bunny",
+  },
+  "Bunny Pants": {
+    description: "Leave mysterious footprints to fool the other bumpkins!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Pants" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/447.png",
+    name: "Bunny Pants",
+  },
+  "Bunny Mask": {
+    description: "Other easter bunnies will think you are one of them!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/448.png",
+    name: "Bunny Mask",
+  },
+  "Easter Apron": {
+    description: "Perfect for getting chocolate on!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Coat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/449.png",
+    name: "Easter Apron",
+  },
+  "Bloomwarden Suit": {
+    description:
+      "Woven from enchanted petals and dawn's dew, this suit protects the fields and those who tend them.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Suit" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/450.png",
+    name: "Bloomwarden Suit",
+  },
+  "Embersteel Suit": {
+    description:
+      "Forged in volcanic heartfires, this armor blazes with the spirit of an unyielding defender.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Suit" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/451.png",
+    name: "Embersteel Suit",
+  },
+  "Amberfall Suit": {
+    description:
+      "Dripping with the golden hues of autumn, this suit whispers of fading leaves and hidden strength.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Suit" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/452.png",
+    name: "Amberfall Suit",
+  },
+  "Glacierguard Suit": {
+    description:
+      "Cold as the northern winds, this suit shields its wearer with ancient frostbound resilience.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Suit" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/453.png",
+    name: "Glacierguard Suit",
+  },
+  "Broccoli Hat": {
+    description:
+      " crunchy crown for the veggie lover — surprisingly comfortable and extremely nutritious-looking!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/454.png",
+    name: "Broccoli Hat",
+  },
+  "Frost Sword": {
+    description:
+      "Carved from eternal ice, this blade chills foes to their core with a single graceful swing.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/455.png",
+    name: "Frost Sword",
+  },
+  "Medic Apron": {
+    description:
+      "Worn by the caretakers of the sick and small, this apron carries the scent of healing herbs and kindness.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Coat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/456.png",
+    name: "Medic Apron",
+  },
+  "Obsidian Necklace": {
+    description:
+      "A shard of molten earth turned elegant charm, pulsing softly with ancient, dormant power.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Necklace" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/457.png",
+    name: "Obsidian Necklace",
+  },
+  "Red Pepper Onesie": {
+    description:
+      "Spicy, snuggly, and absolutely sizzling with personality — it’s the hottest onesie in the land!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Onesie" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/458.png",
+    name: "Red Pepper Onesie",
+  },
+  "Love Charm Shirt": {
+    description:
+      "Woven with affection and stitched with sparkles. +1 Geniseeds from deliveries, chores & bounties.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Shirt" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/459.png",
+    name: "Love Charm Shirt",
+  },
+  "Sky Island Background": {
+    description:
+      "High above the clouds lies a floating haven of peace, mystery, and boundless imagination.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Background" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/460.png",
+    name: "Sky Island Background",
+  },
+  "Oracle Syringe": {
+    description:
+      "Infused with the Barn Delight, this curious tool channels healing to every ailing animals with a burst of magical care.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Wings" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/461.png",
+    name: "Oracle Syringe",
+  },
+  "Coin Head": {
+    description:
+      "Proof you put your tokens where your flowers are. Now you’ve got the hat to prove it.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/462.png",
+    name: "Coin Head",
+  },
+  "Paint Splattered Hair": {
+    description:
+      "Each streak tells a story—of bold brushes, happy accidents, and a day well spent in color",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hair" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/463.webp",
+    name: "Paint Splattered Hair",
+  },
+  "Paint Splattered Shirt": {
+    description:
+      "This shirt has seen things—brilliant ideas, wild inspiration, and maybe a little paint fight or two.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Shirt" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/464.webp",
+    name: "Paint Splattered Shirt",
+  },
+  "Paint Splattered Overalls": {
+    description:
+      "Once clean and proper, now a proud canvas of your artistic chaos. Every stain is a memory.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Pants" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/465.webp",
+    name: "Paint Splattered Overalls",
+  },
+  "Paint Spray Can": {
+    description:
+      "A favorite tool of rebellious artists —shake it and the air tingles with creativity.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/466.webp",
+    name: "Paint Spray Can",
+  },
+  "Slime Hat": {
+    description:
+      "It crawled onto your head and refused to leave. Now you’re bonded for life... probably.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/467.webp",
+    name: "Slime Hat",
+  },
+  "Slime Wings": {
+    description: "Delightfully gooey and questionably aerodynamic",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Wings" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/468.webp",
+    name: "Slime Wings",
+  },
+  "Slime Aura": {
+    description:
+      "A squishy shimmer surrounds you, as if a mischievous slime chose you as its best friend.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Aura" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/469.webp",
+    name: "Slime Aura",
+  },
+  "Brush Back Hair": {
+    description: "Slick and stylish, ready for silly business.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hair" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/470.webp",
+    name: "Brush Back Hair",
+  },
+  Moustache: {
+    description: "Adds instant wisdom and a dash of mischief.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Beard" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/471.webp",
+    name: "Moustache",
+  },
+  "Chemist Potion": {
+    description: "A bubbling flask of who-knows-what. Handle with care!",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/472.webp",
+    name: "Chemist Potion",
+  },
+  "Diamond Patterned Vest": {
+    description: "Sharp style that says, “I mean farm-ness.”",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Shirt" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/473.webp",
+    name: "Diamond Patterned Vest",
+  },
+  "Recycle Shirt": {
+    description: "Wear your eco-pride right on your chest.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Shirt" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/474.webp",
+    name: "Recycle Shirt",
+  },
+  "Garbage Bin Hat": {
+    description: "Trashy? Maybe. Iconic? Definitely.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/475.webp",
+    name: "Garbage Bin Hat",
+  },
+  "Turd Topper": {
+    description: "A cheeky crown for stinkers with style.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/476.webp",
+    name: "Turd Topper",
+  },
+  "Architect Ruler": {
+    description: "For precise plans and pointy ideas.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/477.webp",
+    name: "Architect Ruler",
+  },
+  "Onion Leek": {
+    description:
+      "This veggie’s not just juicy — it’s a source of top-secret leaks.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/478.webp",
+    name: "Onion Leek",
+  },
+  "Oil Gallon": {
+    description:
+      "A full jug of thick, greasy oil. Essential for keeping engines running... and boots slippery.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Secondary Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/479.webp",
+    name: "Oil Gallon",
+  },
+  "Alchemist Apron": {
+    description:
+      "For when experiments get heated—protects against splashes and volatile fashion choices.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Coat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/480.webp",
+    name: "Alchemist Apron",
+  },
+  "Lava Swimwear": {
+    description:
+      "Forged in fire, cooled for splash zones. Warning: May cause spontaneous style eruptions.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Dress" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/481.webp",
+    name: "Lava Swimwear",
+  },
+  "Wooly Dress": {
+    description: " Fuzzy, cozy, and cute as a sheep.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Dress" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/482.webp",
+    name: "Wooly Dress",
+  },
+  "Raccoon Onesie": {
+    description:
+      "Cute, stripey, and ready to steal your heart and maybe your crops.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Onesie" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/483.webp",
+    name: "Raccoon Onesie",
+  },
+  "Moonseeker Potion": {
+    description: "Side effects include glowing bones and zero heartbeat.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Body" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/485.webp",
+    name: "Moonseeker Potion",
+  },
+  "Frizzy Bob Cut": {
+    description: "Perfect for when you wake up spooky and fabulous.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hair" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/486.webp",
+    name: "Frizzy Bob Cut",
+  },
+  "Two-toned Layered": {
+    description: "Half light, half dark — all style",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hair" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/487.webp",
+    name: "Two-toned Layered",
+  },
+  "Halloween Deathscythe": {
+    description: "For harvesting crops… or souls. Mostly crops.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/488.webp",
+    name: "Halloween Deathscythe",
+  },
+  "Moonseeker Hand Puppet": {
+    description: "It’s cute until it starts whispering.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Tool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/489.webp",
+    name: "Moonseeker Hand Puppet",
+  },
+  "Sweet Devil Horns": {
+    description: "Sweet, stylish, and just a bit sinful.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Hat" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/490.webp",
+    name: "Sweet Devil Horns",
+  },
+  "Trick and Treat": {
+    description: "Trick on the left, Treat on the right — both chaos.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Necklace" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/491.webp",
+    name: "Trick and Treat",
+  },
+  "Jack O'Sweets": {
+    description: "The sweetest pumpkin in the patch.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "SecondaryTool" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/492.webp",
+    name: "Jack O'Sweets",
+  },
+  "Frank Onesie": {
+    description: "Sewn with love, lightning, and a touch of madness.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Onesie" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/493.webp",
+    name: "Frank Onesie",
+  },
+  "Research Uniform": {
+    description: "For experiments that definitely won’t explode.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Suit" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/494.webp",
+    name: "Research Uniform",
+  },
+  "Sweet Devil Dress": {
+    description: "Cute, sugary, and slightly cursed.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Suit" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/495.webp",
+    name: "Sweet Devil Dress",
+  },
+  "Underworld Stimpack": {
+    description: "Boosts stamina, darkness, and dramatic entrances.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Wings" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/496.webp",
+    name: "Underworld Stimpack",
+  },
+  "Sweet Devil Wings": {
+    description: "Powered by sugar and sass.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Wings" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/497.webp",
+    name: "Sweet Devil Wings",
+  },
+  "Wisp Aura": {
+    description: "These little flames seem alive… and fond of you.",
+    decimals: 0,
+    attributes: [
+      { trait_type: "Part", value: "Aura" },
+      { trait_type: "Tradable", value: "No" },
+    ],
+    external_url: "https://docs.sunflower-land.com/getting-started/about",
+    image: "../public/wearables/images/498.webp",
+    name: "Wisp Aura",
   },
 };
