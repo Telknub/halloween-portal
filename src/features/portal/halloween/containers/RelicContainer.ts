@@ -35,10 +35,10 @@ export class RelicContainer extends Phaser.GameObjects.Container {
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
-      .setSize(this.sprite.width + 6, this.sprite.height + 6)
+      .setSize(this.sprite.width + 20, this.sprite.height + 20)
       .setOffset(
-        -(this.sprite.width * (1 - scale)) / 2 - 3,
-        -(this.sprite.height * (1 - scale)) / 2 - 3,
+        -(this.sprite.width * (2 - scale)) / 2,
+        -(this.sprite.height * (2 - scale)) / 2,
       )
       .setImmovable(true)
       .setCollideWorldBounds(true);
