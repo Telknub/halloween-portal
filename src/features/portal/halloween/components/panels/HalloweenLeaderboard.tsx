@@ -26,9 +26,11 @@ export const HalloweenLeaderboard: React.FC = () => {
   const farmId = decodeToken(jwt as string).farmId;
 
   return (
-    <div className="flex flex-col gap-2">
-      <p>{t("halloween.competition.description1")}</p>
-      <p>{t("halloween.competition.description2")}</p>
+    <div className="flex flex-col gap-2 overflow-y-auto scrollable max-h-[75vh]">
+      <div className="flex flex-col gap-2 px-2 pt-2">
+        <p>{t("halloween.competition.description1")}</p>
+        <p>{t("halloween.competition.description2")}</p>
+      </div>
       <PortalLeaderboard
         isAccumulator
         name={PORTAL_NAME}
