@@ -35,7 +35,11 @@ export class RelicContainer extends Phaser.GameObjects.Container {
 
     scene.physics.add.existing(this);
     (this.body as Phaser.Physics.Arcade.Body)
-      .setSize(this.sprite.width * scale, this.sprite.height * scale)
+      .setSize(this.sprite.width + 6, this.sprite.height + 6)
+      .setOffset(
+        -(this.sprite.width * (1 - scale)) / 2 - 3,
+        -(this.sprite.height * (1 - scale)) / 2 - 3,
+      )
       .setImmovable(true)
       .setCollideWorldBounds(true);
 
@@ -44,10 +48,12 @@ export class RelicContainer extends Phaser.GameObjects.Container {
 
     if (isCentered) {
       this.sprite.setOrigin(0);
-      (this.body as Phaser.Physics.Arcade.Body).setOffset(
-        (this.sprite.width * scale) / 2,
-        (this.sprite.height * scale) / 2,
-      );
+      (this.body as Phaser.Physics.Arcade.Body)
+        .setOffset(
+          (this.sprite.width * scale) / 2,
+          (this.sprite.height * scale) / 2,
+        )
+        .setSize(this.sprite.width * scale, this.sprite.height * scale);
       this.setPosition(
         this.x + TILE_SIZE / 2 - (this.sprite.width * scale) / 2,
         this.y + TILE_SIZE / 2 - (this.sprite.height * scale) / 2,
@@ -76,6 +82,8 @@ export class RelicContainer extends Phaser.GameObjects.Container {
     this.portalService?.send("GAIN_POINTS");
     this.scene?.applyRelicBuff(this.spriteName as Relics);
     interactableModalManager?.open("relic", { relicName: this.spriteName });
-    this.destroy();
+
+    (this.body as Phaser.Physics.Arcade.Body).setEnable(false);
+    this.scene.time.delayedCall(200, () => this.destroy());
   }
 }

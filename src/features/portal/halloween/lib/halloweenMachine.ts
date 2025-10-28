@@ -518,7 +518,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
             lastScore: (context: Context) => {
               if (context.isTraining) return context.lastScore;
               let millisecondsPassed = 0;
-              if (context.score === RELIC_GOAL) {
+              if (context.score >= RELIC_GOAL) {
                 const milliseconds = !context.startedAt
                   ? 0
                   : Math.max(Date.now() - context.startedAt, 0);
@@ -530,7 +530,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
               if (context.isTraining) return context.state;
 
               let millisecondsPassed = 0;
-              if (context.score === RELIC_GOAL) {
+              if (context.score >= RELIC_GOAL) {
                 const milliseconds = !context.startedAt
                   ? 0
                   : Math.max(Date.now() - context.startedAt, 0);
@@ -558,7 +558,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
             lastScore: (context: Context) => {
               if (context.isTraining) return context.lastScore;
               let millisecondsPassed = 0;
-              if (context.score === RELIC_GOAL) {
+              if (context.score >= RELIC_GOAL) {
                 const milliseconds = !context.startedAt
                   ? 0
                   : Math.max(Date.now() - context.startedAt, 0);
@@ -570,7 +570,7 @@ export const portalMachine = createMachine<Context, PortalEvent, PortalState>({
               if (context.isTraining) return context.state;
 
               let millisecondsPassed = 0;
-              if (context.score === RELIC_GOAL) {
+              if (context.score >= RELIC_GOAL) {
                 const milliseconds = !context.startedAt
                   ? 0
                   : Math.max(Date.now() - context.startedAt, 0);

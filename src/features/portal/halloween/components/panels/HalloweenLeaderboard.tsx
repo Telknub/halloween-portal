@@ -31,6 +31,7 @@ export const HalloweenLeaderboard: React.FC = () => {
       endDate={new Date(Date.UTC(2025, 10, 3))}
       farmId={Number(farmId)}
       formatPoints={(points) => {
+        if (points <= 10) return (0).toString();
         const milliseconds = getScoreTime(points);
         if (milliseconds === TIME_SCORE_BASE) return (0).toString();
         return millisecondsToString(milliseconds, { length: "full" });

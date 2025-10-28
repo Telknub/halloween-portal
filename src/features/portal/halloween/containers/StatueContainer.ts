@@ -152,7 +152,9 @@ export class StatueContainer extends Phaser.GameObjects.Container {
       if (effect !== "spawnEnemy")
         interactableModalManager.open("statue", data);
       this.applyStatueEffect(effect);
-      this.destroy();
+
+      (this.body as Phaser.Physics.Arcade.Body).setEnable(false);
+      this.scene.time.delayedCall(1000, () => this.destroy());
     });
   }
 

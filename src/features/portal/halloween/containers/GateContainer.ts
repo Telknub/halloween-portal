@@ -96,10 +96,10 @@ export class GateContainer extends Phaser.GameObjects.Container {
     if (!this.player) return;
     this.scene.physics.add.collider(this.player, this);
     this.scene.physics.add.overlap(this.player.fire, this, () => {
-      const amountRelics = this.portalService?.state.context.score;
+      const amountRelics = this.portalService?.state.context.score as number;
       const roomNameOrId = this.roomName || this.id;
-      const requiredRelics = ROOM_ID_REQUIRED_RELICS[roomNameOrId];
-      if (amountRelics === requiredRelics) {
+      const requiredRelics = ROOM_ID_REQUIRED_RELICS[roomNameOrId] as number;
+      if (amountRelics >= requiredRelics) {
         this.open();
         this.player?.healWithGate();
       } else {
