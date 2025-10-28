@@ -272,7 +272,7 @@ export const STATIC_OFFLINE_FARM: GameState = {
             attempts: 1,
             highscore: 76709,
           },
-          "2025-10-26": {
+          "2025-10-28": {
             attempts: 1,
             highscore: 999987655,
           },
@@ -392,7 +392,7 @@ export const STATIC_OFFLINE_FARM: GameState = {
     },
   },
   coins: 10000,
-  balance: new Decimal(100.1023810291823),
+  balance: new Decimal(500),
   previousBalance: new Decimal(0),
   previousInventory: {
     Wood: new Decimal(10),
