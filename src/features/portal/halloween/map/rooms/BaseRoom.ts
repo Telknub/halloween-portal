@@ -295,6 +295,7 @@ export class BaseRoom {
       x,
       y,
       scene: this.scene,
+      id: this.id,
       isCentered,
       player: this.player,
     });

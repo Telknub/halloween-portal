@@ -182,6 +182,7 @@ const VALIDATIONS = {
   isGateOpen: false,
   isBossDead: false,
   isHoleOpen: false,
+  isRelicCollect: false,
 };
 
 const resetGameTransition = {

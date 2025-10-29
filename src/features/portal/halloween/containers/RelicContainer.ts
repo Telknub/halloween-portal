@@ -8,6 +8,7 @@ interface Props {
   x: number;
   y: number;
   scene: HalloweenScene;
+  id?: number;
   isCentered?: boolean;
   player?: BumpkinContainer;
 }
@@ -16,12 +17,14 @@ export class RelicContainer extends Phaser.GameObjects.Container {
   private player?: BumpkinContainer;
   private spriteName: string;
   private sprite: Phaser.GameObjects.Sprite;
+  private id: number;
   scene: HalloweenScene;
 
-  constructor({ x, y, scene, isCentered = false, player }: Props) {
+  constructor({ x, y, scene, id = 0, isCentered = false, player }: Props) {
     super(scene, x, y);
     this.scene = scene;
     this.player = player;
+    this.id = id;
 
     // Sprite
     this.spriteName =
@@ -82,6 +85,12 @@ export class RelicContainer extends Phaser.GameObjects.Container {
     this.portalService?.send("GAIN_POINTS");
     this.scene?.applyRelicBuff(this.spriteName as Relics);
     interactableModalManager?.open("relic", { relicName: this.spriteName });
+
+    if (this.id === 8) {
+      this.portalService?.send("SET_VALIDATIONS", {
+        validation: "isRelicCollect",
+      });
+    }
 
     (this.body as Phaser.Physics.Arcade.Body).setEnable(false);
     this.scene.time.delayedCall(200, () => this.destroy());
