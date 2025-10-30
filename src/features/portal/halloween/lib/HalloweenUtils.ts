@@ -173,7 +173,10 @@ export const onAnimationComplete = (
   );
 };
 
-export const getScoreTime = (milliseconds: number, days: number) => {
+export const getScoreTime = (milliseconds: number, days: number): number => {
+  const twoDaysToMilliseconds = 172800000;
   const value = TIME_SCORE_BASE * days - milliseconds;
-  return value > 0 ? value : 0;
+  if (value <= 0) return 0;
+  else if (value > 0 && value <= twoDaysToMilliseconds) return value;
+  else return getScoreTime(milliseconds, days - 1);
 };

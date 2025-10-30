@@ -41,7 +41,7 @@ export const HalloweenLeaderboard: React.FC = () => {
         endDate={new Date(Date.UTC(2025, 10, 4))}
         farmId={Number(farmId)}
         formatPoints={(points) => {
-          if (points <= 10) return (0).toString();
+          if (points <= 200) return (0).toString();
           const milliseconds = getScoreTime(
             points,
             getDaysPassedSince(INITIAL_DATE_LEADERBOARD),
