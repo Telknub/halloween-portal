@@ -114,7 +114,7 @@ export const HalloweenMission: React.FC<Props> = ({
                   <OuterPanel className="w-full flex flex-col items-center">
                     <Label type="info">{t(`${PORTAL_NAME}.time`)}</Label>
                     <div>
-                      {millisecondsToString(getScoreTime(lastScore), {
+                      {millisecondsToString(getScoreTime(lastScore, 1), {
                         length: "full",
                       })}
                     </div>
@@ -128,6 +128,7 @@ export const HalloweenMission: React.FC<Props> = ({
                         {millisecondsToString(
                           getScoreTime(
                             minigame?.history[dateKey]?.highscore || 0,
+                            1,
                           ),
                           {
                             length: "full",
@@ -149,6 +150,7 @@ export const HalloweenMission: React.FC<Props> = ({
                               },
                               0,
                             ),
+                            1,
                           ),
                           {
                             length: "full",

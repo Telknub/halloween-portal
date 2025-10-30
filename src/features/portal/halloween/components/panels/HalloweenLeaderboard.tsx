@@ -6,9 +6,12 @@ import { PortalMachineState } from "../../lib/halloweenMachine";
 import { PortalContext } from "../../lib/PortalProvider";
 import { decodeToken } from "features/auth/actions/login";
 import { useSelector } from "@xstate/react";
-import { getScoreTime } from "../../lib/HalloweenUtils";
+import { getDaysPassedSince, getScoreTime } from "../../lib/HalloweenUtils";
 import { millisecondsToString } from "lib/utils/time";
-import { TIME_SCORE_BASE } from "../../HalloweenConstants";
+import {
+  INITIAL_DATE_LEADERBOARD,
+  TIME_SCORE_BASE,
+} from "../../HalloweenConstants";
 import { useAppTranslation } from "lib/i18n/useAppTranslations";
 
 const PORTAL_NAME = "halloween";
@@ -35,11 +38,14 @@ export const HalloweenLeaderboard: React.FC = () => {
         isAccumulator
         name={PORTAL_NAME}
         startDate={new Date(Date.UTC(2025, 9, 29))}
-        endDate={new Date(Date.UTC(2025, 10, 3))}
+        endDate={new Date(Date.UTC(2025, 10, 4))}
         farmId={Number(farmId)}
         formatPoints={(points) => {
           if (points <= 10) return (0).toString();
-          const milliseconds = getScoreTime(points);
+          const milliseconds = getScoreTime(
+            points,
+            getDaysPassedSince(INITIAL_DATE_LEADERBOARD),
+          );
           if (milliseconds === TIME_SCORE_BASE) return (0).toString();
           return millisecondsToString(milliseconds, { length: "full" });
         }}

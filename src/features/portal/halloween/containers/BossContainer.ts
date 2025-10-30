@@ -386,9 +386,9 @@ export class BossContainer extends Phaser.GameObjects.Container {
         this.createEnemies();
       }
 
+      this.flashSprite();
       if (newHealth > 0) {
         this.lifeBar.setHealth(newHealth);
-        this.flashSprite();
       } else {
         this.createDefeat();
       }

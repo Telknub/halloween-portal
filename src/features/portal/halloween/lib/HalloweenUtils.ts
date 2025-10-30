@@ -125,7 +125,7 @@ export const isWithinRange = (date: string | number) => {
  * @param utcStartDate The UTC start date in the format "YYYY-MM-DD".
  * @returns The number of days passed since the start date, including today as day 1.
  */
-function getDaysPassedSince(utcStartDate: string): number {
+export const getDaysPassedSince = (utcStartDate: string): number => {
   const start = new Date(utcStartDate); // ej: "2025-04-21"
   const now = new Date();
 
@@ -145,7 +145,7 @@ function getDaysPassedSince(utcStartDate: string): number {
   const diffInDays = Math.floor((nowUTC - startUTC) / msPerDay);
 
   return Math.max(0, diffInDays + 1);
-}
+};
 
 /**
  * Gets the start of the UTC day for a given date.
@@ -173,7 +173,7 @@ export const onAnimationComplete = (
   );
 };
 
-export const getScoreTime = (milliseconds: number) => {
-  const value = TIME_SCORE_BASE - milliseconds;
+export const getScoreTime = (milliseconds: number, days: number) => {
+  const value = TIME_SCORE_BASE * days - milliseconds;
   return value > 0 ? value : 0;
 };

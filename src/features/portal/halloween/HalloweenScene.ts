@@ -691,6 +691,9 @@ export class HalloweenScene extends BaseScene {
       "change_tool_button_pressed",
       "world/change_tool_button_pressed.webp",
     );
+
+    // Heart
+    this.load.image("heart_broken", "world/heart_broken.png");
   }
 
   // init(data: any) {

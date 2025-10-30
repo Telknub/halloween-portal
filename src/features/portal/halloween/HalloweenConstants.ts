@@ -31,6 +31,7 @@ export const RELIC_GOAL = 8;
 
 // Attempts
 export const INITIAL_DATE = "2025-10-28"; // YYYY-MM-DD
+export const INITIAL_DATE_LEADERBOARD = "2025-10-29"; // YYYY-MM-DD
 export const ATTEMPTS_BETA_TESTERS = 100;
 export const UNLIMITED_ATTEMPTS_SFL = 150; // If this value is less than 0, the option disappears
 export const FREE_DAILY_ATTEMPTS = 1;

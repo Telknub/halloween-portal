@@ -311,9 +311,9 @@ export class EnemyContainer extends Phaser.GameObjects.Container {
 
       const newHealth = this.lifeBar.currentHealth - playerDamage;
 
+      this.flashSprite();
       if (newHealth > 0) {
         this.lifeBar.setHealth(newHealth);
-        this.flashSprite();
       } else {
         this.createDefeat();
       }

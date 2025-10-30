@@ -1541,6 +1541,7 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
       this.scene.time.delayedCall(1000, () => (this.isHurting = false));
     } else {
       const damage = PLAYER_DAMAGE_TAKEN[enemy] as number;
+      this.flashSprite();
       if (this.portalService?.state.context?.lives - damage <= 0) {
         this.scene.isCameraFading = true;
         this.scene.velocity = 0;
@@ -1548,8 +1549,59 @@ export class BumpkinContainer extends Phaser.GameObjects.Container {
         this.dead();
       } else {
         this.portalService?.send("LOSE_LIVES", { lives: damage });
+        this.animateRemovalHeart(`-${damage}`);
         this.hurt();
       }
     }
+  }
+
+  private flashSprite() {
+    this.scene.tweens.add({
+      targets: this.sprite,
+      alpha: { from: 1, to: 0.5 },
+      duration: 200,
+      yoyo: true,
+      repeat: 2,
+      onStart: () => this.sprite?.setTintFill(0xffffff),
+      onYoyo: () => this.sprite?.clearTint(),
+      onComplete: () => this.sprite?.clearTint(),
+    });
+  }
+
+  private animateRemovalHeart(value: string) {
+    const container = this.scene.add.container(0, 0);
+    const heart = this.scene.add
+      .sprite(0, 0, "heart_broken")
+      .setOrigin(0.5)
+      .setScale(0.6);
+
+    const label = this.scene.add.text(-11, -4, value, {
+      fontSize: "3.5px",
+      fontFamily: "Teeny",
+      color: "#FFFFFF",
+      resolution: 10,
+      padding: { x: 2, y: 2 },
+    });
+
+    label.setShadow(4, 4, "#161424", 0, true, true);
+    container.add([heart, label]);
+    this.add(container);
+
+    this.scene.tweens.add({
+      targets: [container],
+      props: {
+        x: {
+          value: Math.random() <= 0.5 ? `+=-15` : `+=15`,
+          duration: 1000,
+          ease: "Power2",
+        },
+        y: {
+          value: `+=5`,
+          duration: 500,
+          ease: "Bounce.easeOut",
+        },
+      },
+      onComplete: () => container.destroy(),
+    });
   }
 }
